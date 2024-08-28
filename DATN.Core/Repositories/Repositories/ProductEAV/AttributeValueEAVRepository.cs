@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.Repositories.ProductEAV
 {
-    public class ProductRepository:BaseRepository<Product_EAV>, IProductRepository
+    public class AttributeValueEAVRepository : BaseRepository<AttributeValue_EAV>, IAttributeValueEAVRepository
     {
         private readonly IMapper _mapper;
-        public ProductRepository(DATNDbContext context, IMapper mapper) : base(context)
+        public AttributeValueEAVRepository(DATNDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }

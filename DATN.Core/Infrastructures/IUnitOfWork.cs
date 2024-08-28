@@ -1,6 +1,7 @@
 ﻿
 
 using DATN.Core.Repositories.IRepositories;
+using DATN.Core.Repositories.IRepositories.ProductEAV;
 using DATN.Core.Repositories.Repositories;
 
 namespace DATN.Core.Infrastructures
@@ -55,6 +56,11 @@ namespace DATN.Core.Infrastructures
         //public IRoleRepository RoleRepository { get; }
         //public IUserRepository UserRepository { get; }
         //public IUserFollowRepository UserFollowRepository { get; }
+        public IAttributeEAVRepository AttributeEAVRepository { get; }
+        public IProductEAVRepository ProductEAVRepository { get; }
+        public IAttributeValueEAVRepository AttributeValueEAVRepository { get; }
+        public IVariantAttributeRepository VariantAttributeRepository { get; }
+        public IVariantRepository VariantRepository { get; }
 
         int SaveChanges();
     }
