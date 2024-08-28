@@ -1,9 +1,13 @@
 ﻿using DATN.Core.Enum;
 using DATN.Core.Model;
 using DATN.Core.Model.Product;
+using DATN.Core.Model.Product_EAV;
 using DATN.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Attribute = DATN.Core.Model.Product_EAV.Attribute;
+using AttributeValue = DATN.Core.Model.Product_EAV.AttributeValue;
+using Product = DATN.Core.Model.Product_EAV.Product;
 
 namespace DATN.Core.Data
 {
@@ -237,8 +241,8 @@ namespace DATN.Core.Data
             );
             #endregion
             #region Product
-            modelBuilder.Entity<Product>().HasData(
-                new Product
+            modelBuilder.Entity<Model.Product.Product>().HasData(
+                new Model.Product.Product
                 {
                     Id = 1,
                     Name = "Samsung Smart TV QLED QA55Q70C",
@@ -251,7 +255,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale,
                     //BrandId = 1
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 2,
                     Name = "LG Smart TV NanoCell 55NANO76SQA",
@@ -264,7 +268,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale,
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 3,
                     Name = "LG Smart TV 65UQ8000PSC",
@@ -277,7 +281,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 4,
                     Name = "Samsung Smart TV QLED Khung tranh QA50LS03B",
@@ -291,7 +295,7 @@ namespace DATN.Core.Data
 
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 5,
                     Name = "AQUA Android TV AQT55D67UG",
@@ -304,7 +308,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 6,
                     Name = "LG Smart TV 50UQ7550PSF",
@@ -317,7 +321,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale,
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 7,
                     Name = "Bình đun siêu tốc Delites 1.8 lít ST18S05",
@@ -330,7 +334,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 8,
                     Name = "Bình đun siêu tốc Delites 1.8 lít ST18S05",
@@ -343,7 +347,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 9,
                     Name = "Bình đun siêu tốc Delites 1.8 lít ST18S05",
@@ -356,7 +360,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 10,
                     Name = "Bình đun siêu tốc Delites 1.8 lít ST18S05",
@@ -369,7 +373,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 11,
                     Name = "Bình đun siêu tốc Delites 1.8 lít ST18S05",
@@ -382,7 +386,7 @@ namespace DATN.Core.Data
                     Status = ProductStatus.Sale
                     //BrandId = 2
                 },
-                new Product
+                new Model.Product.Product
                 {
                     Id = 12,
                     Name = "Bình đun siêu tốc Delites 1.8 lít ST18S05",
@@ -452,33 +456,33 @@ namespace DATN.Core.Data
             #endregion
             #region AttributeValue
             // Seed data for AttributeValue
-            modelBuilder.Entity<AttributeValue>().HasData(
-                new AttributeValue { AtributeValueId = 1, Value = "Red", AttributeId = 1, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 2, Value = "Blue", AttributeId = 1, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 3, Value = "Small", AttributeId = 2, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 4, Value = "Medium", AttributeId = 2, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 5, Value = "Large", AttributeId = 2, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 6, Value = "1 HP", AttributeId = 3, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 7, Value = "1.5 HP", AttributeId = 3, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 8, Value = "2 HP", AttributeId = 3, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 9, Value = "2.5 HP", AttributeId = 3, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 10, Value = "1 chiều", AttributeId = 4, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 11, Value = "2 chiều", AttributeId = 4, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 12, Value = "43 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 13, Value = "50 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 14, Value = "55 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 15, Value = "65 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 16, Value = "75 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
-                new AttributeValue { AtributeValueId = 17, Value = "Smart TV NanoCell", AttributeId = 6, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
-                new AttributeValue { AtributeValueId = 18, Value = "WebOS 22", AttributeId = 7, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
-                new AttributeValue { AtributeValueId = 19, Value = "YouTube KidsYouTubeVTVcab ONVieONTV 360Trình duyệt webSpotifyPOPS KidsNhaccuatuiNetflixMyTVGalaxy Play (Fim+)FPT PlayClip TV", AttributeId = 8, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
-                new AttributeValue { AtributeValueId = 20, Value = "Tương thích HEVCTương thích bộ mã hóa Video decoder (VP9, AV1) Nâng cấp độ phân giải 4K AI UpscalingNâng cấp hình ảnh AI Picture Pro 4KHLGHDR10 ProHDR Dynamic Tone MappingGiảm độ trễ chơi game Auto Low Latency Mode (ALLM)Dải màu rộng Nano ColorChế độ hình ảnh phù hợp nội dungChế độ game HGiGActive HDR", AttributeId = 9, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
-                new AttributeValue { AtributeValueId = 21, Value = "Tìm kiếm giọng nói trên YouTube bằng tiếng ViệtNhận diện giọng nói LG Voice RecognitionLG Voice Search - tìm kiếm bằng giọng nói tiếng ViệtGoogle Assistant (Chưa có tiếng Việt)Alexa (Chưa có tiếng Việt)", AttributeId = 10, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
-                new AttributeValue { AtributeValueId = 22, Value = "Magic Remote", AttributeId = 11, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
-                new AttributeValue { AtributeValueId = 23, Value = "Screen ShareAirPlay 2", AttributeId = 12, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
-                new AttributeValue { AtributeValueId = 24, Value = "Ngang 96.7 cm - Cao 62.9 cm - Dày 24.9 cm", AttributeId = 13, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
-                new AttributeValue { AtributeValueId = 25, Value = "4K (Ultra HD)", AttributeId = 14, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
-                new AttributeValue { AtributeValueId = 26, Value = "Nhựa", AttributeId = 15, IsActive = true, IsShow = true, Type = ValuesType.dynamic }
+            modelBuilder.Entity<Model.Product.AttributeValue>().HasData(
+                new Model.Product.AttributeValue { AtributeValueId = 1, Value = "Red", AttributeId = 1, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 2, Value = "Blue", AttributeId = 1, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 3, Value = "Small", AttributeId = 2, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 4, Value = "Medium", AttributeId = 2, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 5, Value = "Large", AttributeId = 2, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 6, Value = "1 HP", AttributeId = 3, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 7, Value = "1.5 HP", AttributeId = 3, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 8, Value = "2 HP", AttributeId = 3, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 9, Value = "2.5 HP", AttributeId = 3, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 10, Value = "1 chiều", AttributeId = 4, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 11, Value = "2 chiều", AttributeId = 4, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 12, Value = "43 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 13, Value = "50 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 14, Value = "55 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 15, Value = "65 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 16, Value = "75 inch", AttributeId = 5, IsActive = true, IsShow = true, Type = ValuesType.variation },
+                new Model.Product.AttributeValue { AtributeValueId = 17, Value = "Smart TV NanoCell", AttributeId = 6, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
+                new Model.Product.AttributeValue { AtributeValueId = 18, Value = "WebOS 22", AttributeId = 7, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
+                new Model.Product.AttributeValue { AtributeValueId = 19, Value = "YouTube KidsYouTubeVTVcab ONVieONTV 360Trình duyệt webSpotifyPOPS KidsNhaccuatuiNetflixMyTVGalaxy Play (Fim+)FPT PlayClip TV", AttributeId = 8, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
+                new Model.Product.AttributeValue { AtributeValueId = 20, Value = "Tương thích HEVCTương thích bộ mã hóa Video decoder (VP9, AV1) Nâng cấp độ phân giải 4K AI UpscalingNâng cấp hình ảnh AI Picture Pro 4KHLGHDR10 ProHDR Dynamic Tone MappingGiảm độ trễ chơi game Auto Low Latency Mode (ALLM)Dải màu rộng Nano ColorChế độ hình ảnh phù hợp nội dungChế độ game HGiGActive HDR", AttributeId = 9, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
+                new Model.Product.AttributeValue { AtributeValueId = 21, Value = "Tìm kiếm giọng nói trên YouTube bằng tiếng ViệtNhận diện giọng nói LG Voice RecognitionLG Voice Search - tìm kiếm bằng giọng nói tiếng ViệtGoogle Assistant (Chưa có tiếng Việt)Alexa (Chưa có tiếng Việt)", AttributeId = 10, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
+                new Model.Product.AttributeValue { AtributeValueId = 22, Value = "Magic Remote", AttributeId = 11, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
+                new Model.Product.AttributeValue { AtributeValueId = 23, Value = "Screen ShareAirPlay 2", AttributeId = 12, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
+                new Model.Product.AttributeValue { AtributeValueId = 24, Value = "Ngang 96.7 cm - Cao 62.9 cm - Dày 24.9 cm", AttributeId = 13, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
+                new Model.Product.AttributeValue { AtributeValueId = 25, Value = "4K (Ultra HD)", AttributeId = 14, IsActive = true, IsShow = true, Type = ValuesType.dynamic },
+                new Model.Product.AttributeValue { AtributeValueId = 26, Value = "Nhựa", AttributeId = 15, IsActive = true, IsShow = true, Type = ValuesType.dynamic }
             );
             #endregion
             #region ProductAttribute
@@ -688,6 +692,125 @@ namespace DATN.Core.Data
             );
             #endregion
 
+
+
+            #region ProductEAV
+            // Seed Product
+            modelBuilder.Entity<Product>().HasData(
+                new Product { ProductId = 1, ProductName = "Samsung Smart TV QLED QA55Q70C" }
+            );
+            modelBuilder.Entity<Product>().HasData(
+                new Product { ProductId = 1, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL" }
+            );
+
+            // Seed Attributes
+            modelBuilder.Entity<Attribute>().HasData(
+                new Attribute { AttributeId = 1, AttributeName = "Màu sắc" },
+                new Attribute { AttributeId = 2, AttributeName = "Kích thước" },
+                new Attribute { AttributeId = 3, AttributeName = "Dung tích" }
+            );
+
+            // Seed AttributeValues
+            modelBuilder.Entity<AttributeValue>().HasData(
+                new AttributeValue { AttributeValueId = 1, AttributeId = 1, ValueText = "Đen" },
+                new AttributeValue { AttributeValueId = 2, AttributeId = 1, ValueText = "Trắng" },
+                new AttributeValue { AttributeValueId = 3, AttributeId = 2, ValueText = "50 inch" },
+                new AttributeValue { AttributeValueId = 4, AttributeId = 2, ValueText = "60 inch" },
+                new AttributeValue { AttributeValueId = 5, AttributeId = 3, ValueText = "40 lít" },
+                new AttributeValue { AttributeValueId = 6, AttributeId = 3, ValueText = "50 lít" }
+            );
+
+            // Seed Variants
+            modelBuilder.Entity<Variant>().HasData(
+                new Variant
+                {
+                    VariantId = 1,
+                    ProductId = 1,
+                    VariantName = "Đen/50 inch",
+                    Quantity = 100,
+                    PuscharPrice = 50000, // Giá nhập
+                    SalePrice = 75000,   // Giá bán
+                    AfterDiscountPrice = 70000
+                },
+                new Variant
+                {
+                    VariantId = 2,
+                    ProductId = 1,
+                    VariantName = "Đen/60 inch",
+                    Quantity = 50,
+                    PuscharPrice = 52000,
+                    SalePrice = 78000,
+                    AfterDiscountPrice = 71000
+                },
+                new Variant
+                {
+                    VariantId = 3,
+                    ProductId = 1,
+                    VariantName = "Trắng/50 inch",
+                    Quantity = 75,
+                    PuscharPrice = 48000,
+                    SalePrice = 73000,
+                    AfterDiscountPrice = 70500
+                },
+                new Variant
+                {
+                    VariantId = 4,
+                    ProductId = 1,
+                    VariantName = "Trắng/60 inch",
+                    Quantity = 80,
+                    PuscharPrice = 49000,
+                    SalePrice = 74000,
+                    AfterDiscountPrice = 71000
+                },
+                new Variant
+                {
+                    VariantId = 5,
+                    ProductId = 2,
+                    VariantName = "Đen/40 lít",
+                    Quantity = 0,
+                    PuscharPrice = 49000,
+                    SalePrice = 74000,
+                    AfterDiscountPrice = 71000
+                },
+                new Variant
+                {
+                    VariantId = 6,
+                    ProductId = 2,
+                    VariantName = "Đen/50 lít",
+                    Quantity = 80,
+                    PuscharPrice = 49000,
+                    SalePrice = 74000,
+                    AfterDiscountPrice = 71000
+                }
+            );
+
+            // Seed VariantAttributes
+            modelBuilder.Entity<VariantAttribute>().HasData(
+                // Variant 1
+                new VariantAttribute { VariantAttributeId = 1, VariantId = 1, AttributeValueId = 1 }, // Đen
+                new VariantAttribute { VariantAttributeId = 2, VariantId = 1, AttributeValueId = 3 }, // 50inch
+
+                // Variant 2
+                new VariantAttribute { VariantAttributeId = 3, VariantId = 2, AttributeValueId = 1 }, // Đen
+                new VariantAttribute { VariantAttributeId = 4, VariantId = 2, AttributeValueId = 4 }, // 60inch
+
+                // Variant 3
+                new VariantAttribute { VariantAttributeId = 5, VariantId = 3, AttributeValueId = 2 }, // Trắng
+                new VariantAttribute { VariantAttributeId = 6, VariantId = 3, AttributeValueId = 3 }, // 50inch
+
+                // Variant 4
+                new VariantAttribute { VariantAttributeId = 7, VariantId = 4, AttributeValueId = 2 }, // Trắng
+                new VariantAttribute { VariantAttributeId = 8, VariantId = 4, AttributeValueId = 4 }, // 60inch
+               
+                // Variant 5
+                new VariantAttribute { VariantAttributeId = 9, VariantId = 5, AttributeValueId = 1 }, // Trắng
+                new VariantAttribute { VariantAttributeId = 10, VariantId = 5, AttributeValueId = 5 },  // 60inch
+                
+                // Variant 6
+                new VariantAttribute { VariantAttributeId = 11, VariantId = 6, AttributeValueId = 1 }, // Trắng
+                new VariantAttribute { VariantAttributeId = 12, VariantId = 6, AttributeValueId = 6 }  // 60inch
+            );
+            #endregion
         }
         public static bool IsSeeded(DATNDbContext context)
         {
