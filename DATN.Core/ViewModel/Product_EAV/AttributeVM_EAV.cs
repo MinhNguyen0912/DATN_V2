@@ -1,16 +1,14 @@
-﻿using DATN.Core.Model.Product;
+﻿using DATN.Core.Model.Product_EAV;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DATN.Core.Model.Product_EAV
+namespace DATN.Core.ViewModel.Product_EAV
 {
-    public class Attribute_EAV
+    public class AttributeVM_EAV
     {
-        [Key]
         public int AttributeId { get; set; }
         public string AttributeName { get; set; }
 

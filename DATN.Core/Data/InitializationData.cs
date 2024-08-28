@@ -700,7 +700,7 @@ namespace DATN.Core.Data
                 new Product_EAV { ProductId = 1, ProductName = "Samsung Smart TV QLED QA55Q70C" }
             );
             modelBuilder.Entity<Product_EAV>().HasData(
-                new Product_EAV { ProductId = 1, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL" }
+                new Product_EAV { ProductId = 2, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL" }
             );
 
             // Seed Attributes
