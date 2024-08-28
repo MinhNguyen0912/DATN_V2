@@ -1,4 +1,4 @@
-﻿@* @using DATN.Core.ViewModel.ListProductCompVM
+﻿@using DATN.Core.ViewModel.ListProductCompVM
 @using System.Globalization
 @using DATN.Core.ViewModel.Product_EAV
 @model DATN.Core.ViewModel.ListProductCompVM.ListProductCompVM
@@ -30,26 +30,26 @@
                                             <img style="border-radius:8px;" src="@a.Images.FirstOrDefault(p=>p.IsDefault==true).ImagePath" class="d-block w-100" alt="...">
 
                                         </div>
-                                        <p style="font-size:14px;line-height:21px;height:63px">@a.Name</p>
+                                        <p style="font-size:14px;line-height:21px;height:63px">@a.ProductName</p>
                                         <div class="d-flex align-items-center" style="align-items:baseline!important">
                                             @{
                                                 // Định dạng số theo chuẩn Việt Nam
                                                 CultureInfo vietnamCulture = new CultureInfo("vi-VN");
-                                                string formattedPrice = String.Format(vietnamCulture, "{0:N0}", a.DefaultPrice);
-                                                string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", 0);
+                                                string formattedPrice = String.Format(vietnamCulture, "{0:N0}", a.Variants.FirstOrDefault(p=>p.IsDefault==true).SalePrice);
+                                                string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", a.Variants.FirstOrDefault(p => p.IsDefault == true).AfterDiscountPrice);
                                             }
                                             <div>
                                                 <strong style="font-size:18px;color:#D0021C">@(formattedPrice)đ</strong>
                                                 <p style="font-size:14px;color:#666;text-decoration:line-through">@(formattedSalePrice)đ</p>
                                             </div>
-                                            <strong style="font-size:14px;color:#EB5757;background-color:#FFF0E9;margin-left:8px">-@(a.Discount)%</strong>
+                                            <strong style="font-size:14px;color:#EB5757;background-color:#FFF0E9;margin-left:8px">-@(a.Variants.FirstOrDefault(p=>p.IsDefault==true).Discount)%</strong>
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <p style="color:#FB6E2E;font-size:14px;margin:0;padding-right:8px">@a.Rating</p>
                                             <i style="color:#FB6E2E;font-size:14px;padding-right:8px" class="fa-solid fa-star"></i>
                                             <p style="margin:0;font-size:14px;color:#999999">(@(a.RateCount))</p>
                                         </div>
-                                        <div product-id="@a.Id" class="product-detail">Xem chi tiết</div>
+                                        <div product-id="@a.ProductId" class="product-detail">Xem chi tiết</div>
                                     </div>
                                 }
                                 @for (int i = 0; i < 6 - Model.Products.Count; i++)
@@ -80,26 +80,26 @@
                                                     <img style="border-radius:8px;" src="@a.Images.FirstOrDefault(p=>p.IsDefault==true).ImagePath" class="d-block w-100" alt="...">
 
                                                 </div>
-                                                <p style="font-size:14px;line-height:21px;height:63px">@a.Name</p>
+                                                <p style="font-size:14px;line-height:21px;height:63px">@a.ProductName</p>
                                                 <div class="d-flex align-items-center" style="align-items:baseline!important">
                                                     @{
                                                         // Định dạng số theo chuẩn Việt Nam
                                                         CultureInfo vietnamCulture = new CultureInfo("vi-VN");
-                                                        string formattedPrice = String.Format(vietnamCulture, "{0:N0}", a.DefaultPrice);
-                                                        string formattedSalePrice = "0";
+                                                        string formattedPrice = String.Format(vietnamCulture, "{0:N0}", a.Variants.FirstOrDefault(p => p.IsDefault == true).SalePrice);
+                                                        string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", a.Variants.FirstOrDefault(p => p.IsDefault == true).AfterDiscountPrice);
                                                     }
                                                     <div>
                                                         <strong style="font-size:18px;color:#D0021C">@(formattedPrice)đ</strong>
                                                         <p style="font-size:14px;color:#666;text-decoration:line-through">@(formattedSalePrice)đ</p>
                                                     </div>
-                                                    <strong style="font-size:14px;color:#EB5757;background-color:#FFF0E9;margin-left:8px">-@(a.Discount)%</strong>
+                                                    <strong style="font-size:14px;color:#EB5757;background-color:#FFF0E9;margin-left:8px">-@(a.Variants.FirstOrDefault(p => p.IsDefault == true).Discount)%</strong>
                                                 </div>
                                                 <div class="d-flex align-items-center">
                                                     <p style="color:#FB6E2E;font-size:14px;margin:0;padding-right:8px">@a.Rating</p>
                                                     <i style="color:#FB6E2E;font-size:14px;padding-right:8px" class="fa-solid fa-star"></i>
                                                     <p style="margin:0;font-size:14px;color:#999999">(@a.RateCount)</p>
                                                 </div>
-                                                <div product-id="@a.Id" class="product-detail">Xem chi tiết</div>
+                                                <div product-id="@a.ProductId" class="product-detail">Xem chi tiết</div>
                                             </div>
                                         }
                                     </div>
@@ -123,26 +123,26 @@
                                                 <img style="border-radius:8px;" src="@a.Images.FirstOrDefault(p=>p.IsDefault==true).ImagePath" class="d-block w-100" alt="...">
 
                                             </div>
-                                            <p style="font-size:14px;line-height:21px;height:63px">@a.Name</p>
+                                            <p style="font-size:14px;line-height:21px;height:63px">@a.ProductName</p>
                                             <div class="d-flex align-items-center" style="align-items:baseline!important">
                                                 @{
                                                     // Định dạng số theo chuẩn Việt Nam
                                                     CultureInfo vietnamCulture = new CultureInfo("vi-VN");
-                                                    string formattedPrice = String.Format(vietnamCulture, "{0:N0}", a.DefaultPrice);
-                                                    string formattedSalePrice = "0";
+                                                    string formattedPrice = String.Format(vietnamCulture, "{0:N0}", a.Variants.FirstOrDefault(p => p.IsDefault == true).SalePrice);
+                                                    string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", a.Variants.FirstOrDefault(p => p.IsDefault == true).AfterDiscountPrice);
                                                 }
                                                 <div>
                                                     <strong style="font-size:18px;color:#D0021C">@(formattedPrice)đ</strong>
                                                     <p style="font-size:14px;color:#666;text-decoration:line-through">@(formattedSalePrice)đ</p>
                                                 </div>
-                                                <strong style="font-size:14px;color:#EB5757;background-color:#FFF0E9;margin-left:8px">-@(a.Discount)%</strong>
+                                                <strong style="font-size:14px;color:#EB5757;background-color:#FFF0E9;margin-left:8px">-@(a.Variants.FirstOrDefault(p => p.IsDefault == true).Discount)%</strong>
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <p style="color:#FB6E2E;font-size:14px;margin:0;padding-right:8px">@a.Rating</p>
                                                 <i style="color:#FB6E2E;font-size:14px;padding-right:8px" class="fa-solid fa-star"></i>
                                                 <p style="margin:0;font-size:14px;color:#999999">(@(a.RateCount))</p>
                                             </div>
-                                            <div product-id="@a.Id" class="product-detail">Xem chi tiết</div>
+                                            <div product-id="@a.ProductId" class="product-detail">Xem chi tiết</div>
                                         </div>
                                     }
                                     @for (int i = 0; i < 6 - group.Count; i++)
@@ -179,4 +179,3 @@
     }
 </script>
 
- *@
