@@ -83,24 +83,24 @@ builder.Services.AddAuthentication(options =>
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
         options.SlidingExpiration = true;
         options.AccessDeniedPath = "/Error/Error403";
-    })
-    .AddGoogle(googleOptions =>
-    {
-        googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-        googleOptions.CallbackPath = "/signin-google";
-
-    })
-    .AddFacebook(facebookOptions =>
-    {
-        // Đọc cấu hình
-        IConfigurationSection facebookAuthNSection = builder.Configuration.GetSection("Authentication:Facebook");
-        facebookOptions.AppId = facebookAuthNSection["AppId"];
-        facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
-
-        // Thiết lập đường dẫn Facebook chuyển hướng đến
-        facebookOptions.CallbackPath = "/signin-facebook";
     });
+    //.AddGoogle(googleOptions =>
+    //{
+    //    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    //    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    //    googleOptions.CallbackPath = "/signin-google";
+
+    //})
+    //.AddFacebook(facebookOptions =>
+    //{
+    //    // Đọc cấu hình
+    //    IConfigurationSection facebookAuthNSection = builder.Configuration.GetSection("Authentication:Facebook");
+    //    facebookOptions.AppId = facebookAuthNSection["AppId"];
+    //    facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
+
+    //    // Thiết lập đường dẫn Facebook chuyển hướng đến
+    //    facebookOptions.CallbackPath = "/signin-facebook";
+    //});
 builder.Services.AddHttpContextAccessor();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
