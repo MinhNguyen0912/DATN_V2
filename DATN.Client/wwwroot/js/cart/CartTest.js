@@ -34,7 +34,7 @@ async function addToCart(selectedTTD) {
         var exist = false;
 
         for (var i = 0; i < giohang.length; i++) {
-            if (giohang[i].maTTD === data.id) {
+            if (giohang[i].ma === 1) {
                 giohang[i].soluong += 1;
                 exist = true;
                 break;
@@ -43,17 +43,8 @@ async function addToCart(selectedTTD) {
 
         if (!exist) {
             var sanpham = {
-                ma: data.product.id,
-                ten: data.product.name,
-                dongia: parseFloat(data.salePrice),
-                giamoi: parseFloat(data.afterDiscountPrice),
-                soluong: 1,
-                img: data.product.imagePath,
-                soluongconlai: data.quantity,
-                maTTD: data.id,
-                tenTTD: data.attributeValue.value,
-                loaiTTD: data.attributeValue.attributes.name,
-                gianhap: data.puscharPrice
+                ma: 1,
+                soluong: 1
             };
             giohang.push(sanpham);
         }

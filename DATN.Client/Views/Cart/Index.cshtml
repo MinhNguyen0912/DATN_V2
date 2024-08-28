@@ -222,23 +222,49 @@
                 return null;
             }
         }
+    async function FetchVariantData(variantId) { 
+        try {
+            const response = await fetch(`https://localhost:7095/api/Variant_EAV/GetById?variantId=${variantId}`);
 
+            if (!response.ok) {
+                throw new Error('Failed to fetch promotion');
+            }
+            const promotion = await response.json();
+            return promotion;
+        } catch (error) {
+            console.error('Error fetching promotion:', error);
+            return null;
+        }
+    }
+    function FetchCartData() {
+        const cart = JSON.parse(localStorage.getItem(`giohang-${document.getElementsByClassName("user-email")[0].innerHTML}`)) || [];
+        const Variants = [];
+        for (const item of cart) {
+            var variant = FetchVariantData(item.ma)
+
+            Variants.push(new {
+                variant : variant,
+                quantity : item.soluong
+            });
+        }
+        return Variants;
+    }
     //hiển thị Giỏ hàng
     async function showCart() {
-        const cart = JSON.parse(localStorage.getItem(`giohang-${document.getElementsByClassName("user-email")[0].innerHTML}`)) || [];
+        const cart = FetchCartData();
         const cartul = document.querySelector('.listing-cart');
         let totalQuantity = 0;
         let totalPrice = 0;
         cartul.innerHTML = ''; // Xóa nội dung cũ để cập nhật lại
 
         for (const item of cart) {
-            totalQuantity += item.soluong;
+            totalQuantity += item.quantity;
 
             // Lấy thông tin khuyến mãi cho từng sản phẩm
-            const promotion = await fetchPromotion(item.ma);
+            // const promotion = await fetchPromotion(item.variants.productId);
             let discount = 0;
             let promotionInfo = 'Không có khuyến mãi';
-            let finalPrice = item.giamoi; // Giá mặc định là giá gốc
+            let finalPrice = item.variant.afterDiscountPrice; // Giá mặc định là giá gốc
             if (promotion && promotion.length > 0) {
                 promotionInfo = promotion[0].name;
                 discount = promotion[0].percent || 0; // Lấy phần trăm giảm giá
@@ -246,8 +272,8 @@
 
             // Cập nhật tổng tiền: nếu có khuyến mãi, cộng giá sau khuyến mãi; nếu không, cộng giá gốc
             totalPrice += item.soluong * finalPrice;
-            if (item.giamoi != item.dongia) {
-                discount = item.dongia - item.giamoi;
+            if (item.variant.afterDiscountPrice != item.variant.salePrice) {
+                discount = item.variant.salePrice - item.variant.afterDiscountPrice;
             }
             // Thêm sản phẩm vào giỏ hàng
             cartul.innerHTML += `
@@ -263,31 +289,31 @@
                                                                                 <div class="infosp">
                                                                                     <div class="name-price" style="align-items:baseline">
                                                                                         <div class="name-container">
-                                                                                            <a>${item.ten}</a>
+                                                                                            <a>${item.variant.product.name}</a>
                                                                                                 <br>
-                                                                                                <span style="color:#777;font-size:14px" class="soluongconlai">Còn lại: ${item.soluongconlai}</span>
+                                                                                                <span style="color:#777;font-size:14px" class="soluongconlai">Còn lại: ${item.variant.quantity}</span>
                                                                                          </div>
                                                                                         <div class="price-area">
                                                                                             <span class="final-price">${finalPrice.toLocaleString()} VNĐ</span>
-                                                                                            ${discount != 0 ? `<br><span class="original-price">${item.dongia.toLocaleString()} VNĐ</span>` : ''}
+                                                                                            ${discount != 0 ? `<br><span class="original-price">${item.variant.salePrice.toLocaleString()} VNĐ</span>` : ''}
                                                                                         </div>
                                                                                   </div>
                                                                                   <div class="promotion-info">
-                                                                                        <span class="promotion-toggle" data-id="${item.ma}">Khuyến mãi</span>
+                                                                                        <span class="promotion-toggle" data-id="${}">khuyến mãi</span>
                                                                                         <div class="promotion-details hidden">
-                                                                                            <p>${promotionInfo}</p>
+                                                                                            <p>${}</p>
                                                                                         </div>
                                                                                   </div>
                                                                                   <div class="description-quantity">
                                                                                         <div class="description">
                                                                                             <span>
-                                                                                                ${item.loaiTTD}:
+                                                                                                ${item.variant.variantName}:
                                                                                                     <span>${item.tenTTD}</span>
                                                                                             </span>
                                                                                         </div>
                                                                                         <div class="quantity">
                                                                                             <button class="decrease" data-id="${item.maTTD}">-</button>
-                                                                                                <input readonly style="pointer-events: none;" type="number" class="quantitysp" value="${item.soluong}" max="${item.soluongconlai}" data-id="${item.maTTD}" min="0">
+                                                                                                <input readonly style="pointer-events: none;" type="number" class="quantitysp" value="${item.soluong}" max="3" data-id="${item.maTTD}" min="0">
                                                                                             <button class="increase" data-id="${item.maTTD}">+</button>
                                                                                         </div>
                                                                                   </div>
