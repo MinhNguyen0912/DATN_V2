@@ -43,7 +43,6 @@ namespace DATN.Core.Infrastructures
         private ITimeRangeRepository _timeRangeRepository;
         private IShippingOrderRepository _shippingOrderRepository;
         private ICategoryTimeRangeRepository _CateRangeRepository;
-        private IImageTypeRepository _imageTypeRepository;
         private IVoucherRepository _voucherRepository;
 
 
@@ -97,7 +96,6 @@ namespace DATN.Core.Infrastructures
 
         public ITimeRangeRepository TimeRangeRepository => _timeRangeRepository ?? (_timeRangeRepository = new TimeRangeRepository(_context, _mapper));
 
-        public IImageTypeRepository ImageTypeRepository => _imageTypeRepository ?? (_imageTypeRepository = new ImageTypeRepository(_context, _mapper));
 
         public ICategoryTimeRangeRepository CategoryTimeRange => _CateRangeRepository ?? (_CateRangeRepository = new CategoryTimerangeRepository(_context, _mapper));
 
