@@ -7,7 +7,6 @@ namespace DATN.Core.ViewModel.ImagePath
     {
         public int ImageId { get; set; }
         public int? TypeId { get; set; }
-        public ImageType? Type { get; set; }
         public string? ImagePath { get; set; }
         public int? ProductId { get; set; }
         public bool IsDefault { get; set; }

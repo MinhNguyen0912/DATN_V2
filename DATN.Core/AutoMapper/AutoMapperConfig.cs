@@ -7,7 +7,6 @@ using DATN.Core.Models;
 using DATN.Core.ViewModel.BrandVM;
 using DATN.Core.ViewModel.CategoryVM;
 using DATN.Core.ViewModel.ImagePath;
-using DATN.Core.ViewModel.ImageTypeVM;
 using DATN.Core.ViewModel.InvoiceDetailVM;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.MagazineVM;
@@ -69,7 +68,6 @@ namespace DATN.Core.AutoMapper
                 config.CreateMap<Magazine, MagazineVM>().ReverseMap();
                 config.CreateMap<Category, CategoryAdminVM>().ReverseMap();
                 config.CreateMap<Category, CategoryAdminCreatLv>().ReverseMap();
-                config.CreateMap<ImageType, ImageTypeVM>().ReverseMap();
                 config.CreateMap<Voucher, VoucherVM>().ReverseMap();
                 config.CreateMap<InvoiceDetail, InvoiceDetailForCommentVM>().ReverseMap();
                 config.CreateMap<Invoice, InvoiceShowForClientVM>().ReverseMap();

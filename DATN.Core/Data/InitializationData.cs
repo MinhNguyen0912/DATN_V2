@@ -165,7 +165,8 @@ namespace DATN.Core.Data
                 new Category { Id = 50, Name = "Điều khiển Tivi", ParentCategoryId = 17, Level = 2, IsOnList = true },
                 new Category { Id = 51, Name = "Android TV Box", ParentCategoryId = 17, Level = 2, IsOnList = true },
                 new Category { Id = 52, Name = "Dán màn Tivi", ParentCategoryId = 17, Level = 2, IsOnList = false },
-                new Category { Id = 53, Name = "Sticker Tivi", ParentCategoryId = 17, Level = 2, IsOnList = false }
+                new Category { Id = 53, Name = "Sticker Tivi", ParentCategoryId = 17, Level = 2, IsOnList = false },
+                new Category { Id = 54, Name = "Tủ lạnh 2 cánh", ParentCategoryId = 18, Level = 2, IsOnList = true }
                 // Thêm các danh mục khác nếu cần
             );
             #endregion
@@ -184,58 +185,22 @@ namespace DATN.Core.Data
                 // Add more origins as needed
             );
             #endregion
-            #region ImageType
-            modelBuilder.Entity<ImageType>().HasData(
-               new ImageType { Id = 1, Name = "Normal" },
-               new ImageType { Id = 2, Name = "Banner" }
-
-           );
-            #endregion
             #region Image
             modelBuilder.Entity<Image>().HasData(
-                new Image() { ImageId = 1, ImagePath = "/Images/Component/ListProduct/product1.webp", IsDefault = true, ProductId = 1, TypeId = 1 },
-                new Image() { ImageId = 2, ImagePath = "/Images/Component/ListProduct/product2.webp", IsDefault = true, ProductId = 2, TypeId = 1 },
-                new Image() { ImageId = 3, ImagePath = "/Images/Component/ListProduct/product3.webp", IsDefault = true, ProductId = 3, TypeId = 1 },
-                new Image() { ImageId = 4, ImagePath = "/Images/Component/ListProduct/product4.webp", IsDefault = true, ProductId = 4, TypeId = 1 },
-                new Image() { ImageId = 5, ImagePath = "/Images/Component/ListProduct/product5.webp", IsDefault = true, ProductId = 5, TypeId = 1 },
-                new Image() { ImageId = 6, ImagePath = "/Images/Component/ListProduct/product6.webp", IsDefault = true, ProductId = 6, TypeId = 1 },
-
-                new Image() { ImageId = 7, ImagePath = "/Images/Component/ListProduct/product1.webp", IsDefault = true, ProductId = 7, TypeId = 1 },
-                new Image() { ImageId = 8, ImagePath = "/Images/Component/ListProduct/product2.webp", IsDefault = true, ProductId = 8, TypeId = 1 },
-                new Image() { ImageId = 9, ImagePath = "/Images/Component/ListProduct/product3.webp", IsDefault = true, ProductId = 9, TypeId = 1 },
-                new Image() { ImageId = 10, ImagePath = "/Images/Component/ListProduct/product4.webp", IsDefault = true, ProductId = 10, TypeId = 1 },
-                new Image() { ImageId = 11, ImagePath = "/Images/Component/ListProduct/product5.webp", IsDefault = true, ProductId = 11, TypeId = 1 },
-                new Image() { ImageId = 12, ImagePath = "/Images/Component/ListProduct/product6.webp", IsDefault = true, ProductId = 12, TypeId = 1 },
-
-                new Image() { ImageId = 14, ImagePath = "/Images/Component/ListProduct/product1-1.jpg", IsDefault = false, ProductId = 1, TypeId = 1 },
-                new Image() { ImageId = 15, ImagePath = "/Images/Component/ListProduct/product1-2.jpg", IsDefault = false, ProductId = 1, TypeId = 1 },
-                new Image() { ImageId = 16, ImagePath = "/Images/Component/ListProduct/product1-3.jpg", IsDefault = false, ProductId = 1, TypeId = 1 },
-                new Image() { ImageId = 17, ImagePath = "/Images/Component/ListProduct/product1-4.jpg", IsDefault = false, ProductId = 1, TypeId = 1 },
-                new Image() { ImageId = 18, ImagePath = "/Images/Component/ListProduct/product1-5.jpg", IsDefault = false, ProductId = 1, TypeId = 1 },
-
-
-                 new Image() { ImageId = 13, ImagePath = "https://www.dienmayxanh.com/flashsale", IsDefault = false, TypeId = 2 }
+                new Image() { ImageId = 1, ImagePath = "/Images/Component/ListProduct/product1.webp", IsDefault = true, ProductId = 1},
+                new Image() { ImageId = 2, ImagePath = "/Images/Component/ListProduct/product2.webp", IsDefault = true, ProductId = 2},
+                new Image() { ImageId = 3, ImagePath = "/Images/Component/ListProduct/product1-1.jpg", IsDefault = false, ProductId = 1},
+                new Image() { ImageId = 4, ImagePath = "/Images/Component/ListProduct/product1-2.jpg", IsDefault = false, ProductId = 1},
+                new Image() { ImageId = 5, ImagePath = "/Images/Component/ListProduct/product1-3.jpg", IsDefault = false, ProductId = 1},
+                new Image() { ImageId = 6, ImagePath = "/Images/Component/ListProduct/product1-4.jpg", IsDefault = false, ProductId = 1},
+                new Image() { ImageId = 7, ImagePath = "/Images/Component/ListProduct/product1-5.jpg", IsDefault = false, ProductId = 1}
             );
             #endregion
             #region CategoryProduct
             modelBuilder.Entity<CategoryProduct>().HasData(
                 new CategoryProduct { CategoryProductId = 1, CategoryId = 33, ProductId = 1 },
                 new CategoryProduct { CategoryProductId = 2, CategoryId = 35, ProductId = 1 },
-                new CategoryProduct { CategoryProductId = 3, CategoryId = 34, ProductId = 2 },
-                new CategoryProduct { CategoryProductId = 4, CategoryId = 36, ProductId = 3 },
-                new CategoryProduct { CategoryProductId = 5, CategoryId = 33, ProductId = 4 },
-                new CategoryProduct { CategoryProductId = 6, CategoryId = 34, ProductId = 4 },
-                new CategoryProduct { CategoryProductId = 7, CategoryId = 35, ProductId = 5 },
-                new CategoryProduct { CategoryProductId = 8, CategoryId = 36, ProductId = 5 },
-                new CategoryProduct { CategoryProductId = 9, CategoryId = 33, ProductId = 6 },
-                new CategoryProduct { CategoryProductId = 10, CategoryId = 34, ProductId = 6 },
-
-                new CategoryProduct { CategoryProductId = 11, CategoryId = 53, ProductId = 7 },
-                new CategoryProduct { CategoryProductId = 12, CategoryId = 53, ProductId = 8 },
-                new CategoryProduct { CategoryProductId = 13, CategoryId = 53, ProductId = 9 },
-                new CategoryProduct { CategoryProductId = 14, CategoryId = 53, ProductId = 10 },
-                new CategoryProduct { CategoryProductId = 15, CategoryId = 53, ProductId = 11 },
-                new CategoryProduct { CategoryProductId = 16, CategoryId = 53, ProductId = 12 }
+                new CategoryProduct { CategoryProductId = 3, CategoryId = 54, ProductId = 2 }
                 // Thêm dữ liệu mẫu khác nếu cần
             );
             #endregion
@@ -248,11 +213,11 @@ namespace DATN.Core.Data
             //);
             #endregion
             #region Comment
-            modelBuilder.Entity<Comment>().HasData(
-                new Comment { CommentId = 1, Content = "Chất lượng khá tốt so với giá tiền", Date = DateTime.Now, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), Type = CommentType.Default, InvoiceDetailId = 1, Rating = 4, ProductId = 1 },
-                new Comment { CommentId = 2, Content = "Sản phẩm tạm ổn", Date = DateTime.Now, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), Type = CommentType.Done, InvoiceDetailId = 2, Rating = 3, ProductId = 1 },
-                new Comment { CommentId = 3, Content = "Chất lượng sản phẩm tuyệt vời", Date = DateTime.Now, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), Type = CommentType.Processing, Rating = 5, ProductId = 1, InvoiceDetailId = 3 }
-            );
+            //modelBuilder.Entity<Comment>().HasData(
+            //    new Comment { CommentId = 1, Content = "Chất lượng khá tốt so với giá tiền", Date = DateTime.Now, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), Type = CommentType.Default, InvoiceDetailId = 1, Rating = 4, ProductId = 1 },
+            //    new Comment { CommentId = 2, Content = "Sản phẩm tạm ổn", Date = DateTime.Now, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), Type = CommentType.Done, InvoiceDetailId = 2, Rating = 3, ProductId = 1 },
+            //    new Comment { CommentId = 3, Content = "Chất lượng sản phẩm tuyệt vời", Date = DateTime.Now, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), Type = CommentType.Processing, Rating = 5, ProductId = 1, InvoiceDetailId = 3 }
+            //);
             #endregion
             #region Invoice
             //modelBuilder.Entity<Invoice>().HasData(
@@ -262,11 +227,11 @@ namespace DATN.Core.Data
             //);
             #endregion
             #region PaymentInfo
-            modelBuilder.Entity<PaymentInfo>().HasData(
-                new PaymentInfo { PaymentInfoId = 1, InvoiceId = 1, PaymentMethod = PaymentMethod.VNPay, PaymentStatus = PaymentStatus.Success },
-                new PaymentInfo { PaymentInfoId = 2, InvoiceId = 2, PaymentMethod = PaymentMethod.MomoQR, PaymentStatus = PaymentStatus.Success },
-                new PaymentInfo { PaymentInfoId = 3, InvoiceId = 3, PaymentMethod = PaymentMethod.Cash, PaymentStatus = PaymentStatus.Success }
-            );
+            //modelBuilder.Entity<PaymentInfo>().HasData(
+            //    new PaymentInfo { PaymentInfoId = 1, InvoiceId = 1, PaymentMethod = PaymentMethod.VNPay, PaymentStatus = PaymentStatus.Success },
+            //    new PaymentInfo { PaymentInfoId = 2, InvoiceId = 2, PaymentMethod = PaymentMethod.MomoQR, PaymentStatus = PaymentStatus.Success },
+            //    new PaymentInfo { PaymentInfoId = 3, InvoiceId = 3, PaymentMethod = PaymentMethod.Cash, PaymentStatus = PaymentStatus.Success }
+            //);
             #endregion
             #region Role
             modelBuilder.Entity<IdentityRole<Guid>>().HasData(
@@ -326,9 +291,9 @@ namespace DATN.Core.Data
                 );
             #endregion ShppingOrder
             #region ShippingOrder
-            modelBuilder.Entity<ShippingOrder>().HasData(
-                new ShippingOrder { Id = 1, OrderCode = "L6AHHM", UserId = Guid.Parse("AA7C5218-4F1E-4AC6-A3B4-08DCB162E29E"), Price = 200000, CreateAt = DateTime.Now, InvoiceId = 3 }
-            );
+            //modelBuilder.Entity<ShippingOrder>().HasData(
+            //    new ShippingOrder { Id = 1, OrderCode = "L6AHHM", UserId = Guid.Parse("AA7C5218-4F1E-4AC6-A3B4-08DCB162E29E"), Price = 200000, CreateAt = DateTime.Now, InvoiceId = 3 }
+            //);
             #endregion
 
 

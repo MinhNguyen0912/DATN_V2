@@ -12,6 +12,7 @@ namespace DATN.Core.Models
         public DateTime? LastLoginTime { get; set; }
         public bool isActive { get; set; }
         public bool IsSentMail { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
 
 
         // Navigation property

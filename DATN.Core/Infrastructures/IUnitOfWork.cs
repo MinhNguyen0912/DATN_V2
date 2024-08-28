@@ -28,7 +28,6 @@ namespace DATN.Core.Infrastructures
         public IAuthenRepository AuthenRepository { get; }
         public ITimeRangeRepository TimeRangeRepository { get; }
 
-        public IImageTypeRepository ImageTypeRepository { get; }
         public ICategoryTimeRangeRepository CategoryTimeRange { get; }
         public IShippingOrderRepository ShippingOrderRepository { get; }
         public IRoleRepository RoleRepository { get; }

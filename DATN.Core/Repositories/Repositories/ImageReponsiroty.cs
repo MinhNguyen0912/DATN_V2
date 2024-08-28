@@ -18,11 +18,11 @@ namespace DATN.Core.Repositories.Repositories
         }
         public List<Image> GetAll()
         {
-            return Context.Images.Include(p => p.Type).ToList();
+            return Context.Images.ToList();
         }
         public ImagePaging GetImagePaging(ImagePaging request)
         {
-            var query = Context.Images.Where(p => p.TypeId != 1).Include(p => p.Type).AsQueryable();
+            var query = Context.Images.AsQueryable();
 
             /*if (!string.IsNullOrEmpty(request.SearchTerm))
             {

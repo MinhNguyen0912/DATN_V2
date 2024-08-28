@@ -38,7 +38,6 @@ namespace DATN.Core.Data
         public DbSet<Origin> Origins { get; set; }
         public DbSet<TimeRange> TimeRanges { get; set; }
         public DbSet<CategoryTimeRange> CategoryTimeRange { get; set; }
-        public DbSet<ImageType> ImageTypes { get; set; }
         public DbSet<ShippingOrder> ShippingOrders { get; set; }
 
         public DbSet<Attribute_EAV> Attribute_EAVs { get; set; }
