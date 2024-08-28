@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 
 namespace DATN.Client.Services
 {
     public class VnPayLibrary
     {
-        
+
         public const string VERSION = "2.1.0";
         private SortedList<String, String> _requestData = new SortedList<String, String>(new VnPayCompare());
         private SortedList<String, String> _responseData = new SortedList<String, String>(new VnPayCompare());

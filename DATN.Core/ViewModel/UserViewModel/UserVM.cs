@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DATN.Core.ViewModels.UserViewModel
 {
-	public class UserVM
-	{
-		public Guid Id { get; set; }
+    public class UserVM
+    {
+        public Guid Id { get; set; }
 
         [EmailAddress(ErrorMessage = "Vui lòng nhập email hợp lệ")]
 
@@ -24,23 +19,23 @@ namespace DATN.Core.ViewModels.UserViewModel
 
         public string PhoneNumber { get; set; }
 
-		[Required]
-		public string PasswordHash { get; set; }
-		public string? Address { get; set; }
-		public string? Description { get; set; }
+        [Required]
+        public string PasswordHash { get; set; }
+        public string? Address { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         [RegularExpression(@"^[a-zA-ZÀ-ỹ\s'-]+$", ErrorMessage = "Vui lòng điền tên hợp lệ")]
 
         public string FullName { get; set; }
-        
+
         [Required]
         public DateTime? Dob { get; set; }
         public string? SecurityStamp { get; set; }
         public DateTime? LastLoginTime { get; set; }
         public bool isActive { get; set; }
         public bool? IsSentMail { get; set; }
-        
+
         public string? GrandTotalAmountPurchased { get; set; }
         public IEnumerable<string?>? ListVoucherNameByUser { get; set; }
         public List<string?>? Roles { get; set; }

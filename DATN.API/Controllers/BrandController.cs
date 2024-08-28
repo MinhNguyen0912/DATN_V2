@@ -3,12 +3,7 @@ using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.ViewModel.BrandVM;
 using DATN.Core.ViewModel.Paging;
-using DATN.Core.ViewModels.Paging;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Newtonsoft.Json.Linq;
-using System.Net.Http;
 
 namespace DATN.API.Controllers
 {
@@ -34,7 +29,7 @@ namespace DATN.API.Controllers
                 var brandVMs = _mapper.Map<List<BrandVM>>(brands);
                 return Ok(brandVMs);
             }
-            return BadRequest(new { Message = "Get dữ liệu không thành công"  }); 
+            return BadRequest(new { Message = "Get dữ liệu không thành công" });
         }
 
         [HttpGet("{id}")]
@@ -90,17 +85,17 @@ namespace DATN.API.Controllers
                 return NotFound(); // 404 Not Found
             }
             brand.Status = false;
-          _unitOfWork.brandRepository.Update(brand);
+            _unitOfWork.brandRepository.Update(brand);
             int reusult = _unitOfWork.SaveChanges();
 
 
-            return Ok(reusult) ; // 204 No Content
+            return Ok(reusult); // 204 No Content
         }
-		[HttpPost]
-		public IActionResult brandPaging([FromBody] BrandPaging request)
-		{
-			BrandPaging partnerPaging = _unitOfWork.brandRepository.brandPaging(request);
-			return Ok(partnerPaging);
-		}
-	}
+        [HttpPost]
+        public IActionResult brandPaging([FromBody] BrandPaging request)
+        {
+            BrandPaging partnerPaging = _unitOfWork.brandRepository.brandPaging(request);
+            return Ok(partnerPaging);
+        }
+    }
 }

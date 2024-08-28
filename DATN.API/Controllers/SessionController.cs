@@ -1,6 +1,4 @@
-﻿using DATN.Core.ViewModel.AndressVM;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers
 {

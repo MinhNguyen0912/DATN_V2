@@ -1,12 +1,6 @@
 ﻿using DATN.Core.Model;
-using DATN.Core.Model.Product;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DATN.Core.ModelConfigurations
 {
@@ -16,7 +10,7 @@ namespace DATN.Core.ModelConfigurations
         {
             //builder.HasOne(c => c.Product).WithMany(p => p.Comments).HasForeignKey(p => p.ProductId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(c => c.AppUser).WithMany(p => p.Comments).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
-            
+
         }
     }
 }

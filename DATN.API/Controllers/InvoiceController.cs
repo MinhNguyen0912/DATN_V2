@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
 using DATN.Api.MailService;
-using DATN.API.Helpers;
 using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.Models;
-using DATN.Core.Repositories.Repositories;
-using DATN.Core.ViewModel.AndressVM;
-using DATN.Core.ViewModel.InvoiceDetailVM;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.Paging;
-using DATN.Core.ViewModels.SendMailVM;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,7 +55,7 @@ namespace DATN.API.Controllers
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(int id)
         {
-            var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(id);
+            var invoice = await _unitOfWork.InvoiceRepository.GetById(id);
             if (invoice == null)
             {
                 return NotFound(); // 404 Not Found
@@ -102,26 +96,26 @@ namespace DATN.API.Controllers
             // Thêm các chi tiết hóa đơn vào Invoice
             foreach (var item in payment.CartItems)
             {
-                var product = await _unitOfWork.ProductRepository.GetById(item.ProductId);
+                var product = await _unitOfWork.ProductEAVRepository.GetById(item.ProductId);
                 if (product == null)
                 {
                     return BadRequest($"Product with ID {item.ProductId} not found");
                 }
                 var invoiceDetail = new InvoiceDetail()
                 {
-                    ProductAttributeId = item.ProductId,
+                    VariantId = item.ProductId,
                     Quantity = item.Quantity,
                     NewPrice = item.NewPrice,
                     OldPrice = item.OldPrice,
                     PuscharPrice = item.GiaNhap
                 };
                 invoice.InvoiceDetails.Add(invoiceDetail);
-                foreach (var i in payment.CartItems)
-                {
-                    var productATTUpdate = await _unitOfWork.ProductAtributeRepository.GetById(i.ProductId);
-                    productATTUpdate.Quantity -= i.Quantity;
-                    _unitOfWork.ProductAtributeRepository.Update(productATTUpdate);
-                }
+                //foreach (var i in payment.CartItems)
+                //{
+                //    var productATTUpdate = await _unitOfWork.ProductAtributeRepository.GetById(i.ProductId);
+                //    productATTUpdate.Quantity -= i.Quantity;
+                //    _unitOfWork.ProductAtributeRepository.Update(productATTUpdate);
+                //}
                 if (payment.VoucherId != 0)
                 {
                     var voucher = _unitOfWork.voucherUserRepository.GetByIdCustom(payment.VoucherId);
@@ -154,7 +148,7 @@ namespace DATN.API.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangeStatus(int invoiceId, int status, int? voucherId)
         {
-            var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(invoiceId);
+            var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
             if (voucherId != null)
             {
                 var voucher = await _unitOfWork.voucherUserRepository.GetById(voucherId);
@@ -178,14 +172,14 @@ namespace DATN.API.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangeStatus2(int invoiceId)
         {
-            var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(invoiceId);
-                     
-                foreach (var item in invoice.InvoiceDetails)
-                {
-                    var productAttribute = await _unitOfWork.ProductAtributeRepository.GetById(item.ProductAttributeId);
-                    productAttribute.Quantity += item.Quantity;
-                    _unitOfWork.ProductAtributeRepository.Update(productAttribute);
-                }           
+            var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
+
+            //foreach (var item in invoice.InvoiceDetails)
+            //{
+            //    var productAttribute = await _unitOfWork.ProductAtributeRepository.GetById(item.ProductAttributeId);
+            //    productAttribute.Quantity += item.Quantity;
+            //    _unitOfWork.ProductAtributeRepository.Update(productAttribute);
+            //}
             _unitOfWork.SaveChanges();
             return Ok();
         }

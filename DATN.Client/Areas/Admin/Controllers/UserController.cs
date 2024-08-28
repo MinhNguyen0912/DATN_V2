@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.SymbolStore;
-using AutoMapper;
+﻿using AutoMapper;
 using DATN.Client.Constants;
 using DATN.Client.Helper;
 using DATN.Client.Models;
@@ -66,22 +65,22 @@ namespace DATN.Client.Areas.Admin.Controllers
             }
 
             var userPagingStored = JsonConvert.SerializeObject(userPaging);
-            HttpContext.Session.SetString("UserPaging",userPagingStored);
+            HttpContext.Session.SetString("UserPaging", userPagingStored);
             ViewBag.userLogin = userLogin;
             return View(userPaging);
         }
 
-    
-        public IActionResult HandleAddVoucher(string UserId,string UserName,bool IsChecked )
+
+        public IActionResult HandleAddVoucher(string UserId, string UserName, bool IsChecked)
         {
-            var getUserPagingStored=  HttpContext.Session.GetString("UserPaging");
-            var userPagingDeserialized = string.IsNullOrEmpty(getUserPagingStored)==false?JsonConvert.DeserializeObject<UserPaging>(getUserPagingStored): new UserPaging();
+            var getUserPagingStored = HttpContext.Session.GetString("UserPaging");
+            var userPagingDeserialized = string.IsNullOrEmpty(getUserPagingStored) == false ? JsonConvert.DeserializeObject<UserPaging>(getUserPagingStored) : new UserPaging();
             if (IsChecked)
             {
                 UserVoucherShowModal userVoucherShowModal = new UserVoucherShowModal();
-                userVoucherShowModal.StartDate =DateTime.Now;
-                userVoucherShowModal.UserId =Guid.Parse(UserId);
-                userVoucherShowModal.UserName =UserName;
+                userVoucherShowModal.StartDate = DateTime.Now;
+                userVoucherShowModal.UserId = Guid.Parse(UserId);
+                userVoucherShowModal.UserName = UserName;
                 userVoucherShowModal.EndDate = DateTime.Now.AddDays(7);
                 userPagingDeserialized?.UserVoucherShowModal.Add(userVoucherShowModal);
             }
@@ -95,13 +94,13 @@ namespace DATN.Client.Areas.Admin.Controllers
                 }
             }
             var userPagingStored = JsonConvert.SerializeObject(userPagingDeserialized);
-            HttpContext.Session.SetString("UserPaging",userPagingStored);   
-            return Json(new { data = userPagingDeserialized.UserVoucherShowModal});
+            HttpContext.Session.SetString("UserPaging", userPagingStored);
+            return Json(new { data = userPagingDeserialized.UserVoucherShowModal });
 
         }
-        public IActionResult HandleDateChangeVoucher(string UserId,string DateValue,bool IsStartDate)
+        public IActionResult HandleDateChangeVoucher(string UserId, string DateValue, bool IsStartDate)
         {
-            var getUserPagingStored=  HttpContext.Session.GetString("UserPaging");
+            var getUserPagingStored = HttpContext.Session.GetString("UserPaging");
             var userPagingDeserialized = JsonConvert.DeserializeObject<UserPaging>(getUserPagingStored);
             if (IsStartDate)
             {
@@ -122,49 +121,49 @@ namespace DATN.Client.Areas.Admin.Controllers
                 }
             }
             var userPagingStored = JsonConvert.SerializeObject(userPagingDeserialized);
-            HttpContext.Session.SetString("UserPaging",userPagingStored);   
-            return Json(new { data = userPagingDeserialized.UserVoucherShowModal});
+            HttpContext.Session.SetString("UserPaging", userPagingStored);
+            return Json(new { data = userPagingDeserialized.UserVoucherShowModal });
 
         }
-        public async Task<IActionResult>  HandleChangeStatus(string UserId,bool IsActive)
+        public async Task<IActionResult> HandleChangeStatus(string UserId, bool IsActive)
         {
             var user = await _userManager.FindByIdAsync(UserId);
             user.isActive = IsActive;
-          var result=  await _userManager.UpdateAsync(user);
-          return Json(new { data = result});
+            var result = await _userManager.UpdateAsync(user);
+            return Json(new { data = result });
         }
-        public async Task<IActionResult>  HandleUpdateRangeStatus(bool isActive)
+        public async Task<IActionResult> HandleUpdateRangeStatus(bool isActive)
         {
-            var getUserPagingStored=  HttpContext.Session.GetString("UserPaging");
+            var getUserPagingStored = HttpContext.Session.GetString("UserPaging");
             var userPagingDeserialized = JsonConvert.DeserializeObject<UserPaging>(getUserPagingStored);
             foreach (var x in userPagingDeserialized.UserVoucherShowModal)
             {
                 var user = await _userManager.FindByIdAsync(x.UserId.ToString());
                 user.isActive = isActive;
-               await _userManager.UpdateAsync(user);
+                await _userManager.UpdateAsync(user);
             }
             return RedirectToAction("Index", userPagingDeserialized);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> SaveVocherForUser(int? VoucherIdSelected)
         {
-            var getUserPagingStored=  HttpContext.Session.GetString("UserPaging");
+            var getUserPagingStored = HttpContext.Session.GetString("UserPaging");
             var userPagingDeserialized = JsonConvert.DeserializeObject<UserPaging>(getUserPagingStored);
-            if (userPagingDeserialized.UserVoucherShowModal.Count>0)
+            if (userPagingDeserialized.UserVoucherShowModal.Count > 0)
             {
 
                 foreach (var item in userPagingDeserialized.UserVoucherShowModal)
                 {
                     item.VoucherId = VoucherIdSelected;
                 }
-               var addedVoucher = await _unitOfWork.UserRepository.AddVoucherToListUser(userPagingDeserialized.UserVoucherShowModal);
+                var addedVoucher = await _unitOfWork.UserRepository.AddVoucherToListUser(userPagingDeserialized.UserVoucherShowModal);
             }
 
             userPagingDeserialized.ListVoucherDropDown = new List<VoucherVM>();
             var userPagingStored = JsonConvert.SerializeObject(userPagingDeserialized);
-            HttpContext.Session.SetString("UserPaging",userPagingStored);   
-            return RedirectToAction("Index",userPagingDeserialized);
+            HttpContext.Session.SetString("UserPaging", userPagingStored);
+            return RedirectToAction("Index", userPagingDeserialized);
         }
         public async Task<IActionResult> SendMail()
         {
@@ -225,7 +224,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                     var role = _unitOfWork.RoleRepository.getRolesName();
                     ViewData["Roles"] = new MultiSelectList(role, "Name");
                 }
-                
+
                 return View(userVm);
             }
             catch (Exception ex)

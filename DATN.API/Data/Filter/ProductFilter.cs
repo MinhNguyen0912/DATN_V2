@@ -6,6 +6,6 @@
         public List<int>? CateId { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
-        public int Cate {  get; set; }
+        public int Cate { get; set; }
     }
 }

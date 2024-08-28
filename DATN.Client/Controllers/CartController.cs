@@ -3,8 +3,6 @@ using DATN.Client.Helper;
 using DATN.Client.Models;
 using DATN.Client.Services;
 using DATN.Core.Model;
-using DATN.Core.ViewModel.ProductVM;
-using DATN.Core.ViewModel.PromotionVM;
 using DATN.Core.ViewModels.VNPayVM;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,17 +24,17 @@ namespace DATN.Client.Controllers
         public async Task<IActionResult> Index()
         {
             var user = SessionHelper.GetObject<UserInfo>(HttpContext.Session, "user");
-            if (user==null)
+            if (user == null)
             {
                 return Redirect("~/Identity/Account/Login");
             }
-            var product = await _clientService.GetList<ProductVM>("https://localhost:7095/api/Product/GetAll");
-            var voucher =await _clientService.GetList<VoucherUser>($"https://localhost:7095/api/VoucherUser/GetVoucherByUser?Id={user.UserId}");
+            //var product = await _clientService.GetList<ProductVM>("https://localhost:7095/api/Product/GetAll");
+            var voucher = await _clientService.GetList<VoucherUser>($"https://localhost:7095/api/VoucherUser/GetVoucherByUser?Id={user.UserId}");
             try
             {
                 ViewData["voucher"] = voucher;
                 ViewData["user"] = user;
-                ViewData["product"] = product;               
+                //ViewData["product"] = product;
             }
             catch (Exception ex)
             {
@@ -46,8 +44,9 @@ namespace DATN.Client.Controllers
         }
         public async Task<IActionResult> ListProduct()
         {
-            var lst= await _clientService.GetList<ProductVM>("https://localhost:7095/api/Product/GetAll");
-            return View(lst);
+            //var lst = await _clientService.GetList<ProductVM>("https://localhost:7095/api/Product/GetAll");
+            //return View(lst);
+            return View();
         }
         public IActionResult Pay(int typePayment, long money, int invoiceId)
         {

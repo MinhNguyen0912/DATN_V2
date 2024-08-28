@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DATN.Core.Model
+﻿namespace DATN.Core.Model
 {
     public class CategoryTimeRange
     {
@@ -13,6 +7,6 @@ namespace DATN.Core.Model
         public int TimeRangeId { get; set; }
         public Category? Category { get; set; }
         public TimeRange? TimeRange { get; set; }
-      
+
     }
 }

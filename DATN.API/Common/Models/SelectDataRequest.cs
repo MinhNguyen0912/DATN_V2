@@ -6,7 +6,7 @@ namespace DATN.API.Common.Models
     {
         public SelectDataRequest()
         {
-            
+
         }
 
         public string ConnectionString { get; set; }

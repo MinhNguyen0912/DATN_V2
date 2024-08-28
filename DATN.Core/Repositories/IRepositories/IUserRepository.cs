@@ -7,7 +7,7 @@ using DATN.Core.ViewModels.UserViewModel;
 
 namespace DATN.Core.Repositories.IRepositories
 {
-    public interface IUserRepository:IBaseRepository<AppUser> 
+    public interface IUserRepository : IBaseRepository<AppUser>
     {
         UserPaging GetUserPaging(UserPaging request);
         Task<int> AddVoucherToListUser(List<UserVoucherShowModal> input);

@@ -1,9 +1,7 @@
 ﻿using DATN.Client.Constants;
 using DATN.Client.Services;
 using DATN.Core.ViewModel.MagazineVM;
-using DATN.Core.ViewModel.PromotionVM;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace DATN.Client.Controllers
 {
@@ -20,9 +18,9 @@ namespace DATN.Client.Controllers
             var result = new List<MagazineVM>();
             var data = await _clientService.GetList<MagazineVM>($"{ApiPaths.Magazine}/GetAllActive");
 
-            if ( data != null )
+            if (data != null)
             {
-                result = data.OrderByDescending(p=>p.CreateAt).ToList();
+                result = data.OrderByDescending(p => p.CreateAt).ToList();
             }
             return View(result);
         }
@@ -61,7 +59,7 @@ namespace DATN.Client.Controllers
 
                 // Lấy danh sách các khuyến mãi trừ khuyến mãi hiện tại
                 var magazines = await _clientService.GetList<MagazineVM>($"{ApiPaths.Magazine}/GetAllActive");
-                var otherMagazines = magazines.Where(p => p.MagazineId != magazineId).OrderByDescending(p=>p.CreateAt).ToList();
+                var otherMagazines = magazines.Where(p => p.MagazineId != magazineId).OrderByDescending(p => p.CreateAt).ToList();
 
                 // Lưu danh sách này vào ViewBag để sử dụng trong View
                 ViewBag.OtherMagazines = otherMagazines;

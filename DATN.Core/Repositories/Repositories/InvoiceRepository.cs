@@ -3,17 +3,10 @@ using DATN.Core.Data;
 using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
-using DATN.Core.Models;
 using DATN.Core.Repositories.IRepositories;
-using DATN.Core.ViewModel.AndressVM;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.Paging;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.Repositories
 {
@@ -29,10 +22,10 @@ namespace DATN.Core.Repositories.Repositories
         {
             return Context.Invoices.Where(x => x.UserId == userId).Include(d => d.InvoiceDetails).ToList();
         }
-        public Invoice GetByIdCustom(int id)
-        {
-            return Context.Invoices.Where(x => x.InvoiceId == id).Include(u=>u.User).Include(d => d.InvoiceDetails).ThenInclude(p => p.ProductAttribute).ThenInclude(p => p.Product).Include(d => d.InvoiceDetails).ThenInclude(p => p.ProductAttribute).ThenInclude(p => p.AttributeValue).Include(p => p.VoucherUser).ThenInclude(p => p.Voucher).Include(p => p.ShippingOrder).FirstOrDefault();
-        }
+        //public Invoice GetByIdCustom(int id)
+        //{
+        //    return Context.Invoices.Where(x => x.InvoiceId == id).Include(u => u.User).Include(d => d.InvoiceDetails).ThenInclude(p => p.Variant).ThenInclude(p => p.Product).Include(d => d.InvoiceDetails).ThenInclude(p => p.ProductAttribute).ThenInclude(p => p.AttributeValue).Include(p => p.VoucherUser).ThenInclude(p => p.Voucher).Include(p => p.ShippingOrder).FirstOrDefault();
+        //}
         public InvoicePaging GetInvoicePaging(InvoicePaging request)
         {
             var query = Context.Invoices.Include(p => p.User).Include(p => p.InvoiceDetails).OrderByDescending(p => p.CreateDate).AsQueryable();
@@ -59,7 +52,7 @@ namespace DATN.Core.Repositories.Repositories
             var invoices = Context.Invoices
                 .Where(i => i.UserId == userId && i.Status == status)
                 .Include(i => i.InvoiceDetails)
-                    .ThenInclude(id => id.ProductAttribute)
+                    .ThenInclude(id => id.Variant)
                         .ThenInclude(pa => pa.Product)
                 .Include(i => i.InvoiceDetails)
                     .ThenInclude(id => id.Comment)
@@ -76,8 +69,8 @@ namespace DATN.Core.Repositories.Repositories
             {
                 foreach (var detail in invoice.InvoiceDetails)
                 {
-                    detail.IsShowComment = detail.Comment != null ? false : true; 
-                        
+                    detail.IsShowComment = detail.Comment != null ? false : true;
+
                 }
             }
 

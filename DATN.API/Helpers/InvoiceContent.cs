@@ -1,9 +1,6 @@
-﻿using DATN.Core.Infrastructures;
-using DATN.Core.Model;
-using DATN.Core.Model.Product;
+﻿using DATN.Core.Model;
 using DATN.Core.Models;
 using DATN.Core.ViewModels.SendMailVM;
-using System.Globalization;
 
 namespace DATN.API.Helpers
 {
@@ -20,7 +17,7 @@ namespace DATN.API.Helpers
             string ListInvoiceDetail = "";
             foreach (var item in invoice.InvoiceDetails)
             {
-                ListInvoiceDetail += "<tr><td>" + item.ProductAttribute.Product.Name + "</td><td>" + item.Quantity + "</td><td>" + item.NewPrice.ToString("N0") + " đ</td></tr>";
+                ListInvoiceDetail += "<tr><td>" + item.Variant.Product.ProductName + "</td><td>" + item.Quantity + "</td><td>" + item.NewPrice.ToString("N0") + " đ</td></tr>";
             }
 
             // Tính toán tổng số tiền

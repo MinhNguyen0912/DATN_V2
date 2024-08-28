@@ -1,8 +1,8 @@
-﻿using MailKit.Net.Smtp;
+﻿using DATN.Core.ViewModels.SendMailVM;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using DATN.Core.ViewModels.SendMailVM;
 
 namespace DATN.Api.MailService
 {

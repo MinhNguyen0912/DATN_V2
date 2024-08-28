@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DATN.Core.ViewModels.AuthenViewModel
+﻿namespace DATN.Core.ViewModels.AuthenViewModel
 {
     public class EmailLoginViewModel
     {

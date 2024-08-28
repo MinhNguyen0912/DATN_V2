@@ -1,16 +1,11 @@
 ﻿using DATN.Client.Constants;
-using DATN.Client.Helper;
 using DATN.Client.Models;
 using DATN.Client.Services;
-using DATN.Core.Data;
-using DATN.Core.Model;
 using DATN.Core.ViewModel.CategoryVM;
 using DATN.Core.ViewModel.PromotionVM;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Net.Http;
 
 namespace DATN.Client.Controllers
 {
@@ -57,9 +52,9 @@ namespace DATN.Client.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-		public IActionResult Chuyentrang()
-		{
-			return View();
-		}
-	}
+        public IActionResult Chuyentrang()
+        {
+            return View();
+        }
+    }
 }

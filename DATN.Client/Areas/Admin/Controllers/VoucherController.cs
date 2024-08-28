@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using DATN.Client.Helper;
 using DATN.Client.Services;
 using DATN.Core.Data;
 using DATN.Core.Infrastructures;
-using DATN.Core.Model;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
-using DATN.Core.ViewModels.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -84,11 +81,11 @@ namespace DATN.Client.Areas.Admin.Controllers
                     return View(voucher); // Trả về lại view với model và hiển thị lỗi
                 }
 
-               var result= await _clientService.Post<VoucherVM>("https://localhost:7095/api/Voucher/Create", voucher);
-                if(result != null)
+                var result = await _clientService.Post<VoucherVM>("https://localhost:7095/api/Voucher/Create", voucher);
+                if (result != null)
                 {
                     ToastHelper.ShowSuccess(TempData, "Thêm thành công!");
-                   
+
 
                 }
 
@@ -109,7 +106,7 @@ namespace DATN.Client.Areas.Admin.Controllers
         {
             try
             {
-              
+
                 var lstVoucher = await _clientService.Get<VoucherVM>($"https://localhost:7095/api/Voucher/Get/{id}");
                 return View(lstVoucher);
             }
@@ -127,16 +124,16 @@ namespace DATN.Client.Areas.Admin.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return RedirectToAction("Update",voucher); // Trả về lại view với model và hiển thị lỗi
+                    return RedirectToAction("Update", voucher); // Trả về lại view với model và hiển thị lỗi
 
                 }
                 var result = await _clientService.Put<VoucherVM>($"https://localhost:7095/api/Voucher/Update/{voucher.Id}", voucher);
                 if (result != null)
                 {
                     ToastHelper.ShowSuccess(TempData, "Sửa thành công!");
-                 
+
                 }
-            
+
 
             }
             catch (Exception ex)
@@ -144,7 +141,7 @@ namespace DATN.Client.Areas.Admin.Controllers
 
                 // Xử lý lỗi và hiển thị thông báo lỗi nếu cần
                 TempData["Error"] = ex.Message;
- 
+
             }
             return RedirectToAction("Index");
         }

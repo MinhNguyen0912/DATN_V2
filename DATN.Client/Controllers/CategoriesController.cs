@@ -1,6 +1,4 @@
-﻿using DATN.Core.Model;
-using DATN.Core.Model.Product;
-using DATN.Core.ViewModel.CategoryVM;
+﻿using DATN.Core.ViewModel.CategoryVM;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -15,7 +13,7 @@ namespace DATN.Client.Controllers
             _httpClient = httpClient;
         }
         [HttpGet]
-        public async Task< IActionResult> Index(int cateId,int?subCateId)
+        public async Task<IActionResult> Index(int cateId, int? subCateId)
         {
             // Gọi API để lấy danh sách danh mục từ Backend
             var response = await _httpClient.GetAsync($"https://localhost:7095/api/Category/GetAll");
@@ -41,7 +39,7 @@ namespace DATN.Client.Controllers
 
             return View();
         }
-        
-        
+
+
     }
 }

@@ -89,7 +89,7 @@ namespace DATN.Client.Helper
                 <tbody>
                   {string.Join("", invoice.InvoiceDetails.Select(item => $@"
                   <tr>
-                    <td>{item.ProductAttribute.Product.Name}</td>
+                    <td>{item.Variant.Product.ProductName}</td>
                     <td>{item.Quantity}</td>
                     <td>{item.NewPrice.ToString("C", new CultureInfo("vi-VN"))}</td>
                   </tr>"))}

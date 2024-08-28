@@ -17,8 +17,8 @@ namespace DATN.Client.Helper
         public static void ShowError(ITempDataDictionary tempData, string message)
         {
             AddToastMessage(tempData, "error", message);
-        } 
-        
+        }
+
         public static void ShowWarning(ITempDataDictionary tempData, string message)
         {
             AddToastMessage(tempData, "warning", message);

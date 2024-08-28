@@ -1,9 +1,4 @@
 ﻿using DATN.Core.Model.Product_EAV;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DATN.Core.ViewModel.Product_EAV
 {
@@ -18,7 +13,7 @@ namespace DATN.Core.ViewModel.Product_EAV
         public int? Quantity { get; set; }
 
         // Navigation property
-        public Product_EAV Product { get; set; }
-        public ICollection<VariantAttribute> VariantAttributes { get; set; }
+        public Product_EAV.ProductVM_EAV Product { get; set; }
+        public ICollection<VariantAttributeVM> VariantAttributes { get; set; }
     }
 }

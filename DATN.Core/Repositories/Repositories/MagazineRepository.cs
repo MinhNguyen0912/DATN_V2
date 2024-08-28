@@ -4,17 +4,11 @@ using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.Repositories.IRepositories;
 using DATN.Core.ViewModel.MagazineVM;
-using DATN.Core.ViewModel.NotificationVM;
 using DATN.Core.ViewModels.Paging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.Repositories
 {
-    public class MagazineRepository: BaseRepository<Magazine>,IMagazineRepository
+    public class MagazineRepository : BaseRepository<Magazine>, IMagazineRepository
     {
         private readonly IMapper _mapper;
         public MagazineRepository(DATNDbContext context, IMapper mapper) : base(context)

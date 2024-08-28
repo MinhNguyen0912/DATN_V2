@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
-using DATN.Core.ViewModel.ContactVM;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
-using DATN.Core.ViewModels.Paging;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers

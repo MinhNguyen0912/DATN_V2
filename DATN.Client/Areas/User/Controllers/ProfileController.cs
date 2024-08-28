@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using DATN.Client.Constants;
 using DATN.Client.Helper;
 using DATN.Client.Models;
 using DATN.Client.Services;
-using DATN.Core.Infrastructures;
 using DATN.Core.Models;
 using DATN.Core.ViewModels;
 using DATN.Core.ViewModels.AuthenViewModel;
 using DATN.Core.ViewModels.UserViewModel;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Areas.User.Controllers
 {

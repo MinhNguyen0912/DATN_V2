@@ -2,16 +2,12 @@
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.Models;
-using DATN.Core.ViewModel.AndressVM;
 using DATN.Core.ViewModel.BrandVM;
 using DATN.Core.ViewModel.CategoryVM;
-using DATN.Core.ViewModel.TimeRangeVM;
 using DATN.Core.ViewModels.Paging;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
 
 namespace DATN.API.Controllers
 {
@@ -56,8 +52,8 @@ namespace DATN.API.Controllers
         public async Task<IActionResult> GetAllBrandByLevel2(List<CategoryVM> CatesVM)
         {
             //var category = _unitOfWork.CategoryRepository.GetAll().Where(p => p.Level == 2 && p.ParentCategoryId == cateLevel1Id);
-            var brands = _unitOfWork.ProductRepository.GetAllCustom()
-                .Where(p => p.CategoryProducts.Any(cp => CatesVM.Select(p=>p.Id).Contains(cp.CategoryId))).GroupBy(p=>p.Brand).Select(p=>p.Key)
+            var brands = _unitOfWork.ProductEAVRepository.GetAll()
+                .Where(p => p.CategoryProducts.Any(cp => CatesVM.Select(p => p.Id).Contains(cp.CategoryId))).GroupBy(p => p.Brand).Select(p => p.Key)
                 .ToList();
             if (brands != null)
             {
@@ -98,13 +94,13 @@ namespace DATN.API.Controllers
             if (category != null)
             {
                 var List = new List<CategoryRepon>();
-             
+
 
                 foreach (var c in category)
 
                 {
                     var timeRange = _unitOfWork.CategoryTimeRange.GetTimeRanebyCateId(c.Id).Select(x => x.TimeRange.Name).ToList();
-                    
+
 
                     var result = new CategoryRepon()
                     {
@@ -204,13 +200,13 @@ namespace DATN.API.Controllers
             {
                 return BadRequest("Notificaton data is null"); // 400 Bad Request
             }
-          
+
             else
             {
 
                 var request = new Category()
                 {
-                   // Id = category.Id,
+                    // Id = category.Id,
                     Level = category.Level,
                     Name = category.Name,
                     Description = category.Description,
@@ -252,7 +248,7 @@ namespace DATN.API.Controllers
             {
                 var request = new Category()
                 {
-                  
+
                     Level = category.Level,
                     Name = category.Name,
                     Description = category.Description,
@@ -306,14 +302,14 @@ namespace DATN.API.Controllers
             result.IsVisible = category.IsVisible;
             result.ParentCategoryId = category.ParentCategoryId;
             result.CategoryTimeRanges.Clear();
-            
+
             _unitOfWork.SaveChanges();
 
-           
+
 
 
             foreach (var item in category.RangerId)
-            {                
+            {
                 var Rgtime = new CategoryTimeRange()
                 {
                     TimeRangeId = item,
@@ -325,7 +321,7 @@ namespace DATN.API.Controllers
                 _unitOfWork.SaveChanges();
 
             }
-            
+
 
             _unitOfWork.SaveChanges();
             return Ok(result);
