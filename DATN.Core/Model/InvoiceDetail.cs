@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DATN.Core.Model
 {
@@ -14,7 +9,7 @@ namespace DATN.Core.Model
         public int Quantity { get; set; } = 1;
         // Foreign Key
         public int? InvoiceId { get; set; }
-        public int ProductAttributeId { get; set; }
+        public int VariantId { get; set; }
         public double OldPrice { get; set; }
         public double NewPrice { get; set; }
         public double PuscharPrice { get; set; }
@@ -22,6 +17,6 @@ namespace DATN.Core.Model
 
         // Navigation property
         public Invoice? Invoice { get; set; }
-        public Product.ProductAttribute ProductAttribute { get; set; }
+        public Product_EAV.Variant Variant { get; set; }
     }
 }

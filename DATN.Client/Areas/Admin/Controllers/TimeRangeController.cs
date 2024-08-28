@@ -1,10 +1,7 @@
 ﻿using DATN.Client.Helper;
 using DATN.Client.Services;
-using DATN.Core.Model;
-using DATN.Core.ViewModel.NotificationVM;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.TimeRangeVM;
-using DATN.Core.ViewModels.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

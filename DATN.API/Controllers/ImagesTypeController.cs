@@ -1,16 +1,7 @@
 ﻿using AutoMapper;
 using DATN.Core.Infrastructures;
-using DATN.Core.Model.Product;
-using DATN.Core.ViewModel.ImagePath;
 using DATN.Core.ViewModel.ImageTypeVM;
-using DATN.Core.ViewModel.Paging;
-using DATN.Core.ViewModel.ProductVM;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json.Linq;
-using System.Drawing;
-using System.Net.Http;
 
 namespace DATN.API.Controllers
 {
@@ -106,6 +97,6 @@ namespace DATN.API.Controllers
             _unitOfWork.SaveChanges();
             return Ok(image);
         }
-        
+
     }
 }

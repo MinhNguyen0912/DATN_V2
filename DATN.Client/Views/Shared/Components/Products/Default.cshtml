@@ -1,6 +1,6 @@
 ﻿@using System.Linq
 @using System.Globalization
-@model List<DATN.Core.ViewModel.ProductVM.ProductVM>
+@* @model List<DATN.Core.ViewModel.ProductVM.ProductVM> *@
 
 @{
     int itemsPerRow = 5; // Số lượng sản phẩm trên mỗi hàng
@@ -29,7 +29,7 @@
                                 @if (k < Model.Count)
                                 {
                                     <div class="card" style="border-radius: 0!important;">
-                                        <img src="@Model[k].Images.FirstOrDefault(p=>p.IsDefault==true).ImagePath" class="card-img-top" alt="@Model[k].Name Image" style="height: 220px;">
+                                        <img src="" class="card-img-top" alt="@Model[k].Name Image" style="height: 220px;">
                                         <div class="card-body">
                                             <div class="card-title text-ellipsis" style="line-height: 21px; height: 63px; font-size:14px;">@Model[k].Name </div>
                                             <p class="card-text">

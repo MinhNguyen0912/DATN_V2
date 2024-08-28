@@ -1,8 +1,5 @@
-﻿using Azure;
-using Azure.Core;
-using DATN.Client.Helper;
+﻿using DATN.Client.Helper;
 using DATN.Client.Services;
-using DATN.Core.Model;
 using DATN.Core.ViewModel.OriginVM;
 using DATN.Core.ViewModels.Paging;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +28,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                 if (Paging == null)
                 {
                     return NotFound();
-                }            
+                }
             }
             catch (Exception ex)
             {
@@ -58,7 +55,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-          
+
         }
 
         public IActionResult Create()
@@ -145,11 +142,11 @@ namespace DATN.Client.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 ToastHelper.ShowError(TempData, ex.Message);
-              
+
             }
             return RedirectToAction("Index");
 
-}
+        }
 
     }
 }

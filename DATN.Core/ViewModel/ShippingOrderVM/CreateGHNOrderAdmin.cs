@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DATN.Core.ViewModel.ShippingOrderVM
+﻿namespace DATN.Core.ViewModel.ShippingOrderVM
 {
     public class CreateGHNOrderAdmin
     {
@@ -21,7 +15,7 @@ namespace DATN.Core.ViewModel.ShippingOrderVM
         public int width { get; set; } = 50;
         public int? weight { get; set; }
         public List<OrderItemsGHNAdmin>? Items { get; set; }
-        public int? service_type_id { get; set; } = 5;   
+        public int? service_type_id { get; set; } = 5;
 
     }
 }

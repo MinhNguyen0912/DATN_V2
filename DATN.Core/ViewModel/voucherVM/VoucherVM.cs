@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DATN.Core.ViewModel.voucherVM
 {
@@ -20,6 +15,6 @@ namespace DATN.Core.ViewModel.voucherVM
         [Required(ErrorMessage = "Không được bỏ trống")]
         [Range(0, int.MaxValue, ErrorMessage = "Giá trị phải lớn hơn hoặc bằng 0")]
         public decimal? DiscountByPrice { get; set; } = 0;
-    
+
     }
 }

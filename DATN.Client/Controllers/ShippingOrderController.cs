@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
+using DATN.Client.Constants;
 using DATN.Client.Helper;
 using DATN.Client.Models;
 using DATN.Client.Services;
-using DATN.Core.Model;
-using DATN.Core.ViewModel.InvoiceDetailVM;
-using DATN.Core.ViewModel.InvoiceVM;
-using DATN.Core.ViewModel.ProductVM;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using System.Threading.Tasks;
-using DATN.Client.Constants;
 using DATN.Core.ViewModel.ProductCommentVM;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers
 {
@@ -41,10 +35,10 @@ namespace DATN.Client.Controllers
 
                 ToastHelper.ShowError(TempData, ex.Message); ;
             }
-            
+
             return View();
         }
-        public async Task<IActionResult> WriteComment(string Content,int RattedStar,int ProductId, int InvoiceDetailId)
+        public async Task<IActionResult> WriteComment(string Content, int RattedStar, int ProductId, int InvoiceDetailId)
         {
             var user = SessionHelper.GetObject<UserInfo>(HttpContext.Session, "user");
             CommentVM comment = new CommentVM();
@@ -56,10 +50,10 @@ namespace DATN.Client.Controllers
             comment.Type = 0;
             comment.UserName = user.Username;
             comment.UserId = user.UserId;
-            var productPromotionResponse = await _clientService.Post($"{ApiPaths.Comment}",comment);
+            var productPromotionResponse = await _clientService.Post($"{ApiPaths.Comment}", comment);
             ToastHelper.ShowSuccess(TempData, "Cảm ơn bạn đã để lại bình luận"); ;
-            
-            return Json(new { prodId = ProductId});
+
+            return Json(new { prodId = ProductId });
         }
     }
 }

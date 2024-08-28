@@ -1,14 +1,8 @@
 ﻿using DATN.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DATN.Core.Model
 {
-    public class Promotion:BaseEntity
+    public class Promotion : BaseEntity
     {
         public double Percent { get; set; }
         public string? Content { get; set; } //Hiển thị chi tiết nội dung khuyến mãi

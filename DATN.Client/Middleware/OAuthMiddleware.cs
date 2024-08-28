@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
-using DATN.Client.Constants;
-using DATN.Client.Models;
-using DATN.Client.Services;
+﻿using DATN.Client.Services;
 using DATN.Core.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Identity;
 using RestSharp;
 
 namespace DATN.Client
@@ -19,10 +14,10 @@ namespace DATN.Client
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context,IHttpContextAccessor httpContext, ClientService _clientService, SignInManager<AppUser> _signInManager)
+        public async Task InvokeAsync(HttpContext context, IHttpContextAccessor httpContext, ClientService _clientService, SignInManager<AppUser> _signInManager)
         {
             // Kiểm tra xem mã truy cập OAuth còn hợp lệ hay không
-            if (httpContext.HttpContext.Session.Get("user")==null)
+            if (httpContext.HttpContext.Session.Get("user") == null)
             {
                 // Nếu còn hợp lệ, tạo phiên người dùng
                 //var userInfo = GetUserInfoFromOAuth(context.Request.Headers["Authorization"], context);

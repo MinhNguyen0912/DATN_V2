@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using DATN.Client.Helper;
 using DATN.Client.Services;
 using DATN.Core.Infrastructures;
 using DATN.Core.ViewModel.MagazineVM;
-using DATN.Core.ViewModel.NotificationVM;
 using DATN.Core.ViewModels.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -108,7 +106,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                 {
                     ToastHelper.ShowSuccess(TempData, "Thêm thành công!");
                 }
-           
+
             }
             catch (Exception ex)
             {
@@ -178,7 +176,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                 {
                     ToastHelper.ShowSuccess(TempData, "Sửa thành công!");
                 }
-             
+
             }
             catch (Exception ex)
             {
@@ -200,7 +198,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                 {
                     ToastHelper.ShowSuccess(TempData, "Xóa thành công!");
                 }
-        
+
             }
             catch (Exception ex)
             {

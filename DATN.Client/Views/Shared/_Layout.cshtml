@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" defer/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" defer />
     <link rel="stylesheet" href="~/css/toast.css" asp-append-version="true" />
     @if (ViewData["PageCSS"] != null)
     {
@@ -108,14 +108,14 @@
                                         }
                                         foreach (var cate in cates0)
                                         {
-                                                    <li content="@cate.Id" class="nav-menu-child-1-title d-flex justify-content-between align-items-center">
-                                                        <div content="@cate.Id">
-                                                            <img content="@cate.Id" style="width:25px;height:25px" src="@cate.ImageUrl" />
-                                                            @cate.Name
-                                                        </div>
-                                                        <i content="@cate.Id" class="fa-solid fa-chevron-right"></i>
+                                            <li content="@cate.Id" class="nav-menu-child-1-title d-flex justify-content-between align-items-center">
+                                                <div content="@cate.Id">
+                                                    <img content="@cate.Id" style="width:25px;height:25px" src="@cate.ImageUrl" />
+                                                    @cate.Name
+                                                </div>
+                                                <i content="@cate.Id" class="fa-solid fa-chevron-right"></i>
 
-                                                    </li>
+                                            </li>
                                         }
                                     }
                                 </ul>
@@ -156,36 +156,14 @@
                     <button style="background-color:#fff" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @{
-                        var response = await _httpClient.GetAsync("https://localhost:7095/api/Address/GetAll");
-                        if (response.IsSuccessStatusCode)
-                        {
-                            var data = await response.Content.ReadAsStringAsync();
-                            var addresses = JsonConvert.DeserializeObject<List<Address>>(data);
-                                    @for (int i = 0; i < addresses.Count; i += 2)
-                            {
-                                if (i + 1 < addresses.Count)
-                                {
-                                            <div class="d-flex justify-content-around">
-                                                <p addressId="@addresses[i].AddressID" class="address-btn" style="border-bottom:1px solid rgba(0,0,0,0.1);margin-right:10%;font-size:14px; padding:8px 12px; width:100%">@addresses[i].Description</p>
-                                                <p addressId="@addresses[i+1].AddressID" class="address-btn" style="border-bottom:1px solid rgba(0,0,0,0.1);margin-right:10%;font-size:14px; padding:8px 12px; width:100%">@addresses[i + 1].Description</p>
-                                            </div>
-                                }
-                                else
-                                {
-
-                                            <div class="d-flex align-items-start">
-                                                <p addressId="@addresses[i].AddressID" class="address-btn" style="border-bottom:1px solid rgba(0,0,0,0.1);font-size:14px; padding:8px 12px; width:40%">@addresses[i].Description</p>
-                                            </div>
-                                }
-                            }
-                        }
-                    }
+                    <div class="d-flex align-items-start">
+                        <p class="address-btn" style="border-bottom:1px solid rgba(0,0,0,0.1);font-size:14px; padding:8px 12px; width:40%">Hà Nội</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <footer>
         <div class="clearfix footer__top row">
             <div class="footer__col col-3" style="padding-right:0px; padding-left:30px">
@@ -204,7 +182,7 @@
                     <li><a>Giới thiệu công ty (MWG.vn)</a></li>
                     <li><a>Tuyển dụng</a></li>
                     <li><a>Gửi góp ý, khiếu nại</a></li>
-                    <li><a >Tìm siêu thị (2981 shop)</a></li>
+                    <li><a>Tìm siêu thị (2981 shop)</a></li>
                     <li><a>Xem bản mobile</a></li>
                 </ul>
             </div>
@@ -301,7 +279,7 @@
             <p class="col-12">
                 © 2018. Công ty cổ phần THHT 1 mình tao. GPDKKD: 0123456789 do sở KH &amp; ĐT TP.HN cấp ngày 02/01/2010. GPMXH: 21/GP-BTTTT do Bộ Thông Tin và Truyền Thông cấp ngày 11/01/2021.<br>
                 Địa chỉ: 128 Trần Quang Khải, P.Tân Định, Q.1, TP.Hồ Chí Minh. Địa chỉ liên hệ và gửi chứng từ: Lô T2-1.2, Đường D1, Đ. D1, P.Tân Phú, TP.Thủ Đức, TP.Hồ Chí Minh. Điện thoại: 028 38125960. Email: cskh@thegioididong.com. Chịu trách nhiệm nội dung: Huỳnh Văn Tốt. Email:  hotrotmdt@thegioididong.com.
-               
+
 
             </p>
         </div>
@@ -314,7 +292,7 @@
 
     @await RenderSectionAsync("Scripts", required: false)
     <script>
-        if (document.getElementsByClassName("user-email").length>0) {
+        if (document.getElementsByClassName("user-email").length > 0) {
             if (localStorage.getItem(`giohang-${document.getElementsByClassName("user-email")[0].innerHTML}`)) {
                 var dataLocal = JSON.parse(localStorage.getItem(`giohang-${document.getElementsByClassName("user-email")[0].innerHTML}`))
                 document.querySelector(".count-cart").innerHTML = dataLocal.length

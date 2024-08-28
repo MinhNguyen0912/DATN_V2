@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DATN.Core.Models
 {
@@ -21,6 +16,6 @@ namespace DATN.Core.Models
         public Guid? CreateBy { get; set; }
         public Guid? UpdateBy { get; set; }
         public Guid? DeleteBy { get; set; }
-       // public bool IsDelete { get; set; }
+        // public bool IsDelete { get; set; }
     }
 }

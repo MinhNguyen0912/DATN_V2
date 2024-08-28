@@ -1,7 +1,6 @@
 ﻿using DATN.Client.Helper;
 using DATN.Client.Services;
 using DATN.Core.Infrastructures;
-using DATN.Core.ViewModel.AndressVM;
 using DATN.Core.ViewModel.GHNVM;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.Paging;
@@ -48,7 +47,7 @@ namespace DATN.Client.Areas.Admin.Controllers
         }
         public async Task<IActionResult> CreateShippingOrder(int invoiceId)
         {
-            var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(invoiceId);
+            var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
             var to_name = invoice.Note.Split("-")[0];
             var to_phone = invoice.Note.Split("-")[1];
             var to_address = invoice.Note.Split("-")[2];
@@ -60,7 +59,7 @@ namespace DATN.Client.Areas.Admin.Controllers
             {
                 listItem.Add(new OrderItemsGHNAdmin()
                 {
-                    name = item.ProductAttribute.Product.Name,
+                    name = item.Variant.Product.ProductName,
                     quantity = item.Quantity
                 });
             }
@@ -128,13 +127,13 @@ namespace DATN.Client.Areas.Admin.Controllers
         }
         public async Task<IActionResult> CancelInvoice(int invoiceId)
         {
-            var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(invoiceId);
+            var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
             invoice.Status = Core.Enum.InvoiceStatus.Cancel;
             if (invoice.VoucherUser != null)
             {
                 invoice.VoucherUser.IsDeleted = false;
             }
-            var decent = await _clientService.Get($"https://localhost:7095/api/Invoice/ChangeStatus2?invoiceId={invoiceId}" );
+            var decent = await _clientService.Get($"https://localhost:7095/api/Invoice/ChangeStatus2?invoiceId={invoiceId}");
             _unitOfWork.InvoiceRepository.Update(invoice);
             _unitOfWork.SaveChanges();
             var content = CancelnvoiceContent.GenerateContentMail(invoice.User, invoice);

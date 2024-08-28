@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using DATN.Api.MailService;
 using DATN.API.Helpers;
-using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.Models;
-using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.ShippingOrderVM;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,7 +71,7 @@ namespace DATN.API.Controllers
             var user = await _userManager.FindByIdAsync(Convert.ToString(request.CustomerId));
             if (user != null)
             {
-                var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(request.InvoiceId);
+                var invoice = await _unitOfWork.InvoiceRepository.GetById(request.InvoiceId);
                 var sendMail = InvoiceContent.GenerateContentMail(user, invoice);
                 await _emailService.SendEmailAsync(sendMail);
             }
@@ -84,8 +81,8 @@ namespace DATN.API.Controllers
         public async Task<IActionResult> GetByOrderCode(string code)
         {
             var orders = _unitOfWork.ShippingOrderRepository.getshippingcustom();
-            var result = orders.Where(x=>x.OrderCode == code).FirstOrDefault();
-         
+            var result = orders.Where(x => x.OrderCode == code).FirstOrDefault();
+
             if (result != null)
             {
                 return Ok(result);

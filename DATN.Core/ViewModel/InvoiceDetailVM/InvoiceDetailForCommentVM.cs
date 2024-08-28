@@ -1,5 +1,4 @@
 using DATN.Core.Model;
-using DATN.Core.Model.Product;
 
 namespace DATN.Core.ViewModel.InvoiceDetailVM;
 
@@ -11,7 +10,7 @@ public class InvoiceDetailForCommentVM
     public int? InvoiceId { get; set; }
     public int? ProductId { get; set; }
     public bool? IsShowComment { get; set; }
-    
+
     public int ProductAttributeId { get; set; }
     public double OldPrice { get; set; }
     public double NewPrice { get; set; }
@@ -21,5 +20,4 @@ public class InvoiceDetailForCommentVM
     public string? ProductName { get; set; }
     // Navigation property
     public Invoice? Invoice { get; set; }
-    public ProductAttribute ProductAttribute { get; set; }
 }

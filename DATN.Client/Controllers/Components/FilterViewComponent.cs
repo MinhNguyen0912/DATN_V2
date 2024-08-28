@@ -1,9 +1,4 @@
-﻿using DATN.Core.Model.Product;
-using DATN.Core.ViewModel.BrandVM;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers.Components
 {

@@ -4,7 +4,6 @@ using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.ViewModel.MagazineVM;
 using DATN.Core.ViewModels.Paging;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers
@@ -42,7 +41,7 @@ namespace DATN.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllActive()
         {
-            var magazines = _unitOfWork.MagazineRepository.GetAll().Where(p=>p.Status==MagazineStatus.Starting).ToList();
+            var magazines = _unitOfWork.MagazineRepository.GetAll().Where(p => p.Status == MagazineStatus.Starting).ToList();
             if (magazines != null)
             {
                 var magazineVms = _mapper.Map<List<MagazineVM>>(magazines);

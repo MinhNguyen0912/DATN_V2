@@ -4,11 +4,6 @@ using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.Repositories
 {
@@ -25,9 +20,9 @@ namespace DATN.Core.Repositories.Repositories
             return Context.ProductPromotions.Include(p => p.Promotion).ToList();
         }
 
-        public List<ProductPromotion> GetAllCustom() 
-        { 
-            return Context.ProductPromotions.Include(p=>p.Product).ThenInclude(p=>p.Images).Include(p=>p.Product).ThenInclude(p=>p.ProductAttributes).ToList();
+        public List<ProductPromotion> GetAllCustom()
+        {
+            return Context.ProductPromotions.Include(p => p.Product).ThenInclude(p => p.Images).Include(p => p.Product).ToList();
         }
     }
 }

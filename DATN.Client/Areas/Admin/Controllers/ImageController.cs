@@ -5,7 +5,6 @@ using DATN.Core.Infrastructures;
 using DATN.Core.ViewModel.ImagePath;
 using DATN.Core.ViewModel.MagazineVM;
 using DATN.Core.ViewModel.Paging;
-using DATN.Core.ViewModels.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -72,7 +71,7 @@ namespace DATN.Client.Areas.Admin.Controllers
         {
             if (Img != null)
             {
-                foreach(var files in Img)
+                foreach (var files in Img)
                 {
                     string data;
                     using (var memoryStream = new MemoryStream())
@@ -94,11 +93,11 @@ namespace DATN.Client.Areas.Admin.Controllers
                     image.ImagePath = link;
                     var request = await _clientService.Post<ImageVM>("https://localhost:7095/api/Images/Create", image);
                 }
-                
+
             }
 
-                   
-                return RedirectToAction("Index");
+
+            return RedirectToAction("Index");
         }
         public async Task<IActionResult> Update(int id)
         {

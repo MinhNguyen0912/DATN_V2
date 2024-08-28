@@ -1,12 +1,4 @@
-﻿using DATN.Core.Model.Product;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DATN.Core.Model
+﻿namespace DATN.Core.Model
 {
     public class ProductPromotion
     {
@@ -14,7 +6,7 @@ namespace DATN.Core.Model
         public int ProductPromotionId { get; set; }
         public int PromotionId { get; set; }
         public Promotion? Promotion { get; set; }
-        public Model.Product.Product? Product { get; set; }
+        public Product_EAV.Product_EAV? Product { get; set; }
         public int ProductId { get; set; }
     }
 }

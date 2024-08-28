@@ -1,16 +1,10 @@
-using AutoMapper;
 using DATN.Api.MailService;
 using DATN.Core.AutoMapper;
 using DATN.Core.Data;
 using DATN.Core.DependencyInjection;
 using DATN.Core.Infrastructures;
-using DATN.Core.Infrastructures.Extentions;
 using DATN.Core.Models;
-using DATN.Core.Repositories.IRepositories;
-using DATN.Core.Repositories.Repositories;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebSockets;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Text.Json.Serialization;

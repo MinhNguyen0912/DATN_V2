@@ -1,9 +1,8 @@
-﻿@using DATN.Core.ViewModel.ListProductCompVM
-@using DATN.Core.ViewModel.ProductVM
+﻿@* @using DATN.Core.ViewModel.ListProductCompVM
 @using System.Globalization
+@using DATN.Core.ViewModel.Product_EAV
 @model DATN.Core.ViewModel.ListProductCompVM.ListProductCompVM
 @{
-
     int itemsPerGroup = 6;
 
 
@@ -17,7 +16,7 @@
         <div style="margin:0!important;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;padding-bottom:28px" id="p-@ViewBag.PromotionId" class="carousel slide carouselExampleIndicators" data-bs-ride="carousel">
             <div class="carousel-inner">
                 @{
-                    var group = new List<ProductVM>();
+                    var group = new List<ProductVM_EAV>();
                     int count = 0;
                     if (Model.Products.Count < itemsPerGroup)
                     {
@@ -37,7 +36,7 @@
                                                 // Định dạng số theo chuẩn Việt Nam
                                                 CultureInfo vietnamCulture = new CultureInfo("vi-VN");
                                                 string formattedPrice = String.Format(vietnamCulture, "{0:N0}", a.DefaultPrice);
-                                                string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", a.ProductAttributes.FirstOrDefault(p=>p.IsDefault==true).SalePrice);
+                                                string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", 0);
                                             }
                                             <div>
                                                 <strong style="font-size:18px;color:#D0021C">@(formattedPrice)đ</strong>
@@ -87,7 +86,7 @@
                                                         // Định dạng số theo chuẩn Việt Nam
                                                         CultureInfo vietnamCulture = new CultureInfo("vi-VN");
                                                         string formattedPrice = String.Format(vietnamCulture, "{0:N0}", a.DefaultPrice);
-                                                        string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", a.ProductAttributes.FirstOrDefault(p => p.IsDefault == true).SalePrice);
+                                                        string formattedSalePrice = "0";
                                                     }
                                                     <div>
                                                         <strong style="font-size:18px;color:#D0021C">@(formattedPrice)đ</strong>
@@ -130,7 +129,7 @@
                                                     // Định dạng số theo chuẩn Việt Nam
                                                     CultureInfo vietnamCulture = new CultureInfo("vi-VN");
                                                     string formattedPrice = String.Format(vietnamCulture, "{0:N0}", a.DefaultPrice);
-                                                    string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", a.ProductAttributes.FirstOrDefault(p => p.IsDefault == true).SalePrice);
+                                                    string formattedSalePrice = "0";
                                                 }
                                                 <div>
                                                     <strong style="font-size:18px;color:#D0021C">@(formattedPrice)đ</strong>
@@ -180,3 +179,4 @@
     }
 </script>
 
+ *@

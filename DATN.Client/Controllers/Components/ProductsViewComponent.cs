@@ -1,17 +1,7 @@
 ﻿using DATN.Client.Constants;
 using DATN.Client.Services;
-using DATN.Core.Data;
-using DATN.Core.Infrastructures;
-using DATN.Core.Model;
-using DATN.Core.Model.Product;
-using DATN.Core.ViewModel.CategoryVM;
-using DATN.Core.ViewModel.ProductVM;
-using DATN.Core.ViewModel.PromotionVM;
+using DATN.Core.ViewModel.Product_EAV;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System.Text.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace DATN.Client.Controllers.Components
 {
@@ -27,24 +17,24 @@ namespace DATN.Client.Controllers.Components
             _clientService = clientService;
         }
 
-        private async Task<List<ProductVM>> GetProductsByCategory(string? categoryId)
+        private async Task<List<ProductVM_EAV>> GetProductsByCategory(string? categoryId)
         {
-            var products = await _clientService.GetList<ProductVM>($"{ApiPaths.Product}/GetProductByCategory?categoryId={categoryId}");
+            var products = await _clientService.GetList<ProductVM_EAV>($"{ApiPaths.Product}/GetProductByCategory?categoryId={categoryId}");
             //var response = await _httpClient.GetAsync($"https://localhost:7095/api/Product/GetProductByCategory?categoryId={categoryId}");
             //response.EnsureSuccessStatusCode();
             //var responseContent = await response.Content.ReadAsStringAsync();
             //var products = JsonConvert.DeserializeObject<List<ProductVM>>(responseContent);
 
-            return products ?? new List<ProductVM>();
+            return products ?? new List<ProductVM_EAV>();
         }
-        private async Task<List<ProductVM>> GetProductsByPromotion(int promotionId)
+        private async Task<List<ProductVM_EAV>> GetProductsByPromotion(int promotionId)
         {
-            var products = await _clientService.GetList<ProductVM>($"{ApiPaths.Product}/GetProductByPromotion?promotionId={promotionId}");
-            return products ?? new List<ProductVM>();
+            var products = await _clientService.GetList<ProductVM_EAV>($"{ApiPaths.Product}/GetProductByPromotion?promotionId={promotionId}");
+            return products ?? new List<ProductVM_EAV>();
         }
         public async Task<IViewComponentResult> InvokeAsync(string? categoryId, int? promotionId)
         {
-            var products = new List<ProductVM>();
+            var products = new List<ProductVM_EAV>();
 
             if (categoryId != null)
             {
@@ -61,13 +51,13 @@ namespace DATN.Client.Controllers.Components
 
             foreach (var product in products)
             {
-                var productRating = await _clientService.Get<double>($"{ApiPaths.Product}/GetProductRating?productId={product.Id}");
-                var productRateCount = await _clientService.Get<int>($"{ApiPaths.Product}/GetProductRateCount?productId={product.Id}");
-                product.Rating = productRating;
-                product.RateCount = productRateCount;
+                //var productRating = await _clientService.Get<double>($"{ApiPaths.Product}/GetProductRating?productId={product.Id}");
+                //var productRateCount = await _clientService.Get<int>($"{ApiPaths.Product}/GetProductRateCount?productId={product.Id}");
+                //product.Rating = productRating;
+                //product.RateCount = productRateCount;
             }
 
-            return View(products ?? new List<ProductVM>());
+            return View(products ?? new List<ProductVM_EAV>());
         }
     }
 }

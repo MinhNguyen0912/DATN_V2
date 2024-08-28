@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using DATN.Core.Infrastructures;
 using DATN.Core.Models;
 using DATN.Core.ViewModels;
 using DATN.Core.ViewModels.UserViewModel;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Api.Controllers
 {
@@ -69,7 +68,7 @@ namespace DATN.Api.Controllers
 
         [HttpPost]
         public IActionResult UpdateUserList([FromBody] List<UserUpdateVM> users)
-        { 
+        {
             try
             {
                 if (users == null || users.Count == 0)
@@ -100,7 +99,7 @@ namespace DATN.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ResponseViewModel { Status = false, Message = "Lỗi trong quá trình cập nhật danh sách người dùng!"});
+                return StatusCode(500, new ResponseViewModel { Status = false, Message = "Lỗi trong quá trình cập nhật danh sách người dùng!" });
             }
         }
         [HttpPost]

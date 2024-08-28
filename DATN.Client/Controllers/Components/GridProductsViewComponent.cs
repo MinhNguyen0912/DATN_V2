@@ -1,7 +1,6 @@
 ﻿using DATN.Client.Constants;
 using DATN.Client.Services;
-using DATN.Core.Model.Product;
-using DATN.Core.ViewModel.ProductVM;
+using DATN.Core.ViewModel.Product_EAV;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -20,27 +19,27 @@ namespace DATN.Client.Controllers.Components
             _clientService = clientService;
         }
 
-        private async Task<List<ProductVM>> GetProductsByCategory(int categoryId)
+        private async Task<List<ProductVM_EAV>> GetProductsByCategory(int categoryId)
         {
             var response = await _httpClient.GetAsync($"https://localhost:7095/api/Product/GetProductByCategory?categoryId={categoryId}");
 
             response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            var products = JsonConvert.DeserializeObject<List<ProductVM>>(responseContent) ?? new List<ProductVM>();
+            var products = JsonConvert.DeserializeObject<List<ProductVM_EAV>>(responseContent) ?? new List<ProductVM_EAV>();
             foreach (var item in products)
             {
-                var productRating = await _clientService.Get<double>($"{ApiPaths.Product}/GetProductRating?productId={item.Id}");
-                var productRateCount = await _clientService.Get<int>($"{ApiPaths.Product}/GetProductRateCount?productId={item.Id}");
-                item.Rating = productRating;
-                item.RateCount = productRateCount;
+                //var productRating = await _clientService.Get<double>($"{ApiPaths.Product}/GetProductRating?productId={item.Id}");
+                //var productRateCount = await _clientService.Get<int>($"{ApiPaths.Product}/GetProductRateCount?productId={item.Id}");
+                //item.Rating = productRating;
+                //item.RateCount = productRateCount;
             }
             return products;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int categoryId)
         {
-            var products = new List<ProductVM>();
+            var products = new List<ProductVM_EAV>();
             if (categoryId != null)
             {
                 products = await GetProductsByCategory(categoryId);

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DATN.Core.Infrastructures;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers
@@ -17,9 +16,9 @@ namespace DATN.API.Controllers
             _mapper = mapper;
         }
         [HttpGet("{invoiceId}/{userId}")]
-        public async Task<IActionResult> GetByInvoiceId(int invoiceId,Guid userId)
+        public async Task<IActionResult> GetByInvoiceId(int invoiceId, Guid userId)
         {
-            var invoiceDetails = _unitOfWork.InvoiceDetailRepository.GetInvoiceDetailByInvoiceId(invoiceId,userId);
+            var invoiceDetails = _unitOfWork.InvoiceDetailRepository.GetInvoiceDetailByInvoiceId(invoiceId, userId);
             if (invoiceDetails != null)
             {
                 return Ok(invoiceDetails);

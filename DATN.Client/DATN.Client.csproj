@@ -7,12 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Areas\Admin\Views\Products\ProductPaging.cshtml" />
     <Content Remove="wwwroot\js\cart\CartControl.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Products\ProductPaging.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\css\cart.css" />
     <_ContentIncludedByDefault Remove="wwwroot\js\cart\CartControl.js" />
   </ItemGroup>
@@ -23,7 +21,6 @@
     <None Include="Areas\Admin\Views\Category\Edit.cshtml" />
     <None Include="Areas\Admin\Views\Category\Index.cshtml" />
     <None Include="Areas\Admin\Views\Home\Index.cshtml" />
-    <None Include="Areas\Admin\Views\Products\ProductPaging.cshtml" />
     <None Include="Areas\Admin\Views\Profile\Edit.cshtml" />
     <None Include="Areas\Admin\Views\Profile\Index.cshtml" />
     <None Include="Areas\Admin\Views\User\Create.cshtml" />
@@ -93,10 +90,6 @@
     <Folder Include="wwwroot\Images\Component\ListProduct\" />
     <Folder Include="wwwroot\Images\Brand\" />
     <Folder Include="wwwroot\Images\Products\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\Admin\Views\Products\ProductPaging.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DATN.Core.Infrastructures;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers.ProductEAV

@@ -2,16 +2,10 @@
 using DATN.Core.Data;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
-using DATN.Core.Model.Product;
 using DATN.Core.Repositories.IRepositories;
 using DATN.Core.ViewModel.CategoryVM;
 using DATN.Core.ViewModels.Paging;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.Repositories
 {
@@ -60,7 +54,7 @@ namespace DATN.Core.Repositories.Repositories
             var ListItem = new List<CategoryRepon>();
             foreach (var item in list)
             {
-                var categoryRanger = Context.CategoryTimeRange.Where(x=>x.CategoryId == item.Id).Select(p=>p.TimeRange.Name).ToList();
+                var categoryRanger = Context.CategoryTimeRange.Where(x => x.CategoryId == item.Id).Select(p => p.TimeRange.Name).ToList();
                 var obj = new CategoryRepon()
                 {
                     Id = item.Id,
@@ -124,7 +118,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public List<Category> GetLevel1AndChild(int categoryId)
         {
-            var a = Context.categories.Where(p=>p.ParentCategoryId == categoryId).Include(p => p.SubCategories).ToList();
+            var a = Context.categories.Where(p => p.ParentCategoryId == categoryId).Include(p => p.SubCategories).ToList();
             return a;
         }
 

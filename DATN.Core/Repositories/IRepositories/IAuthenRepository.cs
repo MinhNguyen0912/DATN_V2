@@ -1,12 +1,6 @@
 ﻿using DATN.Core.Models;
-using DATN.Core.ViewModel.AuthenVM;
-using DATN.Core.ViewModels.AuthenViewModel;
 using DATN.Core.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DATN.Core.ViewModels.AuthenViewModel;
 
 namespace DATN.Core.Repositories.IRepositories
 {

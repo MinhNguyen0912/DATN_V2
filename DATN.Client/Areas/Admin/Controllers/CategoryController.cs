@@ -1,16 +1,12 @@
-﻿using Azure.Core;
-using DATN.Client.Constants;
+﻿using DATN.Client.Constants;
 using DATN.Client.Helper;
 using DATN.Client.Services;
 using DATN.Core.Model;
-using DATN.Core.ViewModel.AndressVM;
 using DATN.Core.ViewModel.CategoryVM;
 using DATN.Core.ViewModel.TimeRangeVM;
-using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModels.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Newtonsoft.Json;
 
 namespace DATN.Client.Areas.Admin.Controllers
@@ -119,7 +115,7 @@ namespace DATN.Client.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                
+
             }
             return RedirectToAction("Index");
         }
@@ -137,32 +133,32 @@ namespace DATN.Client.Areas.Admin.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateLv1(CategoryAdminCreatLv obj)
-        {           
+        {
             try
             {
                 obj.Level = 1;
                 if (ModelState.IsValid)
-                {                   
+                {
                     string requestURL = $"https://localhost:7095/api/Category/CreateLv1";
                     var HttpClient = new HttpClient();
                     var response = await HttpClient.PostAsJsonAsync(requestURL, obj);
-                    ToastHelper.ShowSuccess(TempData, "Thêm  thành công!");                
+                    ToastHelper.ShowSuccess(TempData, "Thêm  thành công!");
                 }
                 else
                 {
                     return RedirectToAction("CreateLv1");
                 }
-				
-			}
+
+            }
             catch (Exception ex)
             {
                 ToastHelper.ShowError(TempData, ex.Message);
-               
+
 
             }
-			return RedirectToAction("CategoryLv1");
+            return RedirectToAction("CategoryLv1");
 
-		}
+        }
 
         // thêm mới Lv2
         public async Task<IActionResult> CreateLv2() // Tạo view rỗng
@@ -189,25 +185,25 @@ namespace DATN.Client.Areas.Admin.Controllers
                     var HttpClient = new HttpClient();
                     var response = await HttpClient.PostAsJsonAsync(requestURL, obj);
                     ToastHelper.ShowSuccess(TempData, "Thêm  thành công!");
-                  
+
 
                 }
                 else
                 {
-					return RedirectToAction("CreateLv2");
-				}
+                    return RedirectToAction("CreateLv2");
+                }
 
-               
+
 
             }
             catch (Exception ex)
             {
                 ToastHelper.ShowError(TempData, ex.Message);
-              
-            }
-			return RedirectToAction("CategoryLv2");
 
-		}
+            }
+            return RedirectToAction("CategoryLv2");
+
+        }
         public async Task<IActionResult> Edit(string id) // Tlấy view rỗng từ Sv vừa chọn
         {
             //// vìa là sửa nên chúng ta cần truyền được dữ liệu của sv sang
