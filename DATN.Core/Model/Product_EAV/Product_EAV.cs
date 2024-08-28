@@ -16,10 +16,10 @@ namespace DATN.Core.Model.Product_EAV
         public Origin? Origin { get; set; }
 
         // Navigation property
-        public ICollection<Variant> Variants { get; set; }
-        public ICollection<CategoryProduct>? CategoryProducts { get; set; }
-        public ICollection<Comment>? Comments { get; set; }
-        public ICollection<Image>? Images { get; set; }
-        public ICollection<ProductPromotion>? PromotionProducts { get; set; }
+        public List<Variant> Variants { get; set; }
+        public List<CategoryProduct>? CategoryProducts { get; set; }
+        public List<Comment>? Comments { get; set; }
+        public List<Image>? Images { get; set; }
+        public List<ProductPromotion>? PromotionProducts { get; set; }
     }
 }

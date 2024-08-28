@@ -22,7 +22,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public List<ProductPromotion> GetAllCustom()
         {
-            return Context.ProductPromotions.Include(p => p.Product).ThenInclude(p => p.Images).Include(p => p.Product).ToList();
+            return Context.ProductPromotions.Include(p => p.Product).ThenInclude(p=>p.Variants).Include(p=>p.Product).ThenInclude(p => p.Images).ToList();
         }
     }
 }

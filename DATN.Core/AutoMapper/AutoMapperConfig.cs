@@ -76,7 +76,9 @@ namespace DATN.Core.AutoMapper
                 config.CreateMap<Attribute_EAV, AttributeVM_EAV>().ReverseMap();
                 config.CreateMap<AttributeValue_EAV, AttributeValueVM_EAV>().ReverseMap();
                 config.CreateMap<Product_EAV, ProductVM_EAV>().ReverseMap();
-                config.CreateMap<Variant, VariantVM>().ReverseMap();
+                config.CreateMap<Variant, VariantVM>()
+                    .ForMember(dest => dest.Discount, opt => opt.MapFrom(p=>1-(p.AfterDiscountPrice/p.SalePrice)))
+                    .ReverseMap();
                 config.CreateMap<VariantAttribute, VariantAttributeVM>().ReverseMap();
 
                 config.AddProfile<AutoMapperConfig>();
