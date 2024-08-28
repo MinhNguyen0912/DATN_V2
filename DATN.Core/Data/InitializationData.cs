@@ -25,7 +25,7 @@ namespace DATN.Core.Data
                 new Promotion { Id = 7, Name = "Giảm 20% cho sản phẩm phụ kiện", Description = "Khuyến mãi giảm giá 20% cho tất cả sản phẩm phụ kiện", Percent = 20, From = DateTime.Now, To = DateTime.Now.AddMonths(7), IsActive = false },
                 new Promotion { Id = 8, Name = "Đổi cũ lấy mới", Description = "Chương trình đổi sản phẩm cũ lấy sản phẩm mới với giá ưu đãi", Percent = 0, From = DateTime.Now, To = DateTime.Now.AddMonths(8), IsActive = false },
                 new Promotion { Id = 9, Name = "Mua hàng tặng phiếu mua hàng", Description = "Mua hàng tặng phiếu mua hàng trị giá 200,000 VNĐ", Percent = 0, From = DateTime.Now, To = DateTime.Now.AddMonths(9), IsActive = false },
-                new Promotion { Id = 10, Name = "Đồng giảm giá 50%", Description = "Siêu sale đồng giảm 50% giá sản phẩm", Percent = 50, From = DateTime.Now, To = DateTime.Now.AddMonths(10), BannerUrl = "/Images/Component/BannerPromotion1.gif", IsActive = true },
+                new Promotion { Id = 10, Name = "Đồng giảm giá 50%", Description = "Siêu sale đồng giảm 50% giá sản phẩm", Percent = 50, From = DateTime.Now, To = DateTime.Now.AddMonths(10), BannerUrl = "/Images/Component/BannerPromotion1.gif", IsActive = false },
                 new Promotion { Id = 11, Name = "Sôi động cùng mùa Ơ-rô", Description = "Siêu giảm giá mùa Ơ-RÔ", Percent = 0, From = DateTime.Now, To = DateTime.Now.AddMonths(10), BannerUrl = "/Images/Component/BannerPromotion2.webp", IsActive = true }
             );
             #endregion
@@ -295,16 +295,22 @@ namespace DATN.Core.Data
             //    new ShippingOrder { Id = 1, OrderCode = "L6AHHM", UserId = Guid.Parse("AA7C5218-4F1E-4AC6-A3B4-08DCB162E29E"), Price = 200000, CreateAt = DateTime.Now, InvoiceId = 3 }
             //);
             #endregion
-
+            #region ProductPromotion
+            modelBuilder.Entity<ProductPromotion>().HasData(
+                new ProductPromotion { ProductPromotionId = 1, PromotionId = 11, ProductId = 1 },
+                new ProductPromotion { ProductPromotionId = 2, PromotionId = 11, ProductId = 2 }
+            // Add more seed data as needed
+            );
+            #endregion
 
 
             #region ProductEAV
             // Seed Product
             modelBuilder.Entity<Product_EAV>().HasData(
-                new Product_EAV { ProductId = 1, ProductName = "Samsung Smart TV QLED QA55Q70C" }
+                new Product_EAV { ProductId = 1, ProductName = "Samsung Smart TV QLED QA55Q70C",OriginId =1,Status = ProductStatus.Sale,BrandId =2 }
             );
             modelBuilder.Entity<Product_EAV>().HasData(
-                new Product_EAV { ProductId = 2, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL" }
+                new Product_EAV { ProductId = 2, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL",OriginId=1,Status = ProductStatus.Sale,BrandId =1 }
             );
 
             // Seed Attributes
@@ -334,7 +340,8 @@ namespace DATN.Core.Data
                     Quantity = 100,
                     PuscharPrice = 50000, // Giá nhập
                     SalePrice = 75000,   // Giá bán
-                    AfterDiscountPrice = 70000
+                    AfterDiscountPrice = 70000,
+                    IsDefault = true,
                 },
                 new Variant
                 {
@@ -344,7 +351,8 @@ namespace DATN.Core.Data
                     Quantity = 50,
                     PuscharPrice = 52000,
                     SalePrice = 78000,
-                    AfterDiscountPrice = 71000
+                    AfterDiscountPrice = 71000,
+                    IsDefault = false
                 },
                 new Variant
                 {
@@ -354,7 +362,8 @@ namespace DATN.Core.Data
                     Quantity = 75,
                     PuscharPrice = 48000,
                     SalePrice = 73000,
-                    AfterDiscountPrice = 70500
+                    AfterDiscountPrice = 70500,
+                    IsDefault = false
                 },
                 new Variant
                 {
@@ -364,7 +373,8 @@ namespace DATN.Core.Data
                     Quantity = 80,
                     PuscharPrice = 49000,
                     SalePrice = 74000,
-                    AfterDiscountPrice = 71000
+                    AfterDiscountPrice = 71000,
+                    IsDefault = false
                 },
                 new Variant
                 {
@@ -374,7 +384,8 @@ namespace DATN.Core.Data
                     Quantity = 0,
                     PuscharPrice = 49000,
                     SalePrice = 74000,
-                    AfterDiscountPrice = 71000
+                    AfterDiscountPrice = 71000,
+                    IsDefault = true
                 },
                 new Variant
                 {
@@ -384,7 +395,8 @@ namespace DATN.Core.Data
                     Quantity = 80,
                     PuscharPrice = 49000,
                     SalePrice = 74000,
-                    AfterDiscountPrice = 71000
+                    AfterDiscountPrice = 71000,
+                    IsDefault= false
                 }
             );
 

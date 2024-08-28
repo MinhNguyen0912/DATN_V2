@@ -2,16 +2,16 @@
 using DATN.Core.Infrastructures;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DATN.API.Controllers.ProductEAV
+namespace DATN.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ProductAttributeEAVController : ControllerBase
+    public class VariantAttributeEAVController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ProductAttributeEAVController(IUnitOfWork unitOfWork, IMapper mapper)
+        public VariantAttributeEAVController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

@@ -149,704 +149,704 @@ namespace DATN.Core.Migrations
                         new
                         {
                             Id = 1,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(692),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(706),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6247),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6260),
                             Description = "",
                             ImageUrl = "/Images/Home/Luxury.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Hàng cao cấp",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(707)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6261)
                         },
                         new
                         {
                             Id = 2,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(712),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(713),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6265),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6266),
                             Description = "",
                             ImageUrl = "/Images/Home/Hot.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Tivi, Loa, dàn karaoke",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(713)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6266)
                         },
                         new
                         {
                             Id = 3,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(715),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(715),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6267),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6268),
                             Description = "",
                             ImageUrl = "/Images/Home/Hot.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Tủ lạnh, Tủ đông, Tủ mát",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(716)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6268)
                         },
                         new
                         {
                             Id = 4,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(717),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(718),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6269),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6270),
                             Description = "",
                             ImageUrl = "/Images/Home/Hot.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Máy giặt, Máy sấy quần áo",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(718)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6270)
                         },
                         new
                         {
                             Id = 5,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(721),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(721),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6271),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6272),
                             Description = "",
                             ImageUrl = "/Images/Home/Hot.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Máy lạnh, Máy nước nóng",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(722)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6272)
                         },
                         new
                         {
                             Id = 6,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(723),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(723),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6273),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6273),
                             Description = "",
                             ImageUrl = "/Images/Home/Icons-1.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Điện gia dụng, Sinh tố, Xay ép",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(724)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6274)
                         },
                         new
                         {
                             Id = 7,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(729),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(729),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6275),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6275),
                             Description = "",
                             ImageUrl = "/Images/Home//Hot.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Bếp điện, Nồi cơm, Đồ bếp",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(730)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6276)
                         },
                         new
                         {
                             Id = 8,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(731),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(731),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6277),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6277),
                             Description = "",
                             ImageUrl = "/Images/Home//Hot.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Máy lọc nước, Nồi chiên",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(732)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6277)
                         },
                         new
                         {
                             Id = 9,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(733),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(733),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6278),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6279),
                             Description = "",
                             ImageUrl = "/Images/Home/Icons-2.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Máy hút bụi, Máy rửa chén",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(847)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6380)
                         },
                         new
                         {
                             Id = 10,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(849),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(860),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6383),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6393),
                             Description = "",
                             ImageUrl = "/Images/Home/Icons-3.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Xe đạp, Sức khỏe, Làm đẹp",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(879)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6411)
                         },
                         new
                         {
                             Id = 11,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(881),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(881),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6412),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6413),
                             Description = "",
                             ImageUrl = "/Images/Home/Icons-4.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Đồ nghề - dụng cụ sửa chữa",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(881)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6413)
                         },
                         new
                         {
                             Id = 12,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(890),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(890),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6417),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6418),
                             Description = "",
                             ImageUrl = "/Images/Home/Icons-5.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Điện thoại, Laptop, Tablet",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(891)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6418)
                         },
                         new
                         {
                             Id = 13,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(893),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(893),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6419),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6420),
                             Description = "",
                             ImageUrl = "/Images/Home/Icons-6.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Phụ kiện, Camera, Đồng hồ",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(893)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6420)
                         },
                         new
                         {
                             Id = 14,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(900),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(900),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6424),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6424),
                             Description = "",
                             ImageUrl = "/Images/Home/Icons-7.png",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 0,
                             Name = "Máy cũ, Dịch vụ hữu ích",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(901)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6425)
                         },
                         new
                         {
                             Id = 15,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(902),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(902),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6426),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6426),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Tivi",
                             ParentCategoryId = 2,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(903)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6426)
                         },
                         new
                         {
                             Id = 16,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(904),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(905),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6428),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6429),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Loa",
                             ParentCategoryId = 2,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(905)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6429)
                         },
                         new
                         {
                             Id = 17,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(906),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(907),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6431),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6431),
                             Description = "",
                             IsOnList = true,
                             IsVisible = false,
                             Level = 1,
                             Name = "Phụ kiện Tivi",
                             ParentCategoryId = 2,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(907)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6432)
                         },
                         new
                         {
                             Id = 18,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(908),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(909),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6433),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6433),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Tủ lạnh",
                             ParentCategoryId = 3,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(909)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6434)
                         },
                         new
                         {
                             Id = 19,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(910),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(911),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6435),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6435),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Tủ đông",
                             ParentCategoryId = 3,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(911)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6436)
                         },
                         new
                         {
                             Id = 20,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(913),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(913),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6438),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6438),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Tủ mát",
                             ParentCategoryId = 3,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(913)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6438)
                         },
                         new
                         {
                             Id = 21,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(915),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(915),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6440),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6440),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Máy giặt",
                             ParentCategoryId = 4,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(915)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6440)
                         },
                         new
                         {
                             Id = 22,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(939),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(939),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6442),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6442),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Máy sấy quần áo",
                             ParentCategoryId = 4,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(940)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6442)
                         },
                         new
                         {
                             Id = 23,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(941),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(942),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6463),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6463),
                             Description = "",
                             IsOnList = true,
                             IsVisible = false,
                             Level = 1,
                             Name = "Phụ kiện máy giặt",
                             ParentCategoryId = 4,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(942)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6463)
                         },
                         new
                         {
                             Id = 24,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(943),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(944),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6465),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6465),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Máy lạnh",
                             ParentCategoryId = 5,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(944)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6466)
                         },
                         new
                         {
                             Id = 25,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(945),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(946),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6467),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6467),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Máy nước nóng",
                             ParentCategoryId = 5,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(946)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6468)
                         },
                         new
                         {
                             Id = 26,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(947),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(948),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6469),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6469),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Máy xay các loại",
                             ParentCategoryId = 6,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(948)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6470)
                         },
                         new
                         {
                             Id = 27,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(949),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(950),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6471),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6471),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Máy ép trái cây",
                             ParentCategoryId = 6,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(950)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6472)
                         },
                         new
                         {
                             Id = 28,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(952),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(952),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6474),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6474),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 1,
                             Name = "Điện gia dụng",
                             ParentCategoryId = 6,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(953)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6474)
                         },
                         new
                         {
                             Id = 29,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(954),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(954),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6476),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6476),
                             Description = "",
                             IsOnList = true,
                             IsVisible = false,
                             Level = 1,
                             Name = "Nồi",
                             ParentCategoryId = 6,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(955)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6477)
                         },
                         new
                         {
                             Id = 30,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(956),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(956),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6478),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6478),
                             Description = "",
                             IsOnList = true,
                             IsVisible = false,
                             Level = 1,
                             Name = "Bếp",
                             ParentCategoryId = 6,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(957)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6479)
                         },
                         new
                         {
                             Id = 31,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(958),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(958),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6480),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6480),
                             Description = "",
                             IsOnList = true,
                             IsVisible = false,
                             Level = 1,
                             Name = "Lò",
                             ParentCategoryId = 6,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(959)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6480)
                         },
                         new
                         {
                             Id = 32,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(960),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(961),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6482),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6482),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Màn hình cong",
                             ParentCategoryId = 15,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(961)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6483)
                         },
                         new
                         {
                             Id = 33,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(962),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(963),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6484),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6484),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Màn hình phẳng",
                             ParentCategoryId = 15,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(963)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6485)
                         },
                         new
                         {
                             Id = 34,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(964),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(965),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6486),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6486),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Siêu mỏng",
                             ParentCategoryId = 15,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(965)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6487)
                         },
                         new
                         {
                             Id = 35,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(966),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(967),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6488),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6488),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Tivi cao cấp",
                             ParentCategoryId = 15,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(967)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6489)
                         },
                         new
                         {
                             Id = 36,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(968),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(969),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6490),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6490),
                             Description = "",
                             IsOnList = false,
                             IsVisible = true,
                             Level = 2,
                             Name = "Tivi thiết kế đặc biệt",
                             ParentCategoryId = 15,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(969)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6490)
                         },
                         new
                         {
                             Id = 37,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(970),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(970),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6491),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6492),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Loa kéo",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(971)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6492)
                         },
                         new
                         {
                             Id = 38,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(972),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(972),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6493),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6494),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Loa kéo điện",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(973)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6494)
                         },
                         new
                         {
                             Id = 39,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(974),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(974),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6495),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6496),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Loa karaoke xách tay",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(975)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6496)
                         },
                         new
                         {
                             Id = 40,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(976),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(976),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6497),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6497),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Loa bluetooth",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(977)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6498)
                         },
                         new
                         {
                             Id = 41,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(980),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(981),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6504),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6504),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Loa thanh (SoundBar)",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(981)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6505)
                         },
                         new
                         {
                             Id = 42,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(982),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(983),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6506),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6506),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Dàn Karaoke, Amply",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(983)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6507)
                         },
                         new
                         {
                             Id = 43,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(984),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(985),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6508),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6508),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Dàn âm thanh",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(985)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6509)
                         },
                         new
                         {
                             Id = 44,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(986),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(986),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6510),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6510),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Micro",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(987)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6510)
                         },
                         new
                         {
                             Id = 45,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(988),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(988),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6512),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6512),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Loa thùng",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(989)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6512)
                         },
                         new
                         {
                             Id = 46,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(990),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(990),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6513),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6514),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Loa mini",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(991)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6514)
                         },
                         new
                         {
                             Id = 47,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(993),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(993),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6516),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6516),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Loa đồ chơi",
                             ParentCategoryId = 16,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(993)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6517)
                         },
                         new
                         {
                             Id = 48,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(994),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(995),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6518),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6518),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Cáp HDMI",
                             ParentCategoryId = 17,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(995)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6519)
                         },
                         new
                         {
                             Id = 49,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(996),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(997),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6520),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6520),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Khung treo Tivi",
                             ParentCategoryId = 17,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(997)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6521)
                         },
                         new
                         {
                             Id = 50,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(998),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(999),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6522),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6522),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Điều khiển Tivi",
                             ParentCategoryId = 17,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(999)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6523)
                         },
                         new
                         {
                             Id = 51,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1000),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1001),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6524),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6524),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Android TV Box",
                             ParentCategoryId = 17,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1001)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6524)
                         },
                         new
                         {
                             Id = 52,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1002),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1003),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6525),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6526),
                             Description = "",
                             IsOnList = false,
                             IsVisible = true,
                             Level = 2,
                             Name = "Dán màn Tivi",
                             ParentCategoryId = 17,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1003)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6526)
                         },
                         new
                         {
                             Id = 53,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1004),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1005),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6527),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6528),
                             Description = "",
                             IsOnList = false,
                             IsVisible = true,
                             Level = 2,
                             Name = "Sticker Tivi",
                             ParentCategoryId = 17,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1005)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6528)
                         },
                         new
                         {
                             Id = 54,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1006),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1006),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6529),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6530),
                             Description = "",
                             IsOnList = true,
                             IsVisible = true,
                             Level = 2,
                             Name = "Tủ lạnh 2 cánh",
                             ParentCategoryId = 18,
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1007)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6530)
                         });
                 });
 
@@ -1194,7 +1194,7 @@ namespace DATN.Core.Migrations
                             MagazineId = 1,
                             Caption = "Danh sách trúng thưởng - Tưng bừng \"Tháng Panasonic\": Cơ hội trúng 102 bộ quà giá trị lên đến 655 triệu đồng",
                             Content = "<h2 style=\"margin-left:0px;\">Cơn sốt game chưa bao giờ hạ nhiệt! Bạn muốn chiến game \"cực phê\" với trải nghiệm đỉnh cao? Chọn ngay <a href=\"https://www.dienmayxanh.com/man-hinh-may-tinh\">màn hình</a> chơi game ROG và nhận quà \"khủng\" - nâng cấp trải nghiệm, chiến thắng mọi thử thách!</h2><p style=\"margin-left:0px;\"><img class=\"image_resized\" style=\"aspect-ratio:845/442;height:auto !important;width:auto;\" src=\"https://cdnv2.tgdd.vn/mwg-static/common/News/1565736/ROG.jpg\" alt=\"Chiến gam hay nhận quà đỉnh\" width=\"845\" height=\"442\"></p><h3 style=\"margin-left:0px;\">1. Thời gian khuyến mãi: Từ 13/08 đến 30/09/2024</h3><h3 style=\"margin-left:0px;\">2. Nội dung chương trình</h3><p style=\"margin-left:0px;\">Trong thời gian khuyến mãi, khi mua mua <a href=\"https://www.dienmayxanh.com/man-hinh-may-tinh/asus-xg27acs-27-inch-2k\">Màn hình Asus Gaming ROG Strix XG27ACS</a> tại Thế giới Di động và Điện máy XANH, bạn sẽ nhận ngay 01 <a href=\"https://rog.asus.com/vn/mice-mouse-pads/mice/ambidextrous/rog-strix-impact-iii-model/\">Chuột ROG STRIX IMPACT III</a>.</p><p style=\"margin-left:0px;\">Áp dụng cho cả mua online và offline.</p><p style=\"margin-left:0px;\">Chương trình có thể kết thúc sớm nếu hết quà.</p><p style=\"margin-left:0px;\">Hạn chót đăng ký nhận quà: 03/10/2024.</p><h3 style=\"margin-left:0px;\">3. Sản phẩm áp dụng</h3><p style=\"margin-left:0px;\"><a href=\"https://www.dienmayxanh.com/man-hinh-may-tinh/asus-xg27acs-27-inch-2k?itm_source=khuyenmai&amp;itm_medium=shortcode&amp;itm_content=325113\"><img class=\"image_resized\" style=\"aspect-ratio:600/600;height:auto !important;width:150px;\" src=\"https://cdn.tgdd.vn/Products/Images/5697/325113/asus-xg27acs-27-inch-2k-thumb-600x600.jpg\" width=\"600\" height=\"600\"></a></p><figure class=\"image image_resized\" style=\"height:auto !important;width:40px !important;\"><a href=\"https://www.dienmayxanh.com/man-hinh-may-tinh/asus-xg27acs-27-inch-2k?itm_source=khuyenmai&amp;itm_medium=shortcode&amp;itm_content=325113\"><img style=\"aspect-ratio:40/40;\" src=\"https://cdn.tgdd.vn/ValueIcons/label-baohanh3nam.png\" width=\"40\" height=\"40\"></a></figure><p style=\"margin-left:0px;\"><a href=\"https://www.dienmayxanh.com/man-hinh-may-tinh/asus-xg27acs-27-inch-2k?itm_source=khuyenmai&amp;itm_medium=shortcode&amp;itm_content=325113\"><span style=\"color:rgb(51,51,51);\"><strong>Asus Gaming 27 inch 2K XG27ACS</strong></span></a></p><p style=\"margin-left:0px;\">Ngừng kinh doanh</p><p style=\"margin-left:0px;\"><a href=\"https://www.dienmayxanh.com/man-hinh-may-tinh/asus-xg27acs-27-inch-2k?itm_source=khuyenmai&amp;itm_medium=shortcode&amp;itm_content=325113\">Xem chi tiết</a></p><h3 style=\"margin-left:0px;\">4. Cách thức nhận quà</h3><p style=\"margin-left:0px;\">Click vào nút \"Đăng ký\" trên website sự kiện <a href=\"https://www.asus.com/vn/events/infoM/activity_ROGLCD\">https://www.asus.com/vn/events/infoM/activity_ROGLCD</a>.</p><p style=\"margin-left:0px;\">- Đính kèm hình ảnh hóa đơn mua hàng, phiếu thu, phiếu xuất kho có dấu xác nhận của cửa hàng, thể hiện rõ tên sản phẩm và ngày mua hàng trong thời gian chương trình diễn ra.</p><p style=\"margin-left:0px;\">- Đính kèm ảnh chụp số S/N của sản phẩm.</p><p style=\"margin-left:0px;\">- Điền serial của sản phẩm.</p><p style=\"margin-left:0px;\">- Điền Họ và tên người nhận quà.</p><p style=\"margin-left:0px;\">- Điền Địa chỉ nhận quà.</p><p style=\"margin-left:0px;\">- Điền Số điện thoại liên hệ.</p><p style=\"margin-left:0px;\">Hình chụp số S/N trên sản phẩm phải chụp kèm với hoá đơn, chỉ chấp nhận hình chụp số S/N trên sản phẩm, số S/N trên hộp không có hiệu lực.</p><p style=\"margin-left:0px;\"><img class=\"image_resized\" style=\"aspect-ratio:732/786;height:auto !important;width:auto;\" src=\"https://cdnv2.tgdd.vn/mwg-static/common/News/1565736/image1%20%283%29.jpg\" alt=\"Bước 1\" width=\"732\" height=\"786\"></p><p style=\"margin-left:0px;\"><img class=\"image_resized\" style=\"aspect-ratio:732/753;height:auto !important;width:100%;\" src=\"https://cdnv2.tgdd.vn/mwg-static/common/News/1565736/image2%20%283%29.jpg\" alt=\"Bước 2\" width=\"732\" height=\"753\"></p><h3 style=\"margin-left:0px;\">4. Thông tin lưu ý</h3><p style=\"margin-left:0px;\">- Trong trường hợp không thể đăng ký trên hệ thống, quý khách hàng vui lòng gửi thông tin nhận quà như bên dưới về địa chỉ Email: dangkyasus@gmail.com với tiêu đề: \"[Khuyen mai] LCD GAMING\".</p><p style=\"margin-left:0px;\">- ASUS sẽ kiểm tra và liên hệ gửi quà tới bạn trong 20 ngày làm việc (trừ thứ 7 &amp; Chủ nhật).</p><p style=\"margin-left:0px;\">- Chương trình không áp dụng đồng thời với các chương trình khuyến mãi khác.</p><p style=\"margin-left:0px;\">- Quà tặng không có giá trị quy đổi thành tiền mặt hoặc các giá trị khác tương đương.</p><p style=\"margin-left:0px;\">- Hóa đơn/ phiếu thu/ phiếu xuất kho phải có con dấu của cửa hàng bán lẻ.</p><p style=\"margin-left:0px;\">- Chương trình chỉ dành cho khách hàng mua lẻ từ cửa hàng, tất cả hóa đơn từ nhà phân phối đều không được tham gia chương trình khuyến mãi này.</p><p style=\"margin-left:0px;\">- Dung lượng hình ảnh hóa đơn tải lên hệ thống &lt;1Mb.</p><p style=\"margin-left:0px;\">- Trong trường hợp cần thiết nhằm bảo đảm quyền lợi khách hàng, phía ASUS sẽ cần thêm những thông tin khác để xác định khách mua hàng là chính xác như: hóa đơn đỏ, giấy tờ tùy thân có ảnh đại diện,...</p><p style=\"margin-left:0px;\">Đây là chương trình của ASUS không phải của dienmayxanh.com và thegioididong.com, mọi góp ý hay thắc mắc khác về chương trình, xin vui lòng post tại <a href=\"https://www.facebook.com/share/g/NB6YhgtTY4wDwQ47/?mibextid=K35XfP\">Hội linh kiện PC ASUS ROG Việt Nam</a>.</p>",
-                            CreateAt = new DateTime(2024, 8, 29, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(5086),
+                            CreateAt = new DateTime(2024, 8, 29, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1772),
                             Image = "/Images/Magazine/Picture1.jpg",
                             Status = 1
                         },
@@ -1203,7 +1203,7 @@ namespace DATN.Core.Migrations
                             MagazineId = 2,
                             Caption = "Mua ngay máy lạnh Daikin: Thêm năm bảo hành, an tâm chất \"Nhật\"",
                             Content = "Content 2",
-                            CreateAt = new DateTime(2024, 8, 30, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(5091),
+                            CreateAt = new DateTime(2024, 8, 30, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1778),
                             Image = "/Images/Magazine/Picture2.jpg",
                             Status = 1
                         },
@@ -1212,7 +1212,7 @@ namespace DATN.Core.Migrations
                             MagazineId = 3,
                             Caption = "Mua sớm máy lạnh - Tặng 2 lần vệ sinh chỉ có tại Điện máy XANH | Mới 2024",
                             Content = "Content 3",
-                            CreateAt = new DateTime(2024, 8, 31, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(5093),
+                            CreateAt = new DateTime(2024, 8, 31, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1780),
                             Image = "/Images/Magazine/Picture3.jpg",
                             Status = 1
                         },
@@ -1221,7 +1221,7 @@ namespace DATN.Core.Migrations
                             MagazineId = 4,
                             Caption = "Khai lộc thăng hạng, vượt đỉnh thăng hoa: Mua Tivi LG nhận ưu đãi đến 51.000.000đ cùng gói ứng dụng giải trí hấp dẫn",
                             Content = "Content 4",
-                            CreateAt = new DateTime(2024, 9, 1, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(5095),
+                            CreateAt = new DateTime(2024, 9, 1, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1782),
                             Image = "/Images/Magazine/Picture4.jpg",
                             Status = 1
                         });
@@ -1270,92 +1270,92 @@ namespace DATN.Core.Migrations
                         new
                         {
                             Id = 1,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1109),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1108),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6627),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6624),
                             Description = "Xuất xứ: Trung Quốc",
                             Name = "Trung Quốc",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1108)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6625)
                         },
                         new
                         {
                             Id = 2,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1113),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1111),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6629),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6628),
                             Description = "Xuất xứ: Hàn Quốc",
                             Name = "Hàn Quốc",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1112)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6628)
                         },
                         new
                         {
                             Id = 3,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1123),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1122),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6632),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6631),
                             Description = "Xuất xứ: Mỹ",
                             Name = "Mỹ",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1122)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6631)
                         },
                         new
                         {
                             Id = 4,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1125),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1124),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6641),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6640),
                             Description = "Xuất xứ: Nhật Bản",
                             Name = "Nhật Bản",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1124)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6640)
                         },
                         new
                         {
                             Id = 5,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1127),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1126),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6643),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6642),
                             Description = "Xuất xứ: Đức",
                             Name = "Đức",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1126)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6643)
                         },
                         new
                         {
                             Id = 6,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1129),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1128),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6645),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6644),
                             Description = "Xuất xứ: Anh",
                             Name = "Anh",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1129)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6645)
                         },
                         new
                         {
                             Id = 7,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1132),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1130),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6648),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6646),
                             Description = "Xuất xứ: Pháp",
                             Name = "Pháp",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1131)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6647)
                         },
                         new
                         {
                             Id = 8,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1134),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1133),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6650),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6649),
                             Description = "Xuất xứ: Việt Nam",
                             Name = "Việt Nam",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1133)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6649)
                         },
                         new
                         {
                             Id = 9,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1137),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1135),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6652),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6651),
                             Description = "Xuất xứ: Úc",
                             Name = "Úc",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1136)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6651)
                         },
                         new
                         {
                             Id = 10,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1139),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1138),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6654),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6653),
                             Description = "Xuất xứ: Canada",
                             Name = "Canada",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(1138)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(6654)
                         });
                 });
 
@@ -1406,6 +1406,20 @@ namespace DATN.Core.Migrations
                     b.HasIndex("PromotionId");
 
                     b.ToTable("ProductPromotions");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductPromotionId = 1,
+                            ProductId = 1,
+                            PromotionId = 11
+                        },
+                        new
+                        {
+                            ProductPromotionId = 2,
+                            ProductId = 2,
+                            PromotionId = 11
+                        });
                 });
 
             modelBuilder.Entity("DATN.Core.Model.Product_EAV.AttributeValue_EAV", b =>
@@ -1544,16 +1558,20 @@ namespace DATN.Core.Migrations
                         new
                         {
                             ProductId = 1,
+                            BrandId = 2,
                             Description = "",
+                            OriginId = 1,
                             ProductName = "Samsung Smart TV QLED QA55Q70C",
-                            Status = 0
+                            Status = 1
                         },
                         new
                         {
                             ProductId = 2,
+                            BrandId = 1,
                             Description = "",
+                            OriginId = 1,
                             ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL",
-                            Status = 0
+                            Status = 1
                         });
                 });
 
@@ -1567,6 +1585,12 @@ namespace DATN.Core.Migrations
 
                     b.Property<decimal>("AfterDiscountPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Discount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -1595,6 +1619,8 @@ namespace DATN.Core.Migrations
                         {
                             VariantId = 1,
                             AfterDiscountPrice = 70000m,
+                            Discount = 0,
+                            IsDefault = true,
                             ProductId = 1,
                             PuscharPrice = 50000m,
                             Quantity = 100,
@@ -1605,6 +1631,8 @@ namespace DATN.Core.Migrations
                         {
                             VariantId = 2,
                             AfterDiscountPrice = 71000m,
+                            Discount = 0,
+                            IsDefault = false,
                             ProductId = 1,
                             PuscharPrice = 52000m,
                             Quantity = 50,
@@ -1615,6 +1643,8 @@ namespace DATN.Core.Migrations
                         {
                             VariantId = 3,
                             AfterDiscountPrice = 70500m,
+                            Discount = 0,
+                            IsDefault = false,
                             ProductId = 1,
                             PuscharPrice = 48000m,
                             Quantity = 75,
@@ -1625,6 +1655,8 @@ namespace DATN.Core.Migrations
                         {
                             VariantId = 4,
                             AfterDiscountPrice = 71000m,
+                            Discount = 0,
+                            IsDefault = false,
                             ProductId = 1,
                             PuscharPrice = 49000m,
                             Quantity = 80,
@@ -1635,6 +1667,8 @@ namespace DATN.Core.Migrations
                         {
                             VariantId = 5,
                             AfterDiscountPrice = 71000m,
+                            Discount = 0,
+                            IsDefault = true,
                             ProductId = 2,
                             PuscharPrice = 49000m,
                             Quantity = 0,
@@ -1645,6 +1679,8 @@ namespace DATN.Core.Migrations
                         {
                             VariantId = 6,
                             AfterDiscountPrice = 71000m,
+                            Discount = 0,
+                            IsDefault = false,
                             ProductId = 2,
                             PuscharPrice = 49000m,
                             Quantity = 80,
@@ -1817,147 +1853,147 @@ namespace DATN.Core.Migrations
                         new
                         {
                             Id = 1,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4864),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4875),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1554),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1565),
                             Description = "Khuyến mãi giảm giá 10% cho tất cả các sản phẩm",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4881),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1571),
                             IsActive = false,
                             Name = "Giảm giá 10%",
                             Percent = 10.0,
-                            To = new DateTime(2024, 9, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4882),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4878)
+                            To = new DateTime(2024, 9, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1572),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1568)
                         },
                         new
                         {
                             Id = 2,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4889),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4889),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1579),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1579),
                             Description = "Chương trình mua 1 tặng 1 cho sản phẩm đã chọn",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4891),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1580),
                             IsActive = false,
                             Name = "Mua 1 tặng 1",
                             Percent = 0.0,
-                            To = new DateTime(2024, 10, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4891),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4890)
+                            To = new DateTime(2024, 10, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1581),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1579)
                         },
                         new
                         {
                             Id = 3,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4893),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4893),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1582),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1583),
                             Description = "Miễn phí vận chuyển cho đơn hàng trên 500,000 VNĐ",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4895),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1584),
                             IsActive = false,
                             Name = "Miễn phí vận chuyển",
                             Percent = 0.0,
-                            To = new DateTime(2024, 11, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4895),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4894)
+                            To = new DateTime(2024, 11, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1584),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1583)
                         },
                         new
                         {
                             Id = 4,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4896),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4897),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1586),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1586),
                             Description = "Nhận voucher trị giá 100,000 VNĐ cho mỗi đơn hàng",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4898),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1587),
                             IsActive = false,
                             Name = "Tặng voucher 100,000 VNĐ",
                             Percent = 0.0,
-                            To = new DateTime(2024, 12, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4898),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4897)
+                            To = new DateTime(2024, 12, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1588),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1586)
                         },
                         new
                         {
                             Id = 5,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4899),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4900),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1589),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1589),
                             Description = "Khuyến mãi giảm giá 50% cho tất cả sản phẩm mới ra mắt",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4901),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1591),
                             IsActive = false,
                             Name = "Giảm 50% cho sản phẩm mới",
                             Percent = 50.0,
-                            To = new DateTime(2025, 1, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4902),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4900)
+                            To = new DateTime(2025, 1, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1591),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1589)
                         },
                         new
                         {
                             Id = 6,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4904),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4904),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1593),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1593),
                             Description = "Nhận quà tặng hấp dẫn khi đặt hàng trên 1,000,000 VNĐ",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4905),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1594),
                             IsActive = false,
                             Name = "Tặng quà cho đơn hàng trên 1,000,000 VNĐ",
                             Percent = 0.0,
-                            To = new DateTime(2025, 2, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4908),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4904)
+                            To = new DateTime(2025, 2, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1595),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1593)
                         },
                         new
                         {
                             Id = 7,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4909),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4910),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1596),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1596),
                             Description = "Khuyến mãi giảm giá 20% cho tất cả sản phẩm phụ kiện",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4911),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1597),
                             IsActive = false,
                             Name = "Giảm 20% cho sản phẩm phụ kiện",
                             Percent = 20.0,
-                            To = new DateTime(2025, 3, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4911),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4910)
+                            To = new DateTime(2025, 3, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1598),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1596)
                         },
                         new
                         {
                             Id = 8,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4912),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4913),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1599),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1599),
                             Description = "Chương trình đổi sản phẩm cũ lấy sản phẩm mới với giá ưu đãi",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4914),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1601),
                             IsActive = false,
                             Name = "Đổi cũ lấy mới",
                             Percent = 0.0,
-                            To = new DateTime(2025, 4, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4915),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4913)
+                            To = new DateTime(2025, 4, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1602),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1599)
                         },
                         new
                         {
                             Id = 9,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4916),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4916),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1603),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1603),
                             Description = "Mua hàng tặng phiếu mua hàng trị giá 200,000 VNĐ",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4917),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1604),
                             IsActive = false,
                             Name = "Mua hàng tặng phiếu mua hàng",
                             Percent = 0.0,
-                            To = new DateTime(2025, 5, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4918),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4917)
+                            To = new DateTime(2025, 5, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1605),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1603)
                         },
                         new
                         {
                             Id = 10,
                             BannerUrl = "/Images/Component/BannerPromotion1.gif",
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4919),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4919),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1606),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1606),
                             Description = "Siêu sale đồng giảm 50% giá sản phẩm",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4921),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1607),
                             IsActive = true,
                             Name = "Đồng giảm giá 50%",
                             Percent = 50.0,
-                            To = new DateTime(2025, 6, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4921),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4920)
+                            To = new DateTime(2025, 6, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1608),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1606)
                         },
                         new
                         {
                             Id = 11,
                             BannerUrl = "/Images/Component/BannerPromotion2.webp",
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4923),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4923),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1610),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1610),
                             Description = "Siêu giảm giá mùa Ơ-RÔ",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4924),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1611),
                             IsActive = true,
                             Name = "Sôi động cùng mùa Ơ-rô",
                             Percent = 0.0,
-                            To = new DateTime(2025, 6, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4925),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(4924)
+                            To = new DateTime(2025, 6, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1612),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1610)
                         });
                 });
 
@@ -2168,35 +2204,35 @@ namespace DATN.Core.Migrations
                         new
                         {
                             Id = 1,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2826),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2820),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8243),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8237),
                             Description = "",
                             DiscountByPercent = 10,
                             DiscountByPrice = 0m,
                             Name = "VOUCHER10",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2822)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8238)
                         },
                         new
                         {
                             Id = 2,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2829),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2827),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8247),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8246),
                             Description = "",
                             DiscountByPercent = 20,
                             DiscountByPrice = 0m,
                             Name = "VOUCHER20",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2828)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8246)
                         },
                         new
                         {
                             Id = 3,
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2833),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2830),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8251),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8248),
                             Description = "",
                             DiscountByPercent = 0,
                             DiscountByPrice = 300000m,
                             Name = "VOUCHER300000",
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2830)
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8248)
                         });
                 });
 
@@ -2263,42 +2299,42 @@ namespace DATN.Core.Migrations
                         {
                             Id = 1,
                             AppUserId = new Guid("00bb44d1-f674-49f6-bdae-afb143ab9749"),
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2864),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2864),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8275),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8276),
                             Description = "",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2874),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8285),
                             IsDeleted = true,
                             Name = "",
                             To = new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2865),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8276),
                             VoucherId = 1
                         },
                         new
                         {
                             Id = 2,
                             AppUserId = new Guid("00bb44d1-f674-49f6-bdae-afb143ab9749"),
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2876),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2877),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8287),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8287),
                             Description = "",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2878),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8290),
                             IsDeleted = false,
                             Name = "",
                             To = new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2877),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8288),
                             VoucherId = 2
                         },
                         new
                         {
                             Id = 3,
                             AppUserId = new Guid("00bb44d1-f674-49f6-bdae-afb143ab9749"),
-                            CreateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2879),
-                            DeleteAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2879),
+                            CreateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8291),
+                            DeleteAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8291),
                             Description = "",
-                            From = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2881),
+                            From = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8293),
                             IsDeleted = false,
                             Name = "",
                             To = new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999),
-                            UpdateAt = new DateTime(2024, 8, 28, 14, 58, 38, 401, DateTimeKind.Local).AddTicks(2880),
+                            UpdateAt = new DateTime(2024, 8, 28, 15, 53, 22, 678, DateTimeKind.Local).AddTicks(8291),
                             VoucherId = 3
                         });
                 });
@@ -2398,19 +2434,19 @@ namespace DATN.Core.Migrations
                             Id = new Guid("2753c921-2304-4f8d-b8d5-75229d3b20d6"),
                             AccessFailedCount = 0,
                             Address = "123 Main St, City A",
-                            ConcurrencyStamp = "e6d59882-251b-44a6-900a-816af3880bbc",
-                            CreateDate = new DateTime(2024, 8, 28, 14, 58, 38, 187, DateTimeKind.Local).AddTicks(5126),
+                            ConcurrencyStamp = "fa05bad6-f737-462b-967f-ab9f8c8c86d0",
+                            CreateDate = new DateTime(2024, 8, 28, 15, 53, 22, 466, DateTimeKind.Local).AddTicks(1811),
                             Description = "Admin",
                             Dob = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Admin",
                             IsSentMail = false,
-                            LastLoginTime = new DateTime(2024, 8, 28, 7, 58, 38, 256, DateTimeKind.Utc).AddTicks(7144),
+                            LastLoginTime = new DateTime(2024, 8, 28, 8, 53, 22, 538, DateTimeKind.Utc).AddTicks(6802),
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGinC5xFHzgJIZKy+1uqvvNoIf4L56diTKrPsL//nT9imGA5iiRYCnPJiUq4YV5S1g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDCcmaaxpzAx3jrShqjGGmTauRk7XEkyM98FWAfS8jVYftNZt8iE4so6YlDnNXS0pQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -2422,19 +2458,19 @@ namespace DATN.Core.Migrations
                             Id = new Guid("00bb44d1-f674-49f6-bdae-afb143ab9749"),
                             AccessFailedCount = 0,
                             Address = "456 Oak St, City B",
-                            ConcurrencyStamp = "bc8d4e16-c026-496d-87e8-fb0ec3971941",
-                            CreateDate = new DateTime(2024, 8, 28, 14, 58, 38, 256, DateTimeKind.Local).AddTicks(7152),
+                            ConcurrencyStamp = "78ce2be9-d063-4a00-9acd-adcb8f2aaa6b",
+                            CreateDate = new DateTime(2024, 8, 28, 15, 53, 22, 538, DateTimeKind.Local).AddTicks(6811),
                             Description = "Customer",
                             Dob = new DateTime(1991, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "customer@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Customer",
                             IsSentMail = false,
-                            LastLoginTime = new DateTime(2024, 8, 28, 7, 58, 38, 330, DateTimeKind.Utc).AddTicks(6645),
+                            LastLoginTime = new DateTime(2024, 8, 28, 8, 53, 22, 608, DateTimeKind.Utc).AddTicks(8875),
                             LockoutEnabled = false,
                             NormalizedEmail = "CUSTOMER@GMAIL.COM",
                             NormalizedUserName = "CUSTOMER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGi2xCrjEX9863h9pHIPnl7mjzbkERhxZUIFTr7q6jyBcNrA0iNnS+gQDDopGVpF6g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEETVQPKzPA20eciMMxhdBrkP2TosakNtSS7v0FLRJyO0tuxEEM+PH/T3mP1KnER6ew==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -2446,19 +2482,19 @@ namespace DATN.Core.Migrations
                             Id = new Guid("aa7c5218-4f1e-4ac6-a3b4-08dcb162e29e"),
                             AccessFailedCount = 0,
                             Address = "456 Oak St, City B",
-                            ConcurrencyStamp = "413c8b1c-4ceb-4db0-a18c-14b9cbc71380",
-                            CreateDate = new DateTime(2024, 8, 28, 14, 58, 38, 330, DateTimeKind.Local).AddTicks(6660),
+                            ConcurrencyStamp = "2790520e-3e3e-4e8b-9d13-5ca9d7e05e80",
+                            CreateDate = new DateTime(2024, 8, 28, 15, 53, 22, 608, DateTimeKind.Local).AddTicks(8889),
                             Description = "Customer",
                             Dob = new DateTime(1991, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "customer2@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Customer",
                             IsSentMail = false,
-                            LastLoginTime = new DateTime(2024, 8, 28, 7, 58, 38, 400, DateTimeKind.Utc).AddTicks(9875),
+                            LastLoginTime = new DateTime(2024, 8, 28, 8, 53, 22, 678, DateTimeKind.Utc).AddTicks(5556),
                             LockoutEnabled = false,
                             NormalizedEmail = "CUSTOMER2@GMAIL.COM",
                             NormalizedUserName = "CUSTOMER2@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDXiFbNXFpoCd4cPBiIehewKatlYdxastp/8WLd6tHlBBZeNb8tQuVK/PmAYA8FLpA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBzcWM609fWrfI8S4leHX4YVWZjeCJfgiljqyyGSjv6ICCkpu9suf9EOOLwlOAW7nA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

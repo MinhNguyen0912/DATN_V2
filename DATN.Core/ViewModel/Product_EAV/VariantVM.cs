@@ -10,6 +10,8 @@ namespace DATN.Core.ViewModel.Product_EAV
         public decimal PuscharPrice { get; set; }
         public decimal SalePrice { get; set; }
         public decimal AfterDiscountPrice { get; set; }
+        public int Discount { get; set; }
+
         public int? Quantity { get; set; }
 
         // Navigation property

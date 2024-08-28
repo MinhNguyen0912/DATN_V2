@@ -1,0 +1,262 @@
+﻿<style>
+    .box {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-top: 20px;
+        margin-left: 10px;
+        background-color: #ffffff; /* Màu nền của hộp */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng cho hộp */
+    }
+
+    .productInfo .row {
+        display: flex;
+        gap: 15px; /* Khoảng cách giữa các cột */
+        margin-top: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .attribute-item {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #f9f9f9;
+        position: relative;
+    }
+
+        .attribute-item p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+    .btn-danger.btn-sm {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .variant-item {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: #f9f9f9;
+    }
+
+        .variant-item div {
+            margin-bottom: 10px;
+        }
+
+        .variant-item p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+
+</style>
+
+
+
+
+
+<!-- HTML structure -->
+<div>
+    <h2>Tạo sản phẩm</h2>
+</div>
+<div class="col-8">
+    <div class="productInfo box">
+        <h4>Thông tin sản phẩm</h4>
+        <div>
+            <label>Tên sản phẩm</label>
+            <input type="text" class="form-control" />
+        </div>
+        <div class="row align-items-center">
+            <div class="col">
+                <label>Nhà cung cấp</label>
+                <select class="form-control">
+                    <option>Chọn nhà cung cấp</option>
+                    <option>Samsung</option>
+                    <option>Apple</option>
+                    <option>Oppo</option>
+                </select>
+            </div>
+            <div class="col">
+                <label>Loại sản phẩm</label>
+                <select class="form-control">
+                    <option>Chọn loại sản phẩm</option>
+                    <option>Điện thoại</option>
+                    <option>Phụ kiện</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label>Mô tả sản phẩm</label>
+            <textarea class="form-control" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="variantInfo box">
+        <h4>Thông tin biến thể</h4>
+        <div class="row align-items-center">
+            <div class="col">
+                <label>Thuộc tính</label>
+                <select class="form-control" id="attributeSelect">
+                    <option value="">Chọn thuộc tính</option>
+                    <option value="Size">Size</option>
+                    <option value="Màu sắc">Màu sắc</option>
+                </select>
+            </div>
+            <div class="col">
+                <label>Giá trị</label>
+                <select class="form-control" id="valueSelect">
+                    <option value="">Chọn giá trị</option>
+                    <option value="Value1">Value1</option>
+                    <option value="Value2">Value2</option>
+                </select>
+            </div>
+            <div class="col">
+                <label>Giá bán</label>
+                <input type="number" class="form-control" id="priceInput" />
+            </div>
+            <div class="col">
+                <label>Số lượng</label>
+                <input type="number" class="form-control" id="quantityInput" />
+            </div>
+        </div>
+        <div id="attributesList" class="mt-3"></div> <!-- Nơi để hiển thị các thuộc tính của biến thể -->
+        <div class="text-center mt-3">
+            <button type="button" class="btn btn-primary" id="addAttributeButton" onclick="addAttribute()">Thêm thuộc tính</button>
+            <button type="button" class="btn btn-success" id="addVariantButton" onclick="addVariant()">Thêm biến thể</button>
+        </div>
+        <div id="variantsList" class="mt-3"></div> <!-- Nơi để hiển thị các biến thể đã thêm -->
+    </div>
+</div>
+
+
+
+    <!--Script-->
+    <script>
+    function addAttribute() {
+        const attributeSelect = document.getElementById('attributeSelect');
+        const valueSelect = document.getElementById('valueSelect');
+
+        const attribute = attributeSelect.value;
+        const value = valueSelect.value;
+
+        if (!attribute || !value) {
+            alert('Vui lòng chọn thuộc tính và giá trị!');
+            return;
+        }
+
+        const attributesList = document.getElementById('attributesList');
+        const attributeDiv = document.createElement('div');
+        attributeDiv.classList.add('attribute-item');
+        attributeDiv.innerHTML = `
+            <p><strong>Thuộc tính:</strong> ${attribute}</p>
+            <p><strong>Giá trị:</strong> ${value}</p>
+            <button type="button" class="btn btn-danger btn-sm" onclick="removeAttribute(this)">Xóa</button>
+        `;
+        attributesList.appendChild(attributeDiv);
+
+        // Reset form fields
+        attributeSelect.value = '';
+        valueSelect.value = '';
+    }
+
+
+    // Xóa thuộc tính
+    function removeAttribute(button) {
+        const attributeDiv = button.parentElement;
+        attributeDiv.remove();
+    }
+
+
+    // Thêm biến thể
+    function addVariant() {
+        const priceInput = document.getElementById('priceInput');
+        const quantityInput = document.getElementById('quantityInput');
+
+        const price = priceInput.value;
+        const quantity = quantityInput.value;
+
+        if (!price || !quantity) {
+            alert('Vui lòng nhập giá bán và số lượng!');
+            return;
+        }
+
+        const attributesList = document.getElementById('attributesList');
+        const attributes = Array.from(attributesList.children).map(attr => {
+            const attrName = attr.querySelector('p:nth-of-type(1)').innerText.replace('Thuộc tính:', '').trim();
+            const attrValue = attr.querySelector('p:nth-of-type(2)').innerText.replace('Giá trị:', '').trim();
+            return `${attrName}:${attrValue}`;
+        }).join('/');
+
+        const variantsList = document.getElementById('variantsList');
+        const variantDiv = document.createElement('div');
+        variantDiv.classList.add('variant-item');
+        variantDiv.innerHTML = `
+            <div style="border: 1px solid #ddd; border-radius: 4px; padding: 10px; margin-bottom: 10px;">
+                <div><strong>Tên biến thể:</strong> ${attributes}</div>
+                <p><strong>Giá bán:</strong> ${price}</p>
+                <p><strong>Số lượng:</strong> ${quantity}</p>
+            </div>
+        `;
+        variantsList.appendChild(variantDiv);
+
+        // Reset form fields
+        priceInput.value = '';
+        quantityInput.value = '';
+        attributesList.innerHTML = ''; // Xóa danh sách thuộc tính sau khi thêm biến thể
+    }
+
+
+
+    </script>
