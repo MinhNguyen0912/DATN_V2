@@ -5,9 +5,9 @@ using DATN.Core.Model.Product_EAV;
 using DATN.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Attribute = DATN.Core.Model.Product_EAV.Attribute;
-using AttributeValue = DATN.Core.Model.Product_EAV.AttributeValue;
-using Product = DATN.Core.Model.Product_EAV.Product;
+using Attribute_EAV = DATN.Core.Model.Product_EAV.Attribute_EAV;
+using AttributeValue_EAV = DATN.Core.Model.Product_EAV.AttributeValue_EAV;
+using Product_EAV = DATN.Core.Model.Product_EAV.Product_EAV;
 
 namespace DATN.Core.Data
 {
@@ -696,28 +696,28 @@ namespace DATN.Core.Data
 
             #region ProductEAV
             // Seed Product
-            modelBuilder.Entity<Product>().HasData(
-                new Product { ProductId = 1, ProductName = "Samsung Smart TV QLED QA55Q70C" }
+            modelBuilder.Entity<Product_EAV>().HasData(
+                new Product_EAV { ProductId = 1, ProductName = "Samsung Smart TV QLED QA55Q70C" }
             );
-            modelBuilder.Entity<Product>().HasData(
-                new Product { ProductId = 1, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL" }
+            modelBuilder.Entity<Product_EAV>().HasData(
+                new Product_EAV { ProductId = 1, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL" }
             );
 
             // Seed Attributes
-            modelBuilder.Entity<Attribute>().HasData(
-                new Attribute { AttributeId = 1, AttributeName = "Màu sắc" },
-                new Attribute { AttributeId = 2, AttributeName = "Kích thước" },
-                new Attribute { AttributeId = 3, AttributeName = "Dung tích" }
+            modelBuilder.Entity<Attribute_EAV>().HasData(
+                new Attribute_EAV { AttributeId = 1, AttributeName = "Màu sắc" },
+                new Attribute_EAV { AttributeId = 2, AttributeName = "Kích thước" },
+                new Attribute_EAV { AttributeId = 3, AttributeName = "Dung tích" }
             );
 
             // Seed AttributeValues
-            modelBuilder.Entity<AttributeValue>().HasData(
-                new AttributeValue { AttributeValueId = 1, AttributeId = 1, ValueText = "Đen" },
-                new AttributeValue { AttributeValueId = 2, AttributeId = 1, ValueText = "Trắng" },
-                new AttributeValue { AttributeValueId = 3, AttributeId = 2, ValueText = "50 inch" },
-                new AttributeValue { AttributeValueId = 4, AttributeId = 2, ValueText = "60 inch" },
-                new AttributeValue { AttributeValueId = 5, AttributeId = 3, ValueText = "40 lít" },
-                new AttributeValue { AttributeValueId = 6, AttributeId = 3, ValueText = "50 lít" }
+            modelBuilder.Entity<AttributeValue_EAV>().HasData(
+                new AttributeValue_EAV { AttributeValueId = 1, AttributeId = 1, ValueText = "Đen" },
+                new AttributeValue_EAV { AttributeValueId = 2, AttributeId = 1, ValueText = "Trắng" },
+                new AttributeValue_EAV { AttributeValueId = 3, AttributeId = 2, ValueText = "50 inch" },
+                new AttributeValue_EAV { AttributeValueId = 4, AttributeId = 2, ValueText = "60 inch" },
+                new AttributeValue_EAV { AttributeValueId = 5, AttributeId = 3, ValueText = "40 lít" },
+                new AttributeValue_EAV { AttributeValueId = 6, AttributeId = 3, ValueText = "50 lít" }
             );
 
             // Seed Variants

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.Repositories.ProductEAV
 {
-    public class ProductRepository:BaseRepository<Product>, IProductRepository
+    public class ProductRepository:BaseRepository<Product_EAV>, IProductRepository
     {
         private readonly IMapper _mapper;
         public ProductRepository(DATNDbContext context, IMapper mapper) : base(context)

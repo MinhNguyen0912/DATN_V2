@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.IRepositories.ProductEAV
 {
-    public interface IProductRepository:IBaseRepository<Product>
+    public interface IProductRepository:IBaseRepository<Product_EAV>
     {
     }
 }
