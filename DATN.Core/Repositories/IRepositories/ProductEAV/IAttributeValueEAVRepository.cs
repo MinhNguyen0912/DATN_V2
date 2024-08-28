@@ -5,11 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Attribute_EAV = DATN.Core.Model.Product_EAV.Attribute_EAV;
 
 namespace DATN.Core.Repositories.IRepositories.ProductEAV
 {
-    public interface IAttributeRepository : IBaseRepository<Attribute_EAV>
+    public interface IAttributeValueEAVRepository : IBaseRepository<AttributeValue_EAV>
     {
     }
 }

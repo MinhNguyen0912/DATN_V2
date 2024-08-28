@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.IRepositories.ProductEAV
 {
-    public interface IAttributeValueRepository : IBaseRepository<AttributeValue_EAV>
+    public interface IProductEAVRepository:IBaseRepository<Product_EAV>
     {
     }
 }

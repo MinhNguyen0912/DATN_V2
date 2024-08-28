@@ -3,7 +3,9 @@ using DATN.Core.Data;
 using DATN.Core.Model;
 using DATN.Core.Models;
 using DATN.Core.Repositories.IRepositories;
+using DATN.Core.Repositories.IRepositories.ProductEAV;
 using DATN.Core.Repositories.Repositories;
+using DATN.Core.Repositories.Repositories.ProductEAV;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 
@@ -57,6 +59,14 @@ namespace DATN.Core.Infrastructures
         private IImageTypeRepository _imageTypeRepository;
         private IVoucherRepository _voucherRepository;
         private IStatisticRepository _statisticRepository;
+
+
+
+        private IAttributeEAVRepository _attributeEAVRepository;
+        private IProductEAVRepository _productEAVRepository;
+        private IAttributeValueEAVRepository _attributeValueEAVRepository;
+        private IVariantAttributeRepository _variantAttributeRepository;
+        private IVariantRepository _variantRepository;
 
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
@@ -124,6 +134,13 @@ namespace DATN.Core.Infrastructures
         public IVoucherRepository VoucherRepository => _voucherRepository ??(_voucherRepository = new  VoucherRepository(_context, _mapper));
 
         public IStatisticRepository StatisticRepository => _statisticRepository ?? (_statisticRepository = new StatisticRepository(_context));
+
+
+        public IAttributeEAVRepository AttributeEAVRepository => _attributeEAVRepository ?? (_attributeEAVRepository = new AttributeEAVRepository(_context,_mapper));
+        public IProductEAVRepository ProductEAVRepository => _productEAVRepository ?? (_productEAVRepository = new ProductEAVRepository(_context, _mapper));
+        public IAttributeValueEAVRepository AttributeValueEAVRepository => _attributeValueEAVRepository ?? (_attributeValueEAVRepository = new AttributeValueEAVRepository(_context,_mapper));
+        public IVariantAttributeRepository VariantAttributeRepository => _variantAttributeRepository ?? (_variantAttributeRepository = new VariantAttributeRepository(_context, _mapper));
+        public IVariantRepository VariantRepository => _variantRepository ?? (_variantRepository = new VariantRepository(_context, _mapper));
 
         public void Dispose()
         {
