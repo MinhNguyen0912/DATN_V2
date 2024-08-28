@@ -17,7 +17,7 @@ namespace DATN.Core.Model.Product_EAV
         public int? Quantity { get; set; }
 
         // Navigation property
-        public Product Product { get; set; }
+        public Product_EAV Product { get; set; }
         public ICollection<VariantAttribute> VariantAttributes { get; set; }
     }
 }

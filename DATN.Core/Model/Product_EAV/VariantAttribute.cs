@@ -14,7 +14,7 @@ namespace DATN.Core.Model.Product_EAV
 
         // Navigation properties
         public Variant Variant { get; set; }
-        public AttributeValue AttributeValue { get; set; }
+        public AttributeValue_EAV AttributeValue { get; set; }
         
 
     }

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DATN.Core.Model.Product_EAV
 {
-    public class Attribute
+    public class Attribute_EAV
     {
         public int AttributeId { get; set; }
         public string AttributeName { get; set; }
 
         // Navigation property
-        public ICollection<AttributeValue> AttributeValues { get; set; }
+        public ICollection<AttributeValue_EAV> AttributeValues { get; set; }
     }
 }
