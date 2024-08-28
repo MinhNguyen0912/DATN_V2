@@ -1,9 +1,7 @@
 ﻿using DATN.Client.Constants;
 using DATN.Client.Services;
-using DATN.Core.ViewModel.ListProductCompVM;
 using DATN.Core.ViewModel.Paging;
-using DATN.Core.ViewModel.ProductVM;
-using DATN.Core.ViewModel.PromotionVM;
+using DATN.Core.ViewModel.Product_EAV;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers.Components
@@ -23,7 +21,7 @@ namespace DATN.Client.Controllers.Components
             var productsPaging = await _clientService.Get<ProductPaging>($"{ApiPaths.Product}/GetProductBySearch?search={search}&page={page}&pageSize={pageSize}");
 
             // Tạo danh sách sản phẩm và số lượng sản phẩm
-            var listProductVM = new List<ProductVM>();
+            var listProductVM = new List<ProductVM_EAV>();
             int totalItems = 0;
 
             if (productsPaging != null)
@@ -35,11 +33,11 @@ namespace DATN.Client.Controllers.Components
                     foreach (var item in productsPaging.Items)
                     {
                         // Lấy đánh giá và số lượng đánh giá cho từng sản phẩm
-                        var productRating = await _clientService.Get<double>($"{ApiPaths.Product}/GetProductRating?productId={item.Id}");
-                        var productRateCount = await _clientService.Get<int>($"{ApiPaths.Product}/GetProductRateCount?productId={item.Id}");
+                        //var productRating = await _clientService.Get<double>($"{ApiPaths.Product}/GetProductRating?productId={item.Id}");
+                        //var productRateCount = await _clientService.Get<int>($"{ApiPaths.Product}/GetProductRateCount?productId={item.Id}");
 
-                        item.Rating = productRating;
-                        item.RateCount = productRateCount;
+                        //item.Rating = productRating;
+                        //item.RateCount = productRateCount;
                     }
 
                     // Cập nhật danh sách sản phẩm

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -54,7 +53,7 @@ namespace DATN.Client.Services
                 return default;
             }
         }
-        public async Task<List<T>>GetList<T>(string url)
+        public async Task<List<T>> GetList<T>(string url)
         {
             var response = await _client.GetAsync(url);
             if (response.IsSuccessStatusCode)
@@ -144,7 +143,7 @@ namespace DATN.Client.Services
             {
                 return default;
             }
-            
+
         }
 
         public async Task<string?> Patch(string relativeUrl, object? data)

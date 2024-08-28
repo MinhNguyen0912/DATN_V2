@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
-using DATN.Core.ViewModel.NotificationVM;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.TimeRangeVM;
-using DATN.Core.ViewModels.Paging;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers
@@ -57,7 +54,7 @@ namespace DATN.API.Controllers
             {
                 CateId = (int)cate.ParentCategoryId;
             }
-            var timeRange = _unitOfWork.CategoryTimeRange.GetAll().Where(p=>p.CategoryId==CateId).Select(p=>p.TimeRange).ToList();
+            var timeRange = _unitOfWork.CategoryTimeRange.GetAll().Where(p => p.CategoryId == CateId).Select(p => p.TimeRange).ToList();
             if (timeRange == null)
             {
                 return NotFound(); // 404 Not Found
@@ -87,7 +84,7 @@ namespace DATN.API.Controllers
             return Ok(timeRange);
         }
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TimeRangeVM timeRangeVM) 
+        public async Task<IActionResult> Create([FromBody] TimeRangeVM timeRangeVM)
         {
             if (timeRangeVM == null)
             {

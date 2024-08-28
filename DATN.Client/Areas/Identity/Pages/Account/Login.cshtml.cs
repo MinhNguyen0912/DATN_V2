@@ -2,32 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using DATN.Client.Constants;
+using DATN.Client.Helper;
+using DATN.Client.Models;
+using DATN.Client.Services;
+using DATN.Core.Enum;
+using DATN.Core.Models;
+using DATN.Core.ViewModels;
+using DATN.Core.ViewModels.AuthenViewModel;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using DATN.Core.Models;
-using DATN.Client.Helper;
-using DATN.Client.Services;
 using Newtonsoft.Json;
-using DATN.Client.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using DATN.Core.Enum;
-using DATN.Client.Constants;
-using DATN.Core.ViewModels;
-using NuGet.Protocol.Plugins;
-using DATN.Core.ViewModels.AuthenViewModel;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using DATN.Core.ViewModels.AuthenViewModel;
 
 namespace DATN.Client.Areas.Identity.Pages.Account
 {

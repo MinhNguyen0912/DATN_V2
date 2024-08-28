@@ -5,7 +5,7 @@ namespace DATN.Core.Utitlities.FormatCurrency;
 public class FormatCurrency
 {
 
-    public string GetCurrency(decimal value, string culture="vi-VN")
+    public string GetCurrency(decimal value, string culture = "vi-VN")
     {
         CultureInfo vietnameseCulture = new CultureInfo(culture);
 

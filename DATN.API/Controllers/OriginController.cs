@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
-using DATN.Core.ViewModel.NotificationVM;
 using DATN.Core.ViewModel.OriginVM;
 using DATN.Core.ViewModels.Paging;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers
@@ -49,7 +47,7 @@ namespace DATN.API.Controllers
             return Ok(originDTO); // 200 OK
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update( [FromBody] OriginVM originVm)
+        public async Task<IActionResult> Update([FromBody] OriginVM originVm)
         {
             var origin = await _unitOfWork.originRepositoty.GetById(originVm.Id);
             if (origin == null)
@@ -87,7 +85,7 @@ namespace DATN.API.Controllers
             _unitOfWork.originRepositoty.Delete(origin);
             _unitOfWork.SaveChanges();
 
-            return Ok(origin); 
+            return Ok(origin);
         }
     }
 }

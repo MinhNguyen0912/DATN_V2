@@ -4,8 +4,8 @@ using DATN.Client.Services;
 using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
 using DATN.Core.ViewModel.Paging;
+using DATN.Core.ViewModel.Product_EAV;
 using DATN.Core.ViewModel.ProductCommentVM;
-using DATN.Core.ViewModel.ProductVM;
 using DATN.Core.ViewModel.PromotionVM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,87 +28,89 @@ namespace DATN.Client.Controllers
             _unitOfWork = unitOfWork;
             _httpClient = httpClient;
         }
-        public async Task< IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var requestUrl = $"{ApiPaths.Product}/GetAll";
 
-            var listProducts = await _clientService.Get<List<ProductVM>>(requestUrl);
+            var listProducts = await _clientService.Get<List<ProductVM_EAV>>(requestUrl);
 
             return View(listProducts);
         }
 
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var requestUrl = $"{ApiPaths.Product}/GetById/{id}";
-            var productResponse = await _clientService.Get<ProductVM>(requestUrl);
-            productResponse.Id = (int)id;
-            
-            var attributeRequestUrl = $"{ApiPaths.EAV}/GetProductAttributes/id?id={id}";
-            var attributesResponse = await _clientService.Get<List<ProductAttributeDetailVM>>(attributeRequestUrl);
+            //var requestUrl = $"{ApiPaths.Product}/GetById/{id}";
+            //var productResponse = await _clientService.Get<ProductVM_EAV>(requestUrl);
+            //productResponse.Id = (int)id;
 
-            var listattributeRequestUrl = $"{ApiPaths.EAV}/GetListAttributes/id?id={id}";
-            var listAttributesResponse = await _clientService.Get<List<AttributesVM>>(listattributeRequestUrl);
+            //var attributeRequestUrl = $"{ApiPaths.EAV}/GetProductAttributes/id?id={id}";
+            //var attributesResponse = await _clientService.Get<List<ProductAttributeDetailVM>>(attributeRequestUrl);
 
-            var productPromotionResponse = await _clientService.Get<List<PromotionVM>>($"{ApiPaths.Promotion}/GetPromotionByProductId/productId?productId={id}");
-            CommentPaging commentPaging = new CommentPaging();
-            commentPaging.CurrentPage = 0;
-            commentPaging.PageSize = 2;
-            commentPaging.ProductId = id;
-            var productCommentResponse = await _clientService.Post<CommentOverviewVM>($"{ApiPaths.Comment}/comment-by-product-id",commentPaging);
+            //var listattributeRequestUrl = $"{ApiPaths.EAV}/GetListAttributes/id?id={id}";
+            //var listAttributesResponse = await _clientService.Get<List<AttributesVM>>(listattributeRequestUrl);
 
-            var productEditViewModel = new ProductEditViewModel
-            {
-                Product = productResponse,
-                Attributes = attributesResponse,
-                listAttributes = listAttributesResponse,
-                listPromotions = productPromotionResponse,
-                CommentOverviewVm = productCommentResponse
-            };
+            //var productPromotionResponse = await _clientService.Get<List<PromotionVM>>($"{ApiPaths.Promotion}/GetPromotionByProductId/productId?productId={id}");
+            //CommentPaging commentPaging = new CommentPaging();
+            //commentPaging.CurrentPage = 0;
+            //commentPaging.PageSize = 2;
+            //commentPaging.ProductId = id;
+            //var productCommentResponse = await _clientService.Post<CommentOverviewVM>($"{ApiPaths.Comment}/comment-by-product-id", commentPaging);
 
-            ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
-            {
-                Text = v.ToString(),
-                Value = ((int)v).ToString()
-            }).ToList(), "Value", "Text");
-            return View(productEditViewModel);
+            //var productEditViewModel = new ProductEditViewModel
+            //{
+            //    Product = productResponse,
+            //    Attributes = attributesResponse,
+            //    listAttributes = listAttributesResponse,
+            //    listPromotions = productPromotionResponse,
+            //    CommentOverviewVm = productCommentResponse
+            //};
+
+            //ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
+            //{
+            //    Text = v.ToString(),
+            //    Value = ((int)v).ToString()
+            //}).ToList(), "Value", "Text");
+            //return View(productEditViewModel);
+            return View();
         }
 
-        public async Task<IActionResult> ViewAllComment(int? id,int? pageIndex,int? ratingStar)
+        public async Task<IActionResult> ViewAllComment(int? id, int? pageIndex, int? ratingStar)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var requestUrl = $"{ApiPaths.Product}/GetById/{id}";
-            var productResponse = await _clientService.Get<ProductVM>(requestUrl);
+            //var requestUrl = $"{ApiPaths.Product}/GetById/{id}";
+            //var productResponse = await _clientService.Get<ProductVM_EAV>(requestUrl);
 
-            
-            CommentPaging commentPaging = new CommentPaging();
-            commentPaging.CurrentPage = pageIndex.HasValue?(int)pageIndex:0 ;
-            commentPaging.PageSize = 20;
-            commentPaging.StarRating = ratingStar;
-            commentPaging.ProductId = id;
-            var productCommentResponse = await _clientService.Post<CommentOverviewVM>($"{ApiPaths.Comment}/comment-by-product-id",commentPaging);
-            var productEditViewModel = new ProductEditViewModel
-            {
-                Product = productResponse,
-                CommentOverviewVm = productCommentResponse
-            };
 
-            ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
-            {
-                Text = v.ToString(),
-                Value = ((int)v).ToString()
-            }).ToList(), "Value", "Text");
-            return View(productEditViewModel);
+            //CommentPaging commentPaging = new CommentPaging();
+            //commentPaging.CurrentPage = pageIndex.HasValue ? (int)pageIndex : 0;
+            //commentPaging.PageSize = 20;
+            //commentPaging.StarRating = ratingStar;
+            //commentPaging.ProductId = id;
+            //var productCommentResponse = await _clientService.Post<CommentOverviewVM>($"{ApiPaths.Comment}/comment-by-product-id", commentPaging);
+            //var productEditViewModel = new ProductEditViewModel
+            //{
+            //    Product = productResponse,
+            //    CommentOverviewVm = productCommentResponse
+            //};
+
+            //ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
+            //{
+            //    Text = v.ToString(),
+            //    Value = ((int)v).ToString()
+            //}).ToList(), "Value", "Text");
+            //return View(productEditViewModel);
+            return View();
         }
-        
+
         public async Task<IActionResult> Search(string query)
         {
             ViewBag.SearchQuery = query;

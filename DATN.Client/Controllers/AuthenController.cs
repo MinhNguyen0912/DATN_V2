@@ -4,18 +4,13 @@ using DATN.Client.Models;
 using DATN.Client.Services;
 using DATN.Core.Enum;
 using DATN.Core.Models;
-using DATN.Core.ViewModel.AuthenVM;
 using DATN.Core.ViewModels;
 using DATN.Core.ViewModels.AuthenViewModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Data;
 using System.Security.Claims;
-using System.Security.Policy;
-using System.Text;
 
 namespace DATN.Client.Controllers
 {

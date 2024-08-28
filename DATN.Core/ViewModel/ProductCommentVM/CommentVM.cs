@@ -1,13 +1,4 @@
 ﻿using DATN.Core.Enum;
-using DATN.Core.Model.Product;
-using DATN.Core.Model;
-using DATN.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DATN.Core.ViewModel.ProductCommentVM
 {

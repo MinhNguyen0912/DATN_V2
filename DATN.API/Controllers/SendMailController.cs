@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using DATN.Api.MailService;
+﻿using DATN.Api.MailService;
 using DATN.Core.ViewModels.SendMailVM;
-using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Api.Controllers
 {

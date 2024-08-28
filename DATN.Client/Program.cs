@@ -1,29 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DATN.Client;
+using DATN.Client.Controllers.Components;
 using DATN.Client.Services;
 using DATN.Core.AutoMapper;
 using DATN.Core.Data;
 using DATN.Core.Infrastructures;
 using DATN.Core.Models;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
-using OfficeOpenXml;
-using LicenseContext = OfficeOpenXml.LicenseContext;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Builder;
-using System.Configuration;
-using Microsoft.AspNetCore.Authentication.Facebook;
-using Microsoft.AspNetCore.Authentication;
-using System.Diagnostics.Eventing.Reader;
-using DATN.Client;
-using DATN.Client.Services;
-using DATN.Core.AutoMapper;
-using DATN.Core.Infrastructures;
-using DATN.Core.Models;
 using DATN.Core.Repositories.IRepositories;
 using DATN.Core.Repositories.Repositories;
-using DATN.Client.Controllers.Components;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using LicenseContext = OfficeOpenXml.LicenseContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,23 +73,23 @@ builder.Services.AddAuthentication(options =>
         options.SlidingExpiration = true;
         options.AccessDeniedPath = "/Error/Error403";
     });
-    //.AddGoogle(googleOptions =>
-    //{
-    //    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    //    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    //    googleOptions.CallbackPath = "/signin-google";
+//.AddGoogle(googleOptions =>
+//{
+//    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+//    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+//    googleOptions.CallbackPath = "/signin-google";
 
-    //})
-    //.AddFacebook(facebookOptions =>
-    //{
-    //    // Đọc cấu hình
-    //    IConfigurationSection facebookAuthNSection = builder.Configuration.GetSection("Authentication:Facebook");
-    //    facebookOptions.AppId = facebookAuthNSection["AppId"];
-    //    facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
+//})
+//.AddFacebook(facebookOptions =>
+//{
+//    // Đọc cấu hình
+//    IConfigurationSection facebookAuthNSection = builder.Configuration.GetSection("Authentication:Facebook");
+//    facebookOptions.AppId = facebookAuthNSection["AppId"];
+//    facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
 
-    //    // Thiết lập đường dẫn Facebook chuyển hướng đến
-    //    facebookOptions.CallbackPath = "/signin-facebook";
-    //});
+//    // Thiết lập đường dẫn Facebook chuyển hướng đến
+//    facebookOptions.CallbackPath = "/signin-facebook";
+//});
 builder.Services.AddHttpContextAccessor();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -172,7 +161,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"); 
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "Admin",
     pattern: "{areas=Admin}/{controller=Home}/{action=Index}/{id?}");

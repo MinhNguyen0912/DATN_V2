@@ -73,37 +73,37 @@ namespace DATN.Core.Repositories.Repositories
             foreach (var x in request.Items)
             {
                 List<decimal> listFinalPrice = new List<decimal>();
-                foreach (var invoice in lstInvoiceByUserId.Where(c=>c.UserId==x.Id))
+                foreach (var invoice in lstInvoiceByUserId.Where(c => c.UserId == x.Id))
                 {
-                    
-                        var totalBill =(decimal) Context.InvoiceDetails.AsQueryable()
-                            .Where(c => c.InvoiceId == invoice.InvoiceId).Sum(su => su.Quantity * su.NewPrice);
-                        if (totalBill>1)
+
+                    var totalBill = (decimal)Context.InvoiceDetails.AsQueryable()
+                        .Where(c => c.InvoiceId == invoice.InvoiceId).Sum(su => su.Quantity * su.NewPrice);
+                    if (totalBill > 1)
+                    {
+                        var getVoucher = lstVoucherUsers.FirstOrDefault(c => c.Id == invoice.VoucherUserId);
+                        if (getVoucher != null)
                         {
-                            var getVoucher = lstVoucherUsers.FirstOrDefault(c => c.Id == invoice.VoucherUserId);
-                            if (getVoucher != null)
-                            {
-                                var Voucher = lstVoucherById.FirstOrDefault(vou => vou.Id == getVoucher.VoucherId);
-                                var discountValuePercent = (totalBill / 100) * Voucher.DiscountByPercent;
-                                var final = totalBill - discountValuePercent  -Voucher.DiscountByPrice;
-                                listFinalPrice.Add((decimal)final);
-                            }
-                            else
-                            {
-                                listFinalPrice.Add(totalBill);
-                            }
+                            var Voucher = lstVoucherById.FirstOrDefault(vou => vou.Id == getVoucher.VoucherId);
+                            var discountValuePercent = (totalBill / 100) * Voucher.DiscountByPercent;
+                            var final = totalBill - discountValuePercent - Voucher.DiscountByPrice;
+                            listFinalPrice.Add((decimal)final);
                         }
                         else
                         {
-                            listFinalPrice.Add(0);
+                            listFinalPrice.Add(totalBill);
                         }
-                   
-                   
+                    }
+                    else
+                    {
+                        listFinalPrice.Add(0);
+                    }
+
+
                 }
-                
+
                 //var listVoucherByCondition = lstVoucherUsers.Where(c => c.AppUserId == x.Id).Select(c => c.VoucherId);
                 x.GrandTotalAmountPurchased = formatCurrency.GetCurrency(
-                    Convert.ToDecimal(listFinalPrice.Sum(c=>c)));
+                    Convert.ToDecimal(listFinalPrice.Sum(c => c)));
                 x.ListVoucherNameByUser = lstVoucherById.Where(c =>
                     lstVoucherUsers.Where(c => c.AppUserId == x.Id).Select(inv => inv.VoucherId).ToList()
                         .Contains(c.Id)).Select(c => c.Name);
@@ -171,7 +171,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public async Task<IEnumerable<string>> GetListVoucherByUserId(Guid userId)
         {
-            var lstVoucherUsers = Context.VoucherUsers.AsQueryable().Where(c =>c.AppUserId==userId)
+            var lstVoucherUsers = Context.VoucherUsers.AsQueryable().Where(c => c.AppUserId == userId)
                 .ToList();
             var lstVoucherId = lstVoucherUsers.Select(c => c.VoucherId);
             var lstVoucher = Context.Vouchers.AsQueryable();

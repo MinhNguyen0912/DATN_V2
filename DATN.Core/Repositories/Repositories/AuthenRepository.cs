@@ -2,20 +2,15 @@
 using DATN.Core.Enum;
 using DATN.Core.Models;
 using DATN.Core.Repositories.IRepositories;
-using DATN.Core.ViewModel.AuthenVM;
-using DATN.Core.ViewModels.AuthenViewModel;
 using DATN.Core.ViewModels;
+using DATN.Core.ViewModels.AuthenViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.Repositories
 {

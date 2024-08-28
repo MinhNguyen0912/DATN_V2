@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using DATN.Core.Infrastructures;
-using DATN.Core.ViewModels.AuthenViewModel;
-using DATN.Core.ViewModels;
-using DATN.Core.Models;
 using DATN.Api.Helpers;
+using DATN.Core.Infrastructures;
+using DATN.Core.Models;
+using DATN.Core.ViewModels;
+using DATN.Core.ViewModels.AuthenViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Api.Controllers
 {

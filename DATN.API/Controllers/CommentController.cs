@@ -1,14 +1,8 @@
 ﻿using AutoMapper;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
-using DATN.Core.Model.Product;
-using DATN.Core.ViewModel.ListProductCompVM;
 using DATN.Core.ViewModel.Paging;
-using DATN.Core.ViewModel.ProductAtAndressVM;
 using DATN.Core.ViewModel.ProductCommentVM;
-using DATN.Core.ViewModel.ProductVM;
-using DATN.Core.ViewModels.Paging;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers
@@ -62,7 +56,7 @@ namespace DATN.API.Controllers
         }
         // GET: api/comments/{id}
         [HttpPost("comment-by-product-id")]
-        public async Task<IActionResult> GetCommentPagingByProductId([FromBody]CommentPaging paging)
+        public async Task<IActionResult> GetCommentPagingByProductId([FromBody] CommentPaging paging)
         {
             var comment = await _unitOfWork.commentRepository.GetCommentPagingByProductId(paging);
             if (comment == null)
@@ -92,7 +86,7 @@ namespace DATN.API.Controllers
                 Console.WriteLine(e);
                 throw;
             }
-           
+
         }
 
         // PUT: api/comments/{id}

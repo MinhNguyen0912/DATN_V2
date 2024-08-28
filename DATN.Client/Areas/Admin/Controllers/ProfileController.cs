@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using DATN.Client.Constants;
 using DATN.Client.Helper;
 using DATN.Client.Models;
@@ -8,6 +6,8 @@ using DATN.Client.Services;
 using DATN.Core.Models;
 using DATN.Core.ViewModels;
 using DATN.Core.ViewModels.UserViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Areas.Admin.Controllers
 {

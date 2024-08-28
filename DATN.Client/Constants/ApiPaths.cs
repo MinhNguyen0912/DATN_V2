@@ -23,5 +23,11 @@
         public static string ProductAtribute = "ProductAtribute";
         public static string Invoice = "Invoice";
         public static string Statistic = "Statistic";
+
+        public static string AttributeEAV = "AttributeEAV";
+        public static string ProductAttributeEAV = "ProductAttributeEAV";
+        public static string ProductEAV = "ProductEAV";
+        public static string VariantAttributeEAV = "VariantAttributeEAV";
+        public static string VariantEAV = "VariantEAV";
     }
 }

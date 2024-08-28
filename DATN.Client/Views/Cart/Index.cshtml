@@ -5,7 +5,7 @@
     ViewData["Title"] = "Cart";
     ViewData["PageCSS"] = "cart.css";
     var voucher = ViewData["Voucher"] == null ? new List<DATN.Core.Model.VoucherUser>() : ViewData["Voucher"] as List<DATN.Core.Model.VoucherUser>;
-    var product = ViewData["product"] == null ? new List<DATN.Core.ViewModel.ProductVM.ProductVM>() : ViewData["product"] as List<DATN.Core.ViewModel.ProductVM.ProductVM>;
+    var product = ViewData["product"] == null ? new List<DATN.Core.ViewModel.Product_EAV.ProductVM_EAV>() : ViewData["product"] as List<DATN.Core.ViewModel.Product_EAV.ProductVM_EAV>;
     var invoiceId = TempData["invoiceId"];
     var paymentStatus = TempData["paymentStatus"];
 }

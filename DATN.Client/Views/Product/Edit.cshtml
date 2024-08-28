@@ -1,4 +1,4 @@
-﻿@model DATN.Core.ViewModel.ProductVM.ProductEditViewModel
+﻿@* @model DATN.Core.ViewModel.ProductVM.ProductEditViewModel *@
 
 @{
     // ViewData["Title"] = "Details";
@@ -33,7 +33,7 @@
             <div class="col-7">
                 <div id="carouselExampleControls2" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        @foreach (var item in Model.Product.Images.Where(p => p.IsDefault == false).Select((value, index) => new { value, index }))
+                        @foreach (var item in Model.Product.Images)
                         {
                             if (item.index == 0)
                             {
