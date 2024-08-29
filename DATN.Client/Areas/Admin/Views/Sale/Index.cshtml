@@ -1,0 +1,384 @@
+﻿@using DATN.Core.ViewModel.InvoiceDetailVM
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<style>
+    /* Container background and padding */
+    .container-fluid {
+        background-color: #007bff; /* Primary blue background */
+        padding: 16px;
+    }
+
+    /* Input Group Styling */
+    .input-group .form-control {
+        background-color: #f8f9fa;
+        border: none;
+        box-shadow: none;
+    }
+
+    /* Button Styles */
+    .btn-dark {
+        background-color: #343a40;
+        border: none;
+    }
+
+    .btn-outline-light {
+        border: none;
+    }
+
+    .btn-light {
+        background-color: #f8f9fa;
+        border: none;
+        color: #343a40;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        /* Button Hover Effects */
+        .btn-dark:hover, .btn-danger:hover, .btn-primary:hover, .btn-light:hover {
+            opacity: 0.9;
+        }
+
+    /* Additional Styling for Icons */
+    .bi {
+        font-size: 1.2em;
+    }
+
+    .nav-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+    }
+
+        .nav-item .btn-close {
+            position: absolute;
+            right: 2px; /* Khoảng cách từ nút đóng đến cạnh phải của tab */
+        }
+
+    #productDropdown {
+        margin-top: 60px;
+        display: none;
+        max-height: 300px;
+        overflow-y: auto;
+        border-radius: 0.5rem;
+    }
+
+        #productSearch:focus + #productDropdown,
+        #productDropdown:hover {
+            display: block;
+        }
+
+        #productDropdown .dropdown-item {
+            cursor: pointer;
+        }
+
+            #productDropdown .dropdown-item img {
+                width: 50px;
+                height: 50px;
+                object-fit: cover;
+                border-radius: 0.25rem;
+            }
+
+    #addNewProduct {
+        font-weight: bold;
+        text-align: center;
+        border-bottom: 1px solid #dee2e6;
+    }
+</style>
+<div class="row">
+    <!-- Add product -->
+    <div class="container-fluid p-3 bg-primary text-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <!-- Input Group for Adding Products -->
+            <div class="input-group w-50 position-relative">
+                <button class="btn btn-dark" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+                <input type="text" class="form-control" placeholder="Thêm sản phẩm vào đơn hàng" id="productSearch" onfocus="showDropdown()" onblur="hideDropdown()">
+                <button class="btn btn-outline-light" type="button">
+                    <i class="bi bi-upc-scan"></i>
+                </button>
+                <ul class="dropdown-menu position-absolute w-100" id="productDropdown" style="margin-top: 60px;">
+                    <li class="dropdown-item" id="addNewProduct" onclick="showAddProductPopup()">
+                        <i class="bi bi-plus-circle"></i> Thêm sản phẩm mới
+                    </li>
+                    <li class="dropdown-item d-flex align-items-center" data-id="1" data-name="Áo thun dài tay Fred Perry" data-price="1000000" data-qty="68">
+                        <img src="https://via.placeholder.com/50" alt="Product 1" class="me-3">
+                        <div class="flex-grow-1">
+                            <div>Áo thun dài tay Fred Perry</div>
+                            <small class="text-muted">PVN04 Tím</small>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span>1,000,000 VND</span>
+                                <span>Có thể bán: 68</span>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Thêm các sản phẩm khác tương tự -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="tab-content" id="dynamicTabContent">
+
+            <div class="tabInvoice">
+                <!-- Tab Navigation -->
+                <ul class="nav nav-tabs" id="dynamicTabs" role="tablist" style="white-space: nowrap; overflow-x: auto;">
+                    <li class="nav-item d-flex align-items-center" role="presentation">
+                        <button class="nav-link active d-flex align-items-center" id="tab-0" data-bs-toggle="tab" data-bs-target="#content-0" type="button" role="tab" aria-controls="content-0" aria-selected="true" style="display: inline-flex;">
+                            Tab 1
+                        </button>
+                        <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(0)" style="position: absolute; right: 0;"></button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="addTabButton" type="button">+</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-pane fade show active" id="content-0" role="tabpanel" aria-labelledby="tab-0">
+                <div class="overflow-auto" style="height: 600px;">
+                    <!-- Product Rows will be added here -->
+                </div>
+            </div>
+            <!-- Service -->
+            <!-- <div class="row">
+                <button class="btn btn-primary col-md-3 ms-2 me-2" type="submit">Button</button>
+                <button class="btn btn-primary  col-md-3  ms-2 me-2" type="submit">Button</button>
+                <button class="btn btn-primary  col-md-3   ms-2 me-2" type="submit">Button</button>
+            </div>
+            <div class="row mt-2">
+                <button class="btn btn-primary col-md-3 ms-2 me-2" type="submit">Button</button>
+                <button class="btn btn-primary col-md-3 ms-2 me-2" type="submit">Button</button>
+                <button class="btn btn-primary col-md-3 ms-2 me-2" type="submit">Button</button>
+            </div> -->
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="InforInvoice row">
+            <div class="overflow-auto" style="height: 600px;">
+                <div class="card shadow-sm p-3">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="search-icon"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Thêm khách hàng vào đơn (F4)" aria-label="Search" aria-describedby="search-icon">
+                        <button class="btn btn-outline-secondary" type="button"><i class="bi bi-plus-lg"></i></button>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Số lượng sản phẩm
+                            <span>2</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Tổng tiền
+                            <span>554,000</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            VAT
+                            <span>0</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Chiết khấu
+                            <span>0</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                            Khách phải trả
+                            <span>554,000</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Tiền khách đưa
+                            <input type="number">
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
+                            Tiền mặt
+                            <span></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Tiền thừa
+                            <span>0</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+
+                <button class="btn btn-primary col-4 ms-3 me-2">Thanh toán nhiều hình thức</button>
+                <button class="btn btn-success col-7 ms-2">Thanh toán</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    let tabCount = 1;
+    let productCounters = {}; // Object to keep track of product counts per tab
+
+    document.getElementById('addTabButton').addEventListener('click', function () {
+        addTab();
+    });
+
+    function addTab() {
+        const newTabId = `tab-${tabCount}`;
+        const newContentId = `content-${tabCount}`;
+
+        const newTab = document.createElement('li');
+        newTab.className = 'nav-item';
+        newTab.setAttribute('role', 'presentation');
+        newTab.innerHTML = `
+                            <button class="nav-link d-flex align-items-center" id="${newTabId}" data-bs-toggle="tab" data-bs-target="#${newContentId}" type="button" role="tab" aria-controls="${newContentId}" aria-selected="false">
+                                Tab ${tabCount + 1}
+                                <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(${tabCount})"></button>
+                            </button>
+                        `;
+
+        const addTabButton = document.getElementById('addTabButton').parentNode;
+        document.getElementById('dynamicTabs').insertBefore(newTab, addTabButton);
+
+        const newContent = document.createElement('div');
+        newContent.className = 'tab-pane fade';
+        newContent.id = newContentId;
+        newContent.setAttribute('role', 'tabpanel');
+        newContent.setAttribute('aria-labelledby', newTabId);
+        newContent.innerHTML = `
+                            <div class="overflow-auto" style="height: 600px;">
+                                <!-- Product Rows will be added here -->
+                            </div>
+                        `;
+
+        document.getElementById('dynamicTabContent').appendChild(newContent);
+
+        // Initialize product counter for this tab
+        productCounters[newContentId] = 1;
+
+        tabCount++;
+        const newTabButton = new bootstrap.Tab(newTab.querySelector('.nav-link'));
+        newTabButton.show();
+    }
+
+    function closeTab(index) {
+        const tabToRemove = document.getElementById(`tab-${index}`).parentNode;
+        const contentToRemove = document.getElementById(`content-${index}`);
+
+        if (tabToRemove.querySelector('.nav-link').classList.contains('active')) {
+            const previousTab = tabToRemove.previousElementSibling ? tabToRemove.previousElementSibling.querySelector('.nav-link') : tabToRemove.nextElementSibling.querySelector('.nav-link');
+            const tabInstance = new bootstrap.Tab(previousTab);
+            tabInstance.show();
+        }
+
+        tabToRemove.remove();
+        contentToRemove.remove();
+        delete productCounters[`content-${index}`]; // Remove product counter for this tab
+    }
+
+    document.querySelectorAll('#productDropdown .dropdown-item[data-id]').forEach(item => {
+        item.addEventListener('click', function () {
+            const productName = this.getAttribute('data-name');
+            const productPrice = parseInt(this.getAttribute('data-price'), 10);
+            const productQty = this.getAttribute('data-qty');
+            const productId = this.getAttribute('data-id');
+
+            addProductToCurrentTab(productName, productPrice, productQty, productId);
+        });
+    });
+
+    function addProductToCurrentTab(name, price, qty, id) {
+        const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
+        const activeTabId = activeTabPane.parentNode.id;
+
+        const productRow = document.createElement('div');
+        productRow.className = 'row align-items-center border-bottom py-2 m-2 shadow-sm';
+        productRow.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        productRow.innerHTML = `
+                            <div class="col-auto">${productCounters[activeTabId]}</div>
+                            <div class="col-auto">
+                                <input type="checkbox" class="form-check-input">
+                            </div>
+                            <div class="col-auto">
+                                <span class="badge bg-secondary">PVN0${id}</span>
+                            </div>
+                            <div class="col">
+                                <h6 class="mb-0">${name}</h6>
+                                <small class="text-muted">travel size</small>
+                            </div>
+                            <div class="col-auto">
+                                <input type="number" class="form-control form-control-sm qty-input" value="1" style="width: 60px;" min="1" max="3" data-price="${price}" oninput="updateTotalPrice(this)">
+                            </div>
+                            <div class="col-auto text-end">
+                                <span class="unit-price">${price.toLocaleString()} VND</span>
+                            </div>
+                            <div class="col-auto text-end">
+                                <span class="total-price">${price.toLocaleString()} VND</span>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeProduct(this)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        `;
+        activeTabPane.appendChild(productRow);
+
+        productCounters[activeTabId]++; // Increment the product counter for the current tab
+    }
+
+    function removeProduct(button) {
+        const row = button.closest('.row');
+        row.remove();
+        updateProductNumbers();
+    }
+
+    function updateProductNumbers() {
+        const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
+        const activeTabId = activeTabPane.parentNode.id;
+        const rows = activeTabPane.querySelectorAll('.row');
+
+        productCounters[activeTabId] = 1; // Reset the counter
+
+        rows.forEach((row, index) => {
+            const numCell = row.querySelector('.col-auto:first-child');
+            numCell.textContent = productCounters[activeTabId];
+            productCounters[activeTabId]++;
+        });
+    }
+
+    function updateTotalPrice(input) {
+        const qty = parseInt(input.value, 10);
+        const price = parseInt(input.getAttribute('data-price'), 10);
+        const totalPriceElement = input.closest('.row').querySelector('.total-price');
+
+        if (qty >= 1 && qty <= 3) {
+            const totalPrice = price * qty;
+            totalPriceElement.textContent = totalPrice.toLocaleString() + " VND";
+        } else {
+            input.value = qty < 1 ? 1 : 3; // Enforce limits
+            updateTotalPrice(input); // Recalculate total price with corrected value
+        }
+    }
+
+    function showDropdown() {
+        document.getElementById('productDropdown').style.display = 'block';
+    }
+
+    function hideDropdown() {
+        setTimeout(function () {
+            document.getElementById('productDropdown').style.display = 'none';
+        }, 200);
+    }
+
+    function showAddProductPopup() {
+        alert("Hiển thị popup để thêm sản phẩm mới");
+    }
+
+</script>
+
