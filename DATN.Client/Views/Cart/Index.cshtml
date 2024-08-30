@@ -100,11 +100,11 @@
                     <div class="form-group">
                         <label class="control-label">Mã giảm giá</label>
                         <select class="form-control" id="voucherSelect">
-                            <option value="0"> Chọn mã giảm giá</option>
+                            @* <option value="0"> Chọn mã giảm giá</option>
                             @foreach (var item in voucher)
                             {
                                 <option value="@item.Id" percent="@item.Voucher.DiscountByPercent" price="@item.Voucher.DiscountByPrice">@item.Voucher.Name</option>
-                            }
+                            } *@
                         </select>
                     </div>
                 </div>
