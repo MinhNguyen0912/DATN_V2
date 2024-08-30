@@ -80,18 +80,18 @@ namespace DATN.Core.Repositories.Repositories
                         .Where(c => c.InvoiceId == invoice.InvoiceId).Sum(su => su.Quantity * su.NewPrice);
                     if (totalBill > 1)
                     {
-                        var getVoucher = lstVoucherUsers.FirstOrDefault(c => c.Id == invoice.VoucherUserId);
-                        if (getVoucher != null)
-                        {
-                            var Voucher = lstVoucherById.FirstOrDefault(vou => vou.Id == getVoucher.VoucherId);
-                            var discountValuePercent = (totalBill / 100) * Voucher.DiscountByPercent;
-                            var final = totalBill - discountValuePercent - Voucher.DiscountByPrice;
-                            listFinalPrice.Add((decimal)final);
-                        }
-                        else
-                        {
-                            listFinalPrice.Add(totalBill);
-                        }
+                        //var getVoucher = lstVoucherUsers.FirstOrDefault(c => c.Id == invoice.VoucherUserId);
+                        //if (getVoucher != null)
+                        //{
+                        //    var Voucher = lstVoucherById.FirstOrDefault(vou => vou.Id == getVoucher.VoucherId);
+                        //    var discountValuePercent = (totalBill / 100) * Voucher.DiscountByPercent;
+                        //    var final = totalBill - discountValuePercent - Voucher.DiscountByPrice;
+                        //    listFinalPrice.Add((decimal)final);
+                        //}
+                        //else
+                        //{
+                        //    listFinalPrice.Add(totalBill);
+                        //}
                     }
                     else
                     {
@@ -124,8 +124,6 @@ namespace DATN.Core.Repositories.Repositories
                     VoucherUser voucherUser = new VoucherUser();
                     voucherUser.VoucherId = Convert.ToInt32(x.VoucherId);
                     voucherUser.AppUserId = x.UserId;
-                    voucherUser.From = Convert.ToDateTime(x.StartDate);
-                    voucherUser.To = Convert.ToDateTime(x.EndDate);
                     voucherUsers.Add(voucherUser);
                 }
             }

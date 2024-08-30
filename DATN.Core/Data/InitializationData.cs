@@ -278,18 +278,72 @@ namespace DATN.Core.Data
             #endregion
             #region Voucher
             modelBuilder.Entity<Voucher>().HasData(
-                new Voucher { Id = 1, Name = "VOUCHER10", DiscountByPercent = 10, DiscountByPrice = 0, CreateAt = DateTime.Now },
-                new Voucher { Id = 2, Name = "VOUCHER20", DiscountByPercent = 20, DiscountByPrice = 0, CreateAt = DateTime.Now },
-                new Voucher { Id = 3, Name = "VOUCHER300000", DiscountByPercent = 0, DiscountByPrice = 300000, CreateAt = DateTime.Now }
-            );
+        new Voucher
+        {
+            Id = 1,
+            Code = "VOUCHER10",
+            Description = "10% off",
+            Quantity = 100,
+            QuantityUsed = 0,
+            UsageLimit = 10,
+            MinOrderAmount = 100,
+            MaxDiscountAmount = 50,
+            StartDate = DateTime.Now,
+            EndDate = DateTime.Now.AddMonths(1),
+            IsActive = true,
+            DiscountType = DiscountType.Percent,
+            DiscountAmount = 10
+        },
+        new Voucher
+        {
+            Id = 2,
+            Code = "VOUCHER20",
+            Description = "20% off",
+            Quantity = 200,
+            QuantityUsed = 0,
+            UsageLimit = 20,
+            MinOrderAmount = 200,
+            MaxDiscountAmount = 100,
+            StartDate = DateTime.Now,
+            EndDate = DateTime.Now.AddMonths(2),
+            IsActive = true,
+            DiscountType = DiscountType.Percent,
+            DiscountAmount = 20
+        }
+    );
             #endregion
             #region VoucherUser
             modelBuilder.Entity<VoucherUser>().HasData(
-                new VoucherUser { Id = 1, VoucherId = 1, AppUserId = Guid.Parse("00BB44D1-F674-49F6-BDAE-AFB143AB9749"), From = DateTime.Now, To = DateTime.MaxValue, IsDeleted = true },
-                new VoucherUser { Id = 2, VoucherId = 2, AppUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), From = DateTime.Now, To = DateTime.MaxValue },
-                new VoucherUser { Id = 3, VoucherId = 3, AppUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), From = DateTime.Now, To = DateTime.MaxValue }
-                );
+            new VoucherUser
+            {
+                Id = 1,
+                VoucherId = 1,
+                AppUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),
+                UsageCount = 0,
+                IsDeleted = false
+            },
+            new VoucherUser
+            {
+                Id = 2,
+                VoucherId = 2,
+                AppUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),
+                UsageCount = 0,
+                IsDeleted = false
+            }
+        );
             #endregion ShppingOrder
+            #region VoucherCate
+            modelBuilder.Entity<VoucherCate>().HasData(
+                new VoucherCate { Id = 1,VoucherId = 1, CategoryId = 1 },
+                new VoucherCate { Id = 2,VoucherId = 1, CategoryId = 2 }
+    );
+            #endregion
+            #region VoucherProduct
+            modelBuilder.Entity<VoucherProduct>().HasData(
+                new VoucherProduct { Id = 1, VoucherId = 1, ProductId = 1 },
+                new VoucherProduct { Id = 2, VoucherId = 2, ProductId = 2 }
+            );
+            #endregion
             #region ShippingOrder
             //modelBuilder.Entity<ShippingOrder>().HasData(
             //    new ShippingOrder { Id = 1, OrderCode = "L6AHHM", UserId = Guid.Parse("AA7C5218-4F1E-4AC6-A3B4-08DCB162E29E"), Price = 200000, CreateAt = DateTime.Now, InvoiceId = 3 }

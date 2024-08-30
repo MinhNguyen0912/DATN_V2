@@ -3,7 +3,7 @@ using DATN.Core.ViewModels.Paging;
 
 namespace DATN.Core.ViewModel.Paging
 {
-    public class VoucherPaging : PagingRequestBase<VoucherVM>
+    public class VoucherPaging : PagingRequestBase<voucherVM.VoucherVM>
     {
     }
 }
