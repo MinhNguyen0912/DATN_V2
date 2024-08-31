@@ -20,7 +20,6 @@ namespace DATN.Core.Infrastructures
         public IInvoiceDetailRepository InvoiceDetailRepository { get; }
         public IBrandRepository brandRepository { get; }
         public ICommentRepository commentRepository { get; }
-        public IVoucherUserRepository voucherUserRepository { get; }
         public IMagazineRepository MagazineRepository { get; }
 
         public IInvoiceRepository InvoiceRepository { get; }

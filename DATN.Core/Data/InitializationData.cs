@@ -276,73 +276,115 @@ namespace DATN.Core.Data
                 new CategoryTimeRange { Id = 11, CategoryId = 15, TimeRangeId = 11 }
             );
             #endregion
-            #region Voucher
-            modelBuilder.Entity<Voucher>().HasData(
-        new Voucher
-        {
-            Id = 1,
-            Code = "VOUCHER10",
-            Description = "10% off",
-            Quantity = 100,
-            QuantityUsed = 0,
-            UsageLimit = 10,
-            MinOrderAmount = 100,
-            MaxDiscountAmount = 50,
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.AddMonths(1),
-            IsActive = true,
-            DiscountType = DiscountType.Percent,
-            DiscountAmount = 10
-        },
-        new Voucher
-        {
-            Id = 2,
-            Code = "VOUCHER20",
-            Description = "20% off",
-            Quantity = 200,
-            QuantityUsed = 0,
-            UsageLimit = 20,
-            MinOrderAmount = 200,
-            MaxDiscountAmount = 100,
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.AddMonths(2),
-            IsActive = true,
-            DiscountType = DiscountType.Percent,
-            DiscountAmount = 20
-        }
-    );
-            #endregion
-            #region VoucherUser
-            modelBuilder.Entity<VoucherUser>().HasData(
-            new VoucherUser
+            #region Batch
+            modelBuilder.Entity<Batch>().HasData(
+            new Batch
             {
                 Id = 1,
-                VoucherId = 1,
-                AppUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),
-                UsageCount = 0,
-                IsDeleted = false
+                Name = "Batch 1",
+                Description = "First batch of vouchers",
+                Type = VoucherType.discount,
+                StartDate = DateTime.UtcNow.AddDays(-10),
+                EndDate = DateTime.UtcNow.AddDays(20),
+                IsActive = true,
+                Quantity = 100,
+                QuantityUsed = 0
             },
-            new VoucherUser
+            new Batch
             {
                 Id = 2,
-                VoucherId = 2,
-                AppUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),
-                UsageCount = 0,
-                IsDeleted = false
+                Name = "Batch 2",
+                Description = "Second batch of vouchers",
+                Type = VoucherType.discount,
+                StartDate = DateTime.UtcNow.AddDays(-5),
+                EndDate = DateTime.UtcNow.AddDays(15),
+                IsActive = true,
+                Quantity = 50,
+                QuantityUsed = 10
+            },
+            new Batch
+            {
+                Id = 3,
+                Name = "Batch 3",
+                Description = "Third batch of vouchers",
+                Type = VoucherType.freeship,
+                StartDate = DateTime.UtcNow.AddDays(-1),
+                EndDate = DateTime.UtcNow.AddDays(30),
+                IsActive = false,
+                Quantity = 200,
+                QuantityUsed = 20
             }
         );
-            #endregion ShppingOrder
-            #region VoucherCate
-            modelBuilder.Entity<VoucherCate>().HasData(
-                new VoucherCate { Id = 1,VoucherId = 1, CategoryId = 1 },
-                new VoucherCate { Id = 2,VoucherId = 1, CategoryId = 2 }
-    );
             #endregion
-            #region VoucherProduct
-            modelBuilder.Entity<VoucherProduct>().HasData(
-                new VoucherProduct { Id = 1, VoucherId = 1, ProductId = 1 },
-                new VoucherProduct { Id = 2, VoucherId = 2, ProductId = 2 }
-            );
+            #region Voucher
+            modelBuilder.Entity<Voucher>().HasData(
+            new Voucher
+            {
+                Id = 1,
+                Code = "VOUCHER01",
+                MinOrderAmount = 500000.0m,
+                MaxDiscountAmount = 100000.0m,
+                Status = VoucherStatus.Unpushlished,
+                ReleaseDate = DateTime.UtcNow,
+                ExpiryDate = DateTime.UtcNow.AddMonths(1),
+                DiscountType = DiscountType.Percent,
+                DiscountAmount = 10.0m,
+                BatchId = 1
+            },
+            new Voucher
+            {
+                Id = 2,
+                Code = "VOUCHER02",
+                MinOrderAmount = 500000.0m,
+                Status = VoucherStatus.Expired,
+                ReleaseDate = DateTime.UtcNow.AddDays(-30),
+                ExpiryDate = DateTime.UtcNow.AddDays(-10),
+                DiscountType = DiscountType.Amount,
+                DiscountAmount = 50000.0m,
+                BatchId = 1
+            },
+            new Voucher
+            {
+                Id = 3,
+                Code = "VOUCHER03",
+                MinOrderAmount = 1000000.0m,
+                MaxDiscountAmount = 200000.0m,
+                Status = VoucherStatus.NotUsed,
+                ReleaseDate = DateTime.UtcNow.AddDays(-20),
+                ExpiryDate = DateTime.UtcNow.AddDays(10),
+                DiscountType = DiscountType.Percent,
+                DiscountAmount = 20.0m,
+                BatchId = 2,
+                UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749")
+            },
+            new Voucher
+            {
+                Id = 4,
+                Code = "VOUCHER04",
+                MinOrderAmount = 300000.0m,
+                Status = VoucherStatus.NotUsed,
+                ReleaseDate = DateTime.UtcNow,
+                ExpiryDate = DateTime.UtcNow.AddMonths(2),
+                DiscountType = DiscountType.Amount,
+                DiscountAmount = 50000.0m,
+                BatchId = 2,
+                UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749")
+            },
+            new Voucher
+            {
+                Id = 5,
+                Code = "VOUCHER05FREESHIP",
+                MinOrderAmount = 300000.0m,
+                MaxDiscountAmount = 75000.0m,
+                Status = VoucherStatus.NotUsed,
+                ReleaseDate = DateTime.UtcNow.AddDays(-5),
+                ExpiryDate = DateTime.UtcNow.AddDays(25),
+                DiscountType = DiscountType.Percent,
+                DiscountAmount = 100.0m,
+                BatchId = 3,
+                UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749")
+            }
+        );
             #endregion
             #region ShippingOrder
             //modelBuilder.Entity<ShippingOrder>().HasData(
@@ -453,7 +495,6 @@ namespace DATN.Core.Data
                     IsDefault= false
                 }
             );
-
             // Seed VariantAttributes
             modelBuilder.Entity<VariantAttribute>().HasData(
                 // Variant 1

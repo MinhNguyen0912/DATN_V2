@@ -34,7 +34,7 @@ namespace DATN.Core.Data
         public DbSet<ProductPromotion> ProductPromotions { get; set; }
         public DbSet<Magazine> Magazines { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
-        public DbSet<VoucherUser> VoucherUsers { get; set; }
+        public DbSet<Batch> Batches { get; set; }
         public DbSet<VoucherCate> VoucherCates { get; set; }
         public DbSet<VoucherProduct> VoucherProducts { get; set; }
         public DbSet<Origin> Origins { get; set; }
@@ -47,6 +47,7 @@ namespace DATN.Core.Data
         public DbSet<Product_EAV> Product_EAVs { get; set; }
         public DbSet<Variant> Variants { get; set; }
         public DbSet<VariantAttribute> VariantAttributes { get; set; }
+        
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

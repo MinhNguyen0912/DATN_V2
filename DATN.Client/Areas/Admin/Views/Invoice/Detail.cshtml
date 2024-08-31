@@ -48,7 +48,7 @@
                             <th style="color:red" scope="row">Voucher</th>
                             @if (Model.VoucherUserId != null)
                             {
-                                <td colspan="2">@Model.VoucherUser.Voucher.Name</td>
+                                @* <td colspan="2">@Model.VoucherUser.Voucher.Name</td> *@
                                 var total = @Model.InvoiceDetails.Sum(p => p.NewPrice*p.Quantity);
                                 //var discount = total * (Model.VoucherUser.Voucher.DiscountByPercent / (double)100) + (double)Model.VoucherUser.Voucher.DiscountByPrice;
                                 //<td style="color:red">-@discount</td>

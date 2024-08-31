@@ -18,7 +18,7 @@ namespace DATN.Core.Models
         // Navigation property
         public ICollection<Invoice> Invoices { get; set; }
         public ICollection<Comment>? Comments { get; set; }
-        public ICollection<VoucherUser>? VoucherUsers { get; set; }
+        public ICollection<Voucher>? Vouchers { get; set; }
         public ICollection<ShippingOrder>? ShippingOrders { get; set; }
     }
 }

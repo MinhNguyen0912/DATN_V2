@@ -129,10 +129,10 @@ namespace DATN.Client.Areas.Admin.Controllers
         {
             var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
             invoice.Status = Core.Enum.InvoiceStatus.Cancel;
-            if (invoice.VoucherUser != null)
-            {
-                invoice.VoucherUser.IsDeleted = false;
-            }
+            //if (invoice.VoucherUser != null)
+            //{
+            //    invoice.VoucherUser.IsDeleted = false;
+            //}
             var decent = await _clientService.Get($"https://localhost:7095/api/Invoice/ChangeStatus2?invoiceId={invoiceId}");
             _unitOfWork.InvoiceRepository.Update(invoice);
             _unitOfWork.SaveChanges();

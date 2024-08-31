@@ -35,7 +35,6 @@ namespace DATN.Core.Infrastructures
         private IMagazineRepository _magazineRepository;
 
         private IBrandRepository _brandRepository;
-        private IVoucherUserRepository _voucherUserRepository;
         private IInvoiceRepository _invoiceRepository;
         private IPaymentInfoRepository _paymentInfoRepository;
 
@@ -87,8 +86,6 @@ namespace DATN.Core.Infrastructures
 
         public IBrandRepository brandRepository => _brandRepository ?? (_brandRepository = new BrandRepository(_context, _mapper));
         public ICommentRepository commentRepository => _commentRepository ?? (_commentRepository = new CommentRepository(_context, _mapper));
-
-        public IVoucherUserRepository voucherUserRepository => _voucherUserRepository ?? (_voucherUserRepository = new VoucherUserRepository(_context, _mapper));
         public IInvoiceRepository InvoiceRepository => _invoiceRepository ?? (_invoiceRepository = new InvoiceRepository(_context, _mapper));
         public IMagazineRepository MagazineRepository => _magazineRepository ?? (_magazineRepository = new MagazineRepository(_context, _mapper));
 

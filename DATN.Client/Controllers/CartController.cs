@@ -29,10 +29,10 @@ namespace DATN.Client.Controllers
                 return Redirect("~/Identity/Account/Login");
             }
             //var product = await _clientService.GetList<ProductVM>("https://localhost:7095/api/Product/GetAll");
-            var voucher = await _clientService.GetList<VoucherUser>($"https://localhost:7095/api/VoucherUser/GetVoucherByUser?Id={user.UserId}");
+            //var voucher = await _clientService.GetList<VoucherUser>($"https://localhost:7095/api/VoucherUser/GetVoucherByUser?Id={user.UserId}");
             try
             {
-                ViewData["voucher"] = voucher;
+                //ViewData["voucher"] = voucher;
                 ViewData["user"] = user;
                 //ViewData["product"] = product;
             }
