@@ -50,5 +50,22 @@ namespace DATN.API.Controllers
             return Ok(5);
 
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var products = _unitOfWork.ProductEAVRepository.GetByIdCustom(id);
+            var brand = await _unitOfWork.brandRepository.GetById(products.BrandId);
+
+            products.Brand.Name = brand.Name;
+            if (products != null)
+            {
+                var productsVM = _mapper.Map<ProductVM_EAV>(products);
+                return Ok(productsVM);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }

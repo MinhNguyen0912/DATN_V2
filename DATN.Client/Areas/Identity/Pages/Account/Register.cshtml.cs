@@ -117,6 +117,7 @@ namespace DATN.Client.Areas.Identity.Pages.Account
                 user.FullName = Input.FullName;
                 user.EmailConfirmed = true;
                 user.isActive = true;
+                user.PendingCart = new Core.Model.PendingCart();
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

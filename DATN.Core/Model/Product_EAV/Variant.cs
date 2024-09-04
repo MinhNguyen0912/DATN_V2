@@ -11,12 +11,16 @@ namespace DATN.Core.Model.Product_EAV
         public decimal PuscharPrice { get; set; }
         public decimal SalePrice { get; set; }
         public decimal AfterDiscountPrice { get; set; }
-        public int Discount { get; set; }
         public int? Quantity { get; set; }
         public bool IsDefault {  get; set; } = false;
+        public int MaximumQuantityPerOrder {  get; set; } 
+        public int Weight {  get; set; } 
 
         // Navigation property
         public Product_EAV Product { get; set; }
-        public ICollection<VariantAttribute>? VariantAttributes { get; set; }
+        public List<VariantAttribute>? VariantAttributes { get; set; }
+        public List<Specification>? Specifications { get; set; }
+        public List<PendingCartVariant>? PendingCartVariants { get; set; }
+
     }
 }

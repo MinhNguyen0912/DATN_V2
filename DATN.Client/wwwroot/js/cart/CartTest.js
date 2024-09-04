@@ -23,13 +23,20 @@ async function addToCart(selectedTTD) {
     if (!document.getElementsByClassName("nav-profile")[0]) {
         location.href = "/Identity/Account/Login"
     } else {
-        const response = await fetch(`https://localhost:7095/api/ProductAtribute/GetDataCustomById?productAttributeId=${selectedTTD}`);
+        const response = await fetch(`https://localhost:7095/api/VariantEAV/GetById?variantId=${selectedTTD}`);
         if (!response.ok) {
-            throw new Error('Failed to fetch');
+            alert("Thêm giỏ hàng thất bại")
+        } else {
+            const data = await response.json();
+            console.log(data)
+
+            if (data.Quantity <= 0) {
+                alert("Sản phẩm đã hết trong kho")
+            } else {
+
+            }
         }
 
-        const data = await response.json();
-        console.log(data)
 
         var exist = false;
 

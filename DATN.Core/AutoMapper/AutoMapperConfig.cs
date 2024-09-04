@@ -11,8 +11,11 @@ using DATN.Core.ViewModel.InvoiceDetailVM;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.MagazineVM;
 using DATN.Core.ViewModel.OriginVM;
+using DATN.Core.ViewModel.PendingCartVariantVM;
+using DATN.Core.ViewModel.PendingCartVM;
 using DATN.Core.ViewModel.Product_EAV;
 using DATN.Core.ViewModel.ProductCommentVM;
+using DATN.Core.ViewModel.ProductPromotionVM;
 using DATN.Core.ViewModel.PromotionVM;
 using DATN.Core.ViewModel.TimeRangeVM;
 using DATN.Core.ViewModel.voucherVM;
@@ -71,13 +74,19 @@ namespace DATN.Core.AutoMapper
                 config.CreateMap<Voucher, VoucherVM>().ReverseMap();
                 config.CreateMap<InvoiceDetail, InvoiceDetailForCommentVM>().ReverseMap();
                 config.CreateMap<Invoice, InvoiceShowForClientVM>().ReverseMap();
+                config.CreateMap<ProductPromotion, ProductPromotionVM>().ReverseMap();
+                config.CreateMap<PendingCart, PendingCartVM>().ReverseMap();
+                config.CreateMap<PendingCartVariant, PendingCartVariantVM>().ReverseMap();
 
 
                 config.CreateMap<Attribute_EAV, AttributeVM_EAV>().ReverseMap();
+                config.CreateMap<Specification, SpecificationVM>().ReverseMap();
                 config.CreateMap<AttributeValue_EAV, AttributeValueVM_EAV>().ReverseMap();
-                config.CreateMap<Product_EAV, ProductVM_EAV>().ReverseMap();
+                config.CreateMap<Product_EAV, ProductVM_EAV>()
+                    .ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => src.Images.FirstOrDefault(img => img.IsDefault == true).ImagePath))
+                    .ReverseMap();
                 config.CreateMap<Variant, VariantVM>()
-                    .ForMember(dest => dest.Discount, opt => opt.MapFrom(p=>1-(p.AfterDiscountPrice/p.SalePrice)))
+                    .ForMember(dest => dest.Discount, opt => opt.MapFrom(p=>(1-(p.AfterDiscountPrice/p.SalePrice))*100))
                     .ReverseMap();
                 config.CreateMap<VariantAttribute, VariantAttributeVM>().ReverseMap();
 
