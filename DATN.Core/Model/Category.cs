@@ -18,6 +18,7 @@ namespace DATN.Core.Model
         public List<Category>? SubCategories { get; set; }
         public List<Product_EAV.Product_EAV>? Products { get; set; }
         public List<CategoryTimeRange>? CategoryTimeRanges { get; set; }
+        public List<VoucherCate>? VoucherCates { get; set; }
 
     }
 }

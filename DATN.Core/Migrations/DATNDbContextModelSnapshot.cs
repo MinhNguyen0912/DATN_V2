@@ -2320,6 +2320,10 @@ namespace DATN.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
@@ -2336,15 +2340,37 @@ namespace DATN.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DiscountByPercent")
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("DiscountType")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("DiscountByPrice")
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("MaxDiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("MinOrderAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuantityUsed")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
@@ -2352,9 +2378,104 @@ namespace DATN.Core.Migrations
                     b.Property<Guid?>("UpdateBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("UsageLimit")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Vouchers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "VOUCHER10",
+                            CreateAt = new DateTime(2024, 8, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(964),
+                            DeleteAt = new DateTime(2024, 8, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(964),
+                            Description = "10% off",
+                            DiscountAmount = 10m,
+                            DiscountType = 0,
+                            EndDate = new DateTime(2024, 9, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(972),
+                            IsActive = true,
+                            MaxDiscountAmount = 50m,
+                            MinOrderAmount = 100m,
+                            Name = "",
+                            Quantity = 100,
+                            QuantityUsed = 0,
+                            StartDate = new DateTime(2024, 8, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(971),
+                            UpdateAt = new DateTime(2024, 8, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(965),
+                            UsageLimit = 10
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "VOUCHER20",
+                            CreateAt = new DateTime(2024, 8, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(980),
+                            DeleteAt = new DateTime(2024, 8, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(981),
+                            Description = "20% off",
+                            DiscountAmount = 20m,
+                            DiscountType = 0,
+                            EndDate = new DateTime(2024, 10, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(984),
+                            IsActive = true,
+                            MaxDiscountAmount = 100m,
+                            MinOrderAmount = 200m,
+                            Name = "",
+                            Quantity = 200,
+                            QuantityUsed = 0,
+                            StartDate = new DateTime(2024, 8, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(984),
+                            UpdateAt = new DateTime(2024, 8, 29, 17, 35, 57, 120, DateTimeKind.Local).AddTicks(981),
+                            UsageLimit = 20
+                        });
+                });
+
+            modelBuilder.Entity("DATN.Core.Model.VoucherCate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreateBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeleteAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeleteBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdateBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("VoucherId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("VoucherId");
+
+                    b.ToTable("VoucherCates");
 
                     b.HasData(
                         new
@@ -2419,9 +2540,6 @@ namespace DATN.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("From")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -2430,14 +2548,14 @@ namespace DATN.Core.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime>("To")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("UpdateBy")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UsageCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("VoucherId")
                         .HasColumnType("int");
@@ -3073,6 +3191,44 @@ namespace DATN.Core.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DATN.Core.Model.VoucherCate", b =>
+                {
+                    b.HasOne("DATN.Core.Model.Category", "Category")
+                        .WithMany("VoucherCates")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DATN.Core.Model.Voucher", "Voucher")
+                        .WithMany("VoucherCates")
+                        .HasForeignKey("VoucherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Voucher");
+                });
+
+            modelBuilder.Entity("DATN.Core.Model.VoucherProduct", b =>
+                {
+                    b.HasOne("DATN.Core.Model.Product_EAV.Product_EAV", "Product")
+                        .WithMany("VoucherProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DATN.Core.Model.Voucher", "Voucher")
+                        .WithMany("VoucherProducts")
+                        .HasForeignKey("VoucherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Voucher");
+                });
+
             modelBuilder.Entity("DATN.Core.Model.VoucherUser", b =>
                 {
                     b.HasOne("DATN.Core.Models.AppUser", "AppUser")
@@ -3164,6 +3320,8 @@ namespace DATN.Core.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("SubCategories");
+
+                    b.Navigation("VoucherCates");
                 });
 
             modelBuilder.Entity("DATN.Core.Model.Invoice", b =>
@@ -3214,6 +3372,8 @@ namespace DATN.Core.Migrations
                     b.Navigation("PromotionProducts");
 
                     b.Navigation("Variants");
+
+                    b.Navigation("VoucherProducts");
                 });
 
             modelBuilder.Entity("DATN.Core.Model.Product_EAV.Variant", b =>
@@ -3237,6 +3397,10 @@ namespace DATN.Core.Migrations
 
             modelBuilder.Entity("DATN.Core.Model.Voucher", b =>
                 {
+                    b.Navigation("VoucherCates");
+
+                    b.Navigation("VoucherProducts");
+
                     b.Navigation("VoucherUsers");
                 });
 

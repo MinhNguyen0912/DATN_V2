@@ -25,12 +25,12 @@ namespace DATN.API.Helpers
             double discount = 0.0;
 
             // Kiểm tra và tính toán giảm giá nếu có voucher
-            if (invoice.VoucherUserId != null)
-            {
-                var voucher = invoice.VoucherUser.Voucher;
-                double? v = total * (voucher.DiscountByPercent / 100.0);
-                discount = (double)(v + (double)voucher.DiscountByPrice);
-            }
+            //if (invoice.VoucherUserId != null)
+            //{
+            //    var voucher = invoice.VoucherUser.Voucher;
+            //    double? v = total * (voucher.DiscountByPercent / 100.0);
+            //    discount = (double)(v + (double)voucher.DiscountByPrice);
+            //}
 
             // Tính số tiền sau khi giảm giá
             var result = total - discount;
