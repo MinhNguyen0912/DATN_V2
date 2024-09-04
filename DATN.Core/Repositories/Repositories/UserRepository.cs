@@ -16,12 +16,17 @@ namespace DATN.Core.Repositories.Repositories
     public class UserRepository : BaseRepository<AppUser>, IUserRepository
     {
         private readonly IMapper _mapper;
+        private readonly DATNDbContext _context;
 
         public UserRepository(DATNDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
+            _context = context;
         }
-
+        public AppUser GetByIdCustom(Guid userId)
+        {
+            return _context.Users.Where(p => p.Id == userId).Include(p => p.PendingCart).ThenInclude(p => p.PendingCartVariants).ThenInclude(p=>p.Variant).ThenInclude(p=>p.Product).ThenInclude(p=>p.Images).FirstOrDefault();
+        }
         public UserPaging GetUserPaging(UserPaging request)
         {
             var query = Context.Users.AsQueryable();

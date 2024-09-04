@@ -13,6 +13,7 @@ namespace DATN.Core.Repositories.IRepositories
         Task<int> AddVoucherToListUser(List<UserVoucherShowModal> input);
         bool DeleteUser(Guid userId);
         int UpdateUser(AppUser user);
+        AppUser GetByIdCustom(Guid userId);
         AppUser GetUserByEmail(string email);
         Task<IEnumerable<string>> GetListVoucherByUserId(Guid userId);
         List<AppUser> GetUsersExport(string search, string lastLoginTimeFilter);

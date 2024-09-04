@@ -269,7 +269,7 @@ namespace DATN.Client.Controllers
                 {
                     if (userExist == null)
                     {
-                        var userCreate = new AppUser() { UserName = Email, Email = Email, FullName = Name, isActive = true };
+                        var userCreate = new AppUser() { UserName = Email, Email = Email, FullName = Name, isActive = true , PendingCart = new Core.Model.PendingCart()};
                         var createResult = await _userManager.CreateAsync(userCreate);
                         var a = await _userManager.AddPasswordAsync(userCreate, "Abc@123");
                         var b = a.Succeeded;
