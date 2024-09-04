@@ -43,7 +43,9 @@ namespace DATN.Core.Infrastructures
         private IShippingOrderRepository _shippingOrderRepository;
         private ICategoryTimeRangeRepository _CateRangeRepository;
         private IVoucherRepository _voucherRepository;
-
+        private IVoucherProductRepository _voucherProductRepository;
+        private IVoucherCateRepository _voucherCateRepository;
+        private IBatchRepository _batchRepository;
 
 
         private IAttributeEAVRepository _attributeEAVRepository;
@@ -106,6 +108,12 @@ namespace DATN.Core.Infrastructures
         public IAttributeValueEAVRepository AttributeValueEAVRepository => _attributeValueEAVRepository ?? (_attributeValueEAVRepository = new AttributeValueEAVRepository(_context, _mapper));
         public IVariantAttributeRepository VariantAttributeRepository => _variantAttributeRepository ?? (_variantAttributeRepository = new VariantAttributeRepository(_context, _mapper));
         public IVariantRepository VariantRepository => _variantRepository ?? (_variantRepository = new VariantRepository(_context, _mapper));
+
+        public IVoucherProductRepository VoucherProductRepository => (_voucherProductRepository = new VoucherProductRepository(_context));
+
+        public IVoucherCateRepository VoucherCateRepository => (_voucherCateRepository = new VoucherCateRepository(_context));
+
+        public IBatchRepository BatchRepository => (_batchRepository = new BatchRepository(_context,_mapper));
 
         public void Dispose()
         {

@@ -1,16 +1,16 @@
 ﻿using DATN.Core.Enum;
-using DATN.Core.Models;
+using DATN.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DATN.Core.Model
+namespace DATN.Core.ViewModel.BatchVM
 {
-    public class Batch : BaseEntity
+    public class CreateBatchRequest
     {
-        public string? Name { get; set; } 
+        public string? Name { get; set; }
         public string? Description { get; set; }
         public VoucherType? Type { get; set; }
         public DiscountType DiscountType { get; set; }
@@ -21,8 +21,8 @@ namespace DATN.Core.Model
         public DateTime? EndDate { get; set; }
         public int? ExpirationDate { get; set; }
         public bool? IsActive { get; set; } = true;
-        public List<VoucherCate>? VoucherCates { get; set; } = new List<VoucherCate>();
-        public List<VoucherProduct>? VoucherProducts { get; set; } = new List<VoucherProduct>();
-        public List<Voucher>? Vouchers { get; set; }
+        public List<int> CateItem {  get; set; } = new List<int>();
+        public List<int> ProdItem {  get; set; } = new List<int>();
+        public bool ApplyToAll { get; set; }
     }
 }

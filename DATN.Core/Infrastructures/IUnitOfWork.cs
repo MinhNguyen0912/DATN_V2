@@ -31,6 +31,9 @@ namespace DATN.Core.Infrastructures
         public IShippingOrderRepository ShippingOrderRepository { get; }
         public IRoleRepository RoleRepository { get; }
         public IVoucherRepository VoucherRepository { get; }
+        public IVoucherProductRepository VoucherProductRepository { get; }
+        public IVoucherCateRepository VoucherCateRepository { get; }
+        public IBatchRepository BatchRepository { get; }
         //public ICategoryRepository CategoryRepository { get; } // read only
         //public IProjectRepository ProjectRepository { get; }
         //public IPartnerRepository PartnerRepository { get; }
