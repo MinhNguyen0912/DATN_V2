@@ -22,6 +22,8 @@ namespace DATN.Core.Infrastructures
         private ICategoryRepository _categoryRepository;
         private ICategoryProductRepository _categoryProductRepository;
         private IPromotionRepository _promotionRepository;
+        private IPendingCartRepository _pendingCartRepository;
+        private IPendingCartVariantRepository _pendingCartVariantRepository;
 
         private IAuthenRepository _authenRepository;
         private IRoleRepository _roleRepository;
@@ -74,6 +76,8 @@ namespace DATN.Core.Infrastructures
         public IRoleRepository RoleRepository => _roleRepository ?? (_roleRepository = new RoleRepository(_context));
         //Product
         public IInvoiceDetailRepository InvoiceDetailRepository => _invoiceDetailRepository ?? (_invoiceDetailRepository = new InvoiceDetailRepository(_context, _mapper));
+        public IPendingCartRepository PendingCartRepository => _pendingCartRepository ?? (_pendingCartRepository = new PendingCartRepository(_context, _mapper));
+        public IPendingCartVariantRepository PendingCartVariantRepository => _pendingCartVariantRepository ?? (_pendingCartVariantRepository = new PendingCartVariantRepository(_context, _mapper));
 
 
         public IimageRepository imageReponsiroty => _imageReponsiroty ?? (_imageReponsiroty = new ImageReponsiroty(_context, _mapper));

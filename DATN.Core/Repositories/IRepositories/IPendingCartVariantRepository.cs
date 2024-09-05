@@ -1,6 +1,5 @@
 ﻿using DATN.Core.Infrastructures;
 using DATN.Core.Model;
-using DATN.Core.ViewModel.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace DATN.Core.Repositories.IRepositories
 {
-    public interface IBatchRepository:IBaseRepository<Batch>
+    public interface IPendingCartVariantRepository: IBaseRepository<PendingCartVariant>
     {
-        BatchPaging batchPaging(BatchPaging request);
     }
 }

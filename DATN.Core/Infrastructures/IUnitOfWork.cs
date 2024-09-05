@@ -34,6 +34,8 @@ namespace DATN.Core.Infrastructures
         public IVoucherProductRepository VoucherProductRepository { get; }
         public IVoucherCateRepository VoucherCateRepository { get; }
         public IBatchRepository BatchRepository { get; }
+        public IPendingCartRepository PendingCartRepository { get; }
+        public IPendingCartVariantRepository PendingCartVariantRepository { get; }
         //public ICategoryRepository CategoryRepository { get; } // read only
         //public IProjectRepository ProjectRepository { get; }
         //public IPartnerRepository PartnerRepository { get; }

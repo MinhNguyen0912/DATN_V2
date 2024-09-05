@@ -56,7 +56,7 @@ namespace DATN.Core.Data
                     Address = "123 Main St, City A",
                     Description = "Admin",
                     LastLoginTime = DateTime.UtcNow,
-                    isActive = true
+                    isActive = true,
                 },
                 new AppUser
                 {
@@ -73,7 +73,9 @@ namespace DATN.Core.Data
                     Address = "456 Oak St, City B",
                     Description = "Customer",
                     LastLoginTime = DateTime.UtcNow,
-                    isActive = true
+                    isActive = true,
+                    PendingCartId = 1
+
                 }
                 , new AppUser
                 {
@@ -90,10 +92,17 @@ namespace DATN.Core.Data
                     Address = "456 Oak St, City B",
                     Description = "Customer",
                     LastLoginTime = DateTime.UtcNow,
-                    isActive = true
+                    isActive = true,
+                    PendingCartId = 2
                 }
 
             // Add more users as needed
+            );
+            #endregion
+            #region PendingCart
+            modelBuilder.Entity<PendingCart>().HasData(
+                new PendingCart { PendingCartId = 1 },
+                new PendingCart { PendingCartId = 2 }
             );
             #endregion
             #region Brand
@@ -187,13 +196,13 @@ namespace DATN.Core.Data
             #endregion
             #region Image
             modelBuilder.Entity<Image>().HasData(
-                new Image() { ImageId = 1, ImagePath = "/Images/Component/ListProduct/product1.webp", IsDefault = true, ProductId = 1},
-                new Image() { ImageId = 2, ImagePath = "/Images/Component/ListProduct/product2.webp", IsDefault = true, ProductId = 2},
-                new Image() { ImageId = 3, ImagePath = "/Images/Component/ListProduct/product1-1.jpg", IsDefault = false, ProductId = 1},
-                new Image() { ImageId = 4, ImagePath = "/Images/Component/ListProduct/product1-2.jpg", IsDefault = false, ProductId = 1},
-                new Image() { ImageId = 5, ImagePath = "/Images/Component/ListProduct/product1-3.jpg", IsDefault = false, ProductId = 1},
-                new Image() { ImageId = 6, ImagePath = "/Images/Component/ListProduct/product1-4.jpg", IsDefault = false, ProductId = 1},
-                new Image() { ImageId = 7, ImagePath = "/Images/Component/ListProduct/product1-5.jpg", IsDefault = false, ProductId = 1}
+                new Image() { ImageId = 1, ImagePath = "/Images/Component/ListProduct/product1.webp", IsDefault = true, ProductId = 1 },
+                new Image() { ImageId = 2, ImagePath = "/Images/Component/ListProduct/product2.webp", IsDefault = true, ProductId = 2 },
+                new Image() { ImageId = 3, ImagePath = "/Images/Component/ListProduct/product1-1.jpg", IsDefault = false, ProductId = 1 },
+                new Image() { ImageId = 4, ImagePath = "/Images/Component/ListProduct/product1-2.jpg", IsDefault = false, ProductId = 1 },
+                new Image() { ImageId = 5, ImagePath = "/Images/Component/ListProduct/product1-3.jpg", IsDefault = false, ProductId = 1 },
+                new Image() { ImageId = 6, ImagePath = "/Images/Component/ListProduct/product1-4.jpg", IsDefault = false, ProductId = 1 },
+                new Image() { ImageId = 7, ImagePath = "/Images/Component/ListProduct/product1-5.jpg", IsDefault = false, ProductId = 1 }
             );
             #endregion
             #region CategoryProduct
@@ -293,10 +302,10 @@ namespace DATN.Core.Data
             #region ProductEAV
             // Seed Product
             modelBuilder.Entity<Product_EAV>().HasData(
-                new Product_EAV { ProductId = 1, ProductName = "Samsung Smart TV QLED QA55Q70C",OriginId =1,Status = ProductStatus.Sale,BrandId =2 }
+                new Product_EAV { ProductId = 1, ProductName = "Samsung Smart TV QLED QA55Q70C", OriginId = 1, Status = ProductStatus.Sale, BrandId = 2, Description = "<p><span style=\"color:#ff4500;\"><strong>Lorem ipsum dolor sit amet</strong></span>, consectetur adipiscing elit. Vivamus <u>lacinia odio vitae</u> vestibulum <em>vestibulum. Cras</em> vehicula, mi eget <span style=\"color:#00bfff;\">dictum cursus</span>, sapien est ultrices lectus, at volutpat sapien enim non mauris. Proin euismod nisl sit amet <span style=\"background-color:#ffff00;\">mi gravida, non venenatis lectus auctor</span>. Aenean sit amet nulla id dui facilisis scelerisque. <span style=\"font-size:18px;\">Nullam non leo libero.</span></p><p>Mauris <span style=\"font-family:Georgia,serif;\"><strong>finibus</strong></span> orci nec ante auctor, id aliquam <span style=\"color:#228b22;\">metus volutpat</span>. Suspendisse consequat lorem quis risus ultricies, id tempus odio dapibus. Aliquam erat volutpat. Donec tincidunt, sapien nec gravida blandit, <u>magna justo ultrices dui</u>, a scelerisque augue erat in erat.</p><p><span style=\"color:#ff69b4;\"><em>Fusce efficitur</em></span> erat eget justo vulputate, id <span style=\"background-color:#7fff00;\">volutpat justo</span> ultrices. Vivamus ut ultricies odio, at dignissim leo. <span style=\"font-size:20px;\"><u>Pellentesque nec purus magna</u>.</span> Donec ut vehicula lectus. Etiam fringilla purus sed nulla facilisis, ac malesuada orci blandit.</p><p>Nam vehicula, magna ut malesuada <span style=\"color:#8a2be2;\"><strong>porttitor</strong></span>, odio libero consequat libero, sit amet venenatis felis turpis id mi. Integer ullamcorper lorem <u>quis justo sagittis</u>, non tincidunt nulla vestibulum. <span style=\"background-color:#ffebcd;\">Praesent vel lacus libero.</span> Sed non <em>luctus</em> metus. Aenean id <span style=\"color:#dc143c;\"><u>ante sit amet libero ultrices dictum</u></span>. Sed sit amet felis eu felis bibendum tincidunt.</p><p><span style=\"color:#00008b;\"><strong>In tempor felis</strong></span> ac ligula faucibus, at pellentesque lacus lacinia. Curabitur aliquet, sapien nec cursus tincidunt, sem neque facilisis justo, et suscipit libero mauris non libero. Nulla facilisi. Proin id malesuada felis. <span style=\"font-size:16px;\"><u>Quisque a auctor metus</u>.</span></p>" }
             );
             modelBuilder.Entity<Product_EAV>().HasData(
-                new Product_EAV { ProductId = 2, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL",OriginId=1,Status = ProductStatus.Sale,BrandId =1 }
+                new Product_EAV { ProductId = 2, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL", OriginId = 1, Status = ProductStatus.Sale, BrandId = 1, Description = "<p><span style=\"color:#ff4500;\"><strong>Lorem ipsum dolor sit amet</strong></span>, consectetur adipiscing elit. Vivamus <u>lacinia odio vitae</u> vestibulum <em>vestibulum. Cras</em> vehicula, mi eget <span style=\"color:#00bfff;\">dictum cursus</span>, sapien est ultrices lectus, at volutpat sapien enim non mauris. Proin euismod nisl sit amet <span style=\"background-color:#ffff00;\">mi gravida, non venenatis lectus auctor</span>. Aenean sit amet nulla id dui facilisis scelerisque. <span style=\"font-size:18px;\">Nullam non leo libero.</span></p><p>Mauris <span style=\"font-family:Georgia,serif;\"><strong>finibus</strong></span> orci nec ante auctor, id aliquam <span style=\"color:#228b22;\">metus volutpat</span>. Suspendisse consequat lorem quis risus ultricies, id tempus odio dapibus. Aliquam erat volutpat. Donec tincidunt, sapien nec gravida blandit, <u>magna justo ultrices dui</u>, a scelerisque augue erat in erat.</p><p><span style=\"color:#ff69b4;\"><em>Fusce efficitur</em></span> erat eget justo vulputate, id <span style=\"background-color:#7fff00;\">volutpat justo</span> ultrices. Vivamus ut ultricies odio, at dignissim leo. <span style=\"font-size:20px;\"><u>Pellentesque nec purus magna</u>.</span> Donec ut vehicula lectus. Etiam fringilla purus sed nulla facilisis, ac malesuada orci blandit.</p><p>Nam vehicula, magna ut malesuada <span style=\"color:#8a2be2;\"><strong>porttitor</strong></span>, odio libero consequat libero, sit amet venenatis felis turpis id mi. Integer ullamcorper lorem <u>quis justo sagittis</u>, non tincidunt nulla vestibulum. <span style=\"background-color:#ffebcd;\">Praesent vel lacus libero.</span> Sed non <em>luctus</em> metus. Aenean id <span style=\"color:#dc143c;\"><u>ante sit amet libero ultrices dictum</u></span>. Sed sit amet felis eu felis bibendum tincidunt.</p><p><span style=\"color:#00008b;\"><strong>In tempor felis</strong></span> ac ligula faucibus, at pellentesque lacus lacinia. Curabitur aliquet, sapien nec cursus tincidunt, sem neque facilisis justo, et suscipit libero mauris non libero. Nulla facilisi. Proin id malesuada felis. <span style=\"font-size:16px;\"><u>Quisque a auctor metus</u>.</span></p>" }
             );
 
             // Seed Attributes
@@ -316,6 +325,23 @@ namespace DATN.Core.Data
                 new AttributeValue_EAV { AttributeValueId = 6, AttributeId = 3, ValueText = "50 lít" }
             );
 
+            // Seed Specifications
+            modelBuilder.Entity<Specification>().HasData(
+                // Thông số kỹ thuật cho Tivi Đen 50 inch
+                new Specification { Id = 1, VariantId = 1, Key = "Kích thước màn hình", Value = "50 inch" },
+                new Specification { Id = 2, VariantId = 1, Key = "Độ phân giải", Value = "3840 x 2160" },
+                new Specification { Id = 3, VariantId = 1, Key = "Hỗ trợ HDR", Value = "Có" },
+                new Specification { Id = 4, VariantId = 1, Key = "Smart TV", Value = "Có" },
+                new Specification { Id = 5, VariantId = 1, Key = "Cổng HDMI", Value = "3 cổng" },
+
+                // Thông số kỹ thuật cho Tivi Đen 60 inches
+                new Specification { Id = 6, VariantId = 2, Key = "Kích thước màn hình", Value = "60 inch" },
+                new Specification { Id = 7, VariantId = 2, Key = "Độ phân giải", Value = "3840 x 2160" },
+                new Specification { Id = 8, VariantId = 2, Key = "Hỗ trợ HDR", Value = "Có" },
+                new Specification { Id = 9, VariantId = 2, Key = "Smart TV", Value = "Có" },
+                new Specification { Id = 10, VariantId = 2, Key = "Cổng HDMI", Value = "4 cổng" }
+            );
+
             // Seed Variants
             modelBuilder.Entity<Variant>().HasData(
                 new Variant
@@ -328,6 +354,8 @@ namespace DATN.Core.Data
                     SalePrice = 75000,   // Giá bán
                     AfterDiscountPrice = 70000,
                     IsDefault = true,
+                    MaximumQuantityPerOrder = 3,
+                    Weight = 5000,
                 },
                 new Variant
                 {
@@ -338,7 +366,9 @@ namespace DATN.Core.Data
                     PuscharPrice = 52000,
                     SalePrice = 78000,
                     AfterDiscountPrice = 71000,
-                    IsDefault = false
+                    IsDefault = false,
+                    MaximumQuantityPerOrder = 4,
+                    Weight = 6000,
                 },
                 new Variant
                 {
@@ -349,7 +379,9 @@ namespace DATN.Core.Data
                     PuscharPrice = 48000,
                     SalePrice = 73000,
                     AfterDiscountPrice = 70500,
-                    IsDefault = false
+                    IsDefault = false,
+                    MaximumQuantityPerOrder = 5,
+                    Weight = 5000,
                 },
                 new Variant
                 {
@@ -360,7 +392,9 @@ namespace DATN.Core.Data
                     PuscharPrice = 49000,
                     SalePrice = 74000,
                     AfterDiscountPrice = 71000,
-                    IsDefault = false
+                    IsDefault = false,
+                    MaximumQuantityPerOrder = 6,
+                    Weight = 6000,
                 },
                 new Variant
                 {
@@ -371,7 +405,9 @@ namespace DATN.Core.Data
                     PuscharPrice = 49000,
                     SalePrice = 74000,
                     AfterDiscountPrice = 71000,
-                    IsDefault = true
+                    IsDefault = true,
+                    MaximumQuantityPerOrder = 7,
+                    Weight = 20000,
                 },
                 new Variant
                 {
@@ -382,7 +418,9 @@ namespace DATN.Core.Data
                     PuscharPrice = 49000,
                     SalePrice = 74000,
                     AfterDiscountPrice = 71000,
-                    IsDefault= false
+                    IsDefault = false,
+                    MaximumQuantityPerOrder = 8,
+                    Weight = 22000,
                 }
             );
             // Seed VariantAttributes
@@ -411,6 +449,161 @@ namespace DATN.Core.Data
                 new VariantAttribute { VariantAttributeId = 11, VariantId = 6, AttributeValueId = 1 }, // Trắng
                 new VariantAttribute { VariantAttributeId = 12, VariantId = 6, AttributeValueId = 6 }  // 60inch
             );
+            #endregion
+            #region Batch   
+            modelBuilder.Entity<Batch>().HasData(
+            new Batch
+            {
+                Id = 1,
+                Name = "Batch 1",
+                Description = "First batch of vouchers",
+                Type = VoucherType.discount,
+                DiscountType = DiscountType.Amount,
+                DiscountAmount = 100000, // VNĐ
+                MinOrderAmount = 500000, // VNĐ
+                MaxDiscountAmount = 200000, // VNĐ
+                StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddMonths(1),
+                IsActive = true
+            },
+            new Batch
+            {
+                Id = 2,
+                Name = "Batch 2",
+                Description = "Second batch of vouchers",
+                Type = VoucherType.freeship,
+                DiscountType = DiscountType.Percent,
+                DiscountAmount = 100, // 100% Free shipping
+                MinOrderAmount = 200000, // VNĐ
+                MaxDiscountAmount = 0, // No max discount
+                StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddMonths(1),
+                IsActive = true
+            },
+            new Batch
+            {
+                Id = 3,
+                Name = "Batch 3",
+                Description = "Third batch of vouchers",
+                Type = VoucherType.discount,
+                DiscountType = DiscountType.Amount,
+                DiscountAmount = 200000, // VNĐ
+                MinOrderAmount = 1000000, // VNĐ
+                MaxDiscountAmount = 400000, // VNĐ
+                StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddMonths(2),
+                IsActive = true
+            },
+            new Batch
+            {
+                Id = 4,
+                Name = "Batch 4",
+                Description = "Fourth batch of vouchers",
+                Type = VoucherType.freeship,
+                DiscountType = DiscountType.Percent,
+                DiscountAmount = 50, // 50% Free shipping
+                MinOrderAmount = 300000, // VNĐ
+                MaxDiscountAmount = 100000, // VNĐ
+                StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddMonths(2),
+                IsActive = true
+            }
+);
+            #endregion
+            #region Voucher
+            var customerUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749");
+
+            modelBuilder.Entity<Voucher>().HasData(
+                // Vouchers for Batch 1
+                new Voucher { Id = 1, Code = "BATCH1_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 2, Code = "BATCH1_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 3, Code = "BATCH1_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 4, Code = "BATCH1_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+
+                // Vouchers for Batch 2
+                new Voucher { Id = 5, Code = "BATCH2_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 6, Code = "BATCH2_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 7, Code = "BATCH2_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 8, Code = "BATCH2_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+
+                // Vouchers for Batch 3
+                new Voucher { Id = 9, Code = "BATCH3_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 10, Code = "BATCH3_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 11, Code = "BATCH3_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 12, Code = "BATCH3_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+
+                // Vouchers for Batch 4
+                new Voucher { Id = 13, Code = "BATCH4_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 14, Code = "BATCH4_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 15, Code = "BATCH4_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 16, Code = "BATCH4_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) }
+            );
+            #endregion
+            #region VoucherCate
+            modelBuilder.Entity<VoucherCate>().HasData(
+    // Batch 1: Apply to all categories
+    new VoucherCate { Id = 1, BatchId = 1, CategoryId = 1 },
+    new VoucherCate { Id = 2, BatchId = 1, CategoryId = 2 },
+    new VoucherCate { Id = 3, BatchId = 1, CategoryId = 3 },
+    new VoucherCate { Id = 4, BatchId = 1, CategoryId = 4 },
+    new VoucherCate { Id = 5, BatchId = 1, CategoryId = 5 },
+    new VoucherCate { Id = 6, BatchId = 1, CategoryId = 6 },
+    new VoucherCate { Id = 7, BatchId = 1, CategoryId = 7 },
+    new VoucherCate { Id = 8, BatchId = 1, CategoryId = 8 },
+    new VoucherCate { Id = 9, BatchId = 1, CategoryId = 9 },
+    new VoucherCate { Id = 10, BatchId = 1, CategoryId = 10 },
+    new VoucherCate { Id = 11, BatchId = 1, CategoryId = 11 },
+    new VoucherCate { Id = 12, BatchId = 1, CategoryId = 12 },
+    new VoucherCate { Id = 13, BatchId = 1, CategoryId = 13 },
+    new VoucherCate { Id = 14, BatchId = 1, CategoryId = 14 },
+
+    // Batch 2: Apply to all categories
+    new VoucherCate { Id = 15, BatchId = 2, CategoryId = 1 },
+    new VoucherCate { Id = 16, BatchId = 2, CategoryId = 2 },
+    new VoucherCate { Id = 17, BatchId = 2, CategoryId = 3 },
+    new VoucherCate { Id = 18, BatchId = 2, CategoryId = 4 },
+    new VoucherCate { Id = 19, BatchId = 2, CategoryId = 5 },
+    new VoucherCate { Id = 20, BatchId = 2, CategoryId = 6 },
+    new VoucherCate { Id = 21, BatchId = 2, CategoryId = 7 },
+    new VoucherCate { Id = 22, BatchId = 2, CategoryId = 8 },
+    new VoucherCate { Id = 23, BatchId = 2, CategoryId = 9 },
+    new VoucherCate { Id = 24, BatchId = 2, CategoryId = 10 },
+    new VoucherCate { Id = 25, BatchId = 2, CategoryId = 11 },
+    new VoucherCate { Id = 26, BatchId = 2, CategoryId = 12 },
+    new VoucherCate { Id = 27, BatchId = 2, CategoryId = 13 },
+    new VoucherCate { Id = 28, BatchId = 2, CategoryId = 14 },
+
+    // Batch 3: Random categories
+    new VoucherCate { Id = 29, BatchId = 3, CategoryId = 1 },
+    new VoucherCate { Id = 30, BatchId = 3, CategoryId = 3 },
+    new VoucherCate { Id = 31, BatchId = 3, CategoryId = 5 },
+    new VoucherCate { Id = 32, BatchId = 3, CategoryId = 7 },
+    new VoucherCate { Id = 33, BatchId = 3, CategoryId = 9 },
+
+    // Batch 4: Random categories
+    new VoucherCate { Id = 34, BatchId = 4, CategoryId = 2 },
+    new VoucherCate { Id = 35, BatchId = 4, CategoryId = 4 },
+    new VoucherCate { Id = 36, BatchId = 4, CategoryId = 6 },
+    new VoucherCate { Id = 37, BatchId = 4, CategoryId = 8 },
+    new VoucherCate { Id = 38, BatchId = 4, CategoryId = 10 }
+);
+            #endregion
+            #region VoucherProduct
+            modelBuilder.Entity<VoucherProduct>().HasData(
+    // Batch 1: Apply to all products
+    new VoucherProduct { Id = 1, BatchId = 1, ProductId = 1 },
+    new VoucherProduct { Id = 2, BatchId = 1, ProductId = 2 },
+
+    // Batch 2: Apply to all products
+    new VoucherProduct { Id = 3, BatchId = 2, ProductId = 1 },
+    new VoucherProduct { Id = 4, BatchId = 2, ProductId = 2 },
+
+    // Batch 3: Random products
+    new VoucherProduct { Id = 5, BatchId = 3, ProductId = 1 },
+
+    // Batch 4: Random products
+    new VoucherProduct { Id = 6, BatchId = 4, ProductId = 2 }
+);
             #endregion
         }
 

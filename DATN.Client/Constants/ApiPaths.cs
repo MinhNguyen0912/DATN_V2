@@ -29,5 +29,6 @@
         public static string ProductEAV = "ProductEAV";
         public static string VariantAttributeEAV = "VariantAttributeEAV";
         public static string VariantEAV = "VariantEAV";
+        public static string PendingCart = "PendingCart";
     }
 }

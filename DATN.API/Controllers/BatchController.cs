@@ -2,6 +2,7 @@
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.ViewModel.BatchVM;
+using DATN.Core.ViewModel.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -91,6 +92,12 @@ namespace DATN.API.Controllers
             _unitOfWork.BatchRepository.Create(batch);
             _unitOfWork.SaveChanges();
             return Ok(batch);
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetAllPaging([FromBody] BatchPaging request)
+        {
+            var batches = _unitOfWork.BatchRepository.batchPaging(request);
+            return Ok(batches);
         }
     }
 }

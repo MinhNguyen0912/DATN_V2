@@ -47,7 +47,9 @@ namespace DATN.Core.Data
         public DbSet<Product_EAV> Product_EAVs { get; set; }
         public DbSet<Variant> Variants { get; set; }
         public DbSet<VariantAttribute> VariantAttributes { get; set; }
-        
+        public DbSet<PendingCart> PendingCart { get; set; }
+        public DbSet<PendingCartVariant> PendingCartVariant { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

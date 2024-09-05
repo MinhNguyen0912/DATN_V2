@@ -3,6 +3,7 @@ using DATN.Client.Helper;
 using DATN.Client.Models;
 using DATN.Client.Services;
 using DATN.Core.Model;
+using DATN.Core.ViewModel.PendingCartVM;
 using DATN.Core.ViewModels.VNPayVM;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,19 +29,25 @@ namespace DATN.Client.Controllers
             {
                 return Redirect("~/Identity/Account/Login");
             }
-            //var product = await _clientService.GetList<ProductVM>("https://localhost:7095/api/Product/GetAll");
+            var pendingCart = await _clientService.Post<PendingCartVM>("https://localhost:7095/api/PendingCart/GetByUserId",user.UserId);
             //var voucher = await _clientService.GetList<VoucherUser>($"https://localhost:7095/api/VoucherUser/GetVoucherByUser?Id={user.UserId}");
             try
             {
                 //ViewData["voucher"] = voucher;
                 ViewData["user"] = user;
-                //ViewData["product"] = product;
+                ViewData["pendingCart"] = pendingCart;
             }
             catch (Exception ex)
             {
                 ToastHelper.ShowError(TempData, ex.Message);
             }
             return View();
+        }
+        public async Task<IActionResult> RemoveVariant(int variantId, int pendingCartId)
+        {
+            var user = SessionHelper.GetObject<UserInfo>(HttpContext.Session, "user");
+            await _clientService.Get($"https://localhost:7095/api/PendingCart/RemoveVariant?variantId={variantId}&pendingCartId={pendingCartId}");
+            return RedirectToAction("Index");
         }
         public async Task<IActionResult> ListProduct()
         {

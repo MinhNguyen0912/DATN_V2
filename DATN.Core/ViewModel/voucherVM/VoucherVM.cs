@@ -1,20 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DATN.Core.Enum;
+using DATN.Core.Model;
+using DATN.Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace DATN.Core.ViewModel.voucherVM
 {
     public class VoucherVM
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Không được bỏ trống")]
-        public string? Name { get; set; }
-        [Required(ErrorMessage = "Không được bỏ trống")]
-        public string? Description { get; set; }
-        [Required(ErrorMessage = "Không được bỏ trống")]
-        [Range(0, 100, ErrorMessage = "Nhập giá trị từ 0 đến 100")]
-        public int? DiscountByPercent { get; set; } = 0;
-        [Required(ErrorMessage = "Không được bỏ trống")]
-        [Range(0, int.MaxValue, ErrorMessage = "Giá trị phải lớn hơn hoặc bằng 0")]
-        public decimal? DiscountByPrice { get; set; } = 0;
+        public string? Code { get; set; }
+        public VoucherStatus Status { get; set; }
+        public DateTime? ReleaseDate { get; set; }
+        public DateTime? ExpiryDate { get; set; }
+        public int? BatchId { get; set; }
+        public Guid? UserId { get; set; }
+        public AppUser? User { get; set; }
+        public Batch? Batch { get; set; }
 
     }
 }

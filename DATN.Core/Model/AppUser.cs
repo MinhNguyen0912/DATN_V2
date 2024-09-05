@@ -13,6 +13,8 @@ namespace DATN.Core.Models
         public bool isActive { get; set; }
         public bool IsSentMail { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.Now;
+        public PendingCart? PendingCart { get; set; }
+        public int? PendingCartId { get; set; }
 
 
         // Navigation property

@@ -6,8 +6,7 @@ namespace DATN.Core.Model
     {
         public string? Code { get; set; }
         public VoucherStatus Status { get; set; }
-        public DateTime? ReleaseDate { get; set; }
-        
+        public DateTime? ReleaseDate { get; set; }        
         public DateTime? ExpiryDate { get; set; }
         public int? BatchId { get; set; }           
         public Guid? UserId { get; set; }
