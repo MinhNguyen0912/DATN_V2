@@ -57,8 +57,8 @@ namespace DATN.Core.Repositories.Repositories
                 .Include(i => i.InvoiceDetails)
                     .ThenInclude(id => id.Comment)
                 .Include(i => i.ShippingOrder)
-                .Include(i => i.VoucherUser)
-                    .ThenInclude(vu => vu.Voucher)
+                //.Include(i => i.VoucherUser)
+                    //.ThenInclude(vu => vu.Voucher)
                 .ToList();
 
             // Chuyển đổi sang InvoiceShowForClientVM bằng AutoMapper

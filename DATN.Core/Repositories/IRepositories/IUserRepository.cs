@@ -10,12 +10,12 @@ namespace DATN.Core.Repositories.IRepositories
     public interface IUserRepository : IBaseRepository<AppUser>
     {
         UserPaging GetUserPaging(UserPaging request);
-        Task<int> AddVoucherToListUser(List<UserVoucherShowModal> input);
+        //Task<int> AddVoucherToListUser(List<UserVoucherShowModal> input);
         bool DeleteUser(Guid userId);
         int UpdateUser(AppUser user);
         AppUser GetByIdCustom(Guid userId);
         AppUser GetUserByEmail(string email);
-        Task<IEnumerable<string>> GetListVoucherByUserId(Guid userId);
+        //Task<IEnumerable<string>> GetListVoucherByUserId(Guid userId);
         List<AppUser> GetUsersExport(string search, string lastLoginTimeFilter);
         IEnumerable<AppUser> GetUsersByIds(List<Guid> userIds);
         UserProfile GetUserProfile(UserProfile userProfile);

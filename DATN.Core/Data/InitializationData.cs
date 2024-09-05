@@ -285,74 +285,6 @@ namespace DATN.Core.Data
                 new CategoryTimeRange { Id = 11, CategoryId = 15, TimeRangeId = 11 }
             );
             #endregion
-            #region Voucher
-            modelBuilder.Entity<Voucher>().HasData(
-        new Voucher
-        {
-            Id = 1,
-            Code = "VOUCHER10",
-            Description = "10% off",
-            Quantity = 100,
-            QuantityUsed = 0,
-            UsageLimit = 10,
-            MinOrderAmount = 100,
-            MaxDiscountAmount = 50,
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.AddMonths(1),
-            IsActive = true,
-            DiscountType = DiscountType.Percent,
-            DiscountAmount = 10
-        },
-        new Voucher
-        {
-            Id = 2,
-            Code = "VOUCHER20",
-            Description = "20% off",
-            Quantity = 200,
-            QuantityUsed = 0,
-            UsageLimit = 20,
-            MinOrderAmount = 200,
-            MaxDiscountAmount = 100,
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.AddMonths(2),
-            IsActive = true,
-            DiscountType = DiscountType.Percent,
-            DiscountAmount = 20
-        }
-    );
-            #endregion
-            #region VoucherUser
-            modelBuilder.Entity<VoucherUser>().HasData(
-            new VoucherUser
-            {
-                Id = 1,
-                VoucherId = 1,
-                AppUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),
-                UsageCount = 0,
-                IsDeleted = false
-            },
-            new VoucherUser
-            {
-                Id = 2,
-                VoucherId = 2,
-                AppUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),
-                UsageCount = 0,
-                IsDeleted = false
-            }
-        );
-            #endregion ShppingOrder
-            #region VoucherCate
-            modelBuilder.Entity<VoucherCate>().HasData(
-                new VoucherCate { Id = 1,VoucherId = 1, CategoryId = 1 },
-                new VoucherCate { Id = 2,VoucherId = 1, CategoryId = 2 }
-    );
-            #endregion
-            #region VoucherProduct
-            modelBuilder.Entity<VoucherProduct>().HasData(
-                new VoucherProduct { Id = 1, VoucherId = 1, ProductId = 1 },
-                new VoucherProduct { Id = 2, VoucherId = 2, ProductId = 2 }
-            );
-            #endregion
             #region ShippingOrder
             //modelBuilder.Entity<ShippingOrder>().HasData(
             //    new ShippingOrder { Id = 1, OrderCode = "L6AHHM", UserId = Guid.Parse("AA7C5218-4F1E-4AC6-A3B4-08DCB162E29E"), Price = 200000, CreateAt = DateTime.Now, InvoiceId = 3 }
@@ -491,7 +423,6 @@ namespace DATN.Core.Data
                     Weight = 22000,
                 }
             );
-
             // Seed VariantAttributes
             modelBuilder.Entity<VariantAttribute>().HasData(
                 // Variant 1
@@ -518,6 +449,161 @@ namespace DATN.Core.Data
                 new VariantAttribute { VariantAttributeId = 11, VariantId = 6, AttributeValueId = 1 }, // Trắng
                 new VariantAttribute { VariantAttributeId = 12, VariantId = 6, AttributeValueId = 6 }  // 60inch
             );
+            #endregion
+            #region Batch   
+            modelBuilder.Entity<Batch>().HasData(
+            new Batch
+            {
+                Id = 1,
+                Name = "Batch 1",
+                Description = "First batch of vouchers",
+                Type = VoucherType.discount,
+                DiscountType = DiscountType.Amount,
+                DiscountAmount = 100000, // VNĐ
+                MinOrderAmount = 500000, // VNĐ
+                MaxDiscountAmount = 200000, // VNĐ
+                StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddMonths(1),
+                IsActive = true
+            },
+            new Batch
+            {
+                Id = 2,
+                Name = "Batch 2",
+                Description = "Second batch of vouchers",
+                Type = VoucherType.freeship,
+                DiscountType = DiscountType.Percent,
+                DiscountAmount = 100, // 100% Free shipping
+                MinOrderAmount = 200000, // VNĐ
+                MaxDiscountAmount = 0, // No max discount
+                StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddMonths(1),
+                IsActive = true
+            },
+            new Batch
+            {
+                Id = 3,
+                Name = "Batch 3",
+                Description = "Third batch of vouchers",
+                Type = VoucherType.discount,
+                DiscountType = DiscountType.Amount,
+                DiscountAmount = 200000, // VNĐ
+                MinOrderAmount = 1000000, // VNĐ
+                MaxDiscountAmount = 400000, // VNĐ
+                StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddMonths(2),
+                IsActive = true
+            },
+            new Batch
+            {
+                Id = 4,
+                Name = "Batch 4",
+                Description = "Fourth batch of vouchers",
+                Type = VoucherType.freeship,
+                DiscountType = DiscountType.Percent,
+                DiscountAmount = 50, // 50% Free shipping
+                MinOrderAmount = 300000, // VNĐ
+                MaxDiscountAmount = 100000, // VNĐ
+                StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddMonths(2),
+                IsActive = true
+            }
+);
+            #endregion
+            #region Voucher
+            var customerUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749");
+
+            modelBuilder.Entity<Voucher>().HasData(
+                // Vouchers for Batch 1
+                new Voucher { Id = 1, Code = "BATCH1_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 2, Code = "BATCH1_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 3, Code = "BATCH1_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 4, Code = "BATCH1_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+
+                // Vouchers for Batch 2
+                new Voucher { Id = 5, Code = "BATCH2_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 6, Code = "BATCH2_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 7, Code = "BATCH2_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 8, Code = "BATCH2_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+
+                // Vouchers for Batch 3
+                new Voucher { Id = 9, Code = "BATCH3_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 10, Code = "BATCH3_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 11, Code = "BATCH3_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 12, Code = "BATCH3_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+
+                // Vouchers for Batch 4
+                new Voucher { Id = 13, Code = "BATCH4_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 14, Code = "BATCH4_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 15, Code = "BATCH4_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 16, Code = "BATCH4_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) }
+            );
+            #endregion
+            #region VoucherCate
+            modelBuilder.Entity<VoucherCate>().HasData(
+    // Batch 1: Apply to all categories
+    new VoucherCate { Id = 1, BatchId = 1, CategoryId = 1 },
+    new VoucherCate { Id = 2, BatchId = 1, CategoryId = 2 },
+    new VoucherCate { Id = 3, BatchId = 1, CategoryId = 3 },
+    new VoucherCate { Id = 4, BatchId = 1, CategoryId = 4 },
+    new VoucherCate { Id = 5, BatchId = 1, CategoryId = 5 },
+    new VoucherCate { Id = 6, BatchId = 1, CategoryId = 6 },
+    new VoucherCate { Id = 7, BatchId = 1, CategoryId = 7 },
+    new VoucherCate { Id = 8, BatchId = 1, CategoryId = 8 },
+    new VoucherCate { Id = 9, BatchId = 1, CategoryId = 9 },
+    new VoucherCate { Id = 10, BatchId = 1, CategoryId = 10 },
+    new VoucherCate { Id = 11, BatchId = 1, CategoryId = 11 },
+    new VoucherCate { Id = 12, BatchId = 1, CategoryId = 12 },
+    new VoucherCate { Id = 13, BatchId = 1, CategoryId = 13 },
+    new VoucherCate { Id = 14, BatchId = 1, CategoryId = 14 },
+
+    // Batch 2: Apply to all categories
+    new VoucherCate { Id = 15, BatchId = 2, CategoryId = 1 },
+    new VoucherCate { Id = 16, BatchId = 2, CategoryId = 2 },
+    new VoucherCate { Id = 17, BatchId = 2, CategoryId = 3 },
+    new VoucherCate { Id = 18, BatchId = 2, CategoryId = 4 },
+    new VoucherCate { Id = 19, BatchId = 2, CategoryId = 5 },
+    new VoucherCate { Id = 20, BatchId = 2, CategoryId = 6 },
+    new VoucherCate { Id = 21, BatchId = 2, CategoryId = 7 },
+    new VoucherCate { Id = 22, BatchId = 2, CategoryId = 8 },
+    new VoucherCate { Id = 23, BatchId = 2, CategoryId = 9 },
+    new VoucherCate { Id = 24, BatchId = 2, CategoryId = 10 },
+    new VoucherCate { Id = 25, BatchId = 2, CategoryId = 11 },
+    new VoucherCate { Id = 26, BatchId = 2, CategoryId = 12 },
+    new VoucherCate { Id = 27, BatchId = 2, CategoryId = 13 },
+    new VoucherCate { Id = 28, BatchId = 2, CategoryId = 14 },
+
+    // Batch 3: Random categories
+    new VoucherCate { Id = 29, BatchId = 3, CategoryId = 1 },
+    new VoucherCate { Id = 30, BatchId = 3, CategoryId = 3 },
+    new VoucherCate { Id = 31, BatchId = 3, CategoryId = 5 },
+    new VoucherCate { Id = 32, BatchId = 3, CategoryId = 7 },
+    new VoucherCate { Id = 33, BatchId = 3, CategoryId = 9 },
+
+    // Batch 4: Random categories
+    new VoucherCate { Id = 34, BatchId = 4, CategoryId = 2 },
+    new VoucherCate { Id = 35, BatchId = 4, CategoryId = 4 },
+    new VoucherCate { Id = 36, BatchId = 4, CategoryId = 6 },
+    new VoucherCate { Id = 37, BatchId = 4, CategoryId = 8 },
+    new VoucherCate { Id = 38, BatchId = 4, CategoryId = 10 }
+);
+            #endregion
+            #region VoucherProduct
+            modelBuilder.Entity<VoucherProduct>().HasData(
+    // Batch 1: Apply to all products
+    new VoucherProduct { Id = 1, BatchId = 1, ProductId = 1 },
+    new VoucherProduct { Id = 2, BatchId = 1, ProductId = 2 },
+
+    // Batch 2: Apply to all products
+    new VoucherProduct { Id = 3, BatchId = 2, ProductId = 1 },
+    new VoucherProduct { Id = 4, BatchId = 2, ProductId = 2 },
+
+    // Batch 3: Random products
+    new VoucherProduct { Id = 5, BatchId = 3, ProductId = 1 },
+
+    // Batch 4: Random products
+    new VoucherProduct { Id = 6, BatchId = 4, ProductId = 2 }
+);
             #endregion
         }
 

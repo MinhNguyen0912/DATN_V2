@@ -15,25 +15,25 @@ namespace DATN.API.Controllers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        [HttpGet]
-        public ActionResult GetVoucherByUser(Guid Id)
-        {
-            var result = _unitOfWork.voucherUserRepository.GetVoucherByUser(Id).Where(p => p.IsDeleted == false);
-            if (result != null && result.Any())
-            {
-                return Ok(result);
-            }
-            else return NoContent();
-        }
-        [HttpGet]
-        public ActionResult GetVoucherCustom(int id)
-        {
-            var result = _unitOfWork.voucherUserRepository.GetByIdCustom(id);
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            else return NoContent();
-        }
+        //[HttpGet]
+        //public ActionResult GetVoucherByUser(Guid Id)
+        //{
+        //    var result = _unitOfWork.voucherUserRepository.GetVoucherByUser(Id).Where(p => p.IsDeleted == false);
+        //    if (result != null && result.Any())
+        //    {
+        //        return Ok(result);
+        //    }
+        //    else return NoContent();
+        //}
+        //[HttpGet]
+        //public ActionResult GetVoucherCustom(int id)
+        //{
+        //    var result = _unitOfWork.voucherUserRepository.GetByIdCustom(id);
+        //    if (result != null)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    else return NoContent();
+        //}
     }
 }

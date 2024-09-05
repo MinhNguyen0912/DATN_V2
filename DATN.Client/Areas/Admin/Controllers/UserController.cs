@@ -157,7 +157,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                 {
                     item.VoucherId = VoucherIdSelected;
                 }
-                var addedVoucher = await _unitOfWork.UserRepository.AddVoucherToListUser(userPagingDeserialized.UserVoucherShowModal);
+                //var addedVoucher = await _unitOfWork.UserRepository.AddVoucherToListUser(userPagingDeserialized.UserVoucherShowModal);
             }
 
             userPagingDeserialized.ListVoucherDropDown = new List<VoucherVM>();
@@ -245,7 +245,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                     var userVm = _mapper.Map<UserVM>(user);
                     var roles = await _userManager.GetRolesAsync(user);
                     userVm.Roles = roles.ToList();
-                    userVm.ListVoucherNameByUser = await _unitOfWork.UserRepository.GetListVoucherByUserId(id);
+                    //userVm.ListVoucherNameByUser = await _unitOfWork.UserRepository.GetListVoucherByUserId(id);
                     return View(userVm);
                 }
                 else

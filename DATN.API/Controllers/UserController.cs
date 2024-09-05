@@ -5,6 +5,7 @@ using DATN.Core.ViewModels;
 using DATN.Core.ViewModels.UserViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DATN.Api.Controllers
 {
@@ -183,6 +184,13 @@ namespace DATN.Api.Controllers
                 }
             }
             return BadRequest(ModelState);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUser()
+        {
+            var users = _userManager.Users.ToList();
+            return Ok(users);
         }
     }
 }

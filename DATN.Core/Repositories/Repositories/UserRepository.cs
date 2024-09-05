@@ -68,11 +68,11 @@ namespace DATN.Core.Repositories.Repositories
             var list = query.Skip((request.CurrentPage - 1) * request.PageSize).Take(request.PageSize).ToList();
             var listUserId = list.Select(c => c.Id);
             var lstInvoiceByUserId = Context.Invoices.AsQueryable().Where(c => listUserId.Contains(c.UserId)).ToList();
-            var lstVoucherUsers = Context.VoucherUsers.AsQueryable().Where(c => listUserId.Contains(c.AppUserId))
-                .ToList();
-            var lstVoucherId = lstVoucherUsers.Select(c => c.VoucherId);
-            var lstVoucher = Context.Vouchers.AsQueryable();
-            var lstVoucherById = lstVoucher.Where(c => lstVoucherId.Contains(c.Id)).ToList();
+            //var lstVoucherUsers = Context.VoucherUsers.AsQueryable().Where(c => listUserId.Contains(c.AppUserId))
+            //    .ToList();
+            //var lstVoucherId = lstVoucherUsers.Select(c => c.VoucherId);
+            //var lstVoucher = Context.Vouchers.AsQueryable();
+            //var lstVoucherById = lstVoucher.Where(c => lstVoucherId.Contains(c.Id)).ToList();
             request.Items = _mapper.Map<List<UserVM>>(list);
             FormatCurrency formatCurrency = new FormatCurrency();
             foreach (var x in request.Items)
@@ -109,34 +109,34 @@ namespace DATN.Core.Repositories.Repositories
                 //var listVoucherByCondition = lstVoucherUsers.Where(c => c.AppUserId == x.Id).Select(c => c.VoucherId);
                 x.GrandTotalAmountPurchased = formatCurrency.GetCurrency(
                     Convert.ToDecimal(listFinalPrice.Sum(c => c)));
-                x.ListVoucherNameByUser = lstVoucherById.Where(c =>
-                    lstVoucherUsers.Where(c => c.AppUserId == x.Id).Select(inv => inv.VoucherId).ToList()
-                        .Contains(c.Id)).Select(c => c.Name);
+                //x.ListVoucherNameByUser = lstVoucherById.Where(c =>
+                //    lstVoucherUsers.Where(c => c.AppUserId == x.Id).Select(inv => inv.VoucherId).ToList()
+                //        .Contains(c.Id)).Select(c => c.Name);
             }
 
-            request.ListVoucherDropDown = _mapper.Map<List<VoucherVM>>(lstVoucher);
+            //request.ListVoucherDropDown = _mapper.Map<List<VoucherVM>>(lstVoucher);
             return request;
         }
 
-        public async Task<int> AddVoucherToListUser(List<UserVoucherShowModal> input)
-        {
-            List<VoucherUser> voucherUsers = new List<VoucherUser>();
-            foreach (var x in input)
-            {
-                if (!await Context.VoucherUsers.AnyAsync(c =>
-                        c.AppUserId == x.UserId && c.VoucherId == Convert.ToInt32(x.VoucherId)))
-                {
-                    VoucherUser voucherUser = new VoucherUser();
-                    voucherUser.VoucherId = Convert.ToInt32(x.VoucherId);
-                    voucherUser.AppUserId = x.UserId;
-                    voucherUsers.Add(voucherUser);
-                }
-            }
+        //public async Task<int> AddVoucherToListUser(List<UserVoucherShowModal> input)
+        //{
+        //    List<VoucherUser> voucherUsers = new List<VoucherUser>();
+        //    foreach (var x in input)
+        //    {
+        //        if (!await Context.VoucherUsers.AnyAsync(c =>
+        //                c.AppUserId == x.UserId && c.VoucherId == Convert.ToInt32(x.VoucherId)))
+        //        {
+        //            VoucherUser voucherUser = new VoucherUser();
+        //            voucherUser.VoucherId = Convert.ToInt32(x.VoucherId);
+        //            voucherUser.AppUserId = x.UserId;
+        //            voucherUsers.Add(voucherUser);
+        //        }
+        //    }
 
-            await Context.VoucherUsers.AddRangeAsync(voucherUsers);
-            await Context.SaveChangesAsync();
-            return voucherUsers.Count();
-        }
+        //    await Context.VoucherUsers.AddRangeAsync(voucherUsers);
+        //    await Context.SaveChangesAsync();
+        //    return voucherUsers.Count();
+        //}
 
         public bool DeleteUser(Guid userId)
         {
@@ -172,16 +172,16 @@ namespace DATN.Core.Repositories.Repositories
             return Context.Users.FirstOrDefault(x => x.Email == email);
         }
 
-        public async Task<IEnumerable<string>> GetListVoucherByUserId(Guid userId)
-        {
-            var lstVoucherUsers = Context.VoucherUsers.AsQueryable().Where(c => c.AppUserId == userId)
-                .ToList();
-            var lstVoucherId = lstVoucherUsers.Select(c => c.VoucherId);
-            var lstVoucher = Context.Vouchers.AsQueryable();
-            var lstVoucherById = lstVoucher.Where(c => lstVoucherId.Contains(c.Id)).ToList();
-            var result = lstVoucherById.Select(c => c.Name);
-            return result;
-        }
+        //public async Task<IEnumerable<string>> GetListVoucherByUserId(Guid userId)
+        //{
+        //    var lstVoucherUsers = Context.VoucherUsers.AsQueryable().Where(c => c.AppUserId == userId)
+        //        .ToList();
+        //    var lstVoucherId = lstVoucherUsers.Select(c => c.VoucherId);
+        //    var lstVoucher = Context.Vouchers.AsQueryable();
+        //    var lstVoucherById = lstVoucher.Where(c => lstVoucherId.Contains(c.Id)).ToList();
+        //    var result = lstVoucherById.Select(c => c.Name);
+        //    return result;
+        //}
 
         public IEnumerable<AppUser> GetUsersByIds(List<Guid> userIds)
         {

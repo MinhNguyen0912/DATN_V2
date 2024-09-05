@@ -21,9 +21,9 @@ namespace DATN.Core.Model
         public ICollection<InvoiceDetail> InvoiceDetails { get; set; }
         // Navigation property
         public PaymentInfo? PaymentInfo { get; set; }
-        public VoucherUser? VoucherUser { get; set; }
+        public Voucher? Voucher { get; set; }
         public string? Note { get; set; }
-        public int? VoucherUserId { get; set; }
+        public int? VoucherId { get; set; }
         public ShippingOrder? ShippingOrder { get; set; }
 
 

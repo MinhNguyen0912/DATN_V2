@@ -3,6 +3,7 @@ using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
+using DATN.Core.ViewModel.VoucherVM;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers
@@ -90,6 +91,44 @@ namespace DATN.API.Controllers
             _unitOfWork.SaveChanges();
 
             return Ok(voucher);
+        }
+
+        //Dùng api từ đây trở đi
+        [HttpPost]
+        public async Task<IActionResult> CreateVoucher_Viet([FromBody] CreateVoucherRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Voucher data is null"); // 400 Bad Request
+            }
+            var batch =await _unitOfWork.BatchRepository.GetById(request.BatchId);
+            foreach (var item in request.VoucherCodes)
+            {
+                var voucher = new Voucher
+                {
+                    BatchId = request.BatchId,
+                    Code = item,
+                    Status = Core.Enum.VoucherStatus.Unpushlished
+                };
+                if (batch.EndDate != null)
+                {
+                    voucher.ExpiryDate = batch.EndDate;
+                }
+                await _unitOfWork.VoucherRepository.Create(voucher);
+            }
+            int result = _unitOfWork.SaveChanges();
+            return Ok(result); // 201 Created
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetVoucherByBatchId_Viet(int id)
+        {
+            var vouchers = _unitOfWork.VoucherRepository.GetAll().Where(p => p.BatchId == id).ToList();
+            if (vouchers != null && vouchers.Any())
+            {
+                var vouchersVM = _mapper.Map<List<VoucherVM>>(vouchers);
+                return Ok(vouchersVM);
+            }
+            return NoContent(); // Trả về 204 nếu không tìm thấy newfeed
         }
     }
 }

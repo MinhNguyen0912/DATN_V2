@@ -9,9 +9,9 @@ namespace DATN.Core.Model
 {
     public class VoucherProduct : BaseEntity
     {
-        public int VoucherId { get; set; }
+        public int BatchId { get; set; }
         public int ProductId { get; set; }
-        public Voucher Voucher { get; set; }
+        public Batch Batch { get; set; }
         public Product_EAV.Product_EAV Product { get; set; }
     }
 }

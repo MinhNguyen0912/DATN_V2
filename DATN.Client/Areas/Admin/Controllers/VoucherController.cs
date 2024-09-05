@@ -5,6 +5,7 @@ using DATN.Core.Data;
 using DATN.Core.Infrastructures;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
+using DATN.Core.ViewModel.VoucherVM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,24 +30,15 @@ namespace DATN.Client.Areas.Admin.Controllers
             _httpClient = httpClient;
             _dbContext = dbContext;
         }
-        public async Task<IActionResult> Index(VoucherPaging request)
+        public async Task<IActionResult> Index(int BatchId)
         {
-            VoucherPaging Paging = new VoucherPaging();
-
-            try
+            var vouchers = await _clientService.GetList<VoucherVM>($"https://localhost:7095/api/Voucher/GetVoucherByBatchId_Viet/{BatchId}");
+            if (vouchers == null)
             {
-                Paging = await _clientService.Post<VoucherPaging>("https://localhost:7095/api/Voucher/GetVoucherPaging", request);
-
-                if (Paging == null)
-                {
-                    return NotFound();
-                }
+                vouchers = new List<VoucherVM>();
             }
-            catch (Exception ex)
-            {
-                ToastHelper.ShowError(TempData, ex.Message);
-            }
-            return View(Paging);
+            ViewBag.BatchId = BatchId;
+            return View(vouchers);
         }
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
