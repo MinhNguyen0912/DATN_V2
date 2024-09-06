@@ -515,30 +515,31 @@ namespace DATN.Core.Data
 
             modelBuilder.Entity<Voucher>().HasData(
                 // Vouchers for Batch 1
-                new Voucher { Id = 1, Code = "BATCH1_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
-                new Voucher { Id = 2, Code = "BATCH1_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
-                new Voucher { Id = 3, Code = "BATCH1_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
-                new Voucher { Id = 4, Code = "BATCH1_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 1, Code = "BATCH1_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 2, Code = "BATCH1_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 3, Code = "BATCH1_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 4, Code = "BATCH1_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 1, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1), ReleaseDate = DateTime.Now },
 
                 // Vouchers for Batch 2
-                new Voucher { Id = 5, Code = "BATCH2_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
-                new Voucher { Id = 6, Code = "BATCH2_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
-                new Voucher { Id = 7, Code = "BATCH2_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
-                new Voucher { Id = 8, Code = "BATCH2_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1) },
+                new Voucher { Id = 5, Code = "BATCH2_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 6, Code = "BATCH2_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 7, Code = "BATCH2_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 8, Code = "BATCH2_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 2, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(1), ReleaseDate = DateTime.Now },
 
                 // Vouchers for Batch 3
-                new Voucher { Id = 9, Code = "BATCH3_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
-                new Voucher { Id = 10, Code = "BATCH3_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
-                new Voucher { Id = 11, Code = "BATCH3_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
-                new Voucher { Id = 12, Code = "BATCH3_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
+                new Voucher { Id = 9, Code = "BATCH3_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 10, Code = "BATCH3_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 11, Code = "BATCH3_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 12, Code = "BATCH3_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 3, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now },
 
                 // Vouchers for Batch 4
-                new Voucher { Id = 13, Code = "BATCH4_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
-                new Voucher { Id = 14, Code = "BATCH4_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
-                new Voucher { Id = 15, Code = "BATCH4_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) },
-                new Voucher { Id = 16, Code = "BATCH4_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2) }
+                new Voucher { Id = 13, Code = "BATCH4_VOUCHER1", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 14, Code = "BATCH4_VOUCHER2", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 15, Code = "BATCH4_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now },
+                new Voucher { Id = 16, Code = "BATCH4_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now }
             );
             #endregion
+
             #region VoucherCate
             modelBuilder.Entity<VoucherCate>().HasData(
     // Batch 1: Apply to all categories

@@ -6,6 +6,7 @@ namespace DATN.Core.Repositories.IRepositories
 {
     public interface IVoucherRepository : IBaseRepository<Voucher>
     {
+        List<Voucher> GetAllVouchers();
         VoucherPaging GetVoucherPaging(VoucherPaging request);
     }
 }

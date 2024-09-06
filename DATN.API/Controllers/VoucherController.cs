@@ -122,7 +122,7 @@ namespace DATN.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVoucherByBatchId_Viet(int id)
         {
-            var vouchers = _unitOfWork.VoucherRepository.GetAll().Where(p => p.BatchId == id).ToList();
+            var vouchers = _unitOfWork.VoucherRepository.GetAllVouchers().Where(p => p.BatchId == id).ToList();
             if (vouchers != null && vouchers.Any())
             {
                 var vouchersVM = _mapper.Map<List<VoucherVM>>(vouchers);

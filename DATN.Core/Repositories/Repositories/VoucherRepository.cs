@@ -5,6 +5,7 @@ using DATN.Core.Model;
 using DATN.Core.Repositories.IRepositories;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
+using Microsoft.EntityFrameworkCore;
 
 namespace DATN.Core.Repositories.Repositories
 {
@@ -15,6 +16,12 @@ namespace DATN.Core.Repositories.Repositories
         {
             _mapper = mapper;
         }
+
+        public List<Voucher> GetAllVouchers()
+        {
+            return Context.Vouchers.Include(b=>b.Batch).Include(u=>u.User).ToList();
+        }
+
         public VoucherPaging GetVoucherPaging(VoucherPaging request)
         {
             var query = Context.Vouchers.AsQueryable();
