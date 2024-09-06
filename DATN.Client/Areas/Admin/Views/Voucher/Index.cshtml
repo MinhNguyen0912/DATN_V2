@@ -35,7 +35,7 @@
                     <td>@voucher.Status</td>
                     <td>@voucher.ReleaseDate?.ToString("dd/MM/yyyy")</td>
                     <td>@voucher.ExpiryDate?.ToString("dd/MM/yyyy")</td>
-                    <td>@voucher.User?.UserName ?? "N/A"</td>
+                    <td>@(voucher.User != null ? voucher.User.UserName : "N/A")</td>
                     <td>
                         <a asp-action="Details" asp-route-id="@voucher.Id" class="btn btn-info">Chi tiết</a>
                         <a asp-action="Edit" asp-route-id="@voucher.Id" class="btn btn-warning">Chỉnh sửa</a>
