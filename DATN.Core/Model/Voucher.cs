@@ -10,6 +10,9 @@ namespace DATN.Core.Model
         public int? QuantityUsed { get; set; }
         public int? UsageLimit { get; set; }
 
+        //Condition, ActivationTime
+        public string? Condition { get; set; }
+        public DateTime? ActivationTime { get; set; }
         public decimal? MinOrderAmount { get; set; }
         public decimal? MaxDiscountAmount { get; set; }
         public DateTime StartDate { get; set; }
