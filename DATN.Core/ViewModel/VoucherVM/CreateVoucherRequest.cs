@@ -11,5 +11,6 @@ namespace DATN.Core.ViewModel.VoucherVM
         public int BatchId { get; set; }    
         public List<string>? VoucherCodes { get; set; }
         public DateTime? ExpiryDate { get; set; }
+        public DateTime ActivationTime { get; set; }
     }
 }

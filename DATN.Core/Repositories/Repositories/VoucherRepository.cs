@@ -45,7 +45,7 @@ namespace DATN.Core.Repositories.Repositories
             return request;
         }
 
-        public async Task<string> CreateVoucherAutoRegisterAsync(Guid userId )
+        public async Task<string> GenerateVoucherAutoRegisterAsync(Guid userId )
         {
             //List voucher or some vouchers
             var voucher = new List<Voucher>()
@@ -55,14 +55,18 @@ namespace DATN.Core.Repositories.Repositories
                 Status = VoucherStatus.NotUsed,
                 ReleaseDate = DateTime.Now,
                 ExpiryDate = DateTime.Now.AddMonths(2),
-                UserId = userId
+                ActivationTime = DateTime.Now,
+                UserId = userId,
+                BatchId = 0
                 },
                  new Voucher { Code = "" + GenerateVoucherCode(),
                 Description = "Free Ship",
                 Status = VoucherStatus.NotUsed,
                 ReleaseDate = DateTime.Now,
                 ExpiryDate = DateTime.Now.AddMonths(2),
-                UserId = userId
+                 ActivationTime = DateTime.Now,
+                UserId = userId,
+                BatchId = 4
                 }
             };
             _context.Vouchers.AddRange(voucher);
@@ -72,7 +76,7 @@ namespace DATN.Core.Repositories.Repositories
         }
 
 
-        public async Task<string> GenarateVoucherConditionAsync(Guid userId)
+        public async Task<string> GenerateVoucherConditionAsync(Guid userId)
         {
             bool voucherCreated = false;
 
@@ -86,7 +90,9 @@ namespace DATN.Core.Repositories.Repositories
                     Status = VoucherStatus.NotUsed,
                     ReleaseDate = DateTime.Now,
                     ExpiryDate = DateTime.Now.AddMonths(2),
+                    ActivationTime = DateTime.Now,
                     UserId = userId,
+                    BatchId = 4
                 };
                 _context.Add(voucher);
                 voucherCreated = true;
@@ -102,7 +108,9 @@ namespace DATN.Core.Repositories.Repositories
                     Status = VoucherStatus.NotUsed,
                     ReleaseDate = DateTime.Now,
                     ExpiryDate = DateTime.Now.AddMonths(2),
+                    ActivationTime = DateTime.Now,
                     UserId = userId,
+                    BatchId = 2
                 };
                 _context.Add(voucher);
                 voucherCreated = true;
@@ -119,25 +127,26 @@ namespace DATN.Core.Repositories.Repositories
         }
 
 
-        public async Task CreateVoucherActivationTimeAsync(DateTime activationTime)
-        {
-            // Lấy danh sách voucher có thời gian kích hoạt
-            var vouchers = await _context.Vouchers
-                .Where(v => v.ActivationTime == activationTime)
-                .ToListAsync();
+        //public async Task GenerateVoucherActivationTimeAsync(DateTime activationTime)
+        //{
+        //    // Lấy danh sách voucher có thời gian kích hoạt
+        //    var vouchers = await _context.Vouchers
+        //        .Where(v => v.ActivationTime == activationTime)
+        //        .ToListAsync();
 
-            foreach (var voucher in vouchers)
-            {
-                // Kiểm tra điều kiện và kích hoạt voucher
-                if (DateTime.Now >= activationTime)
-                {
-                    voucher.Status = VoucherStatus.Unpushlished;
-                    _context.Vouchers.Update(voucher);
-                }
-            }
+        //    foreach (var voucher in vouchers)
+        //    {
+        //        // Kiểm tra điều kiện và kích hoạt voucher
+        //        if (DateTime.Now >= activationTime)
+        //        {
+        //            voucher.ActivationTime = activationTime;
+        //            voucher.Status = VoucherStatus.Unpushlished;
+        //            _context.Vouchers.Update(voucher);
+        //        }
+        //    }
 
-            await _context.SaveChangesAsync();
-        }
+        //    await _context.SaveChangesAsync();
+        //}
 
         private string GenerateVoucherCode()
         {
