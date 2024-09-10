@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
+using DATN.Core.Service;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModel.VoucherVM;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.API.Controllers
@@ -14,10 +16,13 @@ namespace DATN.API.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public VoucherController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly VoucherService _voucherService;
+
+        public VoucherController(IUnitOfWork unitOfWork, IMapper mapper, VoucherService voucherService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _voucherService = voucherService;
         }
         [HttpPost]
         public IActionResult GetVoucherPaging([FromBody] VoucherPaging request)
@@ -119,6 +124,67 @@ namespace DATN.API.Controllers
             int result = _unitOfWork.SaveChanges();
             return Ok(result); // 201 Created
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateVoucher_Phuc([FromBody] CreateVoucherRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Voucher data is null"); // 400 Bad Request
+            }
+
+            var batch = await _unitOfWork.BatchRepository.GetById(request.BatchId);
+            if (batch == null)
+            {
+                return NotFound("Batch not found");
+            }
+                try
+                {
+                    foreach (var item in request.VoucherCodes)
+                    {
+                        var voucher = new Voucher
+                        {
+                            BatchId = request.BatchId,
+                            Code = item,
+                            Status = Core.Enum.VoucherStatus.Unpushlished,
+                            ExpiryDate = batch.EndDate ?? null,
+                            ActivationTime = request.ActivationTime // assuming you pass the activation time in the request
+                        };
+                        await _unitOfWork.VoucherRepository.Create(voucher);
+                    }
+
+                    int result = _unitOfWork.SaveChanges();
+
+
+                // Schedule voucher activation using Hangfire
+                var activationDelay = request.ActivationTime - DateTime.Now;
+                if (activationDelay > TimeSpan.Zero)
+                {
+                    BackgroundJob.Schedule(() => _voucherService.GenerateVoucherActivationTimeAsync(request.ActivationTime), activationDelay);
+                }
+
+                return Ok(result); // 201 Created
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, "Internal Server Error");
+                }
+            
+        }
+
+
+        // Method to activate vouchers based on the BatchId and ActivationTime
+        //public async Task ActivateVouchers(Guid batchId, DateTime activationTime)
+        //{
+        //    var vouchers = await _unitOfWork.VoucherRepository.GetVouchersByBatchAndTime(batchId, activationTime);
+        //    foreach (var voucher in vouchers)
+        //    {
+        //        voucher.Status = Core.Enum.VoucherStatus.NotUsed;
+        //        _unitOfWork.VoucherRepository.Update(voucher);
+        //    }
+        //    await _unitOfWork.SaveChangesAsync();
+        //}
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVoucherByBatchId_Viet(int id)
         {
