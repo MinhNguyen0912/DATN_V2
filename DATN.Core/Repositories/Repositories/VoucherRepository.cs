@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using DATN.Core.Data;
+using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
+using DATN.Core.Models;
 using DATN.Core.Repositories.IRepositories;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
+using DATN.Core.ViewModels.UserViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace DATN.Core.Repositories.Repositories
@@ -12,9 +15,11 @@ namespace DATN.Core.Repositories.Repositories
     public class VoucherRepository : BaseRepository<Voucher>, IVoucherRepository
     {
         private readonly IMapper _mapper;
+        private readonly DATNDbContext _context;
         public VoucherRepository(DATNDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
+            _context = context;
         }
 
         public List<Voucher> GetAllVouchers()
@@ -38,6 +43,146 @@ namespace DATN.Core.Repositories.Repositories
             request.Items = _mapper.Map<List<VoucherVM>>(list);
 
             return request;
+        }
+
+        public async Task<string> GenerateVoucherAutoRegisterAsync(Guid userId )
+        {
+            //List voucher or some vouchers
+            var voucher = new List<Voucher>()
+            {
+                new Voucher { Code = "UNEW" + GenerateVoucherCode(),
+                Description = "Khách hàng mới",
+                Status = VoucherStatus.NotUsed,
+                ReleaseDate = DateTime.Now,
+                ExpiryDate = DateTime.Now.AddMonths(2),
+                ActivationTime = DateTime.Now,
+                UserId = userId,
+                BatchId = 0
+                },
+                 new Voucher { Code = "" + GenerateVoucherCode(),
+                Description = "Free Ship",
+                Status = VoucherStatus.NotUsed,
+                ReleaseDate = DateTime.Now,
+                ExpiryDate = DateTime.Now.AddMonths(2),
+                 ActivationTime = DateTime.Now,
+                UserId = userId,
+                BatchId = 4
+                }
+            };
+            _context.Vouchers.AddRange(voucher);
+            await _context.SaveChangesAsync();
+            
+            return "Voucher được tạo thành công";
+        }
+
+
+        public async Task<string> GenerateVoucherConditionAsync(Guid userId)
+        {
+            bool voucherCreated = false;
+
+            // Kiểm tra điều kiện tổng giá trị đơn hàng
+            if (await IsCheckedTotalPuschasePriceAsync(userId))
+            {
+                var voucher = new Voucher()
+                {
+                    Code = "Free" + GenerateVoucherCode(),
+                    Description = "Free Ship",
+                    Status = VoucherStatus.NotUsed,
+                    ReleaseDate = DateTime.Now,
+                    ExpiryDate = DateTime.Now.AddMonths(2),
+                    ActivationTime = DateTime.Now,
+                    UserId = userId,
+                    BatchId = 4
+                };
+                _context.Add(voucher);
+                voucherCreated = true;
+            }
+
+            // Kiểm tra điều kiện số lần mua hàng
+            if (await IsCheckedNumberBoughttAsync(userId))
+            {
+                var voucher = new Voucher()
+                {
+                    Code = "TOD" + GenerateVoucherCode(),
+                    Description = "Mua hàng trên 2 lần",
+                    Status = VoucherStatus.NotUsed,
+                    ReleaseDate = DateTime.Now,
+                    ExpiryDate = DateTime.Now.AddMonths(2),
+                    ActivationTime = DateTime.Now,
+                    UserId = userId,
+                    BatchId = 2
+                };
+                _context.Add(voucher);
+                voucherCreated = true;
+            }
+
+            // Lưu voucher vào cơ sở dữ liệu nếu có voucher được tạo
+            if (voucherCreated)
+            {
+                await _context.SaveChangesAsync();
+                return "Voucher created successfully.";
+            }
+
+            return "No voucher created. Conditions not met.";
+        }
+
+
+        //public async Task GenerateVoucherActivationTimeAsync(DateTime activationTime)
+        //{
+        //    // Lấy danh sách voucher có thời gian kích hoạt
+        //    var vouchers = await _context.Vouchers
+        //        .Where(v => v.ActivationTime == activationTime)
+        //        .ToListAsync();
+
+        //    foreach (var voucher in vouchers)
+        //    {
+        //        // Kiểm tra điều kiện và kích hoạt voucher
+        //        if (DateTime.Now >= activationTime)
+        //        {
+        //            voucher.ActivationTime = activationTime;
+        //            voucher.Status = VoucherStatus.Unpushlished;
+        //            _context.Vouchers.Update(voucher);
+        //        }
+        //    }
+
+        //    await _context.SaveChangesAsync();
+        //}
+
+        private string GenerateVoucherCode()
+        {
+            return Guid.NewGuid().ToString().Substring(0, 6).ToUpper();
+        }
+
+        public async Task<bool> IsCheckedNumberBoughttAsync(Guid userId)
+        {
+            var totalOrders = await _context.Invoices
+                                .Where(o => o.UserId == userId)
+                                .CountAsync();
+
+            if (totalOrders > 2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> IsCheckedTotalPuschasePriceAsync(Guid userId)
+        {
+            var totalSpent = await _context.Invoices
+                                .Where(o => o.UserId == userId)
+                                .SumAsync(o => o.FinalAmount);
+
+            if (totalSpent > 1000000)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
