@@ -12,6 +12,5 @@ namespace DATN.Core.Repositories.IRepositories
     public interface IBatchRepository:IBaseRepository<Batch>
     {
         BatchPaging batchPaging(BatchPaging request);
-        Batch GetByIdCustom(int id);
     }
 }

@@ -1,8 +1,6 @@
-﻿using DATN.Core.Enum;
-using DATN.Core.Infrastructures;
+﻿using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.ViewModel.Paging;
-using DATN.Core.ViewModel.VoucherVM;
 
 namespace DATN.Core.Repositories.IRepositories
 {
@@ -10,7 +8,5 @@ namespace DATN.Core.Repositories.IRepositories
     {
         List<Voucher> GetAllVouchers();
         VoucherPaging GetVoucherPaging(VoucherPaging request);
-        List<Voucher> SearchVoucher(SearchVoucherRequest request);
-        Voucher GetByIdCustom (int id);
     }
 }

@@ -8,7 +8,6 @@ using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModel.VoucherVM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace DATN.Client.Areas.Admin.Controllers
 {
@@ -31,34 +30,16 @@ namespace DATN.Client.Areas.Admin.Controllers
             _httpClient = httpClient;
             _dbContext = dbContext;
         }
-        public async Task<IActionResult> Index(int BatchId, string userName = null, Core.Enum.VoucherStatus? status = null)
+        public async Task<IActionResult> Index(int BatchId)
         {
-            var request = new SearchVoucherRequest
-            {
-                BatchId = BatchId,
-                UserName = userName,
-                Status = status
-            };
-
-            List<VoucherVM> vouchers;
-            if (!string.IsNullOrEmpty(userName) || status.HasValue)
-            {
-                vouchers = await _clientService.Post<List<VoucherVM>>("https://localhost:7095/api/Voucher/SearchVoucher_Viet", request);
-            }
-            else
-            {
-                vouchers = await _clientService.GetList<VoucherVM>($"https://localhost:7095/api/Voucher/GetVoucherByBatchId_Viet/{BatchId}");
-            }
-
+            var vouchers = await _clientService.GetList<VoucherVM>($"https://localhost:7095/api/Voucher/GetVoucherByBatchId_Viet/{BatchId}");
             if (vouchers == null)
             {
                 vouchers = new List<VoucherVM>();
             }
-
             ViewBag.BatchId = BatchId;
             return View(vouchers);
         }
-
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
@@ -78,152 +59,101 @@ namespace DATN.Client.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
         [HttpPost]
-        public async Task<IActionResult> AssignVoucher(AssignVoucherRequest request)
+        public async Task<IActionResult> Create(VoucherVM voucher)
         {
             try
             {
-                var result = await _clientService.Post<AssignVoucherRequest>("https://localhost:7095/api/Voucher/AssignVoucher", request);
+                if (!ModelState.IsValid)
+                {
+                    return View(voucher); // Trả về lại view với model và hiển thị lỗi
+                }
+
+                var result = await _clientService.Post<VoucherVM>("https://localhost:7095/api/Voucher/Create", voucher);
                 if (result != null)
                 {
-                    ToastHelper.ShowSuccess(TempData, "Phân phối voucher thành công!");
+                    ToastHelper.ShowSuccess(TempData, "Thêm thành công!");
+
+
                 }
+
+            }
+            catch (Exception ex)
+            {
+
+                // Xử lý lỗi và hiển thị thông báo lỗi nếu cần
+                TempData["Error"] = ex.Message;
+
+            }
+            return RedirectToAction("Index");
+
+
+
+        }
+        public async Task<IActionResult> Update(int id)
+        {
+            try
+            {
+
+                var lstVoucher = await _clientService.Get<VoucherVM>($"https://localhost:7095/api/Voucher/Get/{id}");
+                return View(lstVoucher);
             }
             catch (Exception ex)
             {
                 ToastHelper.ShowError(TempData, ex.Message);
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index", new { BatchId = request.BatchId });
+
         }
         [HttpPost]
-        public async Task<IActionResult> RevokeVoucher(int id, int batchId, string userName = null, Core.Enum.VoucherStatus? status = null)
+        public async Task<IActionResult> Update1(VoucherVM voucher)
         {
             try
             {
-                var result = await _clientService.Post<int>($"https://localhost:7095/api/Voucher/RevokeVoucher_Viet/{id}", null);
-                if (result > 0)
+                if (!ModelState.IsValid)
                 {
-                    ToastHelper.ShowSuccess(TempData, "Thu hồi voucher thành công!");
+                    return RedirectToAction("Update", voucher); // Trả về lại view với model và hiển thị lỗi
+
                 }
-            }
-            catch (Exception ex)
-            {
-                ToastHelper.ShowError(TempData, ex.Message);
-            }
-            return RedirectToAction("Index", new { BatchId = batchId, userName, status });
-        }
-        [HttpPost]
-        public async Task<IActionResult> DeleteVoucher(int id, int batchId, string userName = null, Core.Enum.VoucherStatus? status = null)
-        {
-            try
-            {
-                var result = await _clientService.Delete<VoucherVM>($"https://localhost:7095/api/Voucher/Delete/{id}");
+                var result = await _clientService.Put<VoucherVM>($"https://localhost:7095/api/Voucher/Update/{voucher.Id}", voucher);
                 if (result != null)
                 {
-                    ToastHelper.ShowSuccess(TempData, "Xóa voucher thành công!");
+                    ToastHelper.ShowSuccess(TempData, "Sửa thành công!");
+
                 }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                // Xử lý lỗi và hiển thị thông báo lỗi nếu cần
+                TempData["Error"] = ex.Message;
+
+            }
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var voucher = await _clientService.Delete<VoucherVM>($"https://localhost:7095/api/Voucher/Delete/{id}");
+                if (voucher != null)
+                {
+                    return RedirectToAction("Index");
+                }
+                return BadRequest();
             }
             catch (Exception ex)
             {
                 ToastHelper.ShowError(TempData, ex.Message);
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index", new { BatchId = batchId, userName, status });
+
         }
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> Create(VoucherVM voucher)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            return View(voucher); // Trả về lại view với model và hiển thị lỗi
-        //        }
-
-        //        var result = await _clientService.Post<VoucherVM>("https://localhost:7095/api/Voucher/Create", voucher);
-        //        if (result != null)
-        //        {
-        //            ToastHelper.ShowSuccess(TempData, "Thêm thành công!");
-
-
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        // Xử lý lỗi và hiển thị thông báo lỗi nếu cần
-        //        TempData["Error"] = ex.Message;
-
-        //    }
-        //    return RedirectToAction("Index");
-
-
-
-        //}
-        //public async Task<IActionResult> Update(int id)
-        //{
-        //    try
-        //    {
-
-        //        var lstVoucher = await _clientService.Get<VoucherVM>($"https://localhost:7095/api/Voucher/Get/{id}");
-        //        return View(lstVoucher);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ToastHelper.ShowError(TempData, ex.Message);
-        //        return RedirectToAction("Index");
-        //    }
-
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> Update1(VoucherVM voucher)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            return RedirectToAction("Update", voucher); // Trả về lại view với model và hiển thị lỗi
-
-        //        }
-        //        var result = await _clientService.Put<VoucherVM>($"https://localhost:7095/api/Voucher/Update/{voucher.Id}", voucher);
-        //        if (result != null)
-        //        {
-        //            ToastHelper.ShowSuccess(TempData, "Sửa thành công!");
-
-        //        }
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        // Xử lý lỗi và hiển thị thông báo lỗi nếu cần
-        //        TempData["Error"] = ex.Message;
-
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    try
-        //    {
-        //        var voucher = await _clientService.Delete<VoucherVM>($"https://localhost:7095/api/Voucher/Delete/{id}");
-        //        if (voucher != null)
-        //        {
-        //            return RedirectToAction("Index");
-        //        }
-        //        return BadRequest();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ToastHelper.ShowError(TempData, ex.Message);
-        //        return RedirectToAction("Index");
-        //    }
-
-        //}
     }
 }
