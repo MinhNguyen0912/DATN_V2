@@ -99,5 +99,28 @@ namespace DATN.API.Controllers
             var batches = _unitOfWork.BatchRepository.batchPaging(request);
             return Ok(batches);
         }
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] BatchVM request)
+        {
+            var batch = _unitOfWork.BatchRepository.GetByIdCustom(request.Id);
+            if (batch == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+            _mapper.Map(request, batch);
+            _unitOfWork.BatchRepository.Update(batch);
+            _unitOfWork.SaveChanges();
+            return Ok(batch);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var batch = _unitOfWork.BatchRepository.GetByIdCustom(id);
+            if (batch == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+            return Ok(batch);
+        }
     }
 }

@@ -101,7 +101,7 @@ namespace DATN.API.Controllers
             {
                 return BadRequest("Voucher data is null"); // 400 Bad Request
             }
-            var batch =await _unitOfWork.BatchRepository.GetById(request.BatchId);
+            var batch = await _unitOfWork.BatchRepository.GetById(request.BatchId);
             foreach (var item in request.VoucherCodes)
             {
                 var voucher = new Voucher
@@ -123,6 +123,67 @@ namespace DATN.API.Controllers
         public async Task<IActionResult> GetVoucherByBatchId_Viet(int id)
         {
             var vouchers = _unitOfWork.VoucherRepository.GetAllVouchers().Where(p => p.BatchId == id).ToList();
+            if (vouchers != null && vouchers.Any())
+            {
+                var vouchersVM = _mapper.Map<List<VoucherVM>>(vouchers);
+                return Ok(vouchersVM);
+            }
+            return NoContent(); // Trả về 204 nếu không tìm thấy newfeed
+        }
+        [HttpPost]
+        public async Task<IActionResult> AssignVoucher_Viet([FromBody] AssignVoucherRequest request)
+        {
+            int totalVoucherRequest = request.ListAssign.Sum(r => r.TotalVoucherAssign);
+            var availableVouchers = _unitOfWork.VoucherRepository.GetAllVouchers().Where(v => v.Status == Core.Enum.VoucherStatus.Unpushlished && v.BatchId == request.BatchId).ToList();
+            if (availableVouchers.Count < totalVoucherRequest)
+            {
+                return BadRequest("Không đủ voucher khả dụng.");
+            }
+            int voucherIndex = 0;
+            foreach (var item in request.ListAssign)
+            {
+                for (int i = 0; i < item.TotalVoucherAssign; i++)
+                {
+                    var voucher = availableVouchers[voucherIndex];
+                    voucher.UserId = item.UserId;
+                    voucher.Status = Core.Enum.VoucherStatus.NotUsed;
+                    voucher.ReleaseDate = DateTime.Now;
+                    if (voucher.Batch.ExpirationDate.HasValue)
+                    {
+                        voucher.ExpiryDate = voucher.ReleaseDate.Value.AddDays(voucher.Batch.ExpirationDate.Value);
+                    }
+                    voucherIndex++;
+                }
+            }
+            int result = _unitOfWork.SaveChanges();
+            return Ok(result);
+        }
+        [HttpPost("{id}")]
+        public async Task<IActionResult> RevokeVoucher_Viet(int id)
+        {
+            try
+            {
+                var voucher = _unitOfWork.VoucherRepository.GetByIdCustom(id);
+                voucher.Status = Core.Enum.VoucherStatus.Unpushlished;
+                voucher.UserId = null;
+                voucher.ReleaseDate = null;
+                if (voucher.Batch.ExpirationDate != null)
+                {
+                    voucher.ExpiryDate = null;
+                }
+                int result = _unitOfWork.SaveChanges();
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> SearchVoucher_Viet([FromBody] SearchVoucherRequest request)
+        {
+            var vouchers = _unitOfWork.VoucherRepository.SearchVoucher(request);
             if (vouchers != null && vouchers.Any())
             {
                 var vouchersVM = _mapper.Map<List<VoucherVM>>(vouchers);
