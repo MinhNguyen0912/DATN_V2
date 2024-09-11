@@ -4,6 +4,7 @@
     {
         Cash,
         MomoQR,
-        VNPay
+        TheNoiDia,
+        TheQuocTe
     }
 }

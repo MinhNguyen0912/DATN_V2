@@ -2,6 +2,7 @@
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.ViewModel.BrandVM;
+using DATN.Core.ViewModel.PendingCartVariantVM;
 using DATN.Core.ViewModel.PendingCartVM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,11 +30,11 @@ namespace DATN.API.Controllers
             var check = user.PendingCart.PendingCartVariants.FirstOrDefault(p => p.VariantId == addToPendingCartVM.VariantId);
             if (check != null)
             {
-                
+
             }
             else
             {
-                if (variant.Quantity>0&&variant.MaximumQuantityPerOrder>0)
+                if (variant.Quantity > 0 && variant.MaximumQuantityPerOrder > 0)
                 {
                     var pendingCartVariant = new PendingCartVariant()
                     {
@@ -54,15 +55,30 @@ namespace DATN.API.Controllers
         public async Task<IActionResult> GetByUserId([FromBody] Guid userId)
         {
             var pendingCart = _unitOfWork.UserRepository.GetByIdCustom(userId).PendingCart;
-            return Ok(_mapper.Map<PendingCartVM>( pendingCart));
+            return Ok(_mapper.Map<PendingCartVM>(pendingCart));
         }
         [HttpGet]
         public async Task<IActionResult> RemoveVariant(int variantId, int pendingCartId)
         {
             var variant = await _unitOfWork.VariantRepository.GetById(variantId);
             var pendingCart = _unitOfWork.PendingCartRepository.GetByIdCustom(pendingCartId);
-            pendingCart.PendingCartVariants.RemoveAll(p=>p.VariantId == variantId);
+            pendingCart.PendingCartVariants.RemoveAll(p => p.VariantId == variantId);
             _unitOfWork.PendingCartRepository.Update(pendingCart);
+            _unitOfWork.SaveChanges();
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdatePendingCart([FromBody]List<PendingCartVariant> items, [FromQuery] int pendingCartId)
+        {
+            var oldPendingCart = _unitOfWork.PendingCartVariantRepository.Find(p=>p.PendingCartId == pendingCartId).ToList();
+            foreach (var item in oldPendingCart)
+            {
+                _unitOfWork.PendingCartVariantRepository.Delete(item);
+            }
+            foreach (var item in items)
+            {
+                await _unitOfWork.PendingCartVariantRepository.Create(item);
+            }
             _unitOfWork.SaveChanges();
             return Ok();
         }
