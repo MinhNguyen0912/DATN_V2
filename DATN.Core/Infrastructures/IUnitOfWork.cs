@@ -20,7 +20,6 @@ namespace DATN.Core.Infrastructures
         public IInvoiceDetailRepository InvoiceDetailRepository { get; }
         public IBrandRepository brandRepository { get; }
         public ICommentRepository commentRepository { get; }
-        public IVoucherUserRepository voucherUserRepository { get; }
         public IMagazineRepository MagazineRepository { get; }
 
         public IInvoiceRepository InvoiceRepository { get; }
@@ -32,6 +31,9 @@ namespace DATN.Core.Infrastructures
         public IShippingOrderRepository ShippingOrderRepository { get; }
         public IRoleRepository RoleRepository { get; }
         public IVoucherRepository VoucherRepository { get; }
+        public IVoucherProductRepository VoucherProductRepository { get; }
+        public IVoucherCateRepository VoucherCateRepository { get; }
+        public IBatchRepository BatchRepository { get; }
         public IPendingCartRepository PendingCartRepository { get; }
         public IPendingCartVariantRepository PendingCartVariantRepository { get; }
         //public ICategoryRepository CategoryRepository { get; } // read only

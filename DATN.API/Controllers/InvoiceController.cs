@@ -112,14 +112,14 @@ namespace DATN.API.Controllers
                 //    productATTUpdate.Quantity -= i.Quantity;
                 //    _unitOfWork.ProductAtributeRepository.Update(productATTUpdate);
                 //}
-                if (payment.VoucherId != 0)
-                {
-                    var voucher = _unitOfWork.voucherUserRepository.GetByIdCustom(payment.VoucherId);
-                    invoice.VoucherUserId = voucher.Id;
-                    invoice.VoucherUser = voucher;
-                    voucher.IsDeleted = true;
-                    _unitOfWork.voucherUserRepository.Update(voucher);
-                }
+                //if (payment.VoucherId != 0)
+                //{
+                //    var voucher = _unitOfWork.voucherUserRepository.GetByIdCustom(payment.VoucherId);
+                //    invoice.VoucherId = voucher.Id;
+                //    invoice.VoucherUser = voucher;
+                //    voucher.IsDeleted = true;
+                //    _unitOfWork.voucherUserRepository.Update(voucher);
+                //}
             }
             if (payment.PaymentMethod == PaymentMethod.Cash)
             {
@@ -145,21 +145,21 @@ namespace DATN.API.Controllers
         public async Task<IActionResult> ChangeStatus(int invoiceId, int status, int? voucherId)
         {
             var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
-            if (voucherId != null)
-            {
-                var voucher = await _unitOfWork.voucherUserRepository.GetById(voucherId);
-                if (status != 5 && status != 7)
-                {
-                    voucher.IsDeleted = true;
-                    _unitOfWork.voucherUserRepository.Update(voucher);
-                    invoice.VoucherUser = voucher;
-                }
-                else
-                {
-                    voucher.IsDeleted = false;
-                    _unitOfWork.voucherUserRepository.Update(voucher);
-                }
-            }
+            //if (voucherId != null)
+            //{
+            //    var voucher = await _unitOfWork.voucherUserRepository.GetById(voucherId);
+            //    if (status != 5 && status != 7)
+            //    {
+            //        voucher.IsDeleted = true;
+            //        _unitOfWork.voucherUserRepository.Update(voucher);
+            //        invoice.VoucherUser = voucher;
+            //    }
+            //    else
+            //    {
+            //        voucher.IsDeleted = false;
+            //        _unitOfWork.voucherUserRepository.Update(voucher);
+            //    }
+            //}
             invoice.Status = (InvoiceStatus)Enum.GetValues(typeof(InvoiceStatus)).GetValue(status);
             _unitOfWork.InvoiceRepository.Update(invoice);
             _unitOfWork.SaveChanges();

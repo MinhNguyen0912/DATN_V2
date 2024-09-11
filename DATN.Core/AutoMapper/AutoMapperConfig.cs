@@ -4,6 +4,7 @@ using AutoMapper;
 using DATN.Core.Model;
 using DATN.Core.Model.Product_EAV;
 using DATN.Core.Models;
+using DATN.Core.ViewModel.BatchVM;
 using DATN.Core.ViewModel.BrandVM;
 using DATN.Core.ViewModel.CategoryVM;
 using DATN.Core.ViewModel.ImagePath;
@@ -72,6 +73,7 @@ namespace DATN.Core.AutoMapper
                 config.CreateMap<Category, CategoryAdminVM>().ReverseMap();
                 config.CreateMap<Category, CategoryAdminCreatLv>().ReverseMap();
                 config.CreateMap<Voucher, VoucherVM>().ReverseMap();
+                config.CreateMap<Batch, BatchVM>().ReverseMap();
                 config.CreateMap<InvoiceDetail, InvoiceDetailForCommentVM>().ReverseMap();
                 config.CreateMap<Invoice, InvoiceShowForClientVM>().ReverseMap();
                 config.CreateMap<ProductPromotion, ProductPromotionVM>().ReverseMap();

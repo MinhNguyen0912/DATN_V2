@@ -67,5 +67,12 @@ namespace DATN.API.Controllers
                 return NotFound();
             }
         }
+        [HttpGet]
+        public IActionResult GetAll_Viet()
+        {
+            var data = _unitOfWork.ProductEAVRepository.GetAll();
+            var result = _mapper.Map<List<Product_EAV>>(data);
+            return Ok(result);
+        }
     }
 }
