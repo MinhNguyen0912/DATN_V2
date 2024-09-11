@@ -3,6 +3,7 @@ using DATN.Client.Helper;
 using DATN.Client.Services;
 using DATN.Core.Data;
 using DATN.Core.Infrastructures;
+using DATN.Core.Models;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModel.VoucherVM;
@@ -33,6 +34,7 @@ namespace DATN.Client.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index(int BatchId, string userName = null, Core.Enum.VoucherStatus? status = null)
         {
+            var users = await _clientService.Get<List<AppUser>>("https://localhost:7095/api/User/GetAllUser");
             var request = new SearchVoucherRequest
             {
                 BatchId = BatchId,
@@ -54,7 +56,7 @@ namespace DATN.Client.Areas.Admin.Controllers
             {
                 vouchers = new List<VoucherVM>();
             }
-
+            ViewBag.Users = users;
             ViewBag.BatchId = BatchId;
             return View(vouchers);
         }
@@ -79,11 +81,11 @@ namespace DATN.Client.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> AssignVoucher(AssignVoucherRequest request)
+        public async Task<IActionResult> AssignVoucher(AssignVoucherRequest request, int batchId, string userName = null, Core.Enum.VoucherStatus? status = null)
         {
             try
             {
-                var result = await _clientService.Post<AssignVoucherRequest>("https://localhost:7095/api/Voucher/AssignVoucher", request);
+                var result = await _clientService.Post<AssignVoucherRequest>("https://localhost:7095/api/Voucher/AssignVoucher_Viet", request);
                 if (result != null)
                 {
                     ToastHelper.ShowSuccess(TempData, "Phân phối voucher thành công!");
@@ -93,7 +95,7 @@ namespace DATN.Client.Areas.Admin.Controllers
             {
                 ToastHelper.ShowError(TempData, ex.Message);
             }
-            return RedirectToAction("Index", new { BatchId = request.BatchId });
+            return RedirectToAction("Index", new { BatchId = batchId, userName, status });
         }
         [HttpPost]
         public async Task<IActionResult> RevokeVoucher(int id, int batchId, string userName = null, Core.Enum.VoucherStatus? status = null)

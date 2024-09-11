@@ -35,8 +35,20 @@ namespace DATN.Core.Service
                 if (DateTime.Now >= activationTime)
                 {
                     voucher.Status = Enum.VoucherStatus.NotUsed;
+                    voucher.ReleaseDate = DateTime.Now;
                     _context.Vouchers.Update(voucher);
                 }
+            }
+            await _context.SaveChangesAsync();
+        }
+        public async Task ActivateVoucher(int voucherId)
+        {
+            var voucher = await _context.Vouchers.FindAsync(voucherId);
+            if (voucher != null && DateTime.Now >= voucher.ActivationTime)
+            {
+                voucher.Status = Core.Enum.VoucherStatus.NotUsed; // Đặt trạng thái voucher phù hợp
+                voucher.ReleaseDate = DateTime.Now;
+                _context.Vouchers.Update(voucher);
             }
             await _context.SaveChangesAsync();
         }

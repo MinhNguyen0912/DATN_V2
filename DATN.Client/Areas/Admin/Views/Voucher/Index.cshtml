@@ -13,6 +13,8 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createVoucherModal">Tạo Voucher</button>
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createVoucherListModal">Tạo Danh Sách Voucher</button>
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#searchVoucher">Tìm kiếm</button>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#assignVoucher">Phát hành</button>
+
 </div>
 
 <table class="table">
@@ -169,29 +171,54 @@
             </div>
             <div class="modal-body">
                 <!-- Form for assign vouchers -->
-                    @{
-                        var availableVouchers = Model.Where(v => v.Status == DATN.Core.Enum.VoucherStatus.Unpushlished).Count();
-                    }
-                    <div class="mb-3">
-                        <label class="form-label">Tổng số voucher khả dụng: </label>
-                        <span>@availableVouchers</span>                       
-                    </div>
-                    <div class="mb-3">
+                @{
+                    var availableVouchers = Model.Where(v => v.Status == DATN.Core.Enum.VoucherStatus.Unpushlished).Count();
+                }
+                <div class="mb-3">
+                    <label class="form-label">Tổng số voucher khả dụng: </label>
+                    <span>@availableVouchers</span>
+                </div>
+                <div class="mb-3">
                     <input type="radio" name="userType" value="all" id="allUsers" />
                     <label for="allUsers">Phát cho tất cả người dùng</label>
                     <input type="radio" name="userType" value="specific" id="specificUsers" />
                     <label for="specificUsers">Phát cho người dùng cụ thể</label>
-                    </div>
-                    <div class="mb-3">
-                        <form action="/" method="post">
-                            
-                        </form>
-                    </div>
-                    <div class="mb-3">
-                        @{
-                            
+                </div>
+                <div class="mb-3" id="allUsersForm">
+                    <form asp-action="AssignVoucher" asp-controller="Voucher" method="post">
+                        <!-- BatchId -->
+                        <input type="hidden" name="batchId" value="@batchId" />
+
+                        <!-- Activation Time -->
+                        <div class="mb-3">
+                            <label for="activation-time">Activation Time:</label>
+                            <input type="datetime-local" id="activation-time" name="ActivationTime" required />
+                        </div>
+
+                        <!-- Total Voucher Assign for all users -->
+                        <div class="mb-3">
+                            <label for="total-assign">Total Vouchers for Each User:</label>
+                            <input type="number" id="total-assign" name="TotalVoucherAssign" min="1" required />
+                        </div>
+
+                        <!-- Users (Hidden) -->
+                        @if (ViewBag.Users is List<DATN.Core.Models.AppUser> users && users.Any())
+                        {
+                            @for (int i = 0; i < users.Count; i++)
+                            {
+                                <!-- Hidden Inputs for ListAssign -->
+                                <input type="hidden" name="listAssign[@i].userId" value="@users[i].Id" />
+                                <input type="hidden" class="assign-time" name="listAssign[@i].activationTime" value="" />
+                                <input type="hidden" name="listAssign[@i].totalVoucherAssign" value="" class="total-assign" />
+                            }
                         }
-                    </div>
+
+                        <button type="submit" class="btn btn-primary">Assign Vouchers</button>
+                    </form>
+                </div>
+
+                <div class="mb-3">
+                </div>
             </div>
         </div>
     </div>
@@ -321,6 +348,23 @@
                     } else {
                         document.getElementById('specificUsers').innerHTML = 'Phát cho người dùng cụ thể';
                     }
+                });
+            });
+            document.getElementById('activation-time').addEventListener('change', function () {
+                var activationTime = this.value;
+
+                // Cập nhật giá trị ActivationTime cho tất cả input ẩn
+                document.querySelectorAll('.assign-time').forEach(function (input) {
+                    input.value = activationTime;
+                });
+            });
+
+            document.getElementById('total-assign').addEventListener('input', function () {
+                var totalAssign = this.value;
+
+                // Cập nhật giá trị TotalVoucherAssign cho tất cả input ẩn
+                document.querySelectorAll('.total-assign').forEach(function (input) {
+                    input.value = totalAssign;
                 });
             });
         });

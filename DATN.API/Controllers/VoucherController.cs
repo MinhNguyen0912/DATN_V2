@@ -212,11 +212,15 @@ namespace DATN.API.Controllers
                 {
                     var voucher = availableVouchers[voucherIndex];
                     voucher.UserId = item.UserId;
-                    voucher.Status = Core.Enum.VoucherStatus.NotUsed;
-                    voucher.ReleaseDate = DateTime.Now;
+                    voucher.ActivationTime = item.ActivationTime;
                     if (voucher.Batch.ExpirationDate.HasValue)
                     {
-                        voucher.ExpiryDate = voucher.ReleaseDate.Value.AddDays(voucher.Batch.ExpirationDate.Value);
+                        voucher.ExpiryDate = voucher.ActivationTime.Value.AddDays(voucher.Batch.ExpirationDate.Value);
+                    }
+                    var activationDelay = item.ActivationTime - DateTime.Now;
+                    if (activationDelay > TimeSpan.Zero)
+                    {
+                        BackgroundJob.Schedule(() => _voucherService.GenerateVoucherActivationTimeAsync(item.ActivationTime), activationDelay);
                     }
                     voucherIndex++;
                 }
