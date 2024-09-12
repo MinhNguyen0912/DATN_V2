@@ -42,7 +42,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public Batch GetByIdCustom(int id)
         {
-            return Context.Batches.Include(v=>v.Vouchers).Include(c=>c.VoucherCates).ThenInclude(c=>c.Category).Include(p=>p.VoucherProducts).ThenInclude(p=>p.Product).FirstOrDefault(x => x.Id == id);
+            return Context.Batches.FirstOrDefault(x => x.Id == id);
         }
     }
 }

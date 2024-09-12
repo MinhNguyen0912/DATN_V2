@@ -21,6 +21,5 @@ namespace DATN.Core.Model.Product_EAV
         public List<Comment>? Comments { get; set; }
         public List<Image>? Images { get; set; }
         public List<ProductPromotion>? PromotionProducts { get; set; }
-        public List<VoucherProduct>? VoucherProducts { get; set; }
     }
 }

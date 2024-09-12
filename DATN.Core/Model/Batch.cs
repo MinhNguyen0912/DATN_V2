@@ -21,8 +21,6 @@ namespace DATN.Core.Model
         public DateTime? EndDate { get; set; } // Ngày kết thúc thời gian voucher có hiệu lực
         public int? ExpirationDate { get; set; } // Số ngày voucher có hiệu lực sau khi được phát cho người dùng
         public bool? IsActive { get; set; } = true; // Trạng thái hoạt động của voucher
-        public List<VoucherCate>? VoucherCates { get; set; } = new List<VoucherCate>();
-        public List<VoucherProduct>? VoucherProducts { get; set; } = new List<VoucherProduct>();
         public List<Voucher>? Vouchers { get; set; }
 
     }
