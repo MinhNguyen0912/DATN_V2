@@ -112,76 +112,6 @@
             <input asp-for="ExpirationDate" class="form-control" type="number" id="ExpirationDate" />
             <span asp-validation-for="ExpirationDate" class="text-danger"></span>
         </div>
-
-        <div class="form-group">
-            <input asp-for="ApplyToAll" type="checkbox" id="applyToAll" />
-            <label for="applyToAll">Áp dụng cho tất cả danh mục và sản phẩm</label>
-        </div>
-
-        <div class="row">
-            <!-- Danh mục áp dụng -->
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        Danh mục áp dụng
-                        <input type="text" class="form-control" id="search_cate" placeholder="Tìm kiếm..." />
-                    </div>
-                    <div class="card-body fixed-size">
-                        <table class="table table-bordered table-hover CateList">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox" id="selectAllCategories" /></th>
-                                    <th>Tên Danh Mục</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in ViewBag.Cates as List<CategoryVM>)
-                                {
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="CateItem" value="@item.Id" class="category-checkbox" />
-                                        </td>
-                                        <td>@item.Name</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sản phẩm áp dụng -->
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        Sản phẩm áp dụng
-                        <input type="text" class="form-control" id="search_product" placeholder="Tìm kiếm..." />
-                    </div>
-                    <div class="card-body fixed-size">
-                        <table class="table table-bordered table-hover ProdList">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox" id="selectAllProducts" /></th>
-                                    <th>Tên Sản Phẩm</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in ViewBag.Products as List<Product_EAV>)
-                                {
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="ProdItem" value="@item.ProductId" class="product-checkbox" />
-                                        </td>
-                                        <td>@item.ProductName</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </fieldset>
 
     <button type="submit" class="btn btn-primary">Tạo</button>
@@ -258,56 +188,7 @@
                 }
             }
 
-            // Xử lý logic cho checkbox "Áp dụng cho tất cả"
-            document.getElementById('applyToAll').addEventListener('change', function () {
-                const isChecked = this.checked;
-                document.querySelectorAll('.category-checkbox').forEach(checkbox => {
-                    checkbox.checked = isChecked;
-                    checkbox.disabled = isChecked;
-                });
-                document.querySelectorAll('.product-checkbox').forEach(checkbox => {
-                    checkbox.checked = isChecked;
-                    checkbox.disabled = isChecked;
-                });
-            });
 
-            // Tìm kiếm danh sách category
-            document.getElementById('search_cate').addEventListener('input', function () {
-                const searchTerm = this.value.toLowerCase();
-                const categoryRows = document.querySelectorAll('.CateList tbody tr'); // Thay đổi selector thành các hàng trong bảng
-                categoryRows.forEach(row => {
-                    const text = row.innerText.toLowerCase();
-                    row.style.display = text.includes(searchTerm) ? '' : 'none';
-                });
-            });
-
-            // Tìm kiếm danh sách product
-            document.getElementById('search_product').addEventListener('input', function () {
-                const searchTerm = this.value.toLowerCase();
-                const productRows = document.querySelectorAll('.ProdList tbody tr'); // Thay đổi selector thành các hàng trong bảng
-                productRows.forEach(row => {
-                    const text = row.innerText.toLowerCase();
-                    row.style.display = text.includes(searchTerm) ? '' : 'none';
-                });
-            });
-
-            // Select All Categories
-            document.getElementById('selectAllCategories').addEventListener('change', function () {
-                const isChecked = this.checked;
-                const categoryCheckboxes = document.querySelectorAll('.CateList .category-checkbox');
-                categoryCheckboxes.forEach(checkbox => {
-                    checkbox.checked = isChecked;
-                });
-            });
-
-            // Select All Products
-            document.getElementById('selectAllProducts').addEventListener('change', function () {
-                const isChecked = this.checked;
-                const productCheckboxes = document.querySelectorAll('.ProdList .product-checkbox');
-                productCheckboxes.forEach(checkbox => {
-                    checkbox.checked = isChecked;
-                });
-            });
         });
     </script>
     @{

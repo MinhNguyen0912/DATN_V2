@@ -178,12 +178,16 @@
                     <label class="form-label">Tổng số voucher khả dụng: </label>
                     <span>@availableVouchers</span>
                 </div>
+
+                <!-- Radio buttons for selecting the user type -->
                 <div class="mb-3">
-                    <input type="radio" name="userType" value="all" id="allUsers" />
+                    <input type="radio" name="userType" value="all" id="allUsers" checked />
                     <label for="allUsers">Phát cho tất cả người dùng</label>
                     <input type="radio" name="userType" value="specific" id="specificUsers" />
                     <label for="specificUsers">Phát cho người dùng cụ thể</label>
                 </div>
+
+                <!-- Form for all users -->
                 <div class="mb-3" id="allUsersForm">
                     <form asp-action="AssignVoucher" asp-controller="Voucher" method="post">
                         <!-- BatchId -->
@@ -201,15 +205,15 @@
                             <input type="number" id="total-assign" name="TotalVoucherAssign" min="1" required />
                         </div>
 
-                        <!-- Users (Hidden) -->
+                        <!-- Hidden Users -->
                         @if (ViewBag.Users is List<DATN.Core.Models.AppUser> users && users.Any())
                         {
                             @for (int i = 0; i < users.Count; i++)
                             {
                                 <!-- Hidden Inputs for ListAssign -->
-                                <input type="hidden" name="listAssign[@i].userId" value="@users[i].Id" />
-                                <input type="hidden" class="assign-time" name="listAssign[@i].activationTime" value="" />
-                                <input type="hidden" name="listAssign[@i].totalVoucherAssign" value="" class="total-assign" />
+                                <input type="hidden" name="ListAssign[@i].UserId" value="@users[i].Id" />
+                                <input type="hidden" class="assign-time" name="ListAssign[@i].ActivationTime" value="" />
+                                <input type="hidden" name="ListAssign[@i].TotalVoucherAssign" value="" class="total-assign" />
                             }
                         }
 
@@ -217,7 +221,47 @@
                     </form>
                 </div>
 
-                <div class="mb-3">
+                <!-- Form for specific users -->
+                <div class="mb-3" id="specificUsersForm" style="display: none;">
+                    <form asp-action="AssignVoucher" asp-controller="Voucher" method="post">
+                        <!-- BatchId -->
+                        <input type="hidden" name="BatchId" value="@batchId" />
+
+                        <!-- Activation Time for all (if needed common time for multiple users) -->
+                        <div class="mb-3">
+                            <label for="activation-time">Thời gian phát hành:</label>
+                            <input type="datetime-local" id="activation-time" name="ActivationTime" required />
+                        </div>
+
+                        <!-- User selection and voucher assignment -->
+                        <div class="mb-3">
+                            <label>Chọn người dùng và số lượng voucher:</label>
+                            @if (ViewBag.Users is List<DATN.Core.Models.AppUser> lstusers && lstusers.Any())
+                            {
+                                <div>
+                                    @for (int i = 0; i < lstusers.Count; i++)
+                                    {
+                                        var user = lstusers[i];
+                                        <div>
+                                            <input type="checkbox" name="ListAssign[@i].UserId" value="@user.Id" id="user-@user.Id" />
+                                            <label for="user-@user.Id">@user.UserName</label>
+                                            <!-- Voucher quantity for each user -->
+                                            <label for="total-assign-@i">Total Vouchers:</label>
+                                            <input type="number" id="total-assign-@i" name="ListAssign[@i].TotalVoucherAssign" value="1" min="1" required />
+                                            <!-- Activation time for each user if needed -->
+                                            <input type="hidden" class="assign-time" name="ListAssign[@i].ActivationTime" value="" />
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p>Không có người dùng nào để chọn.</p>
+                            }
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Phát hành</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -341,15 +385,21 @@
                 }
                 return result;
             }
-            document.getElementsByName('userType').forEach(function (radio) {
-                radio.addEventListener('change', function () {
-                    if (this.value === 'specific') {
-                        document.getElementById('specificUsers').innerHTML = 'Phát cho người dùng cụ thể';
-                    } else {
-                        document.getElementById('specificUsers').innerHTML = 'Phát cho người dùng cụ thể';
-                    }
-                });
+            // Listen for changes on radio buttons
+            document.getElementById('allUsers').addEventListener('change', function () {
+                if (this.checked) {
+                    document.getElementById('allUsersForm').style.display = 'block';
+                    document.getElementById('specificUsersForm').style.display = 'none';
+                }
             });
+
+            document.getElementById('specificUsers').addEventListener('change', function () {
+                if (this.checked) {
+                    document.getElementById('allUsersForm').style.display = 'none';
+                    document.getElementById('specificUsersForm').style.display = 'block';
+                }
+            });
+
             document.getElementById('activation-time').addEventListener('change', function () {
                 var activationTime = this.value;
 

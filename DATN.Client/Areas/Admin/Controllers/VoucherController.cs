@@ -34,7 +34,8 @@ namespace DATN.Client.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index(int BatchId, string userName = null, Core.Enum.VoucherStatus? status = null)
         {
-            var users = await _clientService.Get<List<AppUser>>("https://localhost:7095/api/User/GetAllUser");
+            var allUsers = await _clientService.Get<List<AppUser>>("https://localhost:7095/api/User/GetAllUser");
+            var users = allUsers.Where(x=>x.Description == "Customer").ToList();
             var request = new SearchVoucherRequest
             {
                 BatchId = BatchId,

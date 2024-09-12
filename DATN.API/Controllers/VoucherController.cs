@@ -138,22 +138,22 @@ namespace DATN.API.Controllers
             {
                 return NotFound("Batch not found");
             }
-                try
+            try
+            {
+                foreach (var item in request.VoucherCodes)
                 {
-                    foreach (var item in request.VoucherCodes)
+                    var voucher = new Voucher
                     {
-                        var voucher = new Voucher
-                        {
-                            BatchId = request.BatchId,
-                            Code = item,
-                            Status = Core.Enum.VoucherStatus.Unpushlished,
-                            ExpiryDate = batch.EndDate ?? null,
-                            ActivationTime = request.ActivationTime // assuming you pass the activation time in the request
-                        };
-                        await _unitOfWork.VoucherRepository.Create(voucher);
-                    }
+                        BatchId = request.BatchId,
+                        Code = item,
+                        Status = Core.Enum.VoucherStatus.Unpushlished,
+                        ExpiryDate = batch.EndDate ?? null,
+                        ActivationTime = request.ActivationTime // assuming you pass the activation time in the request
+                    };
+                    await _unitOfWork.VoucherRepository.Create(voucher);
+                }
 
-                    int result = _unitOfWork.SaveChanges();
+                int result = _unitOfWork.SaveChanges();
 
 
                 // Schedule voucher activation using Hangfire
@@ -164,12 +164,12 @@ namespace DATN.API.Controllers
                 }
 
                 return Ok(result); // 201 Created
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, "Internal Server Error");
-                }
-            
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
+
         }
 
 
@@ -221,6 +221,11 @@ namespace DATN.API.Controllers
                     if (activationDelay > TimeSpan.Zero)
                     {
                         BackgroundJob.Schedule(() => _voucherService.GenerateVoucherActivationTimeAsync(item.ActivationTime), activationDelay);
+                    }
+                    else
+                    {
+                        voucher.Status = Core.Enum.VoucherStatus.NotUsed;
+                        voucher.ReleaseDate = DateTime.Now;
                     }
                     voucherIndex++;
                 }

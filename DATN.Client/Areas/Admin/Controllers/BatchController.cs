@@ -36,10 +36,6 @@ namespace DATN.Client.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var pruducts =await _clientService.GetList<Product_EAV>("https://localhost:7095/api/ProductEAV/GetAll_Viet");
-            var cates =await _clientService.GetList<CategoryVM>("https://localhost:7095/api/Category/GetAll");
-            ViewBag.Cates = cates;
-            ViewBag.Products = pruducts;
             return View();
         }
         [HttpPost]
