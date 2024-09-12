@@ -22,7 +22,7 @@ namespace DATN.API.Helpers
 
             // Tính toán tổng số tiền
             var total = invoice.InvoiceDetails.Sum(p => p.Quantity * p.NewPrice);
-            double discount = 0.0;
+            decimal discount = 0;
 
             // Kiểm tra và tính toán giảm giá nếu có voucher
             //if (invoice.VoucherUserId != null)

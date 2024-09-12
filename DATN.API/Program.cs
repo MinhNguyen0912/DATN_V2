@@ -4,6 +4,8 @@ using DATN.Core.Data;
 using DATN.Core.DependencyInjection;
 using DATN.Core.Infrastructures;
 using DATN.Core.Models;
+using DATN.Core.Service;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
@@ -29,6 +31,8 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.WriteIndented = true;
     });
 
+//Add hangfire service
+
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DATNDbContextConnection") ?? throw new InvalidOperationException("Connection string 'DATNDbContextConnection' not found.");
 builder.Services.AddDbContext<DATNDbContext>(options =>
@@ -49,7 +53,9 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<UserManager<AppUser>>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddHttpClient();
-
+builder.Services.AddHangfireServer();
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(connectionString));
+builder.Services.AddScoped<VoucherService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -91,6 +97,7 @@ if (app.Environment.IsDevelopment())
 
 //app.MigrationDataBase();
 
+app.UseHangfireDashboard();
 app.UseHttpsRedirection();
 app.UseSession();
 app.UseRouting();

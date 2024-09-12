@@ -6,6 +6,7 @@ using DATN.Core.Repositories.IRepositories;
 using DATN.Core.ViewModel.BatchVM;
 using DATN.Core.ViewModel.BrandVM;
 using DATN.Core.ViewModel.Paging;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,11 @@ namespace DATN.Core.Repositories.Repositories
             var list = query.Skip((request.CurrentPage - 1) * request.PageSize).Take(request.PageSize).ToList();
             request.Items = _mapper.Map<List<BatchVM>>(list);
             return request;
+        }
+
+        public Batch GetByIdCustom(int id)
+        {
+            return Context.Batches.FirstOrDefault(x => x.Id == id);
         }
     }
 }

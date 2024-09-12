@@ -10,7 +10,7 @@ namespace DATN.Core.ViewModel.BatchVM
 {
     public class BatchVM
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public VoucherType? Type { get; set; }
@@ -22,8 +22,6 @@ namespace DATN.Core.ViewModel.BatchVM
         public DateTime? EndDate { get; set; }
         public int? ExpirationDate { get; set; }
         public bool IsActive { get; set; } = true;
-        public List<VoucherCate>? VoucherCates { get; set; } = new List<VoucherCate>();
-        public List<VoucherProduct>? VoucherProducts { get; set; } = new List<VoucherProduct>();
         public List<Voucher>? Vouchers { get; set; }
     }
 }
