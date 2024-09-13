@@ -70,17 +70,15 @@ namespace DATN.Core.Repositories.Repositories
             //List voucher or some vouchers
             var voucher = new List<Voucher>()
             {
-                new Voucher { Code = "UNEW" + GenerateVoucherCode(),
-                Description = "Khách hàng mới",
+                new Voucher { Code = "UNEWAU" + GenerateVoucherCode(),
                 Status = VoucherStatus.NotUsed,
                 ReleaseDate = DateTime.Now,
                 ExpiryDate = DateTime.Now.AddMonths(2),
                 ActivationTime = DateTime.Now,
                 UserId = userId,
-                BatchId = 0
+                BatchId = 6
                 },
-                 new Voucher { Code = "" + GenerateVoucherCode(),
-                Description = "Free Ship",
+                 new Voucher { Code = "FRSAU" + GenerateVoucherCode(),
                 Status = VoucherStatus.NotUsed,
                 ReleaseDate = DateTime.Now,
                 ExpiryDate = DateTime.Now.AddMonths(2),
@@ -106,7 +104,6 @@ namespace DATN.Core.Repositories.Repositories
                 var voucher = new Voucher()
                 {
                     Code = "Free" + GenerateVoucherCode(),
-                    Description = "Free Ship",
                     Status = VoucherStatus.NotUsed,
                     ReleaseDate = DateTime.Now,
                     ExpiryDate = DateTime.Now.AddMonths(2),
@@ -124,7 +121,6 @@ namespace DATN.Core.Repositories.Repositories
                 var voucher = new Voucher()
                 {
                     Code = "TOD" + GenerateVoucherCode(),
-                    Description = "Mua hàng trên 2 lần",
                     Status = VoucherStatus.NotUsed,
                     ReleaseDate = DateTime.Now,
                     ExpiryDate = DateTime.Now.AddMonths(2),
