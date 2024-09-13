@@ -171,8 +171,6 @@ namespace DATN.API.Controllers
             }
 
         }
-
-
         // Method to activate vouchers based on the BatchId and ActivationTime
         //public async Task ActivateVouchers(Guid batchId, DateTime activationTime)
         //{
