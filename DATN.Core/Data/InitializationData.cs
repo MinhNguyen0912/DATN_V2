@@ -295,8 +295,6 @@ namespace DATN.Core.Data
             // Add more seed data as needed
             );
             #endregion
-
-
             #region ProductEAV
             // Seed Product
             modelBuilder.Entity<Product_EAV>().HasData(
@@ -519,8 +517,22 @@ namespace DATN.Core.Data
                 StartDate = DateTime.UtcNow,
                 EndDate = DateTime.UtcNow.AddMonths(2),
                 IsActive = true
-            }
-);
+            },
+                        new Batch
+                        {
+                            Id = 6,
+                            Name = "NEWUSERAU",
+                            Description = "Chào mừng thành viên mới",
+                            Type = VoucherType.discount,
+                            DiscountType = DiscountType.Percent,
+                            DiscountAmount = 10,
+                            MinOrderAmount = 300000, // VNĐ
+                            MaxDiscountAmount = 100000, // VNĐ
+                            StartDate = DateTime.UtcNow,
+                            EndDate = DateTime.UtcNow.AddMonths(2),
+                            IsActive = true
+                        }
+                    );
             #endregion
             #region Voucher
             var customerUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749");

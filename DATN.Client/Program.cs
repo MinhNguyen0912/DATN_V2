@@ -120,7 +120,7 @@ builder.Services.AddSession();
 
 builder.Services.AddScoped<UserManager<AppUser>>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-
+builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 //register auto mapper
 var mapper = AutoMapperConfig.Initialize();
 builder.Services.AddSingleton(mapper);

@@ -11,6 +11,7 @@ namespace DATN.Core.ViewModel.InvoiceVM
         public PaymentMethod PaymentMethod { get; set; }
         public Guid UserId { get; set; }
         public int pendingCartId { get; set; }
+        public decimal FinalAmount { get; set; }
         public int VoucherId { get; set; } = 0;
         public string FirstName {  get; set; }
         public string LastName {  get; set; }

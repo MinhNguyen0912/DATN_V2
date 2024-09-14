@@ -109,17 +109,22 @@ namespace DATN.API.Controllers
             var batch = await _unitOfWork.BatchRepository.GetById(request.BatchId);
             foreach (var item in request.VoucherCodes)
             {
-                var voucher = new Voucher
+                var checkVoucherExist = _unitOfWork.VoucherRepository.GetAllVouchers().FirstOrDefault(v => v.Code == item);
+                if (checkVoucherExist == null)
                 {
-                    BatchId = request.BatchId,
-                    Code = item,
-                    Status = Core.Enum.VoucherStatus.Unpushlished
-                };
-                if (batch.EndDate != null)
-                {
-                    voucher.ExpiryDate = batch.EndDate;
+                    var voucher = new Voucher
+                    {
+                        BatchId = request.BatchId,
+                        Code = item,
+                        Status = Core.Enum.VoucherStatus.Unpushlished
+                    };
+                    if (batch.EndDate != null)
+                    {
+                        voucher.ExpiryDate = batch.EndDate;
+                    }
+                    await _unitOfWork.VoucherRepository.Create(voucher);
                 }
-                await _unitOfWork.VoucherRepository.Create(voucher);
+                
             }
             int result = _unitOfWork.SaveChanges();
             return Ok(result); // 201 Created
@@ -171,8 +176,6 @@ namespace DATN.API.Controllers
             }
 
         }
-
-
         // Method to activate vouchers based on the BatchId and ActivationTime
         //public async Task ActivateVouchers(Guid batchId, DateTime activationTime)
         //{
@@ -262,6 +265,18 @@ namespace DATN.API.Controllers
             if (vouchers != null && vouchers.Any())
             {
                 var vouchersVM = _mapper.Map<List<VoucherVM>>(vouchers);
+                return Ok(vouchersVM);
+            }
+            return NoContent(); // Trả về 204 nếu không tìm thấy newfeed
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetVoucherByUserId(Guid id)
+        {
+            var vouchers = _unitOfWork.VoucherRepository.GetAllVouchers().Where(p => p.UserId == id).ToList();
+            var availableVouchers = vouchers.Where(v => v.Status == Core.Enum.VoucherStatus.NotUsed).ToList();
+            if (availableVouchers != null && availableVouchers.Any())
+            {
+                var vouchersVM = _mapper.Map<List<VoucherVM>>(availableVouchers);
                 return Ok(vouchersVM);
             }
             return NoContent(); // Trả về 204 nếu không tìm thấy newfeed

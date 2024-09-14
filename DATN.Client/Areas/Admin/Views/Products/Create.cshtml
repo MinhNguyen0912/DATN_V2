@@ -1,0 +1,310 @@
+﻿@model DATN.Core.ViewModel.ProdutEAVVM.CreateProductEAVVM
+@{
+
+}
+<style>
+    .product-form {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .form-group.row {
+        margin-bottom: 15px;
+    }
+
+    .description-area {
+        width: 100%;
+    }
+
+    /* Css Variant */
+    .variant-block {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .variant-row {
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+        .variant-row .col-6 {
+            padding-right: 10px;
+        }
+
+            .variant-row .col-6:last-child {
+                padding-right: 0;
+            }
+
+    .delete-btn {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    .add-value-btn {
+        margin-top: 15px;
+    }
+
+    .remove-value-btn {
+        color: red;
+        cursor: pointer;
+        font-size: 1.2rem;
+        margin-left: 10px;
+    }
+
+    /* Css Table Variant */
+    .product-section {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+    }
+
+    /* Bảng biến thể */
+    .table {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .table th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tbody td {
+            padding: 10px;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+    /* Nút xóa */
+    .btn-danger {
+        border-radius: 50%;
+        font-size: 14px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+        text-align: center;
+    }
+
+    /* Form thuộc tính và giá trị */
+    .variant-row {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+        .variant-row .col-6 {
+            padding-right: 15px;
+        }
+
+            .variant-row .col-6 select, .variant-row .col-6 input {
+                border-radius: 5px;
+            }
+
+    /* Button */
+    .btn-success, .btn-primary {
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    /* Giới hạn chiều rộng */
+    .container {
+        max-width: 1100px;
+        margin: auto;
+    }
+</style>
+
+    <!-- Thông tin sản phẩm -->
+    <div class="product-form">
+        <div class="form-title">Thông tin sản phẩm</div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="ProductName">Tên sản phẩm</label>
+                    <input type="text" class="form-control" id="ProductName" asp-for="ProductName" placeholder="Nhập tên sản phẩm">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Description">Mô tả sản phẩm</label>
+                <textarea class="form-control description-area" id="Description" asp-for="Description" rows="4" placeholder="Nhập mô tả sản phẩm"></textarea>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="BrandId">Thương hiệu</label>
+                <select class="form-control" id="BrandId" asp-for="BrandId" asp-items="ViewBag.listBrand">
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="CategoryProducts">Loại sản phẩm</label>
+                <select  class="form-control" id="CategoryProducts" asp-for="CategoryProducts" asp-items="ViewBag.listCate">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="OriginId">Xuất xứ</label>
+                <select class="form-control" id="OriginId" asp-for="OriginId" asp-items="ViewBag.listOrigin">
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="Status">Trạng thái</label>
+                <select class="form-control" id="Status" asp-for="Status" asp-items="ViewBag.StatusList">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                <label for="ImagesDefault" class="control-label">Ảnh chính sản phẩm</label>
+                <input id="ImagesDefault" name="ImagesDefault" type="file" class="form-control" accept="image/*" />
+                </div>
+
+                <div class="col-md-6">
+                <label for="Images" class="control-label">Các ảnh khác (tối đa 6)</label>
+                <input id="Images" name="Images" type="file" class="form-control" multiple accept="image/*" />
+                </div>
+            </div>
+
+            <!-- Block thông tin biến thể -->
+            <div class="product-section">
+                <div class="form-title">Biến thể sản phẩm</div>
+                <div class="variant-row">
+                    <div class="col-6">
+                        <label for="variantType">Thuộc tính</label>
+                    <select multiple class="form-control" id="variantType" asp-items="ViewBag.listAttributes">
+                        </select>
+                    </div>
+                    <div class="col-6" id="variantValuesContainer">
+                        <!-- Giá trị biến thể -->
+                    </div>
+                </div>
+                <div class="row">
+                <div class="add-attribute-btn mt-4 col-6">
+                    <button type="button" class="btn btn-primary">+ Thêm thuộc tính khác</button>
+                </div
+                <div class="add-value-btn col-6">
+                    <button type="button" class="btn btn-success" id="addVariantValueBtn">+ Thêm giá trị mới</button>
+                </div>
+                </div>
+            </div>
+
+            <!-- Table Variant -->
+            <div class="product-section">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên biến thể</th>
+                            <th>Số lượng</th>
+                            <th>Giá nhập</th>
+                            <th>Giá bán</th>
+                            <th>Thuế</th>
+                            <th>Năm sản xuất</th>
+                            <th>Biến thể mặc định</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="variant-list">
+                        <!-- Các biến thể sẽ được hiển thị tại đây -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Button tạo sản phẩm -->
+            <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary" id="createProductBtn">Create</button>
+            </div>
+        </form>
+    </div>
+
+<script>
+    let variantIndex = 0;
+    let variants = [];
+
+    // Hàm để thêm biến thể vào bảng
+    function addVariantToTable(variantName) {
+        variantIndex++;
+        const tbody = document.getElementById('variant-list');
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+                    <td>${variantIndex}</td>
+                    <td>${variantName}</td>
+                    <td><input type="number" class="form-control" placeholder="Số lượng"></td>
+                    <td><input type="number" class="form-control" placeholder="Giá nhập"></td>
+                    <td><input type="number" class="form-control" placeholder="Giá bán"></td>
+                    <td><input type="number" class="form-control" placeholder="Thuế"></td>
+                    <td><input type="number" class="form-control" placeholder="Năm sản xuất"></td>
+                    <td><input type="checkbox"></td>
+                    <td><button class="btn btn-danger btn-sm" onclick="removeVariant(this)">Xóa</button></td>
+                `;
+        tbody.appendChild(tr);
+    }
+
+    // Hàm để xóa biến thể khỏi bảng
+    function removeVariant(button) {
+        const row = button.closest('tr');
+        row.remove();
+        updateVariantIndices();
+    }
+
+    // Cập nhật lại STT khi xóa dòng
+    function updateVariantIndices() {
+        const rows = document.querySelectorAll('#variant-list tr');
+        rows.forEach((row, index) => {
+            row.cells[0].innerText = index + 1;
+        });
+        variantIndex = rows.length;
+    }
+
+    // Giả lập thêm biến thể (chưa có kết nối với việc chọn thuộc tính)
+    addVariantToTable('Vàng/256GB');
+    addVariantToTable('Đen/128GB');
+</script>

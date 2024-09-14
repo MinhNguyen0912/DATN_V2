@@ -27,6 +27,12 @@ namespace DATN.API.Controllers
             {
                 return BadRequest("Batch data is null"); // 400 Bad Request
             }
+            var exists = await _unitOfWork.BatchRepository.AnyAsync(b => b.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase));
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Tên voucher đã tồn tại.");
+                return BadRequest(ModelState); // Trả về 400 Bad Request cùng với thông tin lỗi
+            }
             var batch = new Batch
             {
                 Name = request.Name,
@@ -52,7 +58,7 @@ namespace DATN.API.Controllers
             return Ok(batches);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit([FromBody] BatchVM request)
+        public async Task<IActionResult> Edit([FromBody] EditBatchRequest request)
         {
             var batch = _unitOfWork.BatchRepository.GetByIdCustom(request.Id);
             if (batch == null)

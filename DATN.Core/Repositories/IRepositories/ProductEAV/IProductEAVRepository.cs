@@ -1,6 +1,7 @@
 ﻿using DATN.Core.Infrastructures;
 using DATN.Core.Model.Product_EAV;
 using DATN.Core.ViewModel.Paging;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Core.Repositories.IRepositories.ProductEAV
 {

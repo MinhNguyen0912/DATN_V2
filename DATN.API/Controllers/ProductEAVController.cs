@@ -197,4 +197,14 @@ namespace DATN.API.Controllers
         }
 
     }
+
+		[HttpPost]
+		public IActionResult GetProductPaging([FromBody] ProductPaging request)
+		{
+			ProductPaging partnerPaging =  _unitOfWork.ProductEAVRepository.ProductPaging(request);
+			return Ok(partnerPaging);
+		}
+
+
+	}
 }
