@@ -230,7 +230,7 @@ namespace DATN.Core.Data
             #endregion
             #region Invoice
             modelBuilder.Entity<Invoice>().HasData(
-                new Invoice { InvoiceId = 1, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), FinalAmount= 20240913,Note="abc-0989982563-Hải Dương-0-0",VoucherId=1 }
+                new Invoice { InvoiceId = 1, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),Note="abc-0989982563-Hải Dương-0-0",VoucherId=1 }
 
             );
             #endregion
