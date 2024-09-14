@@ -210,21 +210,7 @@ namespace DATN.Core.Repositories.Repositories
             }
         }
 
-        public async Task<bool> IsCheckedTotalPuschasePriceAsync(Guid userId)
-        {
-            var totalSpent = await _context.Invoices
-                                .Where(o => o.UserId == userId)
-                                .SumAsync(o => o.FinalAmount);
-
-            if (totalSpent > 1000000)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+       
     }
 
 
