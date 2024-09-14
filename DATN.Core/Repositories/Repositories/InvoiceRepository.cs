@@ -28,7 +28,7 @@ namespace DATN.Core.Repositories.Repositories
         //}
         public InvoicePaging GetInvoicePaging(InvoicePaging request)
         {
-            var query = Context.Invoices.Include(p => p.User).Include(p => p.InvoiceDetails).OrderByDescending(p => p.CreateDate).AsQueryable();
+            var query = Context.Invoices.Include(p => p.User).Include(p => p.InvoiceDetails).Include(p=>p.PaymentInfo).OrderByDescending(p => p.CreateDate).AsQueryable();
             if (!string.IsNullOrEmpty(request.SearchTerm))
             {
                 string searchTerm = request.SearchTerm.Trim().ToLower();
@@ -77,5 +77,13 @@ namespace DATN.Core.Repositories.Repositories
             return invoiceShowForClientVMs;
         }
 
+        public Invoice GetByIdCustom(int id)
+        {
+          return  Context.Invoices.Where(p=>p.InvoiceId== id).Include(p=>p.InvoiceDetails).ThenInclude(p=>p.Variant).ThenInclude(p=>p.Product).FirstOrDefault();
+        }
+        public List<Invoice> GetCustom()
+        {
+            return Context.Invoices.Include(p => p.PaymentInfo).ToList();
+        }
     }
 }
