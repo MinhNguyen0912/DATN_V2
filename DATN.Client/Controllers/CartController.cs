@@ -7,6 +7,7 @@ using DATN.Core.Model;
 using DATN.Core.ViewModel.GHNVM;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.PendingCartVM;
+using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModels.VNPayVM;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,12 +36,13 @@ namespace DATN.Client.Controllers
                 return Redirect("~/Identity/Account/Login");
             }
             var pendingCart = await _clientService.Post<PendingCartVM>("https://localhost:7095/api/PendingCart/GetByUserId",user.UserId);
-            //var voucher = await _clientService.GetList<VoucherUser>($"https://localhost:7095/api/VoucherUser/GetVoucherByUser?Id={user.UserId}");
+            var voucher = await _clientService.GetList<VoucherVM>($"https://localhost:7095/api/Voucher/GetVoucherByUserId/{user.UserId}");
             try
             {
                 //ViewData["voucher"] = voucher;
                 ViewData["user"] = user;
                 ViewData["pendingCart"] = pendingCart;
+                ViewData["voucher"] = voucher;
             }
             catch (Exception ex)
             {
