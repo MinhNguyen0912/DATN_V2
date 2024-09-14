@@ -56,8 +56,8 @@ namespace DATN.Client.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var assignVoucherExist = result.Vouchers.Where(x=>x.Status == Core.Enum.VoucherStatus.NotUsed || x.Status == Core.Enum.VoucherStatus.Used).Any();
-            ViewBag.AssignVoucherExist = assignVoucherExist;
+            //var assignVoucherExist = result.Vouchers.Where(x=>x.Status == Core.Enum.VoucherStatus.NotUsed || x.Status == Core.Enum.VoucherStatus.Used).Any();
+            //ViewBag.AssignVoucherExist = assignVoucherExist;
             return View(result);
         }
         [HttpPost]

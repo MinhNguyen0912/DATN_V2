@@ -2,6 +2,7 @@
 @using DATN.Core.ViewModel.PendingCartVM
 @using System.Globalization
 @using DATN.Core.ViewModel.voucherVM
+@using System.Text.Json
 @model PaymentRequest
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -157,7 +158,7 @@
                             <select class="form-control" id="voucherSelect" style="max-height: 400px; cursor: pointer;" multiple>
                                 <option value="0"> Chọn mã giảm giá</option>
                                 @foreach (var item in voucher)
-                                {
+                                {                                
                                     <option value="@item.Id" data-description="@item.Batch.Description">@item.Batch.Name</option>
                                 }
                             </select>
@@ -286,36 +287,15 @@
     });
     // Gắn sự kiện change vào phần tử select
     voucherSelect.addEventListener('change', function () {
-    let vouchers = @voucher;  // Danh sách voucher được truyền từ Razor
+    var vouchers = @Html.Raw(JsonSerializer.Serialize(voucher));  // Danh sách voucher được truyền từ Razor
+    console.log(Array.isArray(vouchers)); // Kiểm tra xem vouchers có phải là mảng không
+    console.log(vouchers);
     let selectedOption = this.options[this.selectedIndex];
     let voucherId = parseFloat(selectedOption.getAttribute('value'));
 
     // Tìm voucher tương ứng
     let voucher = vouchers.find(v => v.Id === voucherId);
     let discount = 0;
-
-    if (voucher) {
-        if (voucher.Batch.Type == 1) {
-            if (voucher.Batch.DiscountType == 1) {
-                // Giảm giá theo giá trị cố định
-                discount = voucher.Batch.DiscountValue;
-            } else {
-                // Giảm giá theo phần trăm tổng giá trị đơn hàng
-                let totalPrice = parseFloat(document.getElementsByClassName("pricetotal")[0].textContent.replace(/[^\d.-]/g, ''));
-                discount = voucher.Batch.DiscountValue * totalPrice / 100;
-
-                // Kiểm tra nếu có giới hạn giảm giá tối đa
-                if (voucher.Batch.MaxDiscountAmount != 0 && discount > voucher.Batch.MaxDiscountAmount) {
-                    discount = voucher.Batch.MaxDiscountAmount;
-                }
-            }
-        } else {
-            // Giảm giá theo phí vận chuyển
-            let totalShipFee = parseFloat(document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, ''));
-            discount = voucher.Batch.DiscountValue * totalShipFee / 100;
-        }
-    }
-
     // Tính tổng giá trị sản phẩm
     let totalPrice = 0;
     for (var item of document.querySelectorAll(".quantitysp")) {
@@ -325,12 +305,42 @@
     // Tính tổng phí vận chuyển
     let totalShipFee = parseFloat(document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, ''));
 
+    if (voucher) {
+        if (voucher.Batch.Type == 1) {
+            if (voucher.Batch.DiscountType == 1) {
+                // Giảm giá theo giá trị cố định
+                discount = voucher.Batch.DiscountAmount;
+                if(voucher.Batch.discountAmount > totalPrice){
+                    discount = totalPrice;
+                }
+            } else {
+                // Giảm giá theo phần trăm tổng giá trị đơn hàng
+                let totalPrice = parseFloat(document.getElementsByClassName("pricetotal")[0].textContent.replace(/[^\d.-]/g, ''));
+                discount = voucher.Batch.DiscountAmount * totalPrice / 100;
+               console.log(discount);
+
+                // Kiểm tra nếu có giới hạn giảm giá tối đa
+                if (voucher.Batch.MaxDiscountAmount != 0 && discount > voucher.Batch.MaxDiscountAmount) {
+                    discount = voucher.Batch.MaxDiscountAmount;
+                    console.log(discount);
+                }
+            }
+        } else {
+            // Giảm giá theo phí vận chuyển
+            let totalShipFee = parseFloat(document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, ''));
+            discount = voucher.Batch.DiscountAmount * totalShipFee / 100;
+            console.log(discount);
+        }
+    }
+
+    
     // Tính tổng giá cuối cùng sau khi áp dụng giảm giá
     let finalPrice = totalPrice + totalShipFee - discount;
+    console.log(finalPrice);
 
     // Cập nhật giá trị tổng và giá trị cuối cùng trên giao diện
-    document.getElementsByClassName("pricetotal")[0].innerHTML = `${totalPrice.toLocaleString()} VNĐ`;
-    document.getElementsByClassName("pricelast")[0].innerHTML = `${finalPrice.toLocaleString()} VNĐ`;
+    document.getElementsByClassName("pricetotal")[0].innerHTML = `${totalPrice.toLocaleString()} VNĐ`
+    document.getElementsByClassName("pricelast")[0].innerHTML = `${finalPrice.toLocaleString()} VNĐ`
     });
 
     async function CalculateShippingFee() {

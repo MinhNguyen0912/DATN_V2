@@ -71,7 +71,6 @@ namespace DATN.API.Controllers
             // Tạo đối tượng Invoice
             var invoice = new Invoice()
             {
-                FinalAmount = payment.FinalAmount,
                 UserId = payment.UserId,
                 CreateDate = DateTime.Now,
                 InvoiceDetails = new List<InvoiceDetail>(),

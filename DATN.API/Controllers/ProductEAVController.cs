@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model.Product_EAV;
+using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.Product_EAV;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,5 +75,14 @@ namespace DATN.API.Controllers
             var result = _mapper.Map<List<Product_EAV>>(data);
             return Ok(result);
         }
-    }
+
+		[HttpPost]
+		public IActionResult GetProductPaging([FromBody] ProductPaging request)
+		{
+			ProductPaging partnerPaging =  _unitOfWork.ProductEAVRepository.ProductPaging(request);
+			return Ok(partnerPaging);
+		}
+
+
+	}
 }

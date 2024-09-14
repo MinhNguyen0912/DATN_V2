@@ -5,5 +5,8 @@ namespace DATN.Core.Repositories.IRepositories.ProductEAV
 {
     public interface IAttributeEAVRepository : IBaseRepository<Attribute_EAV>
     {
+        public List<Attribute_EAV> GetAllAttributeValue();
     }
 }
+
+    
