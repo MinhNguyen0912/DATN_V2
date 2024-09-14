@@ -18,6 +18,7 @@ namespace DATN.Core.ViewModel.InvoiceVM
         public string? Note { get; set; }
         public int? VoucherUserId { get; set; }
         public ShippingOrder? ShippingOrder { get; set; }
+        public PaymentInfo? PaymentInfo { get; set; }
 
     }
 }

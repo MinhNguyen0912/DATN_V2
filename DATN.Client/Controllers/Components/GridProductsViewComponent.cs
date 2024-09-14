@@ -21,7 +21,7 @@ namespace DATN.Client.Controllers.Components
 
         private async Task<List<ProductVM_EAV>> GetProductsByCategory(int categoryId)
         {
-            var response = await _httpClient.GetAsync($"https://localhost:7095/api/Product/GetProductByCategory?categoryId={categoryId}");
+            var response = await _httpClient.GetAsync($"https://localhost:7095/api/ProductEAV/GetProductByCategory?categoryId={categoryId}");
 
             response.EnsureSuccessStatusCode();
 

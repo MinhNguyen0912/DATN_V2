@@ -55,7 +55,7 @@ namespace DATN.API.Controllers
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(int id)
         {
-            var invoice = await _unitOfWork.InvoiceRepository.GetById(id);
+            var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(id);
             if (invoice == null)
             {
                 return NotFound(); // 404 Not Found
