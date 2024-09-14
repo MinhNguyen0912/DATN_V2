@@ -1,5 +1,7 @@
 ﻿using DATN.Core.Infrastructures;
 using DATN.Core.Model.Product_EAV;
+using DATN.Core.ViewModel.Paging;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Core.Repositories.IRepositories.ProductEAV
 {
@@ -11,5 +13,7 @@ namespace DATN.Core.Repositories.IRepositories.ProductEAV
         public Task<List<Product_EAV>> GetByName(string name);
         public Product_EAV GetByIdWithPromotion(int id);
 
-    }
+		public ProductPaging ProductPaging(ProductPaging request);
+
+	}
 }

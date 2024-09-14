@@ -27,6 +27,12 @@ namespace DATN.API.Controllers
             {
                 return BadRequest("Batch data is null"); // 400 Bad Request
             }
+            var exists = await _unitOfWork.BatchRepository.AnyAsync(b => b.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase));
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Tên voucher đã tồn tại.");
+                return BadRequest(ModelState); // Trả về 400 Bad Request cùng với thông tin lỗi
+            }
             var batch = new Batch
             {
                 Name = request.Name,
@@ -39,56 +45,8 @@ namespace DATN.API.Controllers
                 MaxDiscountAmount = request.MaxDiscountAmount,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
-                ExpirationDate = request.ExpirationDate,
-                VoucherCates = new List<VoucherCate>(),
-                VoucherProducts = new List<VoucherProduct>()
+                ExpirationDate = request.ExpirationDate
             };
-            if (request.ApplyToAll == true)
-            {
-                var cates = _unitOfWork.CategoryRepository.GetAll();
-                var products = _unitOfWork.ProductEAVRepository.GetAll();
-                foreach (var item in products)
-                {
-                    var product = new VoucherProduct
-                    {
-                        ProductId = item.ProductId
-                    };
-                    batch.VoucherProducts.Add(product);
-                }
-                foreach (var item in cates)
-                {
-                    var cate = new VoucherCate
-                    {
-                        CategoryId = item.Id
-                    };
-                    batch.VoucherCates.Add(cate);
-                }
-            }
-            else
-            {
-                if (request.CateItem != null)
-                {
-                    foreach (var item in request.CateItem)
-                    {
-                        var cate = new VoucherCate
-                        {
-                            CategoryId = item
-                        };
-                        batch.VoucherCates.Add(cate);
-                    }
-                }
-                if (request.ProdItem != null)
-                {
-                    foreach (var item in request.ProdItem)
-                    {
-                        var product = new VoucherProduct
-                        {
-                            ProductId = item
-                        };
-                        batch.VoucherProducts.Add(product);
-                    }
-                }
-            }
             _unitOfWork.BatchRepository.Create(batch);
             _unitOfWork.SaveChanges();
             return Ok(batch);
@@ -98,6 +56,29 @@ namespace DATN.API.Controllers
         {
             var batches = _unitOfWork.BatchRepository.batchPaging(request);
             return Ok(batches);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] EditBatchRequest request)
+        {
+            var batch = _unitOfWork.BatchRepository.GetByIdCustom(request.Id);
+            if (batch == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+            _mapper.Map(request, batch);
+            _unitOfWork.BatchRepository.Update(batch);
+            _unitOfWork.SaveChanges();
+            return Ok(batch);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var batch = _unitOfWork.BatchRepository.GetByIdCustom(id);
+            if (batch == null)
+            {
+                return NotFound(); // 404 Not Found
+            }
+            return Ok(batch);
         }
     }
 }

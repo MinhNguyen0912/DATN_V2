@@ -10,9 +10,9 @@ namespace DATN.Core.Model
         // Foreign Key
         public int? InvoiceId { get; set; }
         public int VariantId { get; set; }
-        public double OldPrice { get; set; }
-        public double NewPrice { get; set; }
-        public double PuscharPrice { get; set; }
+        public decimal OldPrice { get; set; }
+        public decimal NewPrice { get; set; }
+        public decimal PuscharPrice { get; set; }
         public Comment? Comment { get; set; }
 
         // Navigation property

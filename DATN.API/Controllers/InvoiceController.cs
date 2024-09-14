@@ -69,47 +69,41 @@ namespace DATN.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] PaymentRequest payment)
         {
-            if (payment == null)
-            {
-                return BadRequest("Invoice data is null"); // 400 Bad Request
-            }
-
+            var user = _unitOfWork.UserRepository.GetByIdCustom(payment.UserId);
             // Tạo đối tượng Invoice
             var invoice = new Invoice()
             {
-                //TotalAmount = payment.TotalAmount,
-                //Discount = payment.Discount,
-                //FinalAmount = payment.FinalAmount,
+                FinalAmount = payment.FinalAmount,
                 UserId = payment.UserId,
                 CreateDate = DateTime.Now,
                 InvoiceDetails = new List<InvoiceDetail>(),
-                Note = $"{payment.PendingShippingOrder.to_name}-{payment.PendingShippingOrder.to_phone}-{payment.PendingShippingOrder.to_address}-{payment.PendingShippingOrder.to_ward_code}-{payment.PendingShippingOrder.to_district_id}-{payment.PendingShippingOrder.cod_amount}"
+                Note = $"{payment.FirstName} {payment.LastName}-{payment.PhoneNumber}-{payment.to_address}-{payment.to_ward_code}-{payment.to_district_id}"
             };
 
             // Tạo đối tượng PaymentInfo
             var paymentMethod = new PaymentInfo()
             {
                 PaymentMethod = payment.PaymentMethod,
-                PaymentStatus = 0,
+                PaymentStatus = PaymentStatus.Pending,
             };
 
             invoice.PaymentInfo = paymentMethod;
 
             // Thêm các chi tiết hóa đơn vào Invoice
-            foreach (var item in payment.CartItems)
+            foreach (var item in user.PendingCart.PendingCartVariants)
             {
-                var product = await _unitOfWork.ProductEAVRepository.GetById(item.ProductId);
-                if (product == null)
-                {
-                    return BadRequest($"Product with ID {item.ProductId} not found");
-                }
+                //var product = await _unitOfWork.VariantRepository.GetById(item.ProductId);
+                //if (product == null)
+                //{
+                //    return BadRequest($"Product with ID {item.ProductId} not found");
+                //}
                 var invoiceDetail = new InvoiceDetail()
                 {
-                    VariantId = item.ProductId,
+                    VariantId = item.VariantId,
                     Quantity = item.Quantity,
-                    NewPrice = item.NewPrice,
-                    OldPrice = item.OldPrice,
-                    PuscharPrice = item.GiaNhap
+                    NewPrice = item.Variant.AfterDiscountPrice,
+                    OldPrice = item.Variant.SalePrice,
+                    PuscharPrice = item.Variant.PuscharPrice
                 };
                 invoice.InvoiceDetails.Add(invoiceDetail);
                 //foreach (var i in payment.CartItems)
@@ -118,14 +112,13 @@ namespace DATN.API.Controllers
                 //    productATTUpdate.Quantity -= i.Quantity;
                 //    _unitOfWork.ProductAtributeRepository.Update(productATTUpdate);
                 //}
-                //if (payment.VoucherId != 0)
-                //{
-                //    var voucher = _unitOfWork.voucherUserRepository.GetByIdCustom(payment.VoucherId);
-                //    invoice.VoucherId = voucher.Id;
-                //    invoice.VoucherUser = voucher;
-                //    voucher.IsDeleted = true;
-                //    _unitOfWork.voucherUserRepository.Update(voucher);
-                //}
+                if (payment.VoucherId != 0)
+                {
+                    var voucher = _unitOfWork.VoucherRepository.GetByIdCustom(payment.VoucherId);
+                    invoice.VoucherId = voucher.Id;
+                    voucher.Status = VoucherStatus.Used;
+                    _unitOfWork.VoucherRepository.Update(voucher);
+                }
             }
             if (payment.PaymentMethod == PaymentMethod.Cash)
             {

@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using DATN.Core.Infrastructures;
 using DATN.Core.Models;
+using DATN.Core.Repositories.IRepositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -23,13 +25,17 @@ namespace DATN.Client.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IVoucherRepository _VoucherRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
             IUserStore<AppUser> userStore,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IVoucherRepository voucherProductRepository,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -37,6 +43,8 @@ namespace DATN.Client.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _VoucherRepo = voucherProductRepository;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -129,6 +137,10 @@ namespace DATN.Client.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     // add role to user
                     await _userManager.AddToRoleAsync(user, "User");
+
+                    // Add voucher Automatic
+                    //_VoucherRepo.GenerateVoucherAutoRegisterAsync(user.Id);
+                    _unitOfWork.VoucherRepository.GenerateVoucherAutoRegisterAsync(user.Id);
 
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

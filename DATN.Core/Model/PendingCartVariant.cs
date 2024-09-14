@@ -11,9 +11,9 @@ namespace DATN.Core.Model
     {
         public int Id { get; set; }
         public int VariantId { get; set; }
-        public Variant Variant { get; set; }
+        public Variant? Variant { get; set; }
         public int? PendingCartId { get; set; }
         public int Quantity { get; set; }
-        public PendingCart PendingCart { get; set; }
+        public PendingCart? PendingCart { get; set; }
     }
 }

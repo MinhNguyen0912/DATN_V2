@@ -2,8 +2,12 @@
 using DATN.Client.Helper;
 using DATN.Client.Models;
 using DATN.Client.Services;
+using DATN.Core.Infrastructures;
 using DATN.Core.Model;
+using DATN.Core.ViewModel.GHNVM;
+using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.PendingCartVM;
+using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModels.VNPayVM;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,13 +18,15 @@ namespace DATN.Client.Controllers
         private readonly ClientService _clientService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public CartController(ClientService clientService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        public CartController(ClientService clientService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IUnitOfWork unitOfWork)
         {
             _clientService = clientService;
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
+            _unitOfWork = unitOfWork;
         }
         public async Task<IActionResult> Index()
         {
@@ -30,12 +36,13 @@ namespace DATN.Client.Controllers
                 return Redirect("~/Identity/Account/Login");
             }
             var pendingCart = await _clientService.Post<PendingCartVM>("https://localhost:7095/api/PendingCart/GetByUserId",user.UserId);
-            //var voucher = await _clientService.GetList<VoucherUser>($"https://localhost:7095/api/VoucherUser/GetVoucherByUser?Id={user.UserId}");
+            var voucher = await _clientService.GetList<VoucherVM>($"https://localhost:7095/api/Voucher/GetVoucherByUserId/{user.UserId}");
             try
             {
                 //ViewData["voucher"] = voucher;
                 ViewData["user"] = user;
                 ViewData["pendingCart"] = pendingCart;
+                ViewData["voucher"] = voucher;
             }
             catch (Exception ex)
             {
@@ -55,7 +62,27 @@ namespace DATN.Client.Controllers
             //return View(lst);
             return View();
         }
-        public IActionResult Pay(int typePayment, long money, int invoiceId)
+        [HttpPost]
+        public async Task<IActionResult> PaymentProcess(PaymentRequest request)
+        {
+            var user = SessionHelper.GetObject<UserInfo>(HttpContext.Session, "user");
+            request.UserId = user.UserId;
+            var invoice = await _clientService.Post<Invoice>("https://localhost:7095/api/Invoice/Create", request);
+            if (request.PaymentMethod == Core.Enum.PaymentMethod.Cash)
+            {
+                await _clientService.Post($"https://localhost:7095/api/PendingCart/UpdatePendingCart?pendingCartId={request.pendingCartId}", new List<PendingCartVariant>());
+            }else if (request.PaymentMethod == Core.Enum.PaymentMethod.TheNoiDia)
+            {
+                var totalMoney = invoice.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
+                return RedirectToAction("Pay", new {typePayment=1, money =totalMoney+request.ShippingFee,invoiceId =invoice.InvoiceId, pendingCartId = request.pendingCartId});
+            }else if (request.PaymentMethod == Core.Enum.PaymentMethod.TheQuocTe)
+            {
+                var totalMoney = invoice.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
+                return RedirectToAction("Pay", new { typePayment = 2, money = totalMoney + request.ShippingFee, invoiceId = invoice.InvoiceId , pendingCartId = request.pendingCartId });
+            }
+            return RedirectToAction("Index");
+        }
+        public IActionResult Pay(int typePayment, decimal money, int invoiceId, int pendingCartId)
         {
             try
             {
@@ -68,7 +95,7 @@ namespace DATN.Client.Controllers
                 //Get payment input
                 OrderInfo order = new OrderInfo();
                 order.OrderId = DateTime.Now.Ticks; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
-                order.Amount = money; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
+                order.Amount = Convert.ToInt64(money); // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
                 order.Status = "0"; //0: Trạng thái thanh toán "chờ thanh toán" hoặc "Pending" khởi tạo giao dịch chưa có IPN
                 order.CreatedDate = DateTime.Now;
                 //Save order to db
@@ -105,6 +132,7 @@ namespace DATN.Client.Controllers
                 //Add Params of 2.1.0 Version
                 //Billing
                 HttpContext.Session.SetInt32("invoiceId", invoiceId);
+                HttpContext.Session.SetInt32("pendingCartId", pendingCartId);
                 string paymentUrl = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
                 return Redirect(paymentUrl);
             }
@@ -123,6 +151,7 @@ namespace DATN.Client.Controllers
             if (HttpContext.Request.Query.Count > 0)
             {
                 int? invoiceId = HttpContext.Session.GetInt32("invoiceId");
+                int? pendingCartId = HttpContext.Session.GetInt32("pendingCartId");
                 string vnp_HashSecret = _configuration["AppSettings:vnp_HashSecret"]; //Chuoi bi mat
                 var vnpayData = HttpContext.Request.Query;
                 VnPayLibrary vnpay = new VnPayLibrary();
@@ -158,12 +187,20 @@ namespace DATN.Client.Controllers
                     {
                         //Thanh toan thanh cong
                         ViewBag.displayMsg = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
-                        TempData["paymentStatus"] = "Success";
-                        TempData["invoiceId"] = invoiceId;
 
-                        //Xu ly them moi donate
-
-                        var currentUser = SessionHelper.GetObjectFromJson<UserInfo>(HttpContext.Session, "user");
+                        var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
+                        var bodyGHN = new CreateGHNOrderAdmin()
+                        {
+                            to_name = invoice.Note.Split('-')[0],
+                            to_phone = invoice.Note.Split('-')[1],
+                            to_address = invoice.Note.Split('-')[2],
+                            to_ward_code = invoice.Note.Split('-')[3],
+                            to_district_id = invoice.Note.Split('-')[4],
+                            //cod_amount = 
+                        };
+                        await _clientService.Post($"https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create", new List<PendingCartVariant>());
+                        await _clientService.Post($"https://localhost:7095/api/PendingCart/UpdatePendingCart?pendingCartId={pendingCartId}", new List<PendingCartVariant>());
+                        
                         await _clientService.Get($"{ApiPaths.Invoice}/ChangeStatus?invoiceId={invoiceId}&status={4}");
 
                     }
@@ -171,8 +208,6 @@ namespace DATN.Client.Controllers
                     {
                         //Thanh toan khong thanh cong. Ma loi: vnp_ResponseCode
                         ViewBag.displayMsg = "Có lỗi xảy ra trong quá trình xử lý.Mã lỗi: " + vnp_ResponseCode;
-                        TempData["paymentStatus"] = "Fail";
-                        TempData["invoiceId"] = invoiceId;
                         await _clientService.Get($"{ApiPaths.Invoice}/ChangeStatus?invoiceId={invoiceId}&status={5}");
                     }
                     ViewBag.displayTmnCode = "Mã Website (Terminal ID):" + TerminalID;

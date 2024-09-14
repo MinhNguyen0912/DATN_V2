@@ -35,8 +35,6 @@ namespace DATN.Core.Data
         public DbSet<Magazine> Magazines { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
         public DbSet<Batch> Batches { get; set; }
-        public DbSet<VoucherCate> VoucherCates { get; set; }
-        public DbSet<VoucherProduct> VoucherProducts { get; set; }
         public DbSet<Origin> Origins { get; set; }
         public DbSet<TimeRange> TimeRanges { get; set; }
         public DbSet<CategoryTimeRange> CategoryTimeRange { get; set; }

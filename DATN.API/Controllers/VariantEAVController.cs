@@ -23,5 +23,7 @@ namespace DATN.API.Controllers
             var variant = _unitOfWork.VariantRepository.GetByIdCustom(variantId);
             return Ok(variant);
         }
+
+
     }
 }

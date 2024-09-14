@@ -36,10 +36,6 @@ namespace DATN.Client.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var pruducts =await _clientService.GetList<Product_EAV>("https://localhost:7095/api/ProductEAV/GetAll_Viet");
-            var cates =await _clientService.GetList<CategoryVM>("https://localhost:7095/api/Category/GetAll");
-            ViewBag.Cates = cates;
-            ViewBag.Products = pruducts;
             return View();
         }
         [HttpPost]
@@ -49,6 +45,28 @@ namespace DATN.Client.Areas.Admin.Controllers
             if (result != null)
             {
                 return RedirectToAction("Index", "Voucher", new {BatchId = result.Id});
+            }
+            return View(request);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var result = await _clientService.Get<Batch>($"https://localhost:7095/api/Batch/get/{id}");
+            if (result == null)
+            {
+                return NotFound();
+            }
+            var assignVoucherExist = result.Vouchers.Where(x=>x.Status == Core.Enum.VoucherStatus.NotUsed || x.Status == Core.Enum.VoucherStatus.Used).Any();
+            ViewBag.AssignVoucherExist = assignVoucherExist;
+            return View(result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditBatchRequest request)
+        {
+            var result = await _clientService.Post<Batch>("https://localhost:7095/api/Batch/Edit", request);
+            if (result != null)
+            {
+                return RedirectToAction("Index");
             }
             return View(request);
         }
