@@ -36,9 +36,9 @@ namespace DATN.Client.Areas.Admin.Controllers
 	        saleProuduct.DicountAmount = 0;
 	        saleProuduct.ChangeMoney = 0;
 	        saleProuduct.DicountAmount = 0;
-	        saleProuduct.ProductCount = 0;
 	        saleProuduct.QuickCreateUserVM = new QuickCreateUserVM();
 	        saleProuduct.ShoppingTabs = new List<ShoppingTab>();
+	        saleProuduct.ProductCount = saleProuduct.ShoppingTabs.Count();
 	        saleProuductVm.Add(saleProuduct);
 	        var SaleProuductVMStored = JsonConvert.SerializeObject(saleProuductVm);
 	        HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
@@ -119,7 +119,7 @@ namespace DATN.Client.Areas.Admin.Controllers
 			return Json(new { data = resonse});
 		}
 		[HttpPost]
-		public async Task<IActionResult> PaymentProccess(int Tab,float ChangeMoney)
+		public async Task<IActionResult> PaymentProcess(int Tab,float ChangeMoney)
 		{
 			
 			
@@ -142,27 +142,35 @@ namespace DATN.Client.Areas.Admin.Controllers
 				{
 					return Json(new {isSucccess=false, data = "Vui lòng nhập số tiền khách đưa"});
 				}
-				var response= await _clientService.Post<object>($"https://localhost:7095/api/Invoice/CreatePaymentOffline",paymentTab);return Json(new { data = response});
+				//var response= await _clientService.Post<object>($"https://localhost:7095/api/Invoice/CreatePaymentOffline",paymentTab);
+				return Json(new {isSucccess=true, data = paymentTab});
 			}
 			return Json(new { data = ""});
 		}
 		[HttpPost]
 		public async Task<IActionResult> AddNewTab()
 		{
+			
 			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
 			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
+			if (SaleProductDeserialized.Count() + 1 > 3)
+			{
+				return Json(new {isSucccess=false, data = "Bạn chỉ có thể thêm tối đa 3 Tab"});
+			}
 			SaleProuductVM saleProuductVm = new SaleProuductVM();
 			saleProuductVm.TabIndex = SaleProductDeserialized.Max(c => c.TabIndex + 1);
 			saleProuductVm.TabName = "Tab " +saleProuductVm.TabIndex;
 			saleProuductVm.DicountAmount = 0;
 			saleProuductVm.ChangeMoney = 0;
+			saleProuductVm.QuickCreateUserVM = new QuickCreateUserVM();
 			saleProuductVm.DicountAmount = 0;
-			saleProuductVm.ProductCount = 0;
+			
 			saleProuductVm.ShoppingTabs = new List<ShoppingTab>();
+			saleProuductVm.ProductCount = saleProuductVm.ShoppingTabs.Count();
 			SaleProductDeserialized.Add(saleProuductVm);
 			var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
 			HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
-			return Json(new { data = "" });
+			return Json(new {isSucccess=true,  data = "" });
 		}
 		
         [HttpPost]
@@ -196,9 +204,11 @@ namespace DATN.Client.Areas.Admin.Controllers
 						shoppingTab.Price = Price;
 						saleProuductVm.ShoppingTabs.Add(shoppingTab);
 					}
+					saleProuductVm.ProductCount = saleProuductVm.ShoppingTabs.Count();
 					saleProuductVm.TotalAmount = saleProuductVm.ShoppingTabs.Sum(c => c.Quantity * c.Price);
 				}
 				var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
+				
 				HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
 			
 			return Json(new { data = SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList() });
@@ -217,8 +227,9 @@ namespace DATN.Client.Areas.Admin.Controllers
 						{
 							shoppingTab.Quantity = Quantity;
 						}
-					
-					
+						saleProuductVm.ProductCount = saleProuductVm.ShoppingTabs.Count();
+						saleProuductVm.TotalAmount = saleProuductVm.ShoppingTabs.Sum(c => c.Quantity * c.Price);
+
 				}
 				var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
 				HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
@@ -238,7 +249,11 @@ namespace DATN.Client.Areas.Admin.Controllers
 						{
 							saleProuductVm.ShoppingTabs.Remove(shoppingTab);
 						}
+						saleProuductVm.ProductCount = saleProuductVm.ShoppingTabs.Count();
+						saleProuductVm.TotalAmount = saleProuductVm.ShoppingTabs.Sum(c => c.Quantity * c.Price);
+
 				} 
+				
 			var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
 			HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
 			return Json(new { data = SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList() });
@@ -250,6 +265,20 @@ namespace DATN.Client.Areas.Admin.Controllers
 			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
 			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
 			return Json(new { data = SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList() });
+		}
+		[HttpPost]
+		public async Task<IActionResult> SaveNote(int Tab,string Note)
+		{
+			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
+			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
+			foreach (var saleProuductVm in SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList())
+			{
+				saleProuductVm.Note = Note;
+
+			} 
+			var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
+			HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
+			return Json(new { data ="" });
 		}
 		
         

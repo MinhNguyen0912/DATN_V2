@@ -174,9 +174,9 @@ namespace DATN.API.Controllers
                 {
                     VariantId = item.ProductId,
                     Quantity = item.Quantity,
-                    NewPrice = item.Price,
-                    OldPrice =Convert.ToDouble(productByVariant.SalePrice),
-                    PuscharPrice = Convert.ToDouble(productByVariant.PuscharPrice)
+                    NewPrice = Convert.ToDecimal(item.Price),
+                    OldPrice =Convert.ToDecimal(productByVariant.SalePrice),
+                    PuscharPrice =Convert.ToDecimal(productByVariant.PuscharPrice)
                 };
               var resUpdateQuantity=  await _unitOfWork.ProductEAVRepository.UpdateQuantiyVariant(item.ProductId, item.VariantId,
                     item.Quantity);

@@ -61,13 +61,11 @@ namespace DATN.Core.Repositories.Repositories.ProductEAV
             return filteredProduct;
 
         }
-
         public Product_EAV GetByIdWithPromotion(int id)
         {
             return _context.Product_EAVs.Where(p => p.ProductId == id).Include(p => p.PromotionProducts).ThenInclude(p=>p.Promotion).FirstOrDefault();
 
         }
-
 		public ProductPaging ProductPaging([FromBody]ProductPaging request)
 		{
 			var query = Context.Product_EAVs.Include(p => p.Images).Include(b => b.Brand).Include(o => o.Origin).Include(p => p.CategoryProducts).ThenInclude(p => p.Category).Include(p => p.Variants).ToList().AsQueryable();
