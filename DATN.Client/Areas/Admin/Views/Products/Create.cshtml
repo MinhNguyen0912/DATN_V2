@@ -1,250 +1,310 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model DATN.Core.ViewModel.ProdutEAVVM.CreateProductEAVVM
 @{
-}
 
+}
 <style>
-    .box {
+    .product-form {
         padding: 20px;
         border: 1px solid #ccc;
-        border-radius: 8px;
+        border-radius: 10px;
         margin-top: 20px;
-        margin-left: 10px;
-        background-color: #ffffff; /* Màu nền của hộp */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng cho hộp */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .productInfo .row {
-        display: flex;
-        gap: 15px; /* Khoảng cách giữa các cột */
-        margin-top: 10px;
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
     }
 
-    .form-group {
+    .form-group.row {
         margin-bottom: 15px;
     }
 
-    .align-items-center {
-        align-items: center;
-    }
-
-    .form-control {
+    .description-area {
         width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
     }
 
-    .btn {
-        padding: 10px 20px;
+    /* Css Variant */
+    .variant-block {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .variant-row {
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+        .variant-row .col-6 {
+            padding-right: 10px;
+        }
+
+            .variant-row .col-6:last-child {
+                padding-right: 0;
+            }
+
+    .delete-btn {
+        background-color: #dc3545;
+        color: white;
         border: none;
-        border-radius: 4px;
+        padding: 5px 10px;
+        margin-left: 10px;
         cursor: pointer;
     }
 
-    .btn-primary {
-        background-color: #007bff;
-        color: #fff;
+    .add-value-btn {
+        margin-top: 15px;
     }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-    .btn-success {
-        background-color: #28a745;
-        color: #fff;
+    .remove-value-btn {
+        color: red;
+        cursor: pointer;
+        font-size: 1.2rem;
+        margin-left: 10px;
     }
 
-        .btn-success:hover {
-            background-color: #218838;
-        }
-
-    .button-group {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
+    /* Css Table Variant */
+    .product-section {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
         margin-top: 20px;
-    }
-
-    .attribute-item {
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 10px;
-        margin-bottom: 10px;
-        background-color: #f9f9f9;
-        position: relative;
-    }
-
-        .attribute-item p {
-            margin: 0;
-            font-size: 14px;
-        }
-
-    .btn-danger.btn-sm {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        padding: 5px 10px;
-        font-size: 12px;
-    }
-
-    .variant-item {
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 15px;
-        margin-bottom: 10px;
         background-color: #f9f9f9;
     }
 
-        .variant-item div {
-            margin-bottom: 10px;
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+    }
+
+    /* Bảng biến thể */
+    .table {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .table th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+            text-align: center;
+            padding: 12px;
         }
 
-        .variant-item p {
-            margin: 5px 0;
-            font-size: 14px;
+        .table tbody tr {
+            border-bottom: 1px solid #ddd;
         }
+
+        .table tbody td {
+            padding: 10px;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+    /* Nút xóa */
+    .btn-danger {
+        border-radius: 50%;
+        font-size: 14px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+        text-align: center;
+    }
+
+    /* Form thuộc tính và giá trị */
+    .variant-row {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+        .variant-row .col-6 {
+            padding-right: 15px;
+        }
+
+            .variant-row .col-6 select, .variant-row .col-6 input {
+                border-radius: 5px;
+            }
+
+    /* Button */
+    .btn-success, .btn-primary {
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    /* Giới hạn chiều rộng */
+    .container {
+        max-width: 1100px;
+        margin: auto;
+    }
 </style>
 
-
-
-
-
-<!-- HTML structure -->
-<div>
-    <h2>Tạo sản phẩm</h2>
-</div>
-<div class="col-8">
-    <div class="productInfo box">
-        <h4>Thông tin sản phẩm</h4>
-        <div>
-            <label>Tên sản phẩm</label>
-            <input type="text" class="form-control" />
-        </div>
-        <div class="row align-items-center">
-            <div class="col">
-                <label>Nhà cung cấp</label>
-                <select class="form-control">
-                    <option>Chọn nhà cung cấp</option>
-                    <option>Samsung</option>
-                    <option>Apple</option>
-                    <option>Oppo</option>
-                </select>
+    <!-- Thông tin sản phẩm -->
+    <div class="product-form">
+        <div class="form-title">Thông tin sản phẩm</div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="ProductName">Tên sản phẩm</label>
+                    <input type="text" class="form-control" id="ProductName" asp-for="ProductName" placeholder="Nhập tên sản phẩm">
+                </div>
             </div>
-            <div class="col">
-                <label>Loại sản phẩm</label>
-                <select class="form-control">
-                    <option>Chọn loại sản phẩm</option>
-                    <option>Điện thoại</option>
-                    <option>Phụ kiện</option>
-                </select>
+
+            <div class="form-group">
+                <label for="Description">Mô tả sản phẩm</label>
+                <textarea class="form-control description-area" id="Description" asp-for="Description" rows="4" placeholder="Nhập mô tả sản phẩm"></textarea>
             </div>
-        </div>
-        <div>
-            <label>Mô tả sản phẩm</label>
-            <textarea class="form-control" rows="3"></textarea>
-        </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="BrandId">Thương hiệu</label>
+                <select class="form-control" id="BrandId" asp-for="BrandId" asp-items="ViewBag.listBrand">
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="CategoryProducts">Loại sản phẩm</label>
+                <select  class="form-control" id="CategoryProducts" asp-for="CategoryProducts" asp-items="ViewBag.listCate">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="OriginId">Xuất xứ</label>
+                <select class="form-control" id="OriginId" asp-for="OriginId" asp-items="ViewBag.listOrigin">
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="Status">Trạng thái</label>
+                <select class="form-control" id="Status" asp-for="Status" asp-items="ViewBag.StatusList">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                <label for="ImagesDefault" class="control-label">Ảnh chính sản phẩm</label>
+                <input id="ImagesDefault" name="ImagesDefault" type="file" class="form-control" accept="image/*" />
+                </div>
+
+                <div class="col-md-6">
+                <label for="Images" class="control-label">Các ảnh khác (tối đa 6)</label>
+                <input id="Images" name="Images" type="file" class="form-control" multiple accept="image/*" />
+                </div>
+            </div>
+
+            <!-- Block thông tin biến thể -->
+            <div class="product-section">
+                <div class="form-title">Biến thể sản phẩm</div>
+                <div class="variant-row">
+                    <div class="col-6">
+                        <label for="variantType">Thuộc tính</label>
+                    <select multiple class="form-control" id="variantType" asp-items="ViewBag.listAttributes">
+                        </select>
+                    </div>
+                    <div class="col-6" id="variantValuesContainer">
+                        <!-- Giá trị biến thể -->
+                    </div>
+                </div>
+                <div class="row">
+                <div class="add-attribute-btn mt-4 col-6">
+                    <button type="button" class="btn btn-primary">+ Thêm thuộc tính khác</button>
+                </div
+                <div class="add-value-btn col-6">
+                    <button type="button" class="btn btn-success" id="addVariantValueBtn">+ Thêm giá trị mới</button>
+                </div>
+                </div>
+            </div>
+
+            <!-- Table Variant -->
+            <div class="product-section">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên biến thể</th>
+                            <th>Số lượng</th>
+                            <th>Giá nhập</th>
+                            <th>Giá bán</th>
+                            <th>Thuế</th>
+                            <th>Năm sản xuất</th>
+                            <th>Biến thể mặc định</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="variant-list">
+                        <!-- Các biến thể sẽ được hiển thị tại đây -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Button tạo sản phẩm -->
+            <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary" id="createProductBtn">Create</button>
+            </div>
+        </form>
     </div>
-    <div class="variantInfo box">
-        <h4>Thông tin biến thể</h4>
-        <div class="row align-items-center">
-            <div class="col">
-                <label>Thuộc tính</label>
-                <select class="form-control" id="attributeSelect">
-                    <option value="">Chọn thuộc tính</option>
-                    <option value="Size">Size</option>
-                    <option value="Màu sắc">Màu sắc</option>
-                </select>
-            </div>
-            <div class="col">
-                <label>Giá trị</label>
-                <select class="form-control" id="valueSelect">
-                    <option value="">Chọn giá trị</option>
-                    <option value="Value1">Value1</option>
-                    <option value="Value2">Value2</option>
-                </select>
-            </div>
-            <div class="col">
-                <label>Giá bán</label>
-                <input type="number" class="form-control" id="priceInput" />
-            </div>
-            <div class="col">
-                <label>Số lượng</label>
-                <input type="number" class="form-control" id="quantityInput" />
-            </div>
-        </div>
-        <div id="attributesList" class="mt-3"></div> <!-- Nơi để hiển thị các thuộc tính của biến thể -->
-        <div class="text-center mt-3">
-            <button type="button" class="btn btn-primary" id="addAttributeButton" onclick="addAttribute()">Thêm thuộc tính</button>
-            <button type="button" class="btn btn-success" id="addVariantButton" onclick="addVariant()">Thêm biến thể</button>
-        </div>
-        <div id="variantsList" class="mt-3"></div> <!-- Nơi để hiển thị các biến thể đã thêm -->
-    </div>
-</div>
 
-
-
-<!--Script-->
 <script>
-    function addAttribute() {
-        const attributeSelect = document.getElementById('attributeSelect');
-        const valueSelect = document.getElementById('valueSelect');
-        const attribute = attributeSelect.value;
-        const value = valueSelect.value;
-        if (!attribute || !value) {
-            alert('Vui lòng chọn thuộc tính và giá trị!');
-            return;
-        }
-        const attributesList = document.getElementById('attributesList');
-        const attributeDiv = document.createElement('div');
-        attributeDiv.classList.add('attribute-item');
-        attributeDiv.innerHTML = `
-            <p><strong>Thuộc tính:</strong> ${attribute}</p>
-            <p><strong>Giá trị:</strong> ${value}</p>
-            <button type="button" class="btn btn-danger btn-sm" onclick="removeAttribute(this)">Xóa</button>
-        `;
-        attributesList.appendChild(attributeDiv);
-        // Reset form fields
-        attributeSelect.value = '';
-        valueSelect.value = '';
+    let variantIndex = 0;
+    let variants = [];
+
+    // Hàm để thêm biến thể vào bảng
+    function addVariantToTable(variantName) {
+        variantIndex++;
+        const tbody = document.getElementById('variant-list');
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+                    <td>${variantIndex}</td>
+                    <td>${variantName}</td>
+                    <td><input type="number" class="form-control" placeholder="Số lượng"></td>
+                    <td><input type="number" class="form-control" placeholder="Giá nhập"></td>
+                    <td><input type="number" class="form-control" placeholder="Giá bán"></td>
+                    <td><input type="number" class="form-control" placeholder="Thuế"></td>
+                    <td><input type="number" class="form-control" placeholder="Năm sản xuất"></td>
+                    <td><input type="checkbox"></td>
+                    <td><button class="btn btn-danger btn-sm" onclick="removeVariant(this)">Xóa</button></td>
+                `;
+        tbody.appendChild(tr);
     }
-    // Xóa thuộc tính
-    function removeAttribute(button) {
-        const attributeDiv = button.parentElement;
-        attributeDiv.remove();
+
+    // Hàm để xóa biến thể khỏi bảng
+    function removeVariant(button) {
+        const row = button.closest('tr');
+        row.remove();
+        updateVariantIndices();
     }
-    // Thêm biến thể
-    function addVariant() {
-        const priceInput = document.getElementById('priceInput');
-        const quantityInput = document.getElementById('quantityInput');
-        const price = priceInput.value;
-        const quantity = quantityInput.value;
-        if (!price || !quantity) {
-            alert('Vui lòng nhập giá bán và số lượng!');
-            return;
-        }
-        const attributesList = document.getElementById('attributesList');
-        const attributes = Array.from(attributesList.children).map(attr => {
-            const attrName = attr.querySelector('p:nth-of-type(1)').innerText.replace('Thuộc tính:', '').trim();
-            const attrValue = attr.querySelector('p:nth-of-type(2)').innerText.replace('Giá trị:', '').trim();
-            return `${attrName}:${attrValue}`;
-        }).join('/');
-        const variantsList = document.getElementById('variantsList');
-        const variantDiv = document.createElement('div');
-        variantDiv.classList.add('variant-item');
-        variantDiv.innerHTML = `
-            <div style="border: 1px solid #ddd; border-radius: 4px; padding: 10px; margin-bottom: 10px;">
-                <div><strong>Tên biến thể:</strong> ${attributes}</div>
-                <p><strong>Giá bán:</strong> ${price}</p>
-                <p><strong>Số lượng:</strong> ${quantity}</p>
-            </div>
-        `;
-        variantsList.appendChild(variantDiv);
-        // Reset form fields
-        priceInput.value = '';
-        quantityInput.value = '';
-        attributesList.innerHTML = ''; // Xóa danh sách thuộc tính sau khi thêm biến thể
+
+    // Cập nhật lại STT khi xóa dòng
+    function updateVariantIndices() {
+        const rows = document.querySelectorAll('#variant-list tr');
+        rows.forEach((row, index) => {
+            row.cells[0].innerText = index + 1;
+        });
+        variantIndex = rows.length;
     }
+
+    // Giả lập thêm biến thể (chưa có kết nối với việc chọn thuộc tính)
+    addVariantToTable('Vàng/256GB');
+    addVariantToTable('Đen/128GB');
 </script>

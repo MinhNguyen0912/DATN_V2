@@ -63,7 +63,7 @@
 						<div class="card">
 							<div class="row card-horizontal">
 								<div class="col-3">
-									<img src="@item.imagePath" class="img-fluid" alt="Oculus VR">
+									<img src="@item.ImagePath" class="img-fluid" alt="Oculus VR">
 								</div>
 								<div class="col">
 									<div class="row">
@@ -80,20 +80,20 @@
 										}
 									</div>
 									<div class="card-body">
-										<h5 class="card-title">@item.Name</h5>
+										<h5 class="card-title">@item.ProductName</h5>
 										@* <p class="card-text text-muted">@item.Description</p> *@
 										<div class="row">
 											<div class="col">
 												<p class="mb-0"><strong>Số lượng</strong></p>
-												<p class="mb-0">@item.Quantity</p>
+												@*<p class="mb-0">@item.Quantity</p>*@
 											</div>
 											<div class="col">
 												<p class="mb-0"><strong>Giá</strong></p>
-												<p class="mb-0">@item.DefaultPrice</p>
+												@* <p class="mb-0">@item.DefaultPrice</p>*@
 											</div>
 											<div class="col">
 												<p class="mb-0"><strong>Nhẫn hiệu</strong></p>
-												<p class="price mb-0">@item.BrandName</p>
+												@*<p class="price mb-0">@item.BrandName</p>*@
 											</div>
 											<div class="col">
 												<p class="mb-0"><strong>Xuất sứ</strong></p>
@@ -108,7 +108,7 @@
 												<p class="price mb-0">@item.Status</p>
 											</div>
 											<div class="btn-group col">
-												<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning text-decoration-none">Chỉnh sửa</a>
+												<a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-warning text-decoration-none">Chỉnh sửa</a>
 												@* <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info text-decoration-none">Details</a> |
 										<button type="button" onclick="confirmDelete(@item.Id)" class="btn btn-danger text-decoration-none">Delete</button>  *@
 											</div>

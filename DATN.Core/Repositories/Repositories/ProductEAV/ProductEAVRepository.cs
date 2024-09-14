@@ -3,6 +3,9 @@ using DATN.Core.Data;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model.Product_EAV;
 using DATN.Core.Repositories.IRepositories.ProductEAV;
+using DATN.Core.ViewModel.Paging;
+using DATN.Core.ViewModel.Product_EAV;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DATN.Core.Repositories.Repositories.ProductEAV
@@ -24,5 +27,23 @@ namespace DATN.Core.Repositories.Repositories.ProductEAV
         {
             return _context.Product_EAVs.Where(p => p.ProductId == id).Include(p => p.PromotionProducts).ThenInclude(p=>p.Promotion).FirstOrDefault();
         }
-    }
+
+		public ProductPaging ProductPaging([FromBody]ProductPaging request)
+		{
+			var query = Context.Product_EAVs.Include(p => p.Images).Include(b => b.Brand).Include(o => o.Origin).Include(p => p.CategoryProducts).ThenInclude(p => p.Category).Include(p => p.Variants).ToList().AsQueryable();
+
+			if (!string.IsNullOrEmpty(request.SearchTerm))
+			{
+				string searchTerm = request.SearchTerm.Trim().ToLower();
+				query = query.Where(x => x.ProductName.ToLower().Contains(searchTerm));
+			}
+
+			request.TotalRecord = query.Count();
+			request.TotalPages = (int)Math.Ceiling(request.TotalRecord / (double)request.PageSize);
+			var list = query.Skip((request.CurrentPage - 1) * request.PageSize).Take(request.PageSize).ToList();
+			request.Items = _mapper.Map<List<ProductVM_EAV>>(list);
+
+			return request;
+		}
+	}
 }

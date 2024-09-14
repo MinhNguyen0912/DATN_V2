@@ -15,6 +15,7 @@ namespace DATN.Core.Model.Product_EAV
         public bool IsDefault {  get; set; } = false;
         public int MaximumQuantityPerOrder {  get; set; } 
         public int Weight {  get; set; } 
+        //public bool isShow {  get; set; }
 
         // Navigation property
         public Product_EAV Product { get; set; }
