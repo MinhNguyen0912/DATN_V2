@@ -172,6 +172,12 @@ namespace DATN.Core.Repositories.Repositories
             return Context.Users.FirstOrDefault(x => x.Email == email);
         }
 
+        public async Task<List<AppUser>> SearchUser(string search)
+        {
+            var res=await Context.Users.AsQueryable().Where(c=>c.PhoneNumber.ToLower().Contains(search.ToLower()) || c.FullName.ToLower().Contains(search.ToLower())).ToListAsync();
+            return res;
+        }
+
         //public async Task<IEnumerable<string>> GetListVoucherByUserId(Guid userId)
         //{
         //    var lstVoucherUsers = Context.VoucherUsers.AsQueryable().Where(c => c.AppUserId == userId)

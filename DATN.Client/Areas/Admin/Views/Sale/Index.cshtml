@@ -1,103 +1,113 @@
-﻿@using DATN.Core.ViewModel.InvoiceDetailVM
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<DATN.Core.ViewModel.SaleProductVM.SaleProuductVM>
 @{
+var currentTab = 1;
+ViewData["Title"] = "Admin Page";
 }
-
 <style>
-    /* Container background and padding */
-    .container-fluid {
-        background-color: #007bff; /* Primary blue background */
-        padding: 16px;
-    }
-
-    /* Input Group Styling */
-    .input-group .form-control {
-        background-color: #f8f9fa;
-        border: none;
-        box-shadow: none;
-    }
-
-    /* Button Styles */
-    .btn-dark {
-        background-color: #343a40;
-        border: none;
-    }
-
-    .btn-outline-light {
-        border: none;
-    }
-
-    .btn-light {
-        background-color: #f8f9fa;
-        border: none;
-        color: #343a40;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
-    }
-
-        /* Button Hover Effects */
-        .btn-dark:hover, .btn-danger:hover, .btn-primary:hover, .btn-light:hover {
-            opacity: 0.9;
-        }
-
-    /* Additional Styling for Icons */
-    .bi {
-        font-size: 1.2em;
-    }
-
-    .nav-item {
-        position: relative;
-        display: flex;
-        align-items: center;
-        padding: 10px;
-    }
-
-        .nav-item .btn-close {
-            position: absolute;
-            right: 2px; /* Khoảng cách từ nút đóng đến cạnh phải của tab */
-        }
-
-    #productDropdown {
-        margin-top: 60px;
-        display: none;
-        max-height: 300px;
-        overflow-y: auto;
-        border-radius: 0.5rem;
-    }
-
-        #productSearch:focus + #productDropdown,
-        #productDropdown:hover {
-            display: block;
-        }
-
-        #productDropdown .dropdown-item {
-            cursor: pointer;
-        }
-
-            #productDropdown .dropdown-item img {
-                width: 50px;
-                height: 50px;
-                object-fit: cover;
-                border-radius: 0.25rem;
-            }
-
-    #addNewProduct {
-        font-weight: bold;
-        text-align: center;
-        border-bottom: 1px solid #dee2e6;
-    }
+   .final-price {
+   color: red;
+   font-weight: bold;
+   }
+   .old-pirce {
+   color: #888; font-weight: 400;font-size:14px!important;text-decoration:line-through;
+   }
+   /* Container background and padding */
+   .container-fluid {
+   background-color: #007bff; /* Primary blue background */
+   padding: 16px;
+   }
+   /* Input Group Styling */
+   .input-group .form-control {
+   background-color: #f8f9fa;
+   border: none;
+   box-shadow: none;
+   }
+   .header-space {
+   border-bottom: 1px solid gray;
+   }
+   /* Button Styles */
+   .btn-dark {
+   background-color: #343a40;
+   border: none;
+   }
+   .btn-outline-light {
+   border: none;
+   }
+   .btn-light {
+   background-color: #f8f9fa;
+   border: none;
+   color: #343a40;
+   }
+   .btn-danger {
+   background-color: #dc3545;
+   border: none;
+   }
+   .btn-primary {
+   background-color: #007bff;
+   border: none;
+   }
+   /* Button Hover Effects */
+   .btn-dark:hover, .btn-danger:hover, .btn-primary:hover, .btn-light:hover {
+   opacity: 0.9;
+   }
+   /* Additional Styling for Icons */
+   .bi {
+   font-size: 1.2em;
+   }
+   .nav-item {
+   position: relative;
+   display: flex;
+   align-items: center;
+   padding: 10px;
+   }
+   .nav-item .btn-close {
+   position: absolute;
+   right: 2px; /* Khoảng cách từ nút đóng đến cạnh phải của tab */
+   }
+   #productDropdown {
+   margin-top: 60px;
+   display: none;
+   max-height: 300px;
+   overflow-y: auto;
+   border-radius: 0.5rem;
+   }
+   #productSearch:focus + #productDropdown,
+   #productDropdown:hover {
+   display: block;
+   }
+   #productDropdown .dropdown-item {
+   cursor: pointer;
+   }
+   #productDropdown .dropdown-item img {
+   width: 50px;
+   height: 50px;
+   object-fit: cover;
+   border-radius: 0.25rem;
+   }
+   #addNewProduct {
+   font-weight: bold;
+   text-align: center;
+   border-bottom: 1px solid #dee2e6;
+   }
+   .loading-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-color: rgba(255, 255, 255, 0.8);
+   display: none;
+   align-items: center;
+   justify-content: center;
+   z-index: 1000;
+   }
 </style>
 <div class="row">
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <!-- Add product -->
     <div class="container-fluid p-3 bg-primary text-white">
         <div class="d-flex justify-content-between align-items-center">
@@ -106,41 +116,25 @@
                 <button class="btn btn-dark" type="button">
                     <i class="bi bi-search"></i>
                 </button>
-                <input type="text" class="form-control" placeholder="Thêm sản phẩm vào đơn hàng" id="productSearch" onfocus="showDropdown()" onblur="hideDropdown()">
+                <input type="text" class="form-control" placeholder="Tìm kiếm theo tên sản phầm (Enter)" id="productSearch" onkeydown="searchProduct(event)" >
                 <button class="btn btn-outline-light" type="button">
                     <i class="bi bi-upc-scan"></i>
                 </button>
                 <ul class="dropdown-menu position-absolute w-100" id="productDropdown" style="margin-top: 60px;">
-                    <li class="dropdown-item" id="addNewProduct" onclick="showAddProductPopup()">
-                        <i class="bi bi-plus-circle"></i> Thêm sản phẩm mới
-                    </li>
-                    <li class="dropdown-item d-flex align-items-center" data-id="1" data-name="Áo thun dài tay Fred Perry" data-price="1000000" data-qty="68">
-                        <img src="https://via.placeholder.com/50" alt="Product 1" class="me-3">
-                        <div class="flex-grow-1">
-                            <div>Áo thun dài tay Fred Perry</div>
-                            <small class="text-muted">PVN04 Tím</small>
-                            <div class="d-flex justify-content-between mt-2">
-                                <span>1,000,000 VND</span>
-                                <span>Có thể bán: 68</span>
-                            </div>
-                        </div>
-                    </li>
-                    <!-- Thêm các sản phẩm khác tương tự -->
                 </ul>
             </div>
         </div>
     </div>
     <div class="col-md-8">
         <div class="tab-content" id="dynamicTabContent">
-
             <div class="tabInvoice">
                 <!-- Tab Navigation -->
                 <ul class="nav nav-tabs" id="dynamicTabs" role="tablist" style="white-space: nowrap; overflow-x: auto;">
                     <li class="nav-item d-flex align-items-center" role="presentation">
-                        <button class="nav-link active d-flex align-items-center" id="tab-0" data-bs-toggle="tab" data-bs-target="#content-0" type="button" role="tab" aria-controls="content-0" aria-selected="true" style="display: inline-flex;">
+                        <button class="nav-link active  d-flex align-items-center" id="tab-0" onclick="openCurrentTab(1)" data-bs-toggle="tab" data-bs-target="#content-0" type="button" role="tab" aria-controls="content-0" aria-selected="true" style="display: inline-flex; width: 90px">
                             Tab 1
+                            <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(1)" style="position: absolute; right: 10px;"></button>
                         </button>
-                        <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(0)" style="position: absolute; right: 0;"></button>
                     </li>
                     <li class="nav-item">
                         <button class="nav-link" id="addTabButton" type="button">+</button>
@@ -148,237 +142,687 @@
                 </ul>
             </div>
             <div class="tab-pane fade show active" id="content-0" role="tabpanel" aria-labelledby="tab-0">
-                <div class="overflow-auto" style="height: 600px;">
-                    <!-- Product Rows will be added here -->
-                </div>
-            </div>
-            <!-- Service -->
-            <!-- <div class="row">
-                <button class="btn btn-primary col-md-3 ms-2 me-2" type="submit">Button</button>
-                <button class="btn btn-primary  col-md-3  ms-2 me-2" type="submit">Button</button>
-                <button class="btn btn-primary  col-md-3   ms-2 me-2" type="submit">Button</button>
-            </div>
-            <div class="row mt-2">
-                <button class="btn btn-primary col-md-3 ms-2 me-2" type="submit">Button</button>
-                <button class="btn btn-primary col-md-3 ms-2 me-2" type="submit">Button</button>
-                <button class="btn btn-primary col-md-3 ms-2 me-2" type="submit">Button</button>
-            </div> -->
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="InforInvoice row">
-            <div class="overflow-auto" style="height: 600px;">
-                <div class="card shadow-sm p-3">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="search-icon"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Thêm khách hàng vào đơn (F4)" aria-label="Search" aria-describedby="search-icon">
-                        <button class="btn btn-outline-secondary" type="button"><i class="bi bi-plus-lg"></i></button>
+                <div class="row  py-2 m-2 header-space">
+                    <div class="col-1">SKU</div>
+                    <div class="col-5">
+                        Tên sản phẩm
                     </div>
-
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Số lượng sản phẩm
-                            <span>2</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Tổng tiền
-                            <span>554,000</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            VAT
-                            <span>0</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Chiết khấu
-                            <span>0</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-                            Khách phải trả
-                            <span>554,000</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Tiền khách đưa
-                            <input type="number">
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
-                            Tiền mặt
-                            <span></span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Tiền thừa
-                            <span>0</span>
-                        </li>
-                    </ul>
+                    <div class="col-1">
+                        SL
+                    </div>
+                    <div class="col-2 text-end">
+                        Đơn giá
+                    </div>
+                    <div class="col-2 text-end">
+                        Thành tiền
+                    </div>
+                    <div class="col-1">
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-
-                <button class="btn btn-primary col-4 ms-3 me-2">Thanh toán nhiều hình thức</button>
-                <button class="btn btn-success col-7 ms-2">Thanh toán</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<script>
-    let tabCount = 1;
-    let productCounters = {}; // Object to keep track of product counts per tab
-
-    document.getElementById('addTabButton').addEventListener('click', function () {
-        addTab();
-    });
-
-    function addTab() {
-        const newTabId = `tab-${tabCount}`;
-        const newContentId = `content-${tabCount}`;
-
-        const newTab = document.createElement('li');
-        newTab.className = 'nav-item';
-        newTab.setAttribute('role', 'presentation');
-        newTab.innerHTML = `
-                            <button class="nav-link d-flex align-items-center" id="${newTabId}" data-bs-toggle="tab" data-bs-target="#${newContentId}" type="button" role="tab" aria-controls="${newContentId}" aria-selected="false">
-                                Tab ${tabCount + 1}
-                                <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(${tabCount})"></button>
-                            </button>
-                        `;
-
-        const addTabButton = document.getElementById('addTabButton').parentNode;
-        document.getElementById('dynamicTabs').insertBefore(newTab, addTabButton);
-
-        const newContent = document.createElement('div');
-        newContent.className = 'tab-pane fade';
-        newContent.id = newContentId;
-        newContent.setAttribute('role', 'tabpanel');
-        newContent.setAttribute('aria-labelledby', newTabId);
-        newContent.innerHTML = `
-                            <div class="overflow-auto" style="height: 600px;">
-                                <!-- Product Rows will be added here -->
+                <div class="overflow-auto product-added-space"  >
+                    @foreach (var x in @Model.Where(c => c.TabIndex == 1))
+                    {
+                        foreach (var item in x.ShoppingTabs)
+                        { 
+                            <div class="col-1">
+                                <div class="text-warning">@item.Variant</div>
                             </div>
-                        `;
-
-        document.getElementById('dynamicTabContent').appendChild(newContent);
-
-        // Initialize product counter for this tab
-        productCounters[newContentId] = 1;
-
-        tabCount++;
-        const newTabButton = new bootstrap.Tab(newTab.querySelector('.nav-link'));
-        newTabButton.show();
-    }
-
-    function closeTab(index) {
-        const tabToRemove = document.getElementById(`tab-${index}`).parentNode;
-        const contentToRemove = document.getElementById(`content-${index}`);
-
-        if (tabToRemove.querySelector('.nav-link').classList.contains('active')) {
-            const previousTab = tabToRemove.previousElementSibling ? tabToRemove.previousElementSibling.querySelector('.nav-link') : tabToRemove.nextElementSibling.querySelector('.nav-link');
-            const tabInstance = new bootstrap.Tab(previousTab);
-            tabInstance.show();
-        }
-
-        tabToRemove.remove();
-        contentToRemove.remove();
-        delete productCounters[`content-${index}`]; // Remove product counter for this tab
-    }
-
-    document.querySelectorAll('#productDropdown .dropdown-item[data-id]').forEach(item => {
-        item.addEventListener('click', function () {
-            const productName = this.getAttribute('data-name');
-            const productPrice = parseInt(this.getAttribute('data-price'), 10);
-            const productQty = this.getAttribute('data-qty');
-            const productId = this.getAttribute('data-id');
-
-            addProductToCurrentTab(productName, productPrice, productQty, productId);
-        });
-    });
-
-    function addProductToCurrentTab(name, price, qty, id) {
-        const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
-        const activeTabId = activeTabPane.parentNode.id;
-
-        const productRow = document.createElement('div');
-        productRow.className = 'row align-items-center border-bottom py-2 m-2 shadow-sm';
-        productRow.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-        productRow.innerHTML = `
-                            <div class="col-auto">${productCounters[activeTabId]}</div>
-                            <div class="col-auto">
-                                <input type="checkbox" class="form-check-input">
+                            <div class="col-5">
+                                <h6 class="mb-0">@item.ProductName</h6>
+                                <span class="badge bg-secondary">PVN0 @item.ProductId</span>
                             </div>
-                            <div class="col-auto">
-                                <span class="badge bg-secondary">PVN0${id}</span>
+                            <div class="col-1">
+                                <input type="number" class="form-control form-control-sm qty-input" value="1" style="width: 60px;" min="1" max="3" data-price="@item.Price" oninput="updateTotalPrice(this)" >
                             </div>
-                            <div class="col">
-                                <h6 class="mb-0">${name}</h6>
-                                <small class="text-muted">travel size</small>
+                            <div class="col-2 text-end">
+                                <span class="unit-price">@item.Price VND</span>
                             </div>
-                            <div class="col-auto">
-                                <input type="number" class="form-control form-control-sm qty-input" value="1" style="width: 60px;" min="1" max="3" data-price="${price}" oninput="updateTotalPrice(this)">
+                            <div class="col-2 text-end">
+                                <span class="total-price">@item.Price VND</span>
                             </div>
-                            <div class="col-auto text-end">
-                                <span class="unit-price">${price.toLocaleString()} VND</span>
-                            </div>
-                            <div class="col-auto text-end">
-                                <span class="total-price">${price.toLocaleString()} VND</span>
-                            </div>
-                            <div class="col-auto">
+                            <div class="col-1 text-end">
                                 <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeProduct(this)">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
-                        `;
-        activeTabPane.appendChild(productRow);
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="InforInvoice row">
+            <div class="overflow-auto"  >
+                <div class="card shadow-sm p-3">
+                    <div class="input-group mb-3 position-relative">
+                        <span class="input-group-text" id="search-icon">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control" id="searchUser" placeholder="Thêm khách hàng vào đơn (F4)" aria-label="Search" onkeydown="searchUser(event)" aria-describedby="search-icon">
+                        <button class="btn btn-outline-secondary" onclick="addNonExistingUser()" type="button">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                        <ul class="dropdown-menu position-absolute w-100" id="userDropdown" style="margin-top: 60px;">
+                        </ul>
+                    </div>
+                    <ul class="list-group list-group-flush info-tab">
+                        @foreach (var x in @Model.Where(c => c.TabIndex == 1))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Tên khách hàng
+                                <span>@x.QuickCreateUserVM.FullName </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Số lượng sản phẩm
+                                <span>@x.ProductCount </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Tổng tiền
+                                <span>@x.TotalAmount</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                VAT
+                                <span>10%</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Chiết khấu
+                                <span>@x.DicountAmount</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                                Khách phải trả
+                                <span>@(x.TotalAmount-@x.DicountAmount)</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Tiền khách đưa
+                                <input type="number" id="customer-money" oninput="caculateChangeMoney(event)">
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
+                                Tiền thừa
+                                <span class="change-money">@x.ChangeMoney</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Ghi chú
+                                <input class="form-control" type="text" maxlength="500">
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <button class="btn btn-success col-7 ms-2 w-full" id="paymentButton" style="width: 100%;" onclick="paymentProccess(event)">Thanh toán</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/js/toast.js" asp-append-version="true"></script>
+<script>
+   let tabCount = 1;
+   let productCounters = {}; // Object to keep track of product counts per tab
+   function  paymentProccess(e){
+        e.preventDefault();
+       var money=parseInt( $('#customer-money').val()==NaN?0: $('#customer-money').val(), 0);
 
-        productCounters[activeTabId]++; // Increment the product counter for the current tab
+       $.ajax({
+           url: '@Url.Action("PaymentProccess", "Sale")', // Adjust controller and action as needed
+           type: 'POST',
+           data: {
+               Tab:tabCount,
+               ChangeMoney:money
+           },
+           success: function (response) {
+           console.log(response)
+           if (response.isSucccess==false){
+               toastr['error'](response.data);
+           }
+           },
+           error: function (xhr, status, error) {
+           }
+       });
+   }
+   document.getElementById('addTabButton').addEventListener('click', function () {
+       addTab();
+   });
+   function caculateChangeMoney(e){
+  setTimeout(function () {
+      e.preventDefault();
+      var money=parseInt( $('#customer-money').val()==NaN?0: $('#customer-money').val(), 0);
+      $.ajax({
+          url: '@Url.Action("CaculateChangeMoneny", "Sale")', // Adjust controller and action as needed
+          type: 'GET',
+          data: {
+              ChangeMoney:money,
+              Tab:tabCount
+          },
+          success: function (response) {
+              $('.change-money').text(response.data.toLocaleString())
+          },
+          error: function (xhr, status, error) {
+          }
+      });
+  },500)
+        
+   }
+   function openCurrentTab(tab) {
+       $.ajax({
+           url: '@Url.Action("OpenCurrentTab", "Sale")', // Adjust controller and action as needed
+           type: 'GET',
+           data: {
+               Tab:tab
+           },
+           success: function (response) {
+               var lstDropDownProduct = $('.tab-pane.active .overflow-auto');
+               lstDropDownProduct.empty();
+               const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
+               const activeTabId = activeTabPane.parentNode.id;
+               if (response.data!=null){
+                   response.data.$values.forEach(function(sp) {
+                       sp.shoppingTabs.$values.forEach(item=>{
+                           const productRow = document.createElement('div');
+                           productRow.className = 'row align-items-center border-bottom py-2 m-2 shadow-sm';
+                           productRow.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+                           productRow.innerHTML = `
+                          <div class="col-1">
+   <span class="badge bg-secondary">PVN0${item.productId}</span>
+   </div>
+                           <div class="col-5">
+                               <h6 class="mb-0">${item.productName}</h6>
+                               <div class="text-warning">${item.variant}</div>
+                           </div>
+                           <div class="col-1">
+                               <input type="number" class="form-control form-control-sm qty-input" data-id="${item.productId}" data-variantId="${item.variantId}" value="${item.quantity}" style="width: 60px;" min="1" max="3" data-price="${item.price}"  oninput="updateTotalPrice(this)" >
+                           </div>
+                           <div class="col-2 text-end">
+                               <span class="unit-price">${item.price.toLocaleString()} VND</span>
+                           </div>
+                           <div class="col-2 text-end">
+                               <span class="total-price">${(item.price* item.quantity).toLocaleString()} VND</span>
+                           </div>
+                           <div class="col-1 text-end">
+                               <button type="button" class="btn btn-outline-danger btn-sm"  data-id="${item.productId}" data-variantId="${item.variantId}" onclick="removeProduct(this)">
+                                   <i class="bi bi-trash"></i>
+                               </button>
+                           </div>
+                       `;
+   
+                           activeTabPane.appendChild(productRow);
+                           productCounters[activeTabId]++;
+                       })
+   
+                   })}
+               document.getElementById('productDropdown').style.display = 'none';
+               $('#loadingOverlay').hide();
+           },
+           error: function (xhr, status, error) {
+               $('#loadingOverlay').hide();
+           }
+       });
     }
-
-    function removeProduct(button) {
-        const row = button.closest('.row');
-        row.remove();
-        updateProductNumbers();
-    }
-
-    function updateProductNumbers() {
-        const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
-        const activeTabId = activeTabPane.parentNode.id;
-        const rows = activeTabPane.querySelectorAll('.row');
-
-        productCounters[activeTabId] = 1; // Reset the counter
-
-        rows.forEach((row, index) => {
-            const numCell = row.querySelector('.col-auto:first-child');
-            numCell.textContent = productCounters[activeTabId];
-            productCounters[activeTabId]++;
+   function addProductToCurrentTab(name, price, qty, id,variant,variantId) {
+       $.ajax({
+           url: '@Url.Action("AddProdToCurrentTab", "Sale")', // Adjust controller and action as needed
+           type: 'POST',
+           data: {
+               ProductId:id,
+               VariantId:variantId,
+               Quantity:qty,
+               Price:price,
+               Tab:tabCount,
+               ProductName:name,
+               Variant:variant
+           },
+           success: function (response) {
+               var lstDropDownProduct = $('.tab-pane.active .overflow-auto');
+               lstDropDownProduct.empty();
+               const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
+               const activeTabId = activeTabPane.parentNode.id;
+               if (response.data!=null){
+                   response.data.$values.forEach(function(sp) {
+                   sp.shoppingTabs.$values.forEach(item=>{
+    const productRow = document.createElement('div');
+    productRow.className = 'row align-items-center border-bottom py-2 m-2 shadow-sm';
+    productRow.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+    productRow.innerHTML = `
+                           <div class="col-1">
+   <span class="badge bg-secondary">PVN0${item.productId}</span>
+   </div>
+                           <div class="col-5">
+                               <h6 class="mb-0">${item.productName}</h6>
+                               <div class="text-warning">${item.variant}</div>
+                           </div>
+                           <div class="col-1">
+                               <input type="number" class="form-control form-control-sm qty-input" data-id="${item.productId}" data-variantId="${item.variantId}" value="${item.quantity}" style="width: 60px;" min="1" max="3" data-price="${item.price}"  oninput="updateTotalPrice(this)" >
+                           </div>
+                           <div class="col-2 text-end">
+                               <span class="unit-price">${item.price.toLocaleString()} VND</span>
+                           </div>
+                           <div class="col-2 text-end">
+                               <span class="total-price">${(item.price* item.quantity).toLocaleString()} VND</span>
+                           </div>
+                           <div class="col-1 text-end">
+                               <button type="button" class="btn btn-outline-danger btn-sm"  data-id="${item.productId}" data-variantId="${item.variantId}" onclick="removeProduct(this)">
+                                   <i class="bi bi-trash"></i>
+                               </button>
+                           </div>
+                       `;
+                       
+    activeTabPane.appendChild(productRow);
+    productCounters[activeTabId]++;
+   })
+                       
+                   })}
+              
+               
+               document.getElementById('productDropdown').style.display = 'none';
+               $('#loadingOverlay').hide();
+           },
+           error: function (xhr, status, error) {
+               $('#loadingOverlay').hide();
+           }
+       });
+       
+   }
+   function addTab() {
+         $('#loadingOverlay').show();
+         $.ajax({
+             url: '@Url.Action("AddNewTab", "Sale")', // Adjust controller and action as needed
+             type: 'POST',
+             data: {
+             },
+             success: function (response) {
+                 const newTabId = `tab-${tabCount}`;
+                 const newContentId = `content-${tabCount}`;
+                 const newTab = document.createElement('li');
+                 newTab.className = 'nav-item';
+                 newTab.setAttribute('role', 'presentation');
+                 newTab.innerHTML = `
+                           <button onclick="openCurrentTab(${tabCount+1})" class="nav-link d-flex align-items-center" id="${newTabId}" data-bs-toggle="tab" data-bs-target="#${newContentId}" type="button" role="tab" aria-controls="${newContentId}" aria-selected="false" style="display: inline-flex; width: 90px">
+                               Tab ${tabCount+1}
+                               <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(${tabCount})" style="position: absolute; right: 10px;"></button>
+                           </button>
+                       `;
+   
+                 const addTabButton = document.getElementById('addTabButton').parentNode;
+                 document.getElementById('dynamicTabs').insertBefore(newTab, addTabButton);
+                 var lstDropDownProduct = $('.tab-pane.active .overflow-auto');
+                 lstDropDownProduct.empty();
+                 tabCount++;
+                 const newTabButton = new bootstrap.Tab(newTab.querySelector('.nav-link'));
+                 newTabButton.show();
+                 $('#loadingOverlay').hide();
+             },
+             error: function (xhr, status, error) {
+                 $('#loadingOverlay').hide();
+             }
+         });
+     
+       
+       
+   }
+   
+   function closeTab(index) {
+       const tabToRemove = document.getElementById(`tab-${index}`).parentNode;
+       const contentToRemove = document.getElementById(`content-${index}`);
+   
+       if (tabToRemove.querySelector('.nav-link').classList.contains('active')) {
+           const previousTab = tabToRemove.previousElementSibling ? tabToRemove.previousElementSibling.querySelector('.nav-link') : tabToRemove.nextElementSibling.querySelector('.nav-link');
+           const tabInstance = new bootstrap.Tab(previousTab);
+           tabInstance.show();
+       }
+   
+       tabToRemove.remove();
+       contentToRemove.remove();
+       delete productCounters[`content-${index}`]; // Remove product counter for this tab
+   }
+   $(document).on('click', '.product-searched', function() {
+       const productName = this.getAttribute('data-name');
+       const productPrice = parseInt(this.getAttribute('data-price'), 10);
+       const productQty = this.getAttribute('data-qty');
+       const productId = this.getAttribute('data-id');
+       const variant = this.getAttribute('data-variant');
+       const variantId = this.getAttribute('data-variantId');
+       addProductToCurrentTab(productName, productPrice, productQty, productId,variant,variantId);
+   }) 
+    $(document).on('click', '.user-searched', function() {
+       const userName = this.getAttribute('data-fullName');
+       const userId = this.getAttribute('data-userid');
+        $.ajax({
+            url: '@Url.Action("AddUserToTab", "Sale")', // Adjust controller and action as needed
+            type: 'POST',
+            data: {
+                Tab:tabCount,
+                UserId:userId,
+                FullName:userName
+            },
+            success: function (response) {
+           
+                var infoTab = $('.info-tab');
+                infoTab.empty();
+                response.data.$values.forEach(function(item) {
+                    var rowHtml = `       
+               <li class="list-group-item d-flex justify-content-between align-items-center">
+     Tên khách hàng
+     <span>${item.quickCreateUserVM.fullName}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Số lượng sản phẩm
+     <span>${item.productCount} </span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Tổng tiền
+     <span>${item.totalAmount}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     VAT
+     <span>10%</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Chiết khấu
+     <span>${item.dicountAmount}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+     Khách phải trả
+     <span>${item.totalAmount-item.dicountAmount}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Tiền khách đưa
+     <input type="number" id="customer-money" oninput="caculateChangeMoney(event)">
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
+     Tiền thừa
+     <span class="change-money">${item.changeMoney}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Ghi chú
+     <input class="form-control" type="text" maxlength="500">
+   </li>
+                `;
+                    infoTab.append(rowHtml);
+                });
+   
+   
+                document.getElementById('userDropdown').style.display = 'none';
+                $('#loadingOverlay').hide();
+            },
+            error: function (xhr, status, error) {
+                $('#loadingOverlay').hide();
+                console.log(error);
+            }
         });
-    }
+      
+   })
+   function addNonExistingUser(){
+       var fullName=$('#searchUser').val();
+       $.ajax({
+           url: '@Url.Action("AddNonExistingUserToTab", "Sale")', // Adjust controller and action as needed
+           type: 'POST',
+           data: {
+               Tab:tabCount,
+               FullName:fullName
+           },
+           success: function (response) {
+               var infoTab = $('.info-tab');
+               infoTab.empty();
+               response.data.$values.forEach(function(item) {
+                   var rowHtml = `       
+               <li class="list-group-item d-flex justify-content-between align-items-center">
+     Tên khách hàng
+     <span>${item.quickCreateUserVM.fullName}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Số lượng sản phẩm
+     <span>${item.productCount} </span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Tổng tiền
+     <span>${item.totalAmount}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     VAT
+     <span>10%</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Chiết khấu
+     <span>${item.dicountAmount}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+     Khách phải trả
+     <span>${item.totalAmount-item.dicountAmount}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Tiền khách đưa
+          <input type="number" id="customer-money" oninput="caculateChangeMoney(event)">
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
+     Tiền thừa
+     <span class="change-money">${item.changeMoney}</span>
+   </li>
+   <li class="list-group-item d-flex justify-content-between align-items-center">
+     Ghi chú
+     <input class="form-control" type="text" maxlength="500">
+   </li>
+                `;
+                   infoTab.append(rowHtml);
+               });
+   
+   
+              
+   
+               document.getElementById('userDropdown').style.display = 'none';
+               $('#loadingOverlay').hide();
+           },
+           error: function (xhr, status, error) {
+               $('#loadingOverlay').hide();
+           }
+       });
+   }
+   function removeProduct(button) {
+       const ProductId= parseInt(button.getAttribute('data-id'), 10);
+       const VariantId= parseInt(button.getAttribute('data-variantId'), 10);
+       $.ajax({
+           url: '@Url.Action("DeleteProduct", "Sale")', // Adjust controller and action as needed
+           type: 'DELETE',
+           data: {
+               ProductId:ProductId,
+               VariantId:VariantId,
+               Tab:tabCount
+           },
+           success: function (response) {
+               const row = button.closest('.row');
+               row.remove();
+           },
+           error: function (xhr, status, error) {
+               $('#loadingOverlay').hide();
+           }
+       });
+      
+   }
+   function updateProductNumbers() {
+       const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
+       const activeTabId = activeTabPane.parentNode.id;
+       const rows = activeTabPane.querySelectorAll('.row');
+       productCounters[activeTabId] = 1; // Reset the counter
+       rows.forEach((row, index) => {
+           const numCell = row.querySelector('.col-auto:first-child');
+           numCell.textContent = productCounters[activeTabId];
+           productCounters[activeTabId]++;
+       });
+   
+      
+   }
+   function updateTotalPrice(input) {
+       const qty = parseInt(input.value, 10);
+       const ProductId= parseInt(input.getAttribute('data-id'), 10);
+       const VariantId= parseInt(input.getAttribute('data-variantId'), 10);
+       $.ajax({
+           url: '@Url.Action("UpdateQuantityProduct", "Sale")', // Adjust controller and action as needed
+           type: 'POST',
+           data: {
+               ProductId:ProductId,
+               VariantId:VariantId,
+               Quantity:qty,
+               Tab:tabCount 
+           },
+           success: function (response) {
+              
+               const price = parseInt(input.getAttribute('data-price'), 10);
+               const totalPriceElement = input.closest('.row').querySelector('.total-price');
+               if (qty >= 1 && qty <= 3) {
+                   const totalPrice = price * qty;
+                   totalPriceElement.textContent = totalPrice.toLocaleString() + " VND";
+               } else {
+                   input.value = qty < 1 ? 1 : 3;
+                   updateTotalPrice(input);
+               }
+           },
+           error: function (xhr, status, error) {
+               $('#loadingOverlay').hide();
+           }
+       });
+   
+      
+   }
+   function searchProduct(e) {
+   var contentSearch=$('#productSearch').val();
+   if (contentSearch.trim()!=''){
+       if (e.key === 'Enter') {
+           $('#loadingOverlay').show();
+           $.ajax({
+               url: '@Url.Action("GetProductByName", "Sale")', // Adjust controller and action as needed
+               type: 'GET',
+               data: {
+                   name:contentSearch
+               },
+               success: function (response) {
+               console.log(response)
+                   var lstDropDownProduct = $('#productDropdown');
+                   lstDropDownProduct.empty();
+                   if (response.data!=null){
+                       response.data.$values.forEach(function(item) {
+                           item.variants.$values.forEach(function(childer) {
+                               var rowHtml = `       
+                               <li class="dropdown-item product-searched d-flex align-items-center" data-variantId="${childer.variantId}" data-variant="${childer.variantName}" data-id="${item.productId}" data-name="${item.productName}" data-price="${childer.afterDiscountPrice}" data-qty="${childer.quantity}">
+                                   <img src="${item.images.$values[0].imagePath}" alt="Product 1" class="me-3" style="width: 50px">
+                                       <div class="flex-grow-1">
+                                           <div>${item.productName}</div>
+                                           <small class="text-muted" >${childer.variantName}</small>
+                                           <div class="d-flex justify-content-between mt-2">
+                                               <span class="final-price">${parseInt(childer.afterDiscountPrice).toLocaleString('vi-VN') + '₫'}
+   <span class="mx-lg-3 old-pirce">${parseInt(childer.salePrice ).toLocaleString('vi-VN') + '₫'}</span>
+   </span>
+                                               <span>Có thể bán: ${childer.quantity}</span>
+                                           </div>
+                                       </div>
+                               </li>
+                                `;
+                               lstDropDownProduct.append(rowHtml);
+                           })
+                       });
+                   }
+                   else {
+                       var rowHtml = `       
+                               <li class="dropdown-item d-flex align-items-center">
+                                   <div class="row" style="width:100%">
+                                   <div class="col-12 d-flex justify-content-center">
+   <div class="text-danger">Không tìm thấy sản phẩm nào !</div>                                   
+   </div>
+   </div>
+                                `;
+                       lstDropDownProduct.append(rowHtml);
+                   }
+                   document.getElementById('productDropdown').style.display = 'block';
+                   $('#loadingOverlay').hide();
+               },
+               error: function (xhr, status, error) {
+                   $('#loadingOverlay').hide();
+               }
+           });
+   
+       }
+   }
+   else {
+       document.getElementById('productDropdown').style.display = 'none';
+   }
+      }
+   function searchUser(e) {
+   var contentSearch=$('#searchUser').val();
+   if (contentSearch.trim()!=''){
+       if (e.key === 'Enter') {
+           $('#loadingOverlay').show();
+           $.ajax({
+               url: '@Url.Action("SearchUser", "Sale")', // Adjust controller and action as needed
+               type: 'GET',
+               data: {
+                   search:contentSearch
+               },
+               success: function (response) {
+               console.log(response)
+                   var lstDropDownProduct = $('#userDropdown');
+                   lstDropDownProduct.empty();
+                   if (response.data!=null){
+                       response.data.$values.forEach(function(item) {
+                           var rowHtml = `       
+                               <li class="dropdown-item user-searched d-flex align-items-center" data-userId="${item.id}" data-fullName="${item.fullName}" >
+                                       <div class="flex-grow-1">
+                                           <div>Tên/sdt: ${item.fullName } / ${item.phoneNumber==null?"":item.phoneNumber}</div>
+                                       </div>
+                               </li>
+                                `;
+                           lstDropDownProduct.append(rowHtml);
+                       });
+                   }
+                   else {
+                       var rowHtml = `       
+                               <li class="dropdown-item d-flex align-items-center">
+                                   <div class="row" style="width:100%">
+                                   <div class="col-12 d-flex justify-content-center">
+   <div class="text-danger">Không tìm thấy sản phẩm nào !</div>                                   
+   </div>
+   </div>
+                                `;
+                       lstDropDownProduct.append(rowHtml);
+                   }
+                   document.getElementById('userDropdown').style.display = 'block';
+                   $('#loadingOverlay').hide();
+               },
+               error: function (xhr, status, error) {
+                   $('#loadingOverlay').hide();
+               }
+           });
+   
+       }
+   }
+   else {
+       document.getElementById('productDropdown').style.display = 'none';
+   }
+      }
+   toastr.options = {
+       "closeButton": true,
+       "debug": false,
+       "newestOnTop": true,
+       "progressBar": true,
+       "positionClass": "toast-bottom-right",
+       "preventDuplicates": false,
+       "onclick": null,
+       "showDuration": "200",
+       "hideDuration": "1000",
+       "timeOut": "5000",
+       "extendedTimeOut": "1000",
+       "showEasing": "swing",
+       "hideEasing": "linear",
+       "showMethod": "fadeIn",
+       "hideMethod": "fadeOut"
+   }
 
-    function updateTotalPrice(input) {
-        const qty = parseInt(input.value, 10);
-        const price = parseInt(input.getAttribute('data-price'), 10);
-        const totalPriceElement = input.closest('.row').querySelector('.total-price');
+   $(function () {
 
-        if (qty >= 1 && qty <= 3) {
-            const totalPrice = price * qty;
-            totalPriceElement.textContent = totalPrice.toLocaleString() + " VND";
-        } else {
-            input.value = qty < 1 ? 1 : 3; // Enforce limits
-            updateTotalPrice(input); // Recalculate total price with corrected value
-        }
-    }
-
-    function showDropdown() {
-        document.getElementById('productDropdown').style.display = 'block';
-    }
-
-    function hideDropdown() {
-        setTimeout(function () {
-            document.getElementById('productDropdown').style.display = 'none';
-        }, 200);
-    }
-
-    function showAddProductPopup() {
-        alert("Hiển thị popup để thêm sản phẩm mới");
-    }
-
+       var toastMessage = '@TempData["ToastMessage"]';
+       var toastType = '@TempData["ToastType"]';
+       if (toastMessage && toastType) {
+           toastr[toastType](toastMessage);
+       }
+   });
+   
+   
 </script>
-
