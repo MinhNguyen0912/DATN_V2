@@ -13,7 +13,7 @@
     var pendingCart = ViewData["pendingCart"] as PendingCartVM;
     var invoiceId = TempData["invoiceId"];
     var paymentStatus = TempData["paymentStatus"];
-    var voucher =ViewData["Voucher"] as List<VoucherVM>;
+    var voucher = ViewData["Voucher"] as List<VoucherVM>;
 }
 
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css'>
@@ -286,36 +286,53 @@
     });
     // Gắn sự kiện change vào phần tử select
     voucherSelect.addEventListener('change', function () {
-     let vouchers = @voucher;
-        let selectedOption = this.options[this.selectedIndex];
-        let voucherId = parseFloat(selectedOption.getAttribute('value'));
-        let voucher = vouchers.find(v => v.Id === voucherId);
-        let discount = 0;
-        if (voucher) {
-            if(Voucher.Batch.Type == 1){
-                if(Voucher.Batch.DiscountType == 1){
-                    discount = Voucher.Batch.DiscountValue;
-                }
-                else{
-                    discount = Voucher.Batch.DiscountValue * document.getElementsByClassName("pricetotal")[0].textContent.replace(/[^\d.-]/g, '') / 100;
-                    if(Voucher.Batch.MaxDiscountAmount != 0 && discount > Voucher.Batch.MaxDiscountAmount){
-                        discount = Voucher.Batch.MaxDiscount;
-                    })
+    let vouchers = @voucher;  // Danh sách voucher được truyền từ Razor
+    let selectedOption = this.options[this.selectedIndex];
+    let voucherId = parseFloat(selectedOption.getAttribute('value'));
+
+    // Tìm voucher tương ứng
+    let voucher = vouchers.find(v => v.Id === voucherId);
+    let discount = 0;
+
+    if (voucher) {
+        if (voucher.Batch.Type == 1) {
+            if (voucher.Batch.DiscountType == 1) {
+                // Giảm giá theo giá trị cố định
+                discount = voucher.Batch.DiscountValue;
+            } else {
+                // Giảm giá theo phần trăm tổng giá trị đơn hàng
+                let totalPrice = parseFloat(document.getElementsByClassName("pricetotal")[0].textContent.replace(/[^\d.-]/g, ''));
+                discount = voucher.Batch.DiscountValue * totalPrice / 100;
+
+                // Kiểm tra nếu có giới hạn giảm giá tối đa
+                if (voucher.Batch.MaxDiscountAmount != 0 && discount > voucher.Batch.MaxDiscountAmount) {
+                    discount = voucher.Batch.MaxDiscountAmount;
                 }
             }
-            else{
-                discount = Voucher.Batch.DiscountValue * document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, '') / 100 ;
-            }
+        } else {
+            // Giảm giá theo phí vận chuyển
+            let totalShipFee = parseFloat(document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, ''));
+            discount = voucher.Batch.DiscountValue * totalShipFee / 100;
         }
-        let totalPrice = 0;
-        for (var item of document.querySelectorAll(".quantitysp")) {
-            totalPrice += Number.parseInt(item.getAttribute("data-price")) * (Number)(item.value)
-        }
-        let totalShipFee = Number.parseInt(document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, ''))
-        let finalPrice = totalPrice + totalShipFee - discount
-        document.getElementsByClassName("pricetotal")[0].innerHTML = `${totalPrice.toLocaleString()} VNĐ`
-        document.getElementsByClassName("pricelast")[0].innerHTML = `${finalPrice.toLocaleString()} VNĐ`
+    }
+
+    // Tính tổng giá trị sản phẩm
+    let totalPrice = 0;
+    for (var item of document.querySelectorAll(".quantitysp")) {
+        totalPrice += parseFloat(item.getAttribute("data-price")) * parseFloat(item.value);
+    }
+
+    // Tính tổng phí vận chuyển
+    let totalShipFee = parseFloat(document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, ''));
+
+    // Tính tổng giá cuối cùng sau khi áp dụng giảm giá
+    let finalPrice = totalPrice + totalShipFee - discount;
+
+    // Cập nhật giá trị tổng và giá trị cuối cùng trên giao diện
+    document.getElementsByClassName("pricetotal")[0].innerHTML = `${totalPrice.toLocaleString()} VNĐ`;
+    document.getElementsByClassName("pricelast")[0].innerHTML = `${finalPrice.toLocaleString()} VNĐ`;
     });
+
     async function CalculateShippingFee() {
         let isEmptyCart = true
         for (var item of document.querySelectorAll(".quantitysp")) {

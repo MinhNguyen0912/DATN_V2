@@ -108,7 +108,7 @@ namespace DATN.Client.Areas.Admin.Controllers
         // POST: Admin/Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Create2(CreateProductVM productVM)
+            public async Task<IActionResult> Create2(CreateImageProductVM productVM)
         {
             //if (!ModelState.IsValid)
             //{
