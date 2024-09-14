@@ -57,7 +57,7 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Tên</th>
+                                <th>Tên Voucher</th>
                                 <th>Ngày Bắt đầu</th>
                                 <th>Ngày kết thúc</th>
                                 <th>loại giảm giá</th>
@@ -74,15 +74,53 @@
                                     <td>@item.Name</td>
                                     <td>@item.StartDate</td>
                                     <td>@item.EndDate</td>
-                                    <td>@item.Type</td>
-                                    <td>@item.DiscountType</td>
-                                    <td>@item.DiscountAmount</td>
-                                    <td>@item.IsActive</td>
+                                    <td>
+                                        @if (item.Type == DATN.Core.Enum.VoucherType.freeship)
+                                        {
+                                            @("Phí giao hàng")
+                                        }
+                                        else
+                                        {
+                                            @("Hóa đơn")
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.DiscountType == DATN.Core.Enum.DiscountType.Percent)
+                                        {
+                                            @("Giảm giá theo phần trăm")
+                                        }
+                                        else
+                                        {
+                                            @("Giảm giá theo số tiên cố định")
+                                            
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.DiscountType == DATN.Core.Enum.DiscountType.Percent)
+                                        {
+                                            @String.Format("{0:F2}%", item.DiscountAmount)
+                                        }           
+                                        else
+                                        {
+                                            @String.Format("{0:N0} VNĐ", item.DiscountAmount)
+                                        }
+                                    </td>
+                                    <td>
+                                    @if (item.IsActive)
+                                        {
+                                            @("Đang kích hoạt")
+                                        }
+                                        else
+                                        {
+                                            @("Dừng kích hoạt")
+                                        }
+                                    </td>
                                     <td>
                                         <div class="btn-group">
                                             <a asp-action="Index" asp-controller="Voucher" asp-route-BatchId="@item.Id" class="btn btn-primary text-decoration-none">Danh sách Voucher</a>
-                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning text-decoration-none">Sửa</a>
-                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info text-decoration-none">Chi tiết</a>
+                                            <a asp-action="Edit" asp-controller="Batch" asp-route-id="@item.Id" class="btn btn-warning text-decoration-none">Sửa</a>
+                                            <a asp-action="Details" asp-controller="Batch" asp-route-id="@item.Id" class="btn btn-info text-decoration-none">Chi tiết</a>
                                         </div>
                                     </td>
                                 </tr>
