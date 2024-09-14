@@ -107,7 +107,7 @@ namespace DATN.API.Controllers
 
             // Lấy danh sách sản phẩm theo danh mục cấp 1 và cấp 2
             var products1 = _unitOfWork.ProductEAVRepository.GetAllCustom();
-            var products= products1
+            var products = products1
                 .Where(p => p.CategoryProducts.Any(cp => categoryIds.Contains(cp.CategoryId)))
                 .ToList();
             if (products != null && products.Any())
@@ -147,7 +147,7 @@ namespace DATN.API.Controllers
             if (filter.MinPrice != null && filter.MaxPrice != null)
             {
                 var productVM = _mapper.Map<List<ProductVM_EAV>>(query);
-                var result = productVM.Where(p => p.Variants.FirstOrDefault(p=>p.IsDefault==true).AfterDiscountPrice >= filter.MinPrice && p.Variants.FirstOrDefault(p => p.IsDefault == true).AfterDiscountPrice <= filter.MaxPrice).ToList();
+                var result = productVM.Where(p => p.Variants.FirstOrDefault(p => p.IsDefault == true).AfterDiscountPrice >= filter.MinPrice && p.Variants.FirstOrDefault(p => p.IsDefault == true).AfterDiscountPrice <= filter.MaxPrice).ToList();
                 query = _mapper.Map<List<Product_EAV>>(result);
             }
             return query;
@@ -196,15 +196,15 @@ namespace DATN.API.Controllers
             return NoContent(); // Trả về 204 nếu không tìm thấy sản phẩm nào
         }
 
+        [HttpPost]
+        public IActionResult GetProductPaging([FromBody] ProductPaging request)
+        {
+            ProductPaging partnerPaging = _unitOfWork.ProductEAVRepository.ProductPaging(request);
+            return Ok(partnerPaging);
+        }
     }
 
-		[HttpPost]
-		public IActionResult GetProductPaging([FromBody] ProductPaging request)
-		{
-			ProductPaging partnerPaging =  _unitOfWork.ProductEAVRepository.ProductPaging(request);
-			return Ok(partnerPaging);
-		}
 
 
-	}
 }
+

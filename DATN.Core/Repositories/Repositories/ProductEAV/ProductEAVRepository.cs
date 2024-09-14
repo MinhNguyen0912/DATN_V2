@@ -54,22 +54,22 @@ namespace DATN.Core.Repositories.Repositories.ProductEAV
         }
     }
 
-		public ProductPaging ProductPaging([FromBody]ProductPaging request)
-		{
-			var query = Context.Product_EAVs.Include(p => p.Images).Include(b => b.Brand).Include(o => o.Origin).Include(p => p.CategoryProducts).ThenInclude(p => p.Category).Include(p => p.Variants).ToList().AsQueryable();
+		//public ProductPaging ProductPaging([FromBody]ProductPaging request)
+		//{
+		//	var query = Context.Product_EAVs.Include(p => p.Images).Include(b => b.Brand).Include(o => o.Origin).Include(p => p.CategoryProducts).ThenInclude(p => p.Category).Include(p => p.Variants).ToList().AsQueryable();
 
-			if (!string.IsNullOrEmpty(request.SearchTerm))
-			{
-				string searchTerm = request.SearchTerm.Trim().ToLower();
-				query = query.Where(x => x.ProductName.ToLower().Contains(searchTerm));
-			}
+		//	if (!string.IsNullOrEmpty(request.SearchTerm))
+		//	{
+		//		string searchTerm = request.SearchTerm.Trim().ToLower();
+		//		query = query.Where(x => x.ProductName.ToLower().Contains(searchTerm));
+		//	}
 
-			request.TotalRecord = query.Count();
-			request.TotalPages = (int)Math.Ceiling(request.TotalRecord / (double)request.PageSize);
-			var list = query.Skip((request.CurrentPage - 1) * request.PageSize).Take(request.PageSize).ToList();
-			request.Items = _mapper.Map<List<ProductVM_EAV>>(list);
+		//	request.TotalRecord = query.Count();
+		//	request.TotalPages = (int)Math.Ceiling(request.TotalRecord / (double)request.PageSize);
+		//	var list = query.Skip((request.CurrentPage - 1) * request.PageSize).Take(request.PageSize).ToList();
+		//	request.Items = _mapper.Map<List<ProductVM_EAV>>(list);
 
-			return request;
-		}
+		//	return request;
+		//}
 	}
-}
+
