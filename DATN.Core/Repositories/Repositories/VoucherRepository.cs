@@ -9,6 +9,8 @@ using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModel.VoucherVM;
 using DATN.Core.ViewModels.UserViewModel;
+using Hangfire.States;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace DATN.Core.Repositories.Repositories
@@ -25,7 +27,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public List<Voucher> GetAllVouchers()
         {
-            return Context.Vouchers.Include(b=>b.Batch).Include(u=>u.User).ToList();
+            return Context.Vouchers.Include(b => b.Batch).Include(u => u.User).ToList();
         }
 
         public Voucher GetByIdCustom(int id)
@@ -53,8 +55,8 @@ namespace DATN.Core.Repositories.Repositories
 
         public List<Voucher> SearchVoucher(SearchVoucherRequest request)
         {
-            var query = Context.Vouchers.Include(v=>v.User).Where(x=>x.BatchId == request.BatchId).ToList();
-            if(request.Status != null)
+            var query = Context.Vouchers.Include(v => v.User).Where(x => x.BatchId == request.BatchId).ToList();
+            if (request.Status != null)
             {
                 query = query.Where(x => x.Status == request.Status).ToList();
             }
@@ -65,36 +67,57 @@ namespace DATN.Core.Repositories.Repositories
             return query;
         }
 
-        public async Task<string> GenerateVoucherAutoRegisterAsync(Guid userId )
+        public async Task<string> GenerateVoucherAutoRegisterAsync(Guid userId)
         {
-            //List voucher or some vouchers
-            var voucher = new List<Voucher>()
+            try
             {
-                new Voucher { Code = "UNEW" + GenerateVoucherCode(),
-                Description = "Khách hàng mới",
-                Status = VoucherStatus.NotUsed,
-                ReleaseDate = DateTime.Now,
-                ExpiryDate = DateTime.Now.AddMonths(2),
-                ActivationTime = DateTime.Now,
-                UserId = userId,
-                BatchId = 0
-                },
-                 new Voucher { Code = "" + GenerateVoucherCode(),
-                Description = "Free Ship",
-                Status = VoucherStatus.NotUsed,
-                ReleaseDate = DateTime.Now,
-                ExpiryDate = DateTime.Now.AddMonths(2),
-                 ActivationTime = DateTime.Now,
-                UserId = userId,
-                BatchId = 4
-                }
-            };
-            _context.Vouchers.AddRange(voucher);
-            await _context.SaveChangesAsync();
-            
-            return "Voucher được tạo thành công";
-        }
+                // Create a list of vouchers
+                var vouchers = new List<Voucher>
+                {
+                    new Voucher
+                    {
+                        Code = "UNEWAU" + GenerateVoucherCode(),
+                        Status = VoucherStatus.NotUsed,
+                        ReleaseDate = DateTime.Now,
+                        ExpiryDate = DateTime.Now.AddMonths(2),
+                        ActivationTime = DateTime.Now,
+                        UserId = userId,
+                        BatchId = 6
+                    },
+                    new Voucher
+                    {
+                        Code = "FRSAU" + GenerateVoucherCode(),
+                        Status = VoucherStatus.NotUsed,
+                        ReleaseDate = DateTime.Now,
+                        ExpiryDate = DateTime.Now.AddMonths(2),
+                        ActivationTime = DateTime.Now,
+                        UserId = userId,
+                        BatchId = 4
+                    }
+                };
 
+                // Add vouchers to the context
+                _context.Vouchers.AddRange(vouchers);
+
+                // Save changes to the database
+                var result = await _context.SaveChangesAsync();
+
+                // Check the result and return an appropriate response
+                if (result > 0)
+                {
+                    return "Voucher created successfully.";
+                }
+                else
+                {
+                    return "Failed to create vouchers.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and return error message
+                return $"An error occurred: {ex.Message}";
+            }
+        }
 
         public async Task<string> GenerateVoucherConditionAsync(Guid userId)
         {
@@ -106,7 +129,6 @@ namespace DATN.Core.Repositories.Repositories
                 var voucher = new Voucher()
                 {
                     Code = "Free" + GenerateVoucherCode(),
-                    Description = "Free Ship",
                     Status = VoucherStatus.NotUsed,
                     ReleaseDate = DateTime.Now,
                     ExpiryDate = DateTime.Now.AddMonths(2),
@@ -124,7 +146,6 @@ namespace DATN.Core.Repositories.Repositories
                 var voucher = new Voucher()
                 {
                     Code = "TOD" + GenerateVoucherCode(),
-                    Description = "Mua hàng trên 2 lần",
                     Status = VoucherStatus.NotUsed,
                     ReleaseDate = DateTime.Now,
                     ExpiryDate = DateTime.Now.AddMonths(2),
