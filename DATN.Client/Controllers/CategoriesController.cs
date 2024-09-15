@@ -1,9 +1,11 @@
 ﻿using DATN.Core.ViewModel.CategoryVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace DATN.Client.Controllers
 {
+    [Authorize(Roles = "User")]
     public class CategoriesController : Controller
     {
         private readonly HttpClient _httpClient;

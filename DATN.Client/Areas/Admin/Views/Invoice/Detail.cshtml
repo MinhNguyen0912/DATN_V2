@@ -46,7 +46,7 @@
                         </tr>
                         <tr>
                             <th style="color:red" scope="row">Voucher</th>
-                            @if (Model.VoucherUserId != null)
+                            @if (0==0@* Model.VoucherUserId != null *@)
                             {
                                 @* <td colspan="2">@Model.VoucherUser.Voucher.Name</td> *@
                                 var total = @Model.InvoiceDetails.Sum(p => p.NewPrice*p.Quantity);
@@ -59,7 +59,7 @@
                                 <td style="color:red">0</td>
                             }
                         </tr>
-                        @if (Model.ShippingOrder != null)
+                        @* @if (Model.ShippingOrder != null)
                         {
                             <tr>
                                 <th style="color:red" scope="row">Phí ship</th>
@@ -90,19 +90,15 @@
 
 
                             </tr>
-                        }
+                        } *@
                     </tbody>
                 </table>
                 <div class="form-group">
                     <a asp-action="Index" asp-controller="Invoice" class="btn btn-secondary my-4">Trở lại</a>
-                    @if (Model.Status == DATN.Core.Enum.InvoiceStatus.Pending)
+                    @if (Model.Status == DATN.Core.Enum.InvoiceStatus.Pending && Model.PaymentInfo.PaymentMethod==DATN.Core.Enum.PaymentMethod.Cash)
                     {
                         <a asp-route-invoiceId="@Model.InvoiceId" asp-action="CreateShippingOrder" asp-controller="Invoice" class="btn btn-primary my-4">Tạo đơn ship</a>
                         <a asp-route-invoiceId="@Model.InvoiceId" asp-action="CancelInvoice" asp-controller="Invoice" class="btn btn-danger my-4">Hủy hóa đơn</a>
-                    }
-                    else if (Model.Status == DATN.Core.Enum.InvoiceStatus.PaymentSuccess)
-                    {
-                        <a asp-route-invoiceId="@Model.InvoiceId" asp-action="CreateShippingOrder" asp-controller="Invoice" class="btn btn-primary my-4">Tạo đơn ship</a>
                     }
                 </div>
             </form>

@@ -1,11 +1,13 @@
 ﻿using DATN.Client.Constants;
 using DATN.Client.Services;
 using DATN.Core.ViewModel.Product_EAV;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace DATN.Client.Controllers.Components
 {
+    [Authorize(Roles = "User")]
     public class GridProductsViewComponent : ViewComponent
     {
         private readonly HttpClient _httpClient;

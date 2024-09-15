@@ -32,9 +32,9 @@ builder.Services.AddControllers()
     });
 
 //Add hangfire service
-builder.Services.AddHangfireServer();
+//builder.Services.AddHangfireServer();
 //builder.Services.AddHangfire(x => x.UseSqlServerStorage("DATNDbContextConnection"));
-builder.Services.AddScoped<VoucherService>();
+//builder.Services.AddScoped<VoucherService>();
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DATNDbContextConnection") ?? throw new InvalidOperationException("Connection string 'DATNDbContextConnection' not found.");
 builder.Services.AddDbContext<DATNDbContext>(options =>
@@ -55,7 +55,9 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<UserManager<AppUser>>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddHttpClient();
-
+builder.Services.AddHangfireServer();
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(connectionString));
+builder.Services.AddScoped<VoucherService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

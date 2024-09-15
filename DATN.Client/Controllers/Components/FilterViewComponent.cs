@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers.Components
 {
+    [Authorize(Roles = "User")]
     public class FilterViewComponent : ViewComponent
     {
         private readonly HttpClient _httpClient;

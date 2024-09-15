@@ -22,6 +22,10 @@ namespace DATN.Core.Repositories.Repositories
         {
             return Context.Invoices.Where(x => x.UserId == userId).Include(d => d.InvoiceDetails).ToList();
         }
+        public Invoice GetByIdCustom(int invoiceId)
+        {
+            return Context.Invoices.Where(x => x.InvoiceId == invoiceId).Include(d => d.PaymentInfo).FirstOrDefault();
+        }
         //public Invoice GetByIdCustom(int id)
         //{
         //    return Context.Invoices.Where(x => x.InvoiceId == id).Include(u => u.User).Include(d => d.InvoiceDetails).ThenInclude(p => p.Variant).ThenInclude(p => p.Product).Include(d => d.InvoiceDetails).ThenInclude(p => p.ProductAttribute).ThenInclude(p => p.AttributeValue).Include(p => p.VoucherUser).ThenInclude(p => p.Voucher).Include(p => p.ShippingOrder).FirstOrDefault();
@@ -56,7 +60,7 @@ namespace DATN.Core.Repositories.Repositories
                         .ThenInclude(pa => pa.Product)
                 .Include(i => i.InvoiceDetails)
                     .ThenInclude(id => id.Comment)
-                .Include(i => i.ShippingOrder)
+                .Include(i => i.ShippingOrders)
                 //.Include(i => i.VoucherUser)
                     //.ThenInclude(vu => vu.Voucher)
                 .ToList();

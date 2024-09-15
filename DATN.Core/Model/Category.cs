@@ -16,7 +16,7 @@ namespace DATN.Core.Model
         [ForeignKey("ParentCategoryId")]
         public Category? ParentCategory { get; set; }
         public List<Category>? SubCategories { get; set; }
-        public List<Product_EAV.Product_EAV>? Products { get; set; }
+        public List<CategoryProduct>? CategoryProducts { get; set; }
         public List<CategoryTimeRange>? CategoryTimeRanges { get; set; }
         public List<VoucherCate>? VoucherCates { get; set; }
 

@@ -20,6 +20,7 @@ namespace DATN.Core.ViewModel.InvoiceVM
         public string to_district_id {  get; set; }
         public string to_address {  get; set; }
         public decimal ShippingFee {  get; set; }
+        public decimal CodAmount { get; set; }
         //public CreateGHNOrderAdmin? PendingShippingOrder { get; set; }
 
     }

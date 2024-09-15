@@ -8,12 +8,13 @@ using DATN.Core.ViewModel.PendingCartVM;
 using DATN.Core.ViewModel.Product_EAV;
 using DATN.Core.ViewModel.ProductCommentVM;
 using DATN.Core.ViewModel.PromotionVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DATN.Client.Controllers
 {
-    //[Area("Admin")]
+    [Authorize(Roles = "User")]
     [Route("[controller]/[action]")]
     public class ProductController : Controller
     {

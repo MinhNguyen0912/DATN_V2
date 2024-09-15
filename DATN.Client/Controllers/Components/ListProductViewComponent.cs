@@ -3,10 +3,12 @@ using DATN.Client.Services;
 using DATN.Core.ViewModel.ListProductCompVM;
 using DATN.Core.ViewModel.Product_EAV;
 using DATN.Core.ViewModel.PromotionVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers.Components
 {
+    [Authorize(Roles = "User")]
     public class ListProductViewComponent : ViewComponent
     {
         private readonly ClientService _clientService;

@@ -177,6 +177,7 @@
                 </div>
             </div>
             <input type="hidden" id="hiddenShippingFee" asp-for="ShippingFee" value="0" />
+            <input type="hidden" id="hiddenCodAmount" asp-for="CodAmount" value="0" />
             <input type="hidden" asp-for="pendingCartId" value="@pendingCart.PendingCartId" />
         </form>
     </section>
@@ -424,6 +425,7 @@
         });
         document.getElementsByClassName("feeShipping")[0].innerHTML = `${totalShipFee.toLocaleString()} VNĐ`
         document.getElementById("hiddenShippingFee").value = totalShipFee
+        document.getElementById("hiddenCodAmount").value = totalPrice + totalShipFee
         document.getElementsByClassName("pricetotal")[0].innerHTML = `${totalPrice.toLocaleString()} VNĐ`
         document.getElementsByClassName("pricelast")[0].innerHTML = `${(totalPrice + totalShipFee).toLocaleString()} VNĐ`
 

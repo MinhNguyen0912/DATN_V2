@@ -4,10 +4,12 @@ using DATN.Client.Helper;
 using DATN.Client.Models;
 using DATN.Client.Services;
 using DATN.Core.ViewModel.ProductCommentVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers
 {
+    [Authorize(Roles = "User")]
     public class ShippingOrderController : Controller
     {
         private readonly ClientService _clientService;

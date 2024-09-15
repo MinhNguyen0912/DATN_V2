@@ -12,6 +12,7 @@ namespace DATN.Core.Repositories.IRepositories
         //public Invoice GetByIdCustom(int id);
         public InvoicePaging GetInvoicePaging(InvoicePaging request);
         public List<InvoiceShowForClientVM> GetInvoiceByStatusAndUserId(Guid userId, InvoiceStatus status);
+        public Invoice GetByIdCustom(int invoiceId);
 
     }
 }
