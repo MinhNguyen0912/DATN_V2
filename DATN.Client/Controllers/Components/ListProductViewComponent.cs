@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers.Components
 {
-    [Authorize(Roles = "User")]
     public class ListProductViewComponent : ViewComponent
     {
         private readonly ClientService _clientService;

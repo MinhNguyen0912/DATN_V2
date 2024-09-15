@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers
 {
-    [Authorize(Roles = "User")]
+    [AllowAnonymous]
     public class AddressController : Controller
     {
         public IActionResult Index()

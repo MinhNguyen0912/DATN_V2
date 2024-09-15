@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers.Components
 {
-    [Authorize(Roles = "User")]
     public class ProductsViewComponent : ViewComponent
     {
         private readonly HttpClient _httpClient;

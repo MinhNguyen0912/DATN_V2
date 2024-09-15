@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 
 namespace DATN.Client.Controllers.Components
 {
-    [Authorize(Roles = "User")]
     public class GridProductsViewComponent : ViewComponent
     {
         private readonly HttpClient _httpClient;

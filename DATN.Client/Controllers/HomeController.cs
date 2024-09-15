@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace DATN.Client.Controllers
 {
-    [Authorize(Roles = "User")]
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

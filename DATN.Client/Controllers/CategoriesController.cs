@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace DATN.Client.Controllers
 {
-    [Authorize(Roles = "User")]
+    [AllowAnonymous]
     public class CategoriesController : Controller
     {
         private readonly HttpClient _httpClient;

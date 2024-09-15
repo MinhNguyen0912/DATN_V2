@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 
 namespace DATN.Client.Controllers.Components
 {
-    [Authorize(Roles = "User")]
     public class BrandViewComponent : ViewComponent
     {
         private readonly HttpClient _httpClient;

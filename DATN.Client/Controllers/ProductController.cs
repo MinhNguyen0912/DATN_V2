@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DATN.Client.Controllers
 {
-    [Authorize(Roles = "User")]
+    
     [Route("[controller]/[action]")]
     public class ProductController : Controller
     {
@@ -56,6 +56,7 @@ namespace DATN.Client.Controllers
             ViewBag.productCommentResponse = productCommentResponse;
             return View(productResponse);
         }
+        [Authorize(Roles ="User")]
         public async Task<IActionResult> AddToCart(int selectedVariantId, Guid userId)
         {
             if (userId == Guid.Empty)

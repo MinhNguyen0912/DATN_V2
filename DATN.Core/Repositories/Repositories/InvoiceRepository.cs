@@ -22,10 +22,6 @@ namespace DATN.Core.Repositories.Repositories
         {
             return Context.Invoices.Where(x => x.UserId == userId).Include(d => d.InvoiceDetails).ToList();
         }
-        public Invoice GetByIdCustom(int invoiceId)
-        {
-            return Context.Invoices.Where(x => x.InvoiceId == invoiceId).Include(d => d.PaymentInfo).FirstOrDefault();
-        }
         //public Invoice GetByIdCustom(int id)
         //{
         //    return Context.Invoices.Where(x => x.InvoiceId == id).Include(u => u.User).Include(d => d.InvoiceDetails).ThenInclude(p => p.Variant).ThenInclude(p => p.Product).Include(d => d.InvoiceDetails).ThenInclude(p => p.ProductAttribute).ThenInclude(p => p.AttributeValue).Include(p => p.VoucherUser).ThenInclude(p => p.Voucher).Include(p => p.ShippingOrder).FirstOrDefault();
@@ -83,7 +79,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public Invoice GetByIdCustom(int id)
         {
-          return  Context.Invoices.Where(p=>p.InvoiceId== id).Include(p=>p.InvoiceDetails).ThenInclude(p=>p.Variant).ThenInclude(p=>p.Product).FirstOrDefault();
+          return  Context.Invoices.Where(p=>p.InvoiceId== id).Include(p=>p.InvoiceDetails).ThenInclude(p=>p.Variant).ThenInclude(p=>p.Product).Include(p=>p.PaymentInfo).FirstOrDefault();
         }
         public List<Invoice> GetCustom()
         {

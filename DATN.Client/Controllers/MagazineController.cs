@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers
 {
-    [Authorize(Roles = "User")]
+    [AllowAnonymous]
     public class MagazineController : Controller
     {
         private readonly ClientService _clientService;
