@@ -155,11 +155,28 @@
                     <div class="promotioncodebox_input" id="promotioncodebox_input">
                         <div class="form-group">
                             <label class="control-label">Mã giảm giá</label>
-                            <select name="VoucherId" class="form-control" id="voucherSelect" style="max-height: 400px; cursor: pointer;" multiple>
+                            <select name="VoucherId" class="form-control" id="voucherSelect" style="max-height: 400px; cursor: pointer;">
                                 <option value="0" > Chọn mã giảm giá</option>
+                                @{
+                                    decimal totalCartAmount = 0;
+                                    foreach (var item in pendingCart.PendingCartVariants)
+                                    {
+                                        totalCartAmount += item.Variant.AfterDiscountPrice * item.Quantity;
+                                    }
+                                }
                                 @foreach (var item in voucher)
-                                {                                
-                                    <option value="@item.Id" data-description="@item.Batch.Description">@item.Batch.Name</option>
+                                {                                    
+                                    bool isVoucherValid = totalCartAmount >= item.Batch.MinOrderAmount;
+                                    if (isVoucherValid)
+                                    {
+                                        <option value="@item.Id" data-description="@item.Batch.Description">@item.Batch.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id" data-description="@item.Batch.Description" disabled>
+                                            @item.Batch.Name (giỏ hàng chưa đạt giá trị tối thiểu)
+                                        </option>
+                                    }
                                 }
                             </select>
                         </div>
