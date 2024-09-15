@@ -72,12 +72,7 @@ namespace DATN.API.Controllers
         public async Task<IActionResult> GetByName(string name)
         {
             var products = await _unitOfWork.ProductEAVRepository.GetByName(name);
-            foreach (var x in products)
-            {
-                var brand = await _unitOfWork.brandRepository.GetById(x.BrandId);
-                x.Brand.Name = brand.Name;
-            }
-           
+            
             if (products.Count>0)
             {
                 var lstproductsVM = _mapper.Map<List<ProductVM_EAV>>(products);

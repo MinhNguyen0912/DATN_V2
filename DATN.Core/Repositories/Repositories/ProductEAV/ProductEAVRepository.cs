@@ -57,7 +57,7 @@ namespace DATN.Core.Repositories.Repositories.ProductEAV
         public async Task<List<Product_EAV>> GetByName(string name)
         {
             var queryabler = _context.Product_EAVs.AsQueryable();
-            var filteredProduct = await queryabler.Where(p => p.ProductName.ToLower().Contains(name.ToLower())).Include(p => p.Variants).ThenInclude(p => p.VariantAttributes).ThenInclude(p=>p.AttributeValue).ThenInclude(p=>p.Attribute).Include(p=>p.Brand).Include(p=>p.Images).ToListAsync();
+            var filteredProduct = await queryabler.Where(p => p.ProductName.ToLower().Contains(name.ToLower())).Include(p => p.Variants.Where(c=>c.Quantity>0)).ThenInclude(p => p.VariantAttributes).Include(p=>p.Images).ToListAsync();
             return filteredProduct;
 
         }

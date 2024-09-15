@@ -2,13 +2,16 @@
 using DATN.Client.Helper;
 using DATN.Client.Services;
 using DATN.Core.Infrastructures;
+using DATN.Core.Model;
 using DATN.Core.Model.Product_EAV;
 using DATN.Core.Models;
 using DATN.Core.ViewModel.SaleProductVM;
+using DATN.Core.ViewModel.VoucherVM;
 using DATN.Core.ViewModels.UserViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Newtonsoft.Json;
 
 namespace DATN.Client.Areas.Admin.Controllers
@@ -28,21 +31,24 @@ namespace DATN.Client.Areas.Admin.Controllers
         //[Authorize(Roles = "Admin")]
         [Route("Admin/[controller]/[action]")]
         public IActionResult Index()
-        {
+        {	
 	        List<SaleProuductVM>  saleProuductVm = new List<SaleProuductVM>();
 	        SaleProuductVM saleProuduct = new SaleProuductVM();
 	        saleProuduct.TabName = "Tab 1";
 	        saleProuduct.TabIndex = 1;
 	        saleProuduct.DicountAmount = 0;
 	        saleProuduct.ChangeMoney = 0;
+	        saleProuduct.MustPay = 0;
+	        saleProuduct.CustomerGivenMoney = 0;
 	        saleProuduct.DicountAmount = 0;
+	        saleProuduct.BacthName = "";
 	        saleProuduct.QuickCreateUserVM = new QuickCreateUserVM();
 	        saleProuduct.ShoppingTabs = new List<ShoppingTab>();
 	        saleProuduct.ProductCount = saleProuduct.ShoppingTabs.Count();
 	        saleProuductVm.Add(saleProuduct);
 	        var SaleProuductVMStored = JsonConvert.SerializeObject(saleProuductVm);
 	        HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
-			return View(saleProuductVm);
+	        return View(saleProuductVm);
 		}
 
 		[HttpGet]
@@ -111,23 +117,33 @@ namespace DATN.Client.Areas.Admin.Controllers
 			return Json(new { data =  SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList()});
 		}
 		[HttpGet]
-		public async Task<IActionResult> CaculateChangeMoneny(float ChangeMoney, int Tab)
+		public async Task<IActionResult> CaculateChangeMoneny(decimal ChangeMoney, int Tab)
 		{
 			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
 			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
-			var resonse =ChangeMoney- SaleProductDeserialized.FirstOrDefault(c => c.TabIndex == Tab)?.TotalAmount;
+			foreach (var saleProuductVm in SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList())
+			{
+				saleProuductVm.CustomerGivenMoney = ChangeMoney;
+				saleProuductVm.ChangeMoney = saleProuductVm.CustomerGivenMoney- SaleProductDeserialized.FirstOrDefault(c => c.TabIndex == Tab)?.MustPay;
+			}
+			var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
+			HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
+			var resonse =ChangeMoney- SaleProductDeserialized.FirstOrDefault(c => c.TabIndex == Tab)?.MustPay;
 			return Json(new { data = resonse});
 		}
 		[HttpPost]
 		public async Task<IActionResult> PaymentProcess(int Tab,float ChangeMoney)
 		{
 			
-			
 			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
 			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
 			var paymentTab = SaleProductDeserialized.FirstOrDefault(c => c.TabIndex == Tab);
 			if (paymentTab!=null)
 			{
+				if (paymentTab.ChangeMoney<0)
+				{
+					return Json(new { isSucccess=false, data = "Tiền khách đưa chưa đủ để thanh tóan"});
+				}
 				if (paymentTab.TotalAmount<=0)
 				{
 					return Json(new { isSucccess=false, data = "Vui lòng thêm sản phẩm"});
@@ -142,7 +158,17 @@ namespace DATN.Client.Areas.Admin.Controllers
 				{
 					return Json(new {isSucccess=false, data = "Vui lòng nhập số tiền khách đưa"});
 				}
-				//var response= await _clientService.Post<object>($"https://localhost:7095/api/Invoice/CreatePaymentOffline",paymentTab);
+
+				if (paymentTab.BatchId.HasValue)
+				{
+					CreateVoucherOfflineVM voucherOfflineVM = new CreateVoucherOfflineVM();
+					voucherOfflineVM.BatchId =Convert.ToInt32(paymentTab.BatchId) ;
+					voucherOfflineVM.UserId =Guid.Parse(paymentTab.QuickCreateUserVM.UserId.ToString()) ;
+					var responseCreateVoucher= await _clientService.Post<Voucher>($"https://localhost:7095/api/Voucher/AddVoucherForUserOffline",voucherOfflineVM);
+					paymentTab.VoucherId=responseCreateVoucher.Id;
+				}
+				var response= await _clientService.Post<object>($"https://localhost:7095/api/Invoice/CreatePaymentOffline",paymentTab);
+				SaleProductDeserialized.Remove(paymentTab);
 				return Json(new {isSucccess=true, data = paymentTab});
 			}
 			return Json(new { data = ""});
@@ -162,9 +188,11 @@ namespace DATN.Client.Areas.Admin.Controllers
 			saleProuductVm.TabName = "Tab " +saleProuductVm.TabIndex;
 			saleProuductVm.DicountAmount = 0;
 			saleProuductVm.ChangeMoney = 0;
+			saleProuductVm.MustPay = 0;
+			saleProuductVm.BacthName = "";
+			saleProuductVm.CustomerGivenMoney = 0;
 			saleProuductVm.QuickCreateUserVM = new QuickCreateUserVM();
 			saleProuductVm.DicountAmount = 0;
-			
 			saleProuductVm.ShoppingTabs = new List<ShoppingTab>();
 			saleProuductVm.ProductCount = saleProuductVm.ShoppingTabs.Count();
 			SaleProductDeserialized.Add(saleProuductVm);
@@ -174,7 +202,7 @@ namespace DATN.Client.Areas.Admin.Controllers
 		}
 		
         [HttpPost]
-		public async Task<IActionResult> AddProdToCurrentTab(int ProductId, int VariantId, int Quantity, float Price,int Tab,string ProductName,string Variant)
+		public async Task<IActionResult> AddProdToCurrentTab(int ProductId, int VariantId, int Quantity, decimal Price,int Tab,string ProductName,string Variant)
 		{
 			
 			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
@@ -205,7 +233,35 @@ namespace DATN.Client.Areas.Admin.Controllers
 						saleProuductVm.ShoppingTabs.Add(shoppingTab);
 					}
 					saleProuductVm.ProductCount = saleProuductVm.ShoppingTabs.Count();
-					saleProuductVm.TotalAmount = saleProuductVm.ShoppingTabs.Sum(c => c.Quantity * c.Price);
+					saleProuductVm.TotalAmount =(decimal) saleProuductVm.ShoppingTabs.Sum(c => c.Quantity * c.Price);
+					saleProuductVm.MustPay = saleProuductVm.TotalAmount + (decimal)((float)saleProuductVm.TotalAmount*0.1);
+					if (saleProuductVm.CustomerGivenMoney==0)
+					{
+						saleProuductVm.ChangeMoney = 0;
+					}
+					else
+					{
+						saleProuductVm.ChangeMoney=saleProuductVm.CustomerGivenMoney-saleProuductVm.MustPay;
+					}
+					if (!string.IsNullOrEmpty(saleProuductVm.BacthName))
+					{
+						GetVoucherByBatchNameOfflineVM getVoucher = new GetVoucherByBatchNameOfflineVM();
+						getVoucher.Name = saleProuductVm.BacthName;
+						getVoucher.CurrentDate = DateTime.Now;
+						getVoucher.GrandTotal=(decimal)saleProuductVm.MustPay;
+						var url =
+							$"https://localhost:7095/api/Voucher/GetBatchByCode";
+						var response = await _clientService.Post<Batch>(url,getVoucher);
+						if (response.DiscountAmount>0)
+						{
+						
+							saleProuductVm.MustPay=(Convert.ToDecimal(saleProuductVm.MustPay) - response.DiscountAmount);
+							saleProuductVm.DicountAmount = response.DiscountAmount;
+							saleProuductVm.BatchId=response.Id;
+								
+
+						}
+					}
 				}
 				var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
 				
@@ -228,8 +284,35 @@ namespace DATN.Client.Areas.Admin.Controllers
 							shoppingTab.Quantity = Quantity;
 						}
 						saleProuductVm.ProductCount = saleProuductVm.ShoppingTabs.Count();
-						saleProuductVm.TotalAmount = saleProuductVm.ShoppingTabs.Sum(c => c.Quantity * c.Price);
+						saleProuductVm.TotalAmount =(decimal) saleProuductVm.ShoppingTabs.Sum(c => c.Quantity * c.Price);
+						saleProuductVm.MustPay = saleProuductVm.TotalAmount + (decimal)((float)saleProuductVm.TotalAmount*0.1);
+						if (saleProuductVm.CustomerGivenMoney==0)
+						{
+							saleProuductVm.ChangeMoney = 0;
+						}
+						else
+						{
+							saleProuductVm.ChangeMoney=saleProuductVm.CustomerGivenMoney-saleProuductVm.MustPay;
+						}
+						if (!string.IsNullOrEmpty(saleProuductVm.BacthName))
+						{
+							GetVoucherByBatchNameOfflineVM getVoucher = new GetVoucherByBatchNameOfflineVM();
+							getVoucher.Name = saleProuductVm.BacthName;
+							getVoucher.CurrentDate = DateTime.Now;
+							getVoucher.GrandTotal=(decimal)saleProuductVm.MustPay;
+							var url =
+								$"https://localhost:7095/api/Voucher/GetBatchByCode";
+							var response = await _clientService.Post<Batch>(url,getVoucher);
+							if (response.DiscountAmount>0)
+							{
+						
+								saleProuductVm.MustPay=(Convert.ToDecimal(saleProuductVm.MustPay) - response.DiscountAmount);
+								saleProuductVm.DicountAmount = response.DiscountAmount;
+								saleProuductVm.BatchId=response.Id;
+								
 
+							}
+						}
 				}
 				var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
 				HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
@@ -250,8 +333,36 @@ namespace DATN.Client.Areas.Admin.Controllers
 							saleProuductVm.ShoppingTabs.Remove(shoppingTab);
 						}
 						saleProuductVm.ProductCount = saleProuductVm.ShoppingTabs.Count();
-						saleProuductVm.TotalAmount = saleProuductVm.ShoppingTabs.Sum(c => c.Quantity * c.Price);
+						saleProuductVm.TotalAmount =(decimal) saleProuductVm.ShoppingTabs.Sum(c => c.Quantity * c.Price);
+						saleProuductVm.MustPay = saleProuductVm.TotalAmount + (decimal)((float)saleProuductVm.TotalAmount*0.1);
+						if (saleProuductVm.CustomerGivenMoney==0)
+						{
+							saleProuductVm.ChangeMoney = 0;
+						}
+						else
+						{
+							saleProuductVm.ChangeMoney=saleProuductVm.CustomerGivenMoney-saleProuductVm.MustPay;
+						}
 
+						if (!string.IsNullOrEmpty(saleProuductVm.BacthName))
+						{
+							GetVoucherByBatchNameOfflineVM getVoucher = new GetVoucherByBatchNameOfflineVM();
+							getVoucher.Name = saleProuductVm.BacthName;
+							getVoucher.CurrentDate = DateTime.Now;
+							getVoucher.GrandTotal=(decimal)saleProuductVm.MustPay;
+							var url =
+								$"https://localhost:7095/api/Voucher/GetBatchByCode";
+							var response = await _clientService.Post<Batch>(url,getVoucher);
+							if (response.DiscountAmount>0)
+							{
+						
+								saleProuductVm.MustPay=(Convert.ToDecimal(saleProuductVm.MustPay) - response.DiscountAmount);
+								saleProuductVm.DicountAmount = response.DiscountAmount;
+								saleProuductVm.BatchId=response.Id;
+								
+
+							}
+						}
 				} 
 				
 			var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
@@ -280,7 +391,75 @@ namespace DATN.Client.Areas.Admin.Controllers
 			HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
 			return Json(new { data ="" });
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> SearchBatchForUser(int Tab,string Name)
+		{
+			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
+			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
+			var paymentTab = SaleProductDeserialized.FirstOrDefault(c => c.TabIndex == Tab);
+			if (paymentTab!.ShoppingTabs.Count() > 0)
+			{
+				
+					GetVoucherByBatchNameOfflineVM getVoucher = new GetVoucherByBatchNameOfflineVM();
+					getVoucher.Name = Name;
+					getVoucher.CurrentDate = DateTime.Now;
+					getVoucher.GrandTotal=(decimal)paymentTab.MustPay;
+					var url =
+						$"https://localhost:7095/api/Voucher/GetBatchByCode";
+					var response = await _clientService.Post<Batch>(url,getVoucher);
+					paymentTab.BacthName = Name;
+					if (response.DiscountAmount>0)
+					{
+						
+						paymentTab.MustPay=(Convert.ToDecimal(paymentTab.MustPay) - response.DiscountAmount);
+						paymentTab.DicountAmount = response.DiscountAmount;
+						paymentTab.BatchId=response.Id;
+						var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
+						HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
+						return Json(new {isSucccess=true, data = SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList()});
+
+					}
+				
+				return Json(new {isSucccess=false, data = "Mã giảm giá không hợp lệ hoặc không đủ điều kiện"});
+			}
+			else
+			{
+	
+				return Json(new {isSucccess=false, data = "Vui lòng thêm sản phẩm để áp dụng mã giảm giá"});
+			}
+			
+			
+		}
+		[HttpGet]
+		public async Task<IActionResult> SaveBatchForUser(int Tab,string Name)
+		{
+			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
+			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
+			var paymentTab = SaleProductDeserialized.FirstOrDefault(c => c.TabIndex == Tab);
+			paymentTab.BacthName = Name;
+			var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
+			HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
+			return Json(new {isSucccess=true, data = SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList()});
+			
+		}
+		[HttpPost]
+		public async Task<IActionResult> CloseTab(int Tab)
+		{
+			
+			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
+			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
+			var paymentTab = SaleProductDeserialized.FirstOrDefault(c => c.TabIndex == Tab);
+			if (SaleProductDeserialized.Count==1)
+			{
+				return Json(new {isSucccess=false, data = "Bạn phải để ít nhất 1 Tab thanh toán"});
+			}
+			SaleProductDeserialized.Remove(paymentTab);
+			var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
+			HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
+			return Json(new {isSucccess=true, data = SaleProductDeserialized.ToList()});
+			
+		}
 		
-        
 	}
 }

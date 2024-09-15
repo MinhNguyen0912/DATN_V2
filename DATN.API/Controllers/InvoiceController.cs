@@ -149,7 +149,9 @@ namespace DATN.API.Controllers
                 UserId =Guid.Parse(saleProuductVm.QuickCreateUserVM.UserId.ToString())  ,
                 CreateDate = DateTime.Now,
                 InvoiceDetails = new List<InvoiceDetail>(),
-                Note = saleProuductVm.Note
+                Note = saleProuductVm.Note,
+                FinalAmount = saleProuductVm.MustPay,
+                VoucherId = saleProuductVm.VoucherId,
             };
 
             // Tạo đối tượng PaymentInfo

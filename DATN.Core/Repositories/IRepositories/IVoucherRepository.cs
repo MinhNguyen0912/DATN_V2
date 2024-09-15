@@ -18,5 +18,7 @@ namespace DATN.Core.Repositories.IRepositories
         public Task<bool> IsCheckedNumberBoughttAsync(Guid userId);
         List<Voucher> SearchVoucher(SearchVoucherRequest request);
         Voucher GetByIdCustom (int id);
+        public Task<Voucher> AddVoucherForUserOffline(CreateVoucherOfflineVM createVoucherOfflineVM);
+
     }
 }
