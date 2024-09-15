@@ -24,7 +24,7 @@ namespace DATN.Core.Model
         public Voucher? Voucher { get; set; }
         public string? Note { get; set; }
         public int? VoucherId { get; set; }
-        public ShippingOrder? ShippingOrder { get; set; }
+        public List<ShippingOrder>? ShippingOrders { get; set; }
 
 
     }

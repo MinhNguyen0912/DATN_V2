@@ -1,6 +1,7 @@
 ﻿using DATN.Client.Constants;
 using DATN.Client.Services;
 using DATN.Core.ViewModel.Product_EAV;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers.Components

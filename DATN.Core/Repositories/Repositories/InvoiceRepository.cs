@@ -56,7 +56,7 @@ namespace DATN.Core.Repositories.Repositories
                         .ThenInclude(pa => pa.Product)
                 .Include(i => i.InvoiceDetails)
                     .ThenInclude(id => id.Comment)
-                .Include(i => i.ShippingOrder)
+                .Include(i => i.ShippingOrders)
                 //.Include(i => i.VoucherUser)
                     //.ThenInclude(vu => vu.Voucher)
                 .ToList();
@@ -79,7 +79,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public Invoice GetByIdCustom(int id)
         {
-          return  Context.Invoices.Where(p=>p.InvoiceId== id).Include(p=>p.InvoiceDetails).ThenInclude(p=>p.Variant).ThenInclude(p=>p.Product).FirstOrDefault();
+          return  Context.Invoices.Where(p=>p.InvoiceId== id).Include(p=>p.InvoiceDetails).ThenInclude(p=>p.Variant).ThenInclude(p=>p.Product).Include(p=>p.PaymentInfo).FirstOrDefault();
         }
         public List<Invoice> GetCustom()
         {
