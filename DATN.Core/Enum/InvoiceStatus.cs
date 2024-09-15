@@ -5,10 +5,11 @@
         Success,
         Pending,
         Delivery,
-        PaymentProcessing,
-        PaymentSuccess,
-        PaymentFail,
+        //PaymentProcessing,
+        //PaymentSuccess,
+        //PaymentFail,
         All,
-        Cancel
+        Cancel,
+        Fail
     }
 }

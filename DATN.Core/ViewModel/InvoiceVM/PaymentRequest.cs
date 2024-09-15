@@ -11,7 +11,6 @@ namespace DATN.Core.ViewModel.InvoiceVM
         public PaymentMethod PaymentMethod { get; set; }
         public Guid UserId { get; set; }
         public int pendingCartId { get; set; }
-        public decimal FinalAmount { get; set; }
         public int VoucherId { get; set; } = 0;
         public string FirstName {  get; set; }
         public string LastName {  get; set; }
@@ -21,6 +20,7 @@ namespace DATN.Core.ViewModel.InvoiceVM
         public string to_district_id {  get; set; }
         public string to_address {  get; set; }
         public decimal ShippingFee {  get; set; }
+        public decimal CodAmount { get; set; }
         //public CreateGHNOrderAdmin? PendingShippingOrder { get; set; }
 
     }

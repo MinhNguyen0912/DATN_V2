@@ -142,21 +142,21 @@ namespace DATN.Core.Repositories.Repositories
             bool voucherCreated = false;
 
             // Kiểm tra điều kiện tổng giá trị đơn hàng
-            if (await IsCheckedTotalPuschasePriceAsync(userId))
-            {
-                var voucher = new Voucher()
-                {
-                    Code = "Free" + GenerateVoucherCode(),
-                    Status = VoucherStatus.NotUsed,
-                    ReleaseDate = DateTime.Now,
-                    ExpiryDate = DateTime.Now.AddMonths(2),
-                    ActivationTime = DateTime.Now,
-                    UserId = userId,
-                    BatchId = 4
-                };
-                _context.Add(voucher);
-                voucherCreated = true;
-            }
+            //if (await IsCheckedTotalPuschasePriceAsync(userId))
+            //{
+            //    var voucher = new Voucher()
+            //    {
+            //        Code = "Free" + GenerateVoucherCode(),
+            //        Status = VoucherStatus.NotUsed,
+            //        ReleaseDate = DateTime.Now,
+            //        ExpiryDate = DateTime.Now.AddMonths(2),
+            //        ActivationTime = DateTime.Now,
+            //        UserId = userId,
+            //        BatchId = 4
+            //    };
+            //    _context.Add(voucher);
+            //    voucherCreated = true;
+            //}
 
             // Kiểm tra điều kiện số lần mua hàng
             if (await IsCheckedNumberBoughttAsync(userId))
@@ -228,21 +228,7 @@ namespace DATN.Core.Repositories.Repositories
             }
         }
 
-        public async Task<bool> IsCheckedTotalPuschasePriceAsync(Guid userId)
-        {
-            var totalSpent = await _context.Invoices
-                                .Where(o => o.UserId == userId)
-                                .SumAsync(o => o.FinalAmount);
-
-            if (totalSpent > 1000000)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+       
     }
 
 

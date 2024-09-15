@@ -1,5 +1,6 @@
 ﻿using DATN.Client.Helper;
 using DATN.Client.Services;
+using DATN.Core.Data;
 using DATN.Core.Infrastructures;
 using DATN.Core.ViewModel.GHNVM;
 using DATN.Core.ViewModel.InvoiceVM;
@@ -20,10 +21,12 @@ namespace DATN.Client.Areas.Admin.Controllers
     {
         private readonly ClientService _clientService;
         private readonly IUnitOfWork _unitOfWork;
-        public InvoiceController(ClientService clientService, IUnitOfWork unitOfWork)
+        private readonly DATNDbContext _context;
+        public InvoiceController(ClientService clientService, IUnitOfWork unitOfWork, DATNDbContext context)
         {
             _clientService = clientService;
             _unitOfWork = unitOfWork;
+            _context = context;
         }
         public async Task<IActionResult> Index(InvoicePaging request)
         {
@@ -44,6 +47,24 @@ namespace DATN.Client.Areas.Admin.Controllers
             var result = await _clientService.Get<InvoiceVM>($"https://localhost:7095/api/Invoice/GetById/get-by-id?id={id}");
             return View(result);
 
+        }
+        public async Task<IActionResult> ChangeStatus(int id, int status)
+        {
+            var order = await _context.Invoices.FindAsync(id);
+            if (order == null)
+            {
+                // Nếu đơn hàng không tồn tại, trả về lỗi 404
+                return NotFound();
+            }
+            if (status == 1)
+            {
+                order.Status = DATN.Core.Enum.InvoiceStatus.Success;
+            }
+            else { order.Status = DATN.Core.Enum.InvoiceStatus.Cancel; }
+            // Cập nhật trạng thái của đơn hàng
+
+            _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
         public async Task<IActionResult> CreateShippingOrder(int invoiceId)
         {
@@ -139,6 +160,26 @@ namespace DATN.Client.Areas.Admin.Controllers
             var content = CancelnvoiceContent.GenerateContentMail(invoice.User, invoice);
             var sendemail = await _clientService.Post("https://localhost:7095/api/SendMail/SendMail", content);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int InvoiceId, string RecipientName, string PhoneNumber, string Address,string matinh, string madiaphuong)
+        {
+            // Tìm đối tượng người dùng theo id
+            var user = await _context.Invoices.FindAsync(InvoiceId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Ghép các giá trị lại thành chuỗi Note
+            user.Note = $"{RecipientName}-{PhoneNumber}-{Address}-{matinh}-{madiaphuong}";
+
+            // Cập nhật thông tin người dùng
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index)); // Quay lại trang danh sách hoặc trang khác sau khi cập nhật thành công
         }
     }
 }

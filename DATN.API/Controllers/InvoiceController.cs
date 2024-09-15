@@ -57,7 +57,7 @@ namespace DATN.API.Controllers
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(int id)
         {
-            var invoice = await _unitOfWork.InvoiceRepository.GetById(id);
+            var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(id);
             if (invoice == null)
             {
                 return NotFound(); // 404 Not Found
@@ -73,11 +73,11 @@ namespace DATN.API.Controllers
             // Tạo đối tượng Invoice
             var invoice = new Invoice()
             {
-                FinalAmount = payment.FinalAmount,
                 UserId = payment.UserId,
                 CreateDate = DateTime.Now,
                 InvoiceDetails = new List<InvoiceDetail>(),
-                Note = $"{payment.FirstName} {payment.LastName}-{payment.PhoneNumber}-{payment.to_address}-{payment.to_ward_code}-{payment.to_district_id}"
+                Note = $"{payment.FirstName} {payment.LastName}-{payment.PhoneNumber}-{payment.to_address}-{payment.to_ward_code}-{payment.to_district_id}-{payment.CodAmount}",
+                Status = InvoiceStatus.Pending
             };
 
             // Tạo đối tượng PaymentInfo
@@ -120,23 +120,11 @@ namespace DATN.API.Controllers
                     _unitOfWork.VoucherRepository.Update(voucher);
                 }
             }
-            if (payment.PaymentMethod == PaymentMethod.Cash)
-            {
-                invoice.Status = InvoiceStatus.Pending;
-            }
-            else
-            {
-                invoice.Status = InvoiceStatus.PaymentProcessing;
-            }
             await _unitOfWork.InvoiceRepository.Create(invoice);
             var reponse = _unitOfWork.SaveChanges();
             if (reponse > 0)
             {
-
-
-
                 return Ok(invoice); // 200 OK
-
             }
             return BadRequest();
         }

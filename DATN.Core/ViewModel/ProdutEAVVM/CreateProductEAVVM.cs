@@ -22,7 +22,7 @@ namespace DATN.Core.ViewModel.ProdutEAVVM
         public Origin? Origin { get; set; }
         public List<IFormFile>? Images { get; set; }
         public IFormFile? ImagesDefault { get; set; }
-        public List<Variant> Variants { get; set; }
+        public List<CreateVariantsVM> Variants { get; set; } = new List<CreateVariantsVM>();
 
     }
 }

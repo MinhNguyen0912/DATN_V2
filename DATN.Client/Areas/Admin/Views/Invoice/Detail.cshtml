@@ -12,13 +12,38 @@
     </ol>
     <div class="row">
         <div class="col-md-8">
-            <form asp-action="Edit" id="" asp-controller="Invoice" method="post">
+            <form asp-action="Update" id="" asp-controller="Invoice" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="InvoiceId" />
                 <div class="form-group">
                     <label asp-for="InvoiceId" class="control-label">Mã hóa đơn</label>
                     <input asp-for="InvoiceId" class="form-control" readonly />
                     <span asp-validation-for="InvoiceId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Tên người nhận</label>
+                    <input name="RecipientName" value="@(Model.Note.Split('-')[0])" class="form-control" />
+               
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Số điện thoại</label>
+                    <input name="PhoneNumber" value="@(Model.Note.Split('-')[1])" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Địa chỉ</label>
+                    <input name="Address" value="@(Model.Note.Split('-')[2])" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Mã tỉnh thành</label>
+                    <input name="matinh" value="@(Model.Note.Split('-')[3])" class="form-control" readonly />
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Mã địa phương</label>
+                    <input name="madiaphuong" value="@(Model.Note.Split('-')[4])" class="form-control" readonly />
+
                 </div>
                 <table class="table table-success table-striped">
                     <thead>
@@ -33,8 +58,8 @@
                         @foreach (var item in Model.InvoiceDetails)
                         {
                             <tr>
-                                <th scope="row">a</th>
-                                <td>a</td>
+                                <th scope="row">@item.Variant.Product.ProductName</th>
+                                <td>@item.Variant.VariantName</td>
                                 <td>@item.OldPrice</td>
                                 <td>@item.NewPrice</td>
                             </tr>
@@ -46,7 +71,7 @@
                         </tr>
                         <tr>
                             <th style="color:red" scope="row">Voucher</th>
-                            @if (Model.VoucherUserId != null)
+                            @if (Model.VoucherId != null)
                             {
                                 @* <td colspan="2">@Model.VoucherUser.Voucher.Name</td> *@
                                 var total = @Model.InvoiceDetails.Sum(p => p.NewPrice*p.Quantity);
@@ -59,15 +84,15 @@
                                 <td style="color:red">0</td>
                             }
                         </tr>
-                        @if (Model.ShippingOrder != null)
+                        @if (Model != null)
                         {
                             <tr>
                                 <th style="color:red" scope="row">Phí ship</th>
                                 <td colspan="2"></td>
-                                <td style="color:red">@Model.ShippingOrder.Price</td>
+                                @* <td style="color:red">@Model.ShippingOrder.Price</td> *@
                             </tr>
                             <tr>
-                                @if (Model.VoucherUserId != null)
+                                @* @if (Model.VoucherUserId != null)
                                 {
                                     var total = @Model.InvoiceDetails.Sum(p => p.NewPrice*p.Quantity);
                                     //var discount = total * (Model.VoucherUser.Voucher.DiscountByPercent / (double)100) + (double)Model.VoucherUser.Voucher.DiscountByPrice;
@@ -76,8 +101,8 @@
                                     <th style="color:red" scope="row">Thực thu</th>
                                     <td colspan="2"></td>
                                     //<td style="color:red">@(total - discount + shippingFee)</td>
-                                }
-                                else
+                                } *@
+                                @* else
                                 {
                                     var total = @Model.InvoiceDetails.Sum(p => p.NewPrice*p.Quantity);
                                     var shippingFee = @Model.ShippingOrder.Price;
@@ -86,7 +111,7 @@
                                     <td colspan="2"></td>
                                     <td style="color:red">@(total + shippingFee)</td>
 
-                                }
+                                } *@
 
 
                             </tr>
@@ -95,15 +120,16 @@
                 </table>
                 <div class="form-group">
                     <a asp-action="Index" asp-controller="Invoice" class="btn btn-secondary my-4">Trở lại</a>
+                    <input type="submit" id="target-btn" value="Lưu" class="btn btn-success m-4" />
                     @if (Model.Status == DATN.Core.Enum.InvoiceStatus.Pending)
                     {
                         <a asp-route-invoiceId="@Model.InvoiceId" asp-action="CreateShippingOrder" asp-controller="Invoice" class="btn btn-primary my-4">Tạo đơn ship</a>
                         <a asp-route-invoiceId="@Model.InvoiceId" asp-action="CancelInvoice" asp-controller="Invoice" class="btn btn-danger my-4">Hủy hóa đơn</a>
                     }
-                    else if (Model.Status == DATN.Core.Enum.InvoiceStatus.PaymentSuccess)
+                    @* else if (Model.Status == DATN.Core.Enum.InvoiceStatus.PaymentSuccess)
                     {
                         <a asp-route-invoiceId="@Model.InvoiceId" asp-action="CreateShippingOrder" asp-controller="Invoice" class="btn btn-primary my-4">Tạo đơn ship</a>
-                    }
+                    } *@
                 </div>
             </form>
         </div>

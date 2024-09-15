@@ -97,7 +97,6 @@ namespace DATN.API.Controllers
 
             return Ok(voucher);
         }
-
         //Dùng api từ đây trở đi
         [HttpPost]
         public async Task<IActionResult> CreateVoucher_Viet([FromBody] CreateVoucherRequest request)
@@ -129,7 +128,6 @@ namespace DATN.API.Controllers
             int result = _unitOfWork.SaveChanges();
             return Ok(result); // 201 Created
         }
-
         [HttpPost]
         public async Task<IActionResult> CreateVoucher_Phuc([FromBody] CreateVoucherRequest request)
         {
@@ -187,7 +185,6 @@ namespace DATN.API.Controllers
         //    }
         //    await _unitOfWork.SaveChangesAsync();
         //}
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVoucherByBatchId_Viet(int id)
         {

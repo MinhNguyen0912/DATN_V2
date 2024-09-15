@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         };
 
-        fetch(`https://localhost:7095/api/Product/GetProductByFilter`, requestOptions)
+        fetch(`https://localhost:7095/api/ProductEAV/GetProductByFilter`, requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -192,34 +192,34 @@ document.addEventListener("DOMContentLoaded", async function () {
                         style: 'decimal',
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0
-                    }).format(item.productAttributes.find(p => p.isDefault == true).salePrice);
+                    }).format(item.variants.find(p => p.isDefault == true).salePrice);
                     var formattedNewPrice = new Intl.NumberFormat('vi-VN', {
                         style: 'decimal',
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0
-                    }).format(item.defaultPrice);
-                    var productRatingResponse = await fetch(`https://localhost:7095/api/Product/GetProductRating?productId=${item.id}`)
-                    var productRateCountResponse = await fetch(`https://localhost:7095/api/Product/GetProductRateCount?productId=${item.id}`)
+                    }).format(item.variants.find(p => p.isDefault == true).afterDiscountPrice);
+                    var productRatingResponse = await fetch(`https://localhost:7095/api/ProductEAV/GetProductRating?productId=${item.id}`)
+                    var productRateCountResponse = await fetch(`https://localhost:7095/api/ProductEAV/GetProductRateCount?productId=${item.id}`)
                     var productRating = await productRatingResponse.json()
                     var productRateCount = await productRateCountResponse.json()
                     html += `
                     <div class="col-md-2 product-item align-items-center" style="width: 20%; padding-left: 0; padding-right: 0;">
                     <div class="card" style="border-radius: 0!important; height: 412px;">
-                                            <img src="${item.imagePath}" class="card-img-top" alt="${item.name} Image" style="height: 220px;">
+                                            <img src="${item.imagePath}" class="card-img-top" alt="${item.productName} Image" style="height: 220px;">
                                     <div class="card-body">
-                                            <div class="card-title text-ellipsis" style="line-height: 21px; height: 63px; font-size:14px;">${item.name}</div>
+                                            <div class="card-title text-ellipsis" style="line-height: 21px; height: 63px; font-size:14px;">${item.productName}</div>
                                         <p class="card-text">
                                                     <span style="position: relative; font-size:14px;color:#666;text-decoration:line-through">
                                                     ${formattedPrice}đ
                                             </span>
-                                                <strong style="font-size: 14px; color: #EB5757; background-color: #FFF0E9; margin-left: 8px;">-${item.discount}%</strong>
+                                                <strong style="font-size: 14px; color: #EB5757; background-color: #FFF0E9; margin-left: 8px;">-${item.variants.find(p => p.isDefault == true).discount}%</strong>
                                             <br />
                                                     <span style="font-size:18px;" class="text-danger fw-bolder">${formattedNewPrice}đ</span>
                                         </p>
                                         <div class="rating d-flex align-items-center">
                                                 <span class="text-dark" style="padding-right: 8px; font-size:14px;">${productRating}</span>
                                                 <i class="fa fa-star" style="padding-right: 8px; font-size:14px;"></i> <!-- Thẻ i tạo ra ngôi sao -->
-                                            <p style="margin:0;font-size:14px;color:#999999">(${productRateCount})</p>
+                                            <p style="margin:0;font-size:14px;color:#999999">${productRateCount}</p>
                                         </div>
                                     </div>
                                          <div product-id="${item.id}" class="product-detail">Xem chi tiết</div>

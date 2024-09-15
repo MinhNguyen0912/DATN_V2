@@ -14,7 +14,7 @@ namespace DATN.Core.Repositories.IRepositories
         public Task<string> GenerateVoucherAutoRegisterAsync(Guid userId);
         public Task<string> GenerateVoucherConditionAsync(Guid userId);
         //public Task GenerateVoucherActivationTimeAsync(DateTime activationTime);
-        public Task<bool> IsCheckedTotalPuschasePriceAsync(Guid userId);
+        //public Task<bool> IsCheckedTotalPuschasePriceAsync(Guid userId);
         public Task<bool> IsCheckedNumberBoughttAsync(Guid userId);
         List<Voucher> SearchVoucher(SearchVoucherRequest request);
         Voucher GetByIdCustom (int id);
