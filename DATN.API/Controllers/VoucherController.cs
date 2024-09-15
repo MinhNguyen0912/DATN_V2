@@ -109,17 +109,22 @@ namespace DATN.API.Controllers
             var batch = await _unitOfWork.BatchRepository.GetById(request.BatchId);
             foreach (var item in request.VoucherCodes)
             {
-                var voucher = new Voucher
+                var checkVoucherExist = _unitOfWork.VoucherRepository.GetAllVouchers().FirstOrDefault(v => v.Code == item);
+                if (checkVoucherExist == null)
                 {
-                    BatchId = request.BatchId,
-                    Code = item,
-                    Status = Core.Enum.VoucherStatus.Unpushlished
-                };
-                if (batch.EndDate != null)
-                {
-                    voucher.ExpiryDate = batch.EndDate;
+                    var voucher = new Voucher
+                    {
+                        BatchId = request.BatchId,
+                        Code = item,
+                        Status = Core.Enum.VoucherStatus.Unpushlished
+                    };
+                    if (batch.EndDate != null)
+                    {
+                        voucher.ExpiryDate = batch.EndDate;
+                    }
+                    await _unitOfWork.VoucherRepository.Create(voucher);
                 }
-                await _unitOfWork.VoucherRepository.Create(voucher);
+                
             }
             int result = _unitOfWork.SaveChanges();
             return Ok(result); // 201 Created
@@ -138,22 +143,22 @@ namespace DATN.API.Controllers
             {
                 return NotFound("Batch not found");
             }
-                try
+            try
+            {
+                foreach (var item in request.VoucherCodes)
                 {
-                    foreach (var item in request.VoucherCodes)
+                    var voucher = new Voucher
                     {
-                        var voucher = new Voucher
-                        {
-                            BatchId = request.BatchId,
-                            Code = item,
-                            Status = Core.Enum.VoucherStatus.Unpushlished,
-                            ExpiryDate = batch.EndDate ?? null,
-                            ActivationTime = request.ActivationTime // assuming you pass the activation time in the request
-                        };
-                        await _unitOfWork.VoucherRepository.Create(voucher);
-                    }
+                        BatchId = request.BatchId,
+                        Code = item,
+                        Status = Core.Enum.VoucherStatus.Unpushlished,
+                        ExpiryDate = batch.EndDate ?? null,
+                        ActivationTime = request.ActivationTime // assuming you pass the activation time in the request
+                    };
+                    await _unitOfWork.VoucherRepository.Create(voucher);
+                }
 
-                    int result = _unitOfWork.SaveChanges();
+                int result = _unitOfWork.SaveChanges();
 
 
                 // Schedule voucher activation using Hangfire
@@ -164,15 +169,13 @@ namespace DATN.API.Controllers
                 }
 
                 return Ok(result); // 201 Created
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, "Internal Server Error");
-                }
-            
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
+
         }
-
-
         // Method to activate vouchers based on the BatchId and ActivationTime
         //public async Task ActivateVouchers(Guid batchId, DateTime activationTime)
         //{
@@ -212,11 +215,20 @@ namespace DATN.API.Controllers
                 {
                     var voucher = availableVouchers[voucherIndex];
                     voucher.UserId = item.UserId;
-                    voucher.Status = Core.Enum.VoucherStatus.NotUsed;
-                    voucher.ReleaseDate = DateTime.Now;
+                    voucher.ActivationTime = item.ActivationTime;
                     if (voucher.Batch.ExpirationDate.HasValue)
                     {
-                        voucher.ExpiryDate = voucher.ReleaseDate.Value.AddDays(voucher.Batch.ExpirationDate.Value);
+                        voucher.ExpiryDate = voucher.ActivationTime.Value.AddDays(voucher.Batch.ExpirationDate.Value);
+                    }
+                    var activationDelay = item.ActivationTime - DateTime.Now;
+                    if (activationDelay > TimeSpan.Zero)
+                    {
+                        BackgroundJob.Schedule(() => _voucherService.GenerateVoucherActivationTimeAsync(item.ActivationTime), activationDelay);
+                    }
+                    else
+                    {
+                        voucher.Status = Core.Enum.VoucherStatus.NotUsed;
+                        voucher.ReleaseDate = DateTime.Now;
                     }
                     voucherIndex++;
                 }
@@ -253,6 +265,18 @@ namespace DATN.API.Controllers
             if (vouchers != null && vouchers.Any())
             {
                 var vouchersVM = _mapper.Map<List<VoucherVM>>(vouchers);
+                return Ok(vouchersVM);
+            }
+            return NoContent(); // Trả về 204 nếu không tìm thấy newfeed
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetVoucherByUserId(Guid id)
+        {
+            var vouchers = _unitOfWork.VoucherRepository.GetAllVouchers().Where(p => p.UserId == id).ToList();
+            var availableVouchers = vouchers.Where(v => v.Status == Core.Enum.VoucherStatus.NotUsed).ToList();
+            if (availableVouchers != null && availableVouchers.Any())
+            {
+                var vouchersVM = _mapper.Map<List<VoucherVM>>(availableVouchers);
                 return Ok(vouchersVM);
             }
             return NoContent(); // Trả về 204 nếu không tìm thấy newfeed

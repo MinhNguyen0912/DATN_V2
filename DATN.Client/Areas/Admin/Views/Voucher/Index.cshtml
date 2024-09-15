@@ -13,6 +13,8 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createVoucherModal">Tạo Voucher</button>
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createVoucherListModal">Tạo Danh Sách Voucher</button>
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#searchVoucher">Tìm kiếm</button>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#assignVoucher">Phát hành</button>
+
 </div>
 
 <table class="table">
@@ -169,29 +171,104 @@
             </div>
             <div class="modal-body">
                 <!-- Form for assign vouchers -->
-                    @{
-                        var availableVouchers = Model.Where(v => v.Status == DATN.Core.Enum.VoucherStatus.Unpushlished).Count();
-                    }
-                    <div class="mb-3">
-                        <label class="form-label">Tổng số voucher khả dụng: </label>
-                        <span>@availableVouchers</span>                       
-                    </div>
-                    <div class="mb-3">
-                    <input type="radio" name="userType" value="all" id="allUsers" />
+                @{
+                    var availableVouchers = Model.Where(v => v.Status == DATN.Core.Enum.VoucherStatus.Unpushlished).Count();
+                }
+                <div class="mb-3">
+                    <label class="form-label">Tổng số voucher khả dụng: </label>
+                    <span>@availableVouchers</span>
+                </div>
+
+                <!-- Radio buttons for selecting the user type -->
+                <div class="mb-3">
+                    <input type="radio" name="userType" value="all" id="allUsers" checked />
                     <label for="allUsers">Phát cho tất cả người dùng</label>
                     <input type="radio" name="userType" value="specific" id="specificUsers" />
                     <label for="specificUsers">Phát cho người dùng cụ thể</label>
-                    </div>
-                    <div class="mb-3">
-                        <form action="/" method="post">
-                            
-                        </form>
-                    </div>
-                    <div class="mb-3">
-                        @{
-                            
+                </div>
+
+                <!-- Form for all users -->
+                <div class="mb-3" id="allUsersForm">
+                    <form asp-action="AssignVoucher" asp-controller="Voucher" method="post">
+                        <!-- BatchId -->
+                        <input type="hidden" name="batchId" value="@batchId" />
+
+                        <!-- Activation Time -->
+                        <div class="mb-3">
+                            <label for="activation-time">Activation Time:</label>
+                            <input type="datetime-local" id="activation-time" name="ActivationTime" required />
+                        </div>
+
+                        <!-- Total Voucher Assign for all users -->
+                        <div class="mb-3">
+                            <label for="total-assign">Total Vouchers for Each User:</label>
+                            <input type="number" id="total-assign" name="TotalVoucherAssign" min="1" required />
+                        </div>
+
+                        <!-- Hidden Users -->
+                        @if (ViewBag.Users is List<DATN.Core.Models.AppUser> users && users.Any())
+                        {
+                            @for (int i = 0; i < users.Count; i++)
+                            {
+                                <!-- Hidden Inputs for ListAssign -->
+                                <input type="hidden" name="ListAssign[@i].UserId" value="@users[i].Id" />
+                                <input type="hidden" class="assign-time" name="ListAssign[@i].ActivationTime" value="" />
+                                <input type="hidden" name="ListAssign[@i].TotalVoucherAssign" value="" class="total-assign" />
+                            }
                         }
-                    </div>
+
+                        <button type="submit" class="btn btn-primary">Assign Vouchers</button>
+                    </form>
+                </div>
+
+                <!-- Form for specific users -->
+                <div class="mb-3" id="specificUsersForm" style="display: none;">
+                    <form id="specificUsersFormContent" asp-action="AssignVoucher" asp-controller="Voucher" method="post">
+                        <!-- BatchId -->
+                        <input type="hidden" name="BatchId" value="@batchId" />
+
+                        <!-- Common Activation Time for all users -->
+                        <div class="mb-3">
+                            <label for="activation-time">Thời gian phát hành:</label>
+                            <input type="datetime-local" id="activation-time" name="ActivationTime" required />
+                        </div>
+
+                        <!-- User selection and voucher assignment -->
+                        <div class="mb-3">
+                            <label>Chọn người dùng và số lượng voucher:</label>
+                            @if (ViewBag.Users is List<DATN.Core.Models.AppUser> lstusers && lstusers.Any())
+                            {
+                                <div>
+                                    @for (int i = 0; i < lstusers.Count; i++)
+                                    {
+                                        var user = lstusers[i];
+                                        <div>
+                                            <!-- Checkbox to select users -->
+                                            <input type="checkbox" id="user-@user.Id" class="user-checkbox" />
+                                            <label for="user-@user.Id">@user.UserName</label>
+
+                                            <!-- Voucher quantity for each user -->
+                                            <label for="total-assign-@i">Số lượng voucher:</label>
+                                            <input type="number" id="total-assign-@i" name="ListAssign[@i].TotalVoucherAssign" value="1" min="1" class="voucher-quantity" disabled required />
+
+                                            <!-- Hidden Activation Time -->
+                                            <input type="hidden" class="assign-time" name="ListAssign[@i].ActivationTime" value="" />
+
+                                            <!-- Hidden UserId -->
+                                            <input type="hidden" name="ListAssign[@i].UserId" value="@user.Id" disabled />
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p>Không có người dùng nào để chọn.</p>
+                            }
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Phát hành</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -314,17 +391,68 @@
                 }
                 return result;
             }
-            document.getElementsByName('userType').forEach(function (radio) {
-                radio.addEventListener('change', function () {
-                    if (this.value === 'specific') {
-                        document.getElementById('specificUsers').innerHTML = 'Phát cho người dùng cụ thể';
+            // Listen for changes on radio buttons
+            document.getElementById('allUsers').addEventListener('change', function () {
+                if (this.checked) {
+                    document.getElementById('allUsersForm').style.display = 'block';
+                    document.getElementById('specificUsersForm').style.display = 'none';
+                }
+            });
+
+            document.getElementById('specificUsers').addEventListener('change', function () {
+                if (this.checked) {
+                    document.getElementById('allUsersForm').style.display = 'none';
+                    document.getElementById('specificUsersForm').style.display = 'block';
+                }
+            });
+
+            document.getElementById('activation-time').addEventListener('change', function () {
+                var activationTime = this.value;
+
+                // Cập nhật giá trị ActivationTime cho tất cả input ẩn
+                document.querySelectorAll('.assign-time').forEach(function (input) {
+                    input.value = activationTime;
+                });
+            });
+
+            document.getElementById('total-assign').addEventListener('input', function () {
+                var totalAssign = this.value;
+
+                // Cập nhật giá trị TotalVoucherAssign cho tất cả input ẩn
+                document.querySelectorAll('.total-assign').forEach(function (input) {
+                    input.value = totalAssign;
+                });
+            });
+            // Enable/disable input fields based on checkbox selection
+            const checkboxes = document.querySelectorAll('.user-checkbox');
+            checkboxes.forEach((checkbox, index) => {
+                checkbox.addEventListener('change', function () {
+                    const parent = this.parentElement;
+                    const voucherQuantity = parent.querySelector('.voucher-quantity');
+                    const userIdInput = parent.querySelector('input[type="hidden"][name="ListAssign[' + index + '].UserId"]');
+                    const activationTimeInput = parent.querySelector('.assign-time');
+
+                    if (this.checked) {
+                        voucherQuantity.disabled = false;
+                        userIdInput.disabled = false;
+                        activationTimeInput.disabled = false;
                     } else {
-                        document.getElementById('specificUsers').innerHTML = 'Phát cho người dùng cụ thể';
+                        voucherQuantity.disabled = true;
+                        userIdInput.disabled = true;
+                        activationTimeInput.disabled = true;
                     }
                 });
             });
-        });
 
+            // Form submission validation
+            document.getElementById('specificUsersFormContent').addEventListener('submit', function (event) {
+                const selectedCheckboxes = Array.from(document.querySelectorAll('.user-checkbox:checked'));
+                if (selectedCheckboxes.length === 0) {
+                    alert('Vui lòng chọn ít nhất một người dùng để phát voucher.');
+                    event.preventDefault();
+                }
+            });
+        });
     </script>
 
 }

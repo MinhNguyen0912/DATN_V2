@@ -9,6 +9,7 @@ using DATN.Core.ViewModel.GHNVM;
 using DATN.Core.ViewModel.InvoiceDetailVM;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.PendingCartVM;
+using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModels.VNPayVM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,13 +41,24 @@ namespace DATN.Client.Controllers
             {
                 return Redirect("~/Identity/Account/Login");
             }
-            var pendingCart = await _clientService.Post<PendingCartVM>("https://localhost:7095/api/PendingCart/GetByUserId", user.UserId);
-            //var voucher = await _clientService.GetList<VoucherUser>($"https://localhost:7095/api/VoucherUser/GetVoucherByUser?Id={user.UserId}");
+            var pendingCart = await _clientService.Post<PendingCartVM>("https://localhost:7095/api/PendingCart/GetByUserId",user.UserId);
+            var voucher = await _clientService.GetList<VoucherVM>($"https://localhost:7095/api/Voucher/GetVoucherByUserId/{user.UserId}");
+            decimal totalMoney = 0;
+
+            // Kiểm tra nếu giỏ hàng không null và có các biến thể sản phẩm
+            if (pendingCart != null && pendingCart.PendingCartVariants != null)
+            {
+                totalMoney = pendingCart.PendingCartVariants.Sum(p => p.Variant.AfterDiscountPrice * p.Quantity);
+            }
+
+            // Lọc những voucher hợp lệ dựa trên tổng số tiền và giá trị MinOrderAmount của từng voucher
+            var availableVouchers = voucher.Where(p => totalMoney >= p.Batch.MinOrderAmount).ToList();
             try
             {
                 //ViewData["voucher"] = voucher;
                 ViewData["user"] = user;
                 ViewData["pendingCart"] = pendingCart;
+                ViewData["voucher"] = availableVouchers;
             }
             catch (Exception ex)
             {

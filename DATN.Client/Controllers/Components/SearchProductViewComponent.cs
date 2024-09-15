@@ -20,7 +20,7 @@ namespace DATN.Client.Controllers.Components
         public async Task<IViewComponentResult> InvokeAsync(string? search, int page = 1, int pageSize = 10)
         {
             // Gọi API để lấy dữ liệu phân trang
-            var productsPaging = await _clientService.Get<ProductPaging>($"{ApiPaths.Product}/GetProductBySearch?search={search}&page={page}&pageSize={pageSize}");
+            var productsPaging = await _clientService.Get<ProductPaging>($"{ApiPaths.ProductEAV}/GetProductBySearch?search={search}&page={page}&pageSize={pageSize}");
 
             // Tạo danh sách sản phẩm và số lượng sản phẩm
             var listProductVM = new List<ProductVM_EAV>();

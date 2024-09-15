@@ -1,9 +1,10 @@
 ﻿@using DATN.Core.Enum
+@using DATN.Core.Model
 @using DATN.Core.Model.Product_EAV
 @using DATN.Core.ViewModel.BatchVM
 @using DATN.Core.ViewModel.CategoryVM
 @using DATN.Core.ViewModel.Product_EAV
-@model CreateBatchRequest
+@model Batch 
 
 @{
     ViewData["Title"] = "Create Batch";
@@ -20,7 +21,7 @@
 </style>
 <h2>Tạo Đợt Phát Hành</h2>
 
-<form asp-action="Create" method="post">
+<form asp-action="Edit" method="post">
     <!-- Thông tin Đợt Phát Hành -->
     <fieldset>
         <legend>Thông tin Đợt Phát Hành</legend>
@@ -125,7 +126,7 @@
             const discountAmount = document.getElementById('DiscountAmount');
             const maxDiscountField = document.getElementById('maxDiscountAmountField');
             const startDate = document.getElementById('StartDate');
-            const endDate = document.getElementById('EndDate'); 
+            const endDate = document.getElementById('EndDate');
 
             function updateFields() {
                 if (voucherType.value === '0') {

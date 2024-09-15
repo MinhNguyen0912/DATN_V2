@@ -214,12 +214,12 @@ namespace DATN.Core.Data
             );
             #endregion
             #region InvoiceDetail
-            //modelBuilder.Entity<InvoiceDetail>().HasData(
-            //    new InvoiceDetail { InvoiceDetailId = 1, InvoiceId = 1, Quantity = 2, ProductAttributeId = 1, NewPrice = 10000000, PuscharPrice = 9354545 , OldPrice = 10290000 },
-            //    new InvoiceDetail { InvoiceDetailId = 2, InvoiceId = 2, Quantity = 1, ProductAttributeId = 2, NewPrice = 11000000, PuscharPrice = 10809091, OldPrice= 11990000 },
-            //    new InvoiceDetail { InvoiceDetailId = 3, InvoiceId = 3, Quantity = 1, ProductAttributeId = 3, NewPrice = 11500000, PuscharPrice = 10627273, OldPrice= 11690000 },
-            //    new InvoiceDetail { InvoiceDetailId = 4, InvoiceId = 3, Quantity = 1, ProductAttributeId = 2, NewPrice = 11000000, PuscharPrice = 10809091, OldPrice = 11990000 }
-            //);
+            modelBuilder.Entity<InvoiceDetail>().HasData(
+                new InvoiceDetail { InvoiceDetailId = 1, InvoiceId = 1, Quantity = 2, VariantId = 1, NewPrice = 70000, PuscharPrice = 50000, OldPrice = 75000 },
+                new InvoiceDetail { InvoiceDetailId = 2, InvoiceId = 1, Quantity = 1, VariantId = 2, NewPrice = 71000, PuscharPrice = 52000, OldPrice = 78000 },
+                new InvoiceDetail { InvoiceDetailId = 3, InvoiceId = 1, Quantity = 1, VariantId = 5, NewPrice = 71000, PuscharPrice = 49000, OldPrice = 74000 }
+  
+            );
             #endregion
             #region Comment
             //modelBuilder.Entity<Comment>().HasData(
@@ -229,18 +229,16 @@ namespace DATN.Core.Data
             //);
             #endregion
             #region Invoice
-            //modelBuilder.Entity<Invoice>().HasData(
-            //    new Invoice { InvoiceId = 1, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), VoucherUserId=1 },
-            //    new Invoice { InvoiceId = 2, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749") },
-            //    new Invoice { InvoiceId = 3, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749") }
-            //);
+            modelBuilder.Entity<Invoice>().HasData(
+                new Invoice { InvoiceId = 1, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),Note="abc-0989982563-Hải Dương-0-0",VoucherId=1 }
+
+            );
             #endregion
             #region PaymentInfo
-            //modelBuilder.Entity<PaymentInfo>().HasData(
-            //    new PaymentInfo { PaymentInfoId = 1, InvoiceId = 1, PaymentMethod = PaymentMethod.VNPay, PaymentStatus = PaymentStatus.Success },
-            //    new PaymentInfo { PaymentInfoId = 2, InvoiceId = 2, PaymentMethod = PaymentMethod.MomoQR, PaymentStatus = PaymentStatus.Success },
-            //    new PaymentInfo { PaymentInfoId = 3, InvoiceId = 3, PaymentMethod = PaymentMethod.Cash, PaymentStatus = PaymentStatus.Success }
-            //);
+            modelBuilder.Entity<PaymentInfo>().HasData(
+                new PaymentInfo { PaymentInfoId = 1, InvoiceId = 1, PaymentMethod = PaymentMethod.Cash, PaymentStatus = PaymentStatus.Success }
+   
+            );
             #endregion
             #region Role
             modelBuilder.Entity<IdentityRole<Guid>>().HasData(
@@ -297,8 +295,6 @@ namespace DATN.Core.Data
             // Add more seed data as needed
             );
             #endregion
-
-
             #region ProductEAV
             // Seed Product
             modelBuilder.Entity<Product_EAV>().HasData(
@@ -455,13 +451,13 @@ namespace DATN.Core.Data
             new Batch
             {
                 Id = 1,
-                Name = "Batch 1",
-                Description = "First batch of vouchers",
+                Name = "GIAMGIA100K",
+                Description = "Giảm 100k cho hóa đơn từ 500k",
                 Type = VoucherType.discount,
                 DiscountType = DiscountType.Amount,
                 DiscountAmount = 100000, // VNĐ
                 MinOrderAmount = 500000, // VNĐ
-                MaxDiscountAmount = 200000, // VNĐ
+                MaxDiscountAmount = 0, // VNĐ
                 StartDate = DateTime.UtcNow,
                 EndDate = DateTime.UtcNow.AddMonths(1),
                 IsActive = true
@@ -469,8 +465,8 @@ namespace DATN.Core.Data
             new Batch
             {
                 Id = 2,
-                Name = "Batch 2",
-                Description = "Second batch of vouchers",
+                Name = "FREESHIP200",
+                Description = "Freeship cho hóa đơn trên 200k",
                 Type = VoucherType.freeship,
                 DiscountType = DiscountType.Percent,
                 DiscountAmount = 100, // 100% Free shipping
@@ -483,13 +479,13 @@ namespace DATN.Core.Data
             new Batch
             {
                 Id = 3,
-                Name = "Batch 3",
-                Description = "Third batch of vouchers",
+                Name = "GIAM200k",
+                Description = "Giảm 200k cho hóa đơn trên 1000k",
                 Type = VoucherType.discount,
                 DiscountType = DiscountType.Amount,
                 DiscountAmount = 200000, // VNĐ
                 MinOrderAmount = 1000000, // VNĐ
-                MaxDiscountAmount = 400000, // VNĐ
+                MaxDiscountAmount = 0, // VNĐ
                 StartDate = DateTime.UtcNow,
                 EndDate = DateTime.UtcNow.AddMonths(2),
                 IsActive = true
@@ -497,8 +493,8 @@ namespace DATN.Core.Data
             new Batch
             {
                 Id = 4,
-                Name = "Batch 4",
-                Description = "Fourth batch of vouchers",
+                Name = "GiAMSHIP50%",
+                Description = "Giảm 50% tiền giao hàng cho hóa đơn trên 300k",
                 Type = VoucherType.freeship,
                 DiscountType = DiscountType.Percent,
                 DiscountAmount = 50, // 50% Free shipping
@@ -507,8 +503,36 @@ namespace DATN.Core.Data
                 StartDate = DateTime.UtcNow,
                 EndDate = DateTime.UtcNow.AddMonths(2),
                 IsActive = true
-            }
-);
+            },
+            new Batch
+            {
+                Id = 5,
+                Name = "GIAMGIA10%",
+                Description = "Giảm 10% cho hóa đơn cho hóa đơn trên 300000đ",
+                Type = VoucherType.discount,
+                DiscountType = DiscountType.Percent,
+                DiscountAmount = 10,
+                MinOrderAmount = 300000, // VNĐ
+                MaxDiscountAmount = 100000, // VNĐ
+                StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddMonths(2),
+                IsActive = true
+            },
+                        new Batch
+                        {
+                            Id = 6,
+                            Name = "NEWUSERAU",
+                            Description = "Chào mừng thành viên mới",
+                            Type = VoucherType.discount,
+                            DiscountType = DiscountType.Percent,
+                            DiscountAmount = 10,
+                            MinOrderAmount = 300000, // VNĐ
+                            MaxDiscountAmount = 100000, // VNĐ
+                            StartDate = DateTime.UtcNow,
+                            EndDate = DateTime.UtcNow.AddMonths(2),
+                            IsActive = true
+                        }
+                    );
             #endregion
             #region Voucher
             var customerUserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749");
@@ -538,73 +562,6 @@ namespace DATN.Core.Data
                 new Voucher { Id = 15, Code = "BATCH4_VOUCHER3", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now },
                 new Voucher { Id = 16, Code = "BATCH4_VOUCHER4", Status = VoucherStatus.NotUsed, BatchId = 4, UserId = customerUserId, ExpiryDate = DateTime.UtcNow.AddMonths(2), ReleaseDate = DateTime.Now }
             );
-            #endregion
-
-            #region VoucherCate
-            modelBuilder.Entity<VoucherCate>().HasData(
-    // Batch 1: Apply to all categories
-    new VoucherCate { Id = 1, BatchId = 1, CategoryId = 1 },
-    new VoucherCate { Id = 2, BatchId = 1, CategoryId = 2 },
-    new VoucherCate { Id = 3, BatchId = 1, CategoryId = 3 },
-    new VoucherCate { Id = 4, BatchId = 1, CategoryId = 4 },
-    new VoucherCate { Id = 5, BatchId = 1, CategoryId = 5 },
-    new VoucherCate { Id = 6, BatchId = 1, CategoryId = 6 },
-    new VoucherCate { Id = 7, BatchId = 1, CategoryId = 7 },
-    new VoucherCate { Id = 8, BatchId = 1, CategoryId = 8 },
-    new VoucherCate { Id = 9, BatchId = 1, CategoryId = 9 },
-    new VoucherCate { Id = 10, BatchId = 1, CategoryId = 10 },
-    new VoucherCate { Id = 11, BatchId = 1, CategoryId = 11 },
-    new VoucherCate { Id = 12, BatchId = 1, CategoryId = 12 },
-    new VoucherCate { Id = 13, BatchId = 1, CategoryId = 13 },
-    new VoucherCate { Id = 14, BatchId = 1, CategoryId = 14 },
-
-    // Batch 2: Apply to all categories
-    new VoucherCate { Id = 15, BatchId = 2, CategoryId = 1 },
-    new VoucherCate { Id = 16, BatchId = 2, CategoryId = 2 },
-    new VoucherCate { Id = 17, BatchId = 2, CategoryId = 3 },
-    new VoucherCate { Id = 18, BatchId = 2, CategoryId = 4 },
-    new VoucherCate { Id = 19, BatchId = 2, CategoryId = 5 },
-    new VoucherCate { Id = 20, BatchId = 2, CategoryId = 6 },
-    new VoucherCate { Id = 21, BatchId = 2, CategoryId = 7 },
-    new VoucherCate { Id = 22, BatchId = 2, CategoryId = 8 },
-    new VoucherCate { Id = 23, BatchId = 2, CategoryId = 9 },
-    new VoucherCate { Id = 24, BatchId = 2, CategoryId = 10 },
-    new VoucherCate { Id = 25, BatchId = 2, CategoryId = 11 },
-    new VoucherCate { Id = 26, BatchId = 2, CategoryId = 12 },
-    new VoucherCate { Id = 27, BatchId = 2, CategoryId = 13 },
-    new VoucherCate { Id = 28, BatchId = 2, CategoryId = 14 },
-
-    // Batch 3: Random categories
-    new VoucherCate { Id = 29, BatchId = 3, CategoryId = 1 },
-    new VoucherCate { Id = 30, BatchId = 3, CategoryId = 3 },
-    new VoucherCate { Id = 31, BatchId = 3, CategoryId = 5 },
-    new VoucherCate { Id = 32, BatchId = 3, CategoryId = 7 },
-    new VoucherCate { Id = 33, BatchId = 3, CategoryId = 9 },
-
-    // Batch 4: Random categories
-    new VoucherCate { Id = 34, BatchId = 4, CategoryId = 2 },
-    new VoucherCate { Id = 35, BatchId = 4, CategoryId = 4 },
-    new VoucherCate { Id = 36, BatchId = 4, CategoryId = 6 },
-    new VoucherCate { Id = 37, BatchId = 4, CategoryId = 8 },
-    new VoucherCate { Id = 38, BatchId = 4, CategoryId = 10 }
-);
-            #endregion
-            #region VoucherProduct
-            modelBuilder.Entity<VoucherProduct>().HasData(
-    // Batch 1: Apply to all products
-    new VoucherProduct { Id = 1, BatchId = 1, ProductId = 1 },
-    new VoucherProduct { Id = 2, BatchId = 1, ProductId = 2 },
-
-    // Batch 2: Apply to all products
-    new VoucherProduct { Id = 3, BatchId = 2, ProductId = 1 },
-    new VoucherProduct { Id = 4, BatchId = 2, ProductId = 2 },
-
-    // Batch 3: Random products
-    new VoucherProduct { Id = 5, BatchId = 3, ProductId = 1 },
-
-    // Batch 4: Random products
-    new VoucherProduct { Id = 6, BatchId = 4, ProductId = 2 }
-);
             #endregion
         }
 

@@ -32,9 +32,7 @@ builder.Services.AddControllers()
     });
 
 //Add hangfire service
-//builder.Services.AddHangfireServer();
-//builder.Services.AddHangfire(x => x.UseSqlServerStorage("DATNDbContextConnection"));
-//builder.Services.AddScoped<VoucherService>();
+
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DATNDbContextConnection") ?? throw new InvalidOperationException("Connection string 'DATNDbContextConnection' not found.");
 builder.Services.AddDbContext<DATNDbContext>(options =>
@@ -99,7 +97,7 @@ if (app.Environment.IsDevelopment())
 
 //app.MigrationDataBase();
 
-//app.UseHangfireDashboard();
+app.UseHangfireDashboard();
 app.UseHttpsRedirection();
 app.UseSession();
 app.UseRouting();

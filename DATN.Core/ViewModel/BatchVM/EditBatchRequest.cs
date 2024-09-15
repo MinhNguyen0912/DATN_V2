@@ -1,17 +1,16 @@
 ﻿using DATN.Core.Enum;
-using DATN.Core.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DATN.Core.ViewModel.BatchVM
 {
-    using System.ComponentModel.DataAnnotations;
-
-    public class CreateBatchRequest
+    public class EditBatchRequest
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Tên đợt phát hành là bắt buộc.")]
         [StringLength(100, ErrorMessage = "Tên đợt phát hành không được vượt quá 100 ký tự.")]
         public string? Name { get; set; }
@@ -22,7 +21,7 @@ namespace DATN.Core.ViewModel.BatchVM
         [Required(ErrorMessage = "Kiểu giảm giá là bắt buộc.")]
         public DiscountType DiscountType { get; set; }
         [Required(ErrorMessage = "Số tiền giảm giá là bắt buộc.")]
-        [Range(1, double.MaxValue, ErrorMessage = "Số tiền giảm giá phải là hợp lệ")]
+        [Range(0, double.MaxValue, ErrorMessage = "Số tiền giảm giá phải là số dương.")]
         public decimal? DiscountAmount { get; set; }
         [Required(ErrorMessage = "Số tiền đơn hàng tối thiểu là bắt buộc.")]
         [Range(0, double.MaxValue, ErrorMessage = "Số tiền đơn hàng tối thiểu phải là số dương.")]
@@ -36,7 +35,6 @@ namespace DATN.Core.ViewModel.BatchVM
         [Range(1, int.MaxValue, ErrorMessage = "Thời gian hết hạn phải là số nguyên dương.")]
         public int? ExpirationDate { get; set; }
         public bool? IsAutoRelease { get; set; }
-        public bool? IsActive { get; set; }
+        public bool? IsActive { get; set; } = true;
     }
-
 }

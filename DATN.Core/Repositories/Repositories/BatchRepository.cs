@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,11 @@ namespace DATN.Core.Repositories.Repositories
         public BatchRepository(DATNDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
+        }
+
+        public Task<bool> AnyAsync(Expression<Func<Batch, bool>> predicate)
+        {
+            return Context.Batches.AnyAsync(predicate);
         }
 
         public BatchPaging batchPaging(BatchPaging request)
@@ -42,7 +48,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public Batch GetByIdCustom(int id)
         {
-            return Context.Batches.Include(v=>v.Vouchers).Include(c=>c.VoucherCates).ThenInclude(c=>c.Category).Include(p=>p.VoucherProducts).ThenInclude(p=>p.Product).FirstOrDefault(x => x.Id == id);
+            return Context.Batches.FirstOrDefault(x => x.Id == id);
         }
     }
 }

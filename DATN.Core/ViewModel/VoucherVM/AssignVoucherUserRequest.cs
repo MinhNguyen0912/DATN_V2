@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DATN.Core.ViewModel.VoucherVM
 {
-    public class AssignVoucherUserRequest
-    {
-        public Guid UserId { get; set; }
-        public int TotalVoucherAssign { get; set; }
-    }
+        public class AssignVoucherUserRequest
+        {
+            public Guid UserId { get; set; }
+            public int TotalVoucherAssign { get; set; }
+            public DateTime ActivationTime { get; set; }
+        }
 }
