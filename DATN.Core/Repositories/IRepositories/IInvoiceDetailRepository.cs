@@ -7,5 +7,6 @@ namespace DATN.Core.Repositories.IRepositories
     public interface IInvoiceDetailRepository : IBaseRepository<InvoiceDetail>
     {
         public List<InvoiceDetailForCommentVM> GetInvoiceDetailByInvoiceId(int invoiceId, Guid userId);
+        public List<InvoiceDetail> FincByInvoiceIdCustom(int invoiceId);
     }
 }

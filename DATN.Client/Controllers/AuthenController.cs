@@ -8,12 +8,14 @@ using DATN.Core.ViewModels;
 using DATN.Core.ViewModels.AuthenViewModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace DATN.Client.Controllers
 {
+    [AllowAnonymous]
     public class AuthenController : Controller
     {
         private readonly ClientService _clientService; // Service for making API requests
@@ -319,6 +321,7 @@ namespace DATN.Client.Controllers
                         var codeactive = await _userManager.GenerateEmailConfirmationTokenAsync(userExist);
                         await _userManager.ConfirmEmailAsync(userExist, codeactive);
                         await _signInManager.SignInAsync(userExist, isPersistent: false, info.LoginProvider);
+                        await _userManager.AddToRoleAsync(userExist, "User");
                         var user = await _userManager.FindByNameAsync(Email);
                         var roles = await _userManager.GetRolesAsync(user);
 
