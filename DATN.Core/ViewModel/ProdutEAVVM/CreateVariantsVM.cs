@@ -11,12 +11,14 @@ namespace DATN.Core.ViewModel.ProdutEAVVM
     {
         public string Name { get; set; }
         public int Quantity { get; set; }
-        public decimal ImportPrice { get; set; }
-        public decimal SellPrice { get; set; }
+        public decimal PuscharPrice { get; set; }
+        public decimal SalelPrice { get; set; }
         public decimal AfterDiscountPrice { get; set; }
-        public int YearOfManufacture { get; set; }
+        public int MaximumQuantityPerOrder { get; set; }
+        public int Weight { get; set; }
         public bool IsDefault { get; set; }
 
+        List<int> attributeValueIds { get; set; } = new List<int>();
         // List of specifications for each variant
         public List<CreateSpecificationsVM> Specifications { get; set; } = new List<CreateSpecificationsVM>();
     }

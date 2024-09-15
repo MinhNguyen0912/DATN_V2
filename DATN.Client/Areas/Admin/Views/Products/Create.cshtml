@@ -250,14 +250,15 @@
                         <th>Giá nhập</th>
                         <th>Giá bán</th>
                         <th>Giá sau chiết khấu</th>
-                        <th>Năm sản xuất</th>
+                        <th>Số lượng tối đa</th>
+                        <th>Cân nặng</th>
                         <th>Biến thể mặc định</th>
                         <th>Hành động</th>
                         <th>Thông số KT</th>
                     </tr>
                 </thead>
                 <tbody id="variant-list">
-                    <!-- Các biến thể sẽ được hiển thị tại đây -->
+                    <!-- Variants will be generated here -->
                 </tbody>
             </table>
         </div>
@@ -322,8 +323,8 @@
                                 <div class="value-group">
                                     ${data.map(value => `
                                         <div class="input-group mb-2">
-                                            <input type="text" class="form-control" name="attributeValues[]" value="${value.valueText}" />
-                                            <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
+                                                    <input type="text" class="form-control" data-id="${value.valueId}" name="attributeValues[]" value="${value.valueText}" />
+                                                    <input type="" name="attributeValueIds[]" value="${value.valueId}" />
                                             <div class="input-group-append">
                                                 <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
                                             </div>
@@ -372,16 +373,37 @@
 
         </script>
     <!-- Gen bien the -->
-    @* <script>
+    <script>
+        // Hàm để lấy danh sách ID thuộc tính (hidden)
+        function getAttributeValueIds(variant) {
+
+            console.log(variant)
+            // Tìm các input ẩn chứa attributeValueId liên quan đến variant
+            return variant
+                .map(value => {
+                    // Tìm input ẩn chứa attributeValues (giá trị thuộc tính) dựa trên text của thuộc tính
+                    const hiddenInput = document.querySelector(`input[name="attributeValues[]"][value="${value}"]`);
+                    if (hiddenInput) {
+                        // Lấy attributeValueId từ input ẩn tương ứng (sibling tiếp theo)
+                        const attributeValueIdInput = hiddenInput.nextElementSibling;
+                        return attributeValueIdInput ? attributeValueIdInput.value : '';
+                    }
+                    return '';
+                })
+                .filter(id => id !== '') // Loại bỏ các giá trị rỗng
+                .join(','); // Trả về chuỗi các ID được phân tách bằng dấu phẩy
+        }
+
+
+        // Hàm tạo biến thể
         function generateVariants() {
             const variantList = document.getElementById('variant-list');
             const attributeBlocks = document.querySelectorAll('.attribute-block');
-
             const attributeValues = [];
 
             // Lấy tất cả các giá trị thuộc tính
             attributeBlocks.forEach(block => {
-                const values = Array.from(block.querySelectorAll('input[name="attributeValues[]"]')).map(input => input.value);
+                const values = Array.from(block.querySelectorAll('input[name="attributeValues[]"]')).map(input => new { input.value, input.data-id });
                 attributeValues.push(values);
             });
 
@@ -391,91 +413,88 @@
             // Tạo các biến thể bằng cách kết hợp các giá trị thuộc tính
             const variants = cartesian(attributeValues);
             variants.forEach((variant, index) => {
-                const variantName = variant.join(' / '); // Kết hợp tên biến thể
-
+                const variantName = variant.map(item => item.name).join(' / '); // Tên biến thể kết hợp
+                const variantIds = variant.map(item => item.data-id).join(' / ')
+                console.log(variant)
+                console.log(variantName)
+                console.log(variantIds)
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td>${variantName}</td>
-                        <td><input type="number" class="form-control quantity" value="10" min="1" oninput="validateInput(this, 1)" /></td>
-                        <td><input type="number" class="form-control price-import" value="10000000" min="1000000" oninput="validateInput(this, 1000000)" /></td>
-                        <td><input type="number" class="form-control price-sell" value="11000000" min="1" oninput="updatePriceDiscount(this)" /></td>
-                        <td><input type="number" class="form-control after-discount-price" value="11000000" min="1" oninput="validateInput(this, 1)" /></td>
-                        <td><input type="number" class="form-control year" value="2024" /></td>
-                        <td><input type="radio" name="defaultVariant" class="default-variant" required ${index === 0 ? 'checked' : ''} /></td>
-                        <td><button type="button" class="btn btn-danger" onclick="removeVariant(this)">Xóa</button></td>
-                    `;
+                    <td>${index + 1}</td>
+                    <td>
+                        <input type="hidden" name="Variants[${index}].Name" value="${variantName}" />
+                        // <input type="" name="Variants[${index}].attributeValueIds" value="${getAttributeValueIds(variant)}" 
+                        ${variantName}
+                    </td>
+                    <td><input type="number" class="form-control" name="Variants[${index}].Quantity" value="10" min="1" /></td>
+                    <td><input type="number" class="form-control" name="Variants[${index}].PuscharPrice" value="10000000" min="1000000" /></td>
+                    <td><input type="number" class="form-control" name="Variants[${index}].SellPrice" value="11000000" /></td>
+                    <td><input type="number" class="form-control" name="Variants[${index}].AfterDiscountPrice" value="11000000" /></td>
+                    <td><input type="number" class="form-control" name="Variants[${index}].MaximumQuantityPerOrder" value="3" /></td>
+                    <td><input type="number" class="form-control" name="Variants[${index}].Weight" value="5000" /></td>
+                    <td>
+                        <input type="radio" name="defaultVariant" value="${index}" ${index === 0 ? 'checked' : ''} />
+                        <input type="hidden" name="Variants[${index}].IsDefault" value="${index === 0}" />
+                    </td>
+                    <td><button type="button" class="btn btn-danger" onclick="removeVariant(this)">Xóa</button></td>
+                    <td><button type="button" class="btn btn-primary" onclick="toggleSpecifications(this, ${index})">+</button></td>
+                `;
+
+                const specRow = document.createElement('tr');
+                specRow.classList.add('specifications-row');
+                specRow.style.display = 'none'; // Ban đầu ẩn
+
+                specRow.innerHTML = `
+                    <td colspan="10">
+                        <div class="variant-specifications">
+                            <div class="specification-list" id="specification-list-${index}"></div>
+                            <button type="button" class="btn btn-secondary" onclick="addSpecificationRow(${index})">+ Thêm thông số</button>
+                        </div>
+                    </td>
+                `;
 
                 variantList.appendChild(row);
-            });
-
-            // Gán sự kiện để tính toán giá sau chiết khấu khi giá bán thay đổi
-            updatePriceSell();
-        }
-
-        // Hàm tính giá sau chiết khấu khi giá bán thay đổi
-        function updatePriceSell() {
-            const priceSellInputs = document.querySelectorAll('.price-sell');
-
-            priceSellInputs.forEach(priceSellInput => {
-                priceSellInput.addEventListener('input', function () {
-                    const afterDiscountInput = priceSellInput.closest('tr').querySelector('.after-discount-price');
-                    const sellPrice = parseInt(priceSellInput.value) || 0;
-                    afterDiscountInput.value = sellPrice; // Giá sau chiết khấu = giá bán (có thể thêm logic chiết khấu tại đây)
-                });
+                variantList.appendChild(specRow);
             });
         }
 
-        // Hàm cập nhật giá trị của AfterDiscountPrice khi giá bán thay đổi
-        function updatePriceDiscount(input) {
-            const row = input.closest('tr');
-            const afterDiscountInput = row.querySelector('.after-discount-price');
-            const sellPrice = parseInt(input.value) || 0;
-            afterDiscountInput.value = sellPrice; // AfterDiscountPrice = Giá bán (thay đổi nếu cần)
+        // Hàm lấy danh sách ID thuộc tính (hidden)
+        function getAttributeValueIds(variant) {
+            // Simulate getting attribute value IDs based on variant
+            return variant.map(value => value + "_id").join(','); // giả lập ID, bạn có thể sửa lại để lấy ID thực tế
         }
 
-        // Hàm kiểm tra và hiển thị lỗi nếu nhập giá trị không hợp lệ
-        function validateInput(input, minValue) {
-            const value = parseInt(input.value);
-            if (isNaN(value) || value < minValue) {
-                input.setCustomValidity(`Giá trị phải lớn hơn hoặc bằng ${minValue}`);
-                input.reportValidity();
-            } else {
-                input.setCustomValidity('');
-            }
+        // Hàm để đặt biến thể mặc định
+        function setDefaultVariant(index) {
+            document.querySelectorAll('input[name^="Variants"]').forEach(input => {
+                if (input.name.includes("IsDefault")) {
+                    input.value = 'false'; // Đặt tất cả biến thể khác là false
+                }
+            });
+            document.querySelector(`input[name="Variants[${index}].IsDefault"]`).value = 'true'; // Biến thể hiện tại là true
         }
 
         // Hàm xóa biến thể
         function removeVariant(button) {
+            button.closest('tr').nextElementSibling.remove(); // Xóa cả phần thông số kỹ thuật
             button.closest('tr').remove();
-            checkDefaultVariant(); // Kiểm tra biến thể mặc định sau khi xóa
         }
 
-        // Cartesian product - Hàm để kết hợp tất cả giá trị thuộc tính thành các biến thể
+        // Hàm mở/đóng phần nhập thông số kỹ thuật
+        function toggleSpecifications(button, variantIndex) {
+            const specRow = button.closest('tr').nextElementSibling;
+            specRow.style.display = specRow.style.display === 'none' ? '' : 'none'; // Toggle hiển thị
+        }
+
+        // Cartesian product - Kết hợp tất cả giá trị thuộc tính thành biến thể
         function cartesian(arr) {
+            console.log(arr)
             return arr.reduce((a, b) => a.flatMap(d => b.map(e => [...d, e])), [[]]);
         }
 
-        // Kiểm tra xem ít nhất một biến thể mặc định có được chọn không
-        document.querySelector('form').addEventListener('submit', function (e) {
-            const defaultVariantChecked = document.querySelector('input[name="defaultVariant"]:checked');
-            if (!defaultVariantChecked) {
-                alert('Phải có ít nhất một biến thể mặc định.');
-                e.preventDefault();
-            }
-        });
-
-        // Kiểm tra biến thể mặc định sau khi xóa biến thể
-        function checkDefaultVariant() {
-            const defaultVariantChecked = document.querySelector('input[name="defaultVariant"]:checked');
-            if (!defaultVariantChecked) {
-                const firstVariant = document.querySelector('.default-variant');
-                if (firstVariant) firstVariant.checked = true; // Nếu không có biến thể mặc định, chọn ô đầu tiên
-            }
-        }
-    </script> *@
+    </script> 
     <!-- add Specification per variant -->
-    <script>
+   @*  <script>
         // Hàm tạo biến thể
         function generateVariants() {
             const variantList = document.getElementById('variant-list');
@@ -502,7 +521,7 @@
                     <td>${index + 1}</td>
                     <td><input type="hidden" name="Variants[${index}].Name" value="${variantName}" />${variantName}</td>
                     <td><input type="number" class="form-control quantity" name="Variants[${index}].Quantity" value="10" min="1" oninput="validateInput(this, 1)" /></td>
-                    <td><input type="number" class="form-control price-import" name="Variants[${index}].ImportPrice" value="10000000" min="1000000" oninput="validateInput(this, 1000000)" /></td>
+                            <td><input type="number" class="form-control price-import" name="Variants[${index}].PuscharPrice" value="10000000" min="1000000" oninput="validateInput(this, 1000000)" /></td>
                     <td><input type="number" class="form-control price-sell" name="Variants[${index}].SellPrice" value="11000000" /></td>
                     <td><input type="number" class="form-control price-discount" name="Variants[${index}].AfterDiscountPrice" value="11000000" /></td>
                     <td><input type="number" class="form-control year" name="Variants[${index}].YearOfManufacture" value="2024" /></td>
@@ -608,5 +627,7 @@
         }
 
     </script>
+ *@
+  }
 
 }
