@@ -98,7 +98,7 @@ namespace DATN.Client.Controllers
                 var totalMoney = invoice.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
                 return RedirectToAction("Pay", new { typePayment = 2, money = totalMoney + request.ShippingFee, invoiceId = invoice.InvoiceId, pendingCartId = request.pendingCartId });
             }
-            return RedirectToAction("Index");
+            return Redirect("Home/Index");
         }
         public IActionResult Pay(int typePayment, decimal money, int invoiceId, int pendingCartId)
         {

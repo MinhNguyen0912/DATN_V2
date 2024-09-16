@@ -18,6 +18,7 @@ namespace DATN.Core.ViewModel.ProdutEAVVM
         public ProductStatus Status { get; set; }
         public int? BrandId { get; set; }
         public List<CategoryProduct>? CategoryProducts { get; set; }
+        public string cateIds { get; set; }
         public Brand? Brand { get; set; }
         public Origin? Origin { get; set; }
         public List<IFormFile>? Images { get; set; }
