@@ -16,7 +16,7 @@ namespace DATN.Core.ViewModel.ProdutEAVVM
         public decimal AfterDiscountPrice { get; set; }
         public int YearOfManufacture { get; set; }
         public bool IsDefault { get; set; }
-
+        public string attributeValueIds { get; set; }
         // List of specifications for each variant
         public List<CreateSpecificationsVM> Specifications { get; set; } = new List<CreateSpecificationsVM>();
     }
