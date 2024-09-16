@@ -215,7 +215,7 @@ namespace DATN.API.Controllers
         public async Task<IActionResult> GetInvoiceByStatusAndUserId(Guid userId, InvoiceStatus status)
         {
             var invoices = _unitOfWork.InvoiceRepository.GetInvoiceByStatusAndUserId(userId, status);
-            if (invoices != null || invoices.Any())
+                if (invoices != null || invoices.Any())
             {
                 return Ok(invoices); // 200 OK
             }
