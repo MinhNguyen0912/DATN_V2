@@ -300,31 +300,38 @@
     </div>
 </div>
 
-<!-- Modal thêm giá trị -->
-<div class="modal fade" id="valueModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- Modal Thêm Giá Trị -->
+<div class="modal fade" id="dynamicValueModal" tabindex="-1" aria-labelledby="dynamicValueModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Thêm Giá Trị</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="dynamicValueModalLabel">Thêm giá trị cho thuộc tính</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="input-container">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control value-input" placeholder="Nhập giá trị">
+                <form id="dynamicValueForm">
+                    <input type="hidden" id="attributeIdInput" value="">
+                    <div id="valueInputsContainer">
+                        <!-- Giá trị nhập mặc định -->
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" placeholder="Nhập giá trị mới">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">Xóa</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <button type="button" class="btn btn-secondary" onclick="addInput()">+ Thêm ô nhập</button>
+                    <button type="button" class="btn btn-secondary" id="addValueInputBtn">+ Thêm giá trị mới</button>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="submitValues()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="saveValuesBtn">Lưu</button>
             </div>
         </div>
     </div>
 </div>
+
+
 
 
 @section Scripts{
@@ -386,10 +393,10 @@
                                                         </div>
                                                     `).join('')}
                                                 </div>
-                                                <button type="button" class="btn btn-secondary" onclick="addVariantValue(this, '${option.text}')">+ Thêm giá trị</button>
+                                                         <!-- Nút Thêm Giá Trị -->
+                        <button type="button" class="btn btn-secondary addValueBtn" data-attribute-id="${attributeId}">+ Thêm giá trị</button>
                                             `;
 
-                            console.log(attributeId);
                             // Thêm khối vào container và lưu trữ trong Map
                             container.appendChild(attributeBlock);
                             attributeBlocks.set(attributeId, attributeBlock);
@@ -564,7 +571,7 @@
 
     
     <!-- Add new attribute -->
-        <script>
+    <script>
         document.getElementById('createAttributeBtn').addEventListener('click', function () {
             var attributeName = document.getElementById('attributeName').value.trim();
             var attributeError = document.getElementById('attributeError');
@@ -608,75 +615,95 @@
             }
         });
 
-        </script>
+    </script>
     <!-- add new value attribute-->
     <script>
-        // Mở modal và thiết lập thuộc tính
-        function openModal(attributeId) {
-            document.getElementById('valueModal').setAttribute('data-attribute-id', attributeId);
-            $('#valueModal').modal('show'); // Hiển thị modal bằng Bootstrap
-        }
-
-        // Thêm ô input
-        function addInput() {
-            const container = document.getElementById('input-container');
-            const inputGroup = document.createElement('div');
-            inputGroup.className = 'input-group mb-3';
-            inputGroup.innerHTML = '<input type="text" class="form-control value-input" placeholder="Nhập giá trị">';
-            container.appendChild(inputGroup);
-        }
-
-        // Kiểm tra input trống
-        function validateInputs() {
-            const inputs = document.querySelectorAll('.value-input');
-            for (let input of inputs) {
-                if (input.value.trim() === '') {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        // Submit dữ liệu đến API
-        async function submitValues() {
-            if (!validateInputs()) {
-                alert('Vui lòng nhập đầy đủ các giá trị!');
-                return;
-            }
-
-            const attributeId = document.getElementById('valueModal').getAttribute('data-attribute-id');
-            const inputs = document.querySelectorAll('.value-input');
-            const values = [];
-
-            inputs.forEach(input => {
-                values.push({
-                    AttributeId: attributeId,
-                    ValueText: input.value
-                });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Thêm sự kiện click cho nút Thêm Giá Trị
+            document.getElementById('addValueInputBtn').addEventListener('click', function () {
+                const container = document.getElementById('valueInputsContainer');
+                const newInputGroup = document.createElement('div');
+                newInputGroup.classList.add('input-group', 'mb-2');
+                newInputGroup.innerHTML = `
+                    <input type="text" class="form-control" placeholder="Nhập giá trị mới">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">Xóa</button>
+                    </div>
+                `;
+                container.appendChild(newInputGroup);
             });
 
-            try {
-                const response = await fetch('https://localhost:7095/api/AttributeVLEAV/Create', {
+            // Lưu các giá trị mới khi nhấn nút "Lưu"
+            document.getElementById('saveValuesBtn').addEventListener('click', function () {
+                const attributeId = document.getElementById('attributeIdInput').value;
+                const values = [];
+                const inputs = document.querySelectorAll('#valueInputsContainer input');
+
+                // Lấy tất cả các giá trị nhập vào
+                inputs.forEach(input => {
+                    const valueText = input.value.trim();
+                    if (valueText) {
+                        values.push({ AttributeId: attributeId, ValueText: valueText });
+                    }
+                });
+
+                // Kiểm tra xem có giá trị nào không
+                if (values.length === 0) {
+                    alert('Vui lòng thêm ít nhất một giá trị.');
+                    return;
+                }
+
+                // Gọi API để lưu các giá trị
+                fetch('https://localhost:7095/api/AttributeVLEAV/Create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(values)
-                });
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(err => { throw new Error(err); });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert('Thêm giá trị thành công!');
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    alert(`Lỗi: ${errorText}`);
-                    return;
-                }
+                        // Cập nhật UI sau khi thêm giá trị mới mà không cần reload trang
+                        const attributeBlock = attributeBlocks.get(attributeId);
+                        const valueGroup = attributeBlock.querySelector('.value-group');
 
-                const result = await response.json();
-                alert('Thêm giá trị thành công!');
-                $('#valueModal').modal('hide'); // Ẩn modal sau khi thành công
-                location.reload();
-            } catch (error) {
-                alert(`Có lỗi xảy ra: ${error.message}`);
-            }
+                        // Thêm các giá trị mới vào giao diện
+                        data.forEach(value => {
+                            const newValueInput = document.createElement('div');
+                            newValueInput.classList.add('input-group', 'mb-2');
+                            newValueInput.innerHTML = `
+                            <input type="text" class="form-control" name="attributeValues[]" value="${value.valueText}" />
+                            <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
+                            </div>
+                        `;
+                            valueGroup.appendChild(newValueInput);
+                        });
+
+                        // Ẩn modal sau khi lưu thành công
+                        var modal = bootstrap.Modal.getInstance(document.getElementById('dynamicValueModal'));
+                        modal.hide();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(`Có lỗi xảy ra: ${error.message}`);
+                    });
+            });
+        });
+
+        // Mở modal từ nút "Thêm Giá Trị" được tạo động
+        function openAddValueModal(attributeId) {
+            document.getElementById('attributeIdInput').value = attributeId;
+            var modal = new bootstrap.Modal(document.getElementById('dynamicValueModal'));
+            modal.show();
         }
 
     </script>
