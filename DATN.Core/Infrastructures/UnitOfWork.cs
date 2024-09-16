@@ -6,6 +6,8 @@ using DATN.Core.Repositories.IRepositories.ProductEAV;
 using DATN.Core.Repositories.Repositories;
 using DATN.Core.Repositories.Repositories.ProductEAV;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 
 namespace DATN.Core.Infrastructures
@@ -53,11 +55,13 @@ namespace DATN.Core.Infrastructures
         private IAttributeValueEAVRepository _attributeValueEAVRepository;
         private IVariantAttributeRepository _variantAttributeRepository;
         private IVariantRepository _variantRepository;
+        private ISpecificationRepository _specificationRepository;
 
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private IDbContextTransaction _transaction;
 
         public UnitOfWork(DATNDbContext context, RoleManager<IdentityRole<Guid>> roleManager, IConfiguration configuration, UserManager<AppUser> userManager, IMapper mapper)
         {
@@ -113,9 +117,36 @@ namespace DATN.Core.Infrastructures
 
         public IBatchRepository BatchRepository => (_batchRepository = new BatchRepository(_context,_mapper));
 
+        public ISpecificationRepository SpecificationRepository => _specificationRepository ?? (_specificationRepository = new SpecificationRepository(_context, _mapper));
+
+
+        // Begin a database transaction
+        public IDbContextTransaction BeginTransaction()
+        {
+            _transaction = _context.Database.BeginTransaction();
+            return _transaction;
+        }
+
+        public void Commit()
+        {
+            _transaction?.Commit();
+        }
+
+
+        public void Rollback()
+        {
+            _transaction?.Rollback();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
         public void Dispose()
         {
             _context.Dispose();
+            _transaction?.Dispose();
         }
 
         public int SaveChanges()
