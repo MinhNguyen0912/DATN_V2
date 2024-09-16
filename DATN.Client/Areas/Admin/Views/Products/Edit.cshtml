@@ -2,6 +2,7 @@
 @using System.Globalization
 @model DATN.Core.ViewModel.Product_EAV.ProductVM_EAV
 @{
+    var productId = Model.ProductId;
     var existingVariant = Model.Variants.Select(x => new
     {
         Id = x.VariantId,
@@ -222,18 +223,11 @@
         <div class="product-section">
             <div class="form-title">Biến thể sản phẩm</div>
             <div class="variant-row">
-                <div class="col-6">
-                    <label for="variantType">Thuộc tính</label>
-                    <!-- Dropdown select for multiple attributes -->
-                    <select multiple class="form-control" id="variantType" asp-items="ViewBag.listAttributes" onchange="fetchVariantValues(this)">
-                    </select>
-                    <small class="form-text text-muted">Tối đa 3 thuộc tính có thể được chọn.</small>
-                </div>
-                <div class="col-6" id="variantValuesContainer">
-                    <!-- Giá trị biến thể sẽ được sinh ra tại đây -->
+
+                <div class="col-12" id="attributeContainer">
+                    <!-- Các thuộc tính và giá trị thuộc tính sẽ được hiển thị tại đây -->
                 </div>
             </div>
-
             <!-- Add attribute and value buttons -->
             <div class="row">
                 <div class="add-attribute-btn mt-4 col-6">
@@ -287,7 +281,7 @@
                                 <input type="radio" name="defaultVariant" class="default-variant" value="@item.index" @(item.index == 0 ? "checked" : "") required onclick="setDefaultVariant(@item.index)" />
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger" onclick="removeVariant(this)">Xóa</button>
+          
                             </td>
                             <td>
                                 <button type="button" class="btn btn-primary" onclick="toggleSpecifications(this, @item.index)"> +</button>
@@ -329,81 +323,50 @@
         // Lưu trữ các khối thuộc tính đã tạo ra
         let attributeBlocks = new Map();
         var variants = @Html.Raw(JsonConvert.SerializeObject(Model.Variants));
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var variantList = document.getElementById('variant-list');
-            console.log('Biến thể:', variants);
-            // Lặp qua tất cả các trường SellPrice và ghi giá trị vào console
-            document.querySelectorAll('.price-sell').forEach(function (input) {
-                console.log('Giá trị SellPrice:', input.value);
-            });
-        });
+        
         // Giới hạn số thuộc tính được chọn
-        function fetchVariantValues(select) {
-            const maxAttributes = 3;
-            const selectedOptions = Array.from(select.selectedOptions);
+        function fetchAttributesAndValues(id) {
+            console.log(id)
+            // Sử dụng template literals với dấu nháy kép để chèn biến id vào URL
+            const url = `https://localhost:7095/api/AttributeEAV/GetAttributeValueByProductId/${id}`;
 
-            // Kiểm tra nếu số thuộc tính vượt quá giới hạn
-            if (selectedOptions.length > maxAttributes) {
-                alert(`Chỉ có thể chọn tối đa ${maxAttributes} thuộc tính.`);
-                select.selectedOptions[maxAttributes].selected = false; // Bỏ chọn thuộc tính vượt quá
-                return;
-            }
+            // Lấy danh sách tất cả các thuộc tính từ API
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Lấy container để hiển thị các thuộc tính và giá trị
+                    const container = document.getElementById('attributeContainer');
 
-            // Lấy tất cả các attributeId hiện đang được chọn
-            const selectedAttributeIds = selectedOptions.map(option => option.value);
+                    // Tạo khối HTML cho từng thuộc tính
+                    data.forEach(attribute => {
+                        const attributeBlock = document.createElement('div');
+                        attributeBlock.classList.add('attribute-block');
 
-            // Xóa các thuộc tính đã bị bỏ chọn (không còn trong selectedAttributeIds)
-            attributeBlocks.forEach((block, attributeId) => {
-                if (!selectedAttributeIds.includes(attributeId)) {
-                    document.getElementById('variantValuesContainer').removeChild(block);
-                    attributeBlocks.delete(attributeId); // Xóa khỏi map
-                }
-            });
-
-            // Fetch giá trị của thuộc tính từ API cho các thuộc tính mới được chọn
-            selectedOptions.forEach(option => {
-                const attributeId = option.value;
-
-                // Nếu thuộc tính đã có trong Map thì không fetch lại
-                if (!attributeBlocks.has(attributeId)) {
-                    // Gọi API để lấy danh sách giá trị của thuộc tính
-                    fetch(`https://localhost:7095/api/AttributeEAV/GetAttributeValuesById/api/attributes/${attributeId}/values`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data);
-                            // Tạo khối input cho các giá trị của thuộc tính
-                            const container = document.getElementById('variantValuesContainer');
-                            const attributeBlock = document.createElement('div');
-                            attributeBlock.classList.add('attribute-block');
-
-                            // Tạo khối HTML với hidden input để chứa AttributeId
-                            attributeBlock.innerHTML = `
-                                        <label>${option.text}</label>
-                                        <input type="hidden" name="attributeIds[]" value="${attributeId}" />
-                                        <div class="value-group">
-                                            ${data.map(value => `
-                                                <div class="input-group mb-2">
-                                                    <input type="text" class="form-control" name="attributeValues[]" value="${value.valueText}" />
-                                                    <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
-                                                    </div>
-                                                </div>
-                                            `).join('')}
+                        // Tạo khối HTML cho thuộc tính và các giá trị của nó
+                        attributeBlock.innerHTML = `
+                            <label>${attribute.attributeName}</label>
+                            <input type="hidden" name="attributeIds[]" value="${attribute.attributeId}" />
+                            <div class="value-group">
+                                ${attribute.attributeValues.map(value => `
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="attributeValues[]" value="${value.valueText}" />
+                                        <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
                                         </div>
-                                        <button type="button" class="btn btn-secondary" onclick="addVariantValue(this, '${option.text}')">+ Thêm giá trị</button>
-                                    `;
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addVariantValue(this, '${attribute.attributeName}')">+ Thêm giá trị</button>
+                        `;
 
-                            // Thêm khối vào container và lưu trữ trong Map
-                            container.appendChild(attributeBlock);
-                            attributeBlocks.set(attributeId, attributeBlock);
-                        })
-                        .catch(error => console.error('Error fetching attribute values:', error));
-                }
-            });
+                        // Thêm khối vào container
+                        container.appendChild(attributeBlock);
+                    });
+                })
+                .catch(error => console.error('Error fetching attributes and values:', error));
         }
-
+        fetchAttributesAndValues(@productId)
         // Xóa giá trị biến thể
         function removeVariantValue(button) {
             button.closest('.input-group').remove();
@@ -669,7 +632,7 @@
         function cartesian(arr) {
             return arr.reduce((a, b) => a.flatMap(d => b.map(e => [...d, e])), [[]]);
         }
-
+        
     </script>
 
 }

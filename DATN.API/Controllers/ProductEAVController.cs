@@ -5,6 +5,7 @@ using DATN.Core.Infrastructures;
 using DATN.Core.Model.Product_EAV;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.Product_EAV;
+using DATN.Core.ViewModel.ProdutEAVVM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -202,9 +203,7 @@ namespace DATN.API.Controllers
             ProductPaging partnerPaging = _unitOfWork.ProductEAVRepository.ProductPaging(request);
             return Ok(partnerPaging);
         }
+        
     }
-
-
-
 }
 

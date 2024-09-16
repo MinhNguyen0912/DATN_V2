@@ -48,7 +48,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public Batch GetByIdCustom(int id)
         {
-            return Context.Batches.FirstOrDefault(x => x.Id == id);
+            return Context.Batches.Include(v=>v.Vouchers).ThenInclude(v=>v.User).FirstOrDefault(x => x.Id == id);
         }
     }
 }

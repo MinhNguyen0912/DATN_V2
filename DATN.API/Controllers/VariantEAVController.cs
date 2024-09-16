@@ -23,7 +23,17 @@ namespace DATN.API.Controllers
             var variant = _unitOfWork.VariantRepository.GetByIdCustom(variantId);
             return Ok(variant);
         }
-
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByProductId_Viet(int id)
+        {
+            var lstVariants = _unitOfWork.VariantRepository.GetByIdProduct(id);
+            var result = lstVariants.Select(v => new
+            {
+                VariantId = v.VariantId,
+                AttributeValueIds = v.VariantAttributes.Select(va => va.AttributeValue.AttributeValueId).ToList()
+            }).ToList();
+            return Ok(result);
+        }
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DATN.Core.Data;
 using DATN.Core.Infrastructures;
+using DATN.Core.ViewModel.AttributeVM.Viet_Attribute_VM;
 using DATN.Core.ViewModel.BrandVM;
 using DATN.Core.ViewModel.Product_EAV;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +52,8 @@ namespace DATN.API.Controllers
             if (attribute != null)
             {
                 // Create a simplified response object containing the attribute's values
-                var result = attribute.AttributeValues.Select(av => new {
+                var result = attribute.AttributeValues.Select(av => new
+                {
                     ValueId = av.AttributeValueId,
                     ValueText = av.ValueText
                 }).ToList();
@@ -63,5 +65,35 @@ namespace DATN.API.Controllers
             // If no attribute is found for the given id, return a 404 Not Found status
             return NotFound(new { Message = "Attribute not found" });
         }
+        [HttpGet("{id}")]
+        public IActionResult GetAttributeValueByProductId(int id)
+        {
+            // Lấy dữ liệu từ cơ sở dữ liệu và ánh xạ vào các lớp DTO
+            var attributes = _context.AttributeValue_EAVs
+        .Include(av => av.Attribute) // Bao gồm thuộc tính liên quan
+        .Where(av => _context.Variants
+            .Where(v => v.ProductId == id)
+            .SelectMany(v => v.VariantAttributes)
+            .Select(va => va.AttributeValueId)
+            .Contains(av.AttributeValueId))
+        .GroupBy(av => av.Attribute)
+        .Select(g => new AttributeDTO
+        {
+            AttributeId = g.Key.AttributeId,
+            AttributeName = g.Key.AttributeName,
+            AttributeValues = g.Select(av => new AttributeValueDTO
+            {
+                AttributeValueId = av.AttributeValueId,
+                ValueText = av.ValueText
+            }).ToList()
+        })
+        .ToList();
+
+            return Ok(attributes);
+        }
+
+
+
+
     }
 }
