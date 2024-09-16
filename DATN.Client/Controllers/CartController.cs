@@ -43,22 +43,12 @@ namespace DATN.Client.Controllers
             }
             var pendingCart = await _clientService.Post<PendingCartVM>("https://localhost:7095/api/PendingCart/GetByUserId",user.UserId);
             var voucher = await _clientService.GetList<VoucherVM>($"https://localhost:7095/api/Voucher/GetVoucherByUserId/{user.UserId}");
-            decimal totalMoney = 0;
-
-            // Kiểm tra nếu giỏ hàng không null và có các biến thể sản phẩm
-            if (pendingCart != null && pendingCart.PendingCartVariants != null)
-            {
-                totalMoney = pendingCart.PendingCartVariants.Sum(p => p.Variant.AfterDiscountPrice * p.Quantity);
-            }
-
-            // Lọc những voucher hợp lệ dựa trên tổng số tiền và giá trị MinOrderAmount của từng voucher
-            var availableVouchers = voucher.Where(p => totalMoney >= p.Batch.MinOrderAmount).ToList();
             try
             {
                 //ViewData["voucher"] = voucher;
                 ViewData["user"] = user;
                 ViewData["pendingCart"] = pendingCart;
-                ViewData["voucher"] = availableVouchers;
+                ViewData["voucher"] = voucher;
             }
             catch (Exception ex)
             {

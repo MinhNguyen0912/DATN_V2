@@ -70,7 +70,6 @@ namespace DATN.Core.Repositories.Repositories
                 foreach (var detail in invoice.InvoiceDetails)
                 {
                     detail.IsShowComment = detail.Comment != null ? false : true;
-
                 }
             }
 
