@@ -2,7 +2,11 @@
 @using System.Globalization
 @model DATN.Core.ViewModel.Product_EAV.ProductVM_EAV
 @{
-
+    var existingVariant = Model.Variants.Select(x => new
+    {
+        Id = x.VariantId,
+        Attributes = x.VariantAttributes.ToDictionary(a => a.AttributeValueId, a => a.AttributeValue)
+    });
 }
 <style>
     .product-form {
@@ -534,6 +538,7 @@
     </script> *@
     <!-- add Specification per variant -->
     <script>
+        const existingVariant = @Html.Raw(JsonConvert.SerializeObject(existingVariant));
         // Hàm tạo biến thể
         function generateVariants() {
             const variantList = document.getElementById('variant-list');

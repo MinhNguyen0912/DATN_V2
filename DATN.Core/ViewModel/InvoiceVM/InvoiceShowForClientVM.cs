@@ -16,7 +16,7 @@ namespace DATN.Core.ViewModel.InvoiceVM
         public AppUser? User { get; set; }
         public ICollection<InvoiceDetailVM.InvoiceDetailForCommentVM>? InvoiceDetails { get; set; }
         public string? Note { get; set; }
-        public int? VoucherUserId { get; set; }
+        public int? VoucherId { get; set; }
         public ShippingOrder? ShippingOrder { get; set; }
     }
 }
