@@ -231,11 +231,8 @@
             <!-- Add attribute and value buttons -->
             <div class="row">
                 <div class="add-attribute-btn mt-4 col-6">
-                    <button type="button" class="btn btn-primary">+ Thêm thuộc tính khác</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#attributeModal">+ Thêm thuộc tính khác</button>
                 </div>
-                @* <div class="add-value-btn col-6">
-                    <button type="button" class="btn btn-success" id="addVariantValueBtn" onclick="addVariantValue()">+ Thêm giá trị mới</button>
-                </div> *@
             </div>
         </div>
 
@@ -270,6 +267,61 @@
             </div>
         </form>
     </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="attributeModal" tabindex="-1" aria-labelledby="attributeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="attributeModalLabel">Thêm thuộc tính mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="attributeForm">
+                    <div class="mb-3">
+                        <label for="attributeName" class="form-label">Tên thuộc tính</label>
+                        <input type="text" class="form-control" id="attributeName" placeholder="Nhập tên thuộc tính" required>
+                        <div id="attributeError" class="invalid-feedback">
+                            Thuộc tính không được để trống.
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="createAttributeBtn">Tạo</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal thêm giá trị -->
+<div class="modal fade" id="valueModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Thêm Giá Trị</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="input-container">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control value-input" placeholder="Nhập giá trị">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addInput()">+ Thêm ô nhập</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="submitValues()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts{
     <!-- get value -->
@@ -318,28 +370,42 @@
 
                             // Tạo khối HTML với hidden input để chứa AttributeId
                             attributeBlock.innerHTML = `
-                                <label>${option.text}</label>
-                                <input type="hidden" name="attributeIds[]" value="${attributeId}" />
-                                <div class="value-group">
-                                    ${data.map(value => `
-                                        <div class="input-group mb-2">
-                                                    <input type="text" class="form-control" data-id="${value.valueId}" name="attributeValues[]" value="${value.valueText}" />
-                                                    <input type="" name="attributeValueIds[]" value="${value.valueId}" />
-                                            <div class="input-group-append">
-                                                <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
-                                            </div>
-                                        </div>
-                                    `).join('')}
+                        <label>${option.text}</label>
+                        <input type="hidden" name="attributeIds[]" value="${attributeId}" />
+                        <div class="value-group">
+                            ${data.map(value => `
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" data-id="${value.valueId}" name="attributeValues[]" value="${value.valueText}" />
+                                    <input type="hidden" name="attributeValueIds[]" value="${value.valueId}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
+                                    </div>
                                 </div>
-                                <button type="button" class="btn btn-secondary" onclick="addVariantValue(this, '${option.text}')">+ Thêm giá trị</button>
-                            `;
+                            `).join('')}
+                        </div>
+                               <!-- Nút Thêm Giá Trị -->
+                       <button type="button" class="btn btn-secondary addValueBtn" data-attribute-id="${attributeId}" onclick="openModal(${attributeId})">+ Thêm giá trị</button>
+                    `;
 
+                            console.log(attributeId);
                             // Thêm khối vào container và lưu trữ trong Map
                             container.appendChild(attributeBlock);
                             attributeBlocks.set(attributeId, attributeBlock);
+
+                            // Gán sự kiện click cho nút 'addValueBtn' để mở modal
+                            attributeBlock.querySelector('.addValueBtn').addEventListener('click', function () {
+                                // Lấy attributeId từ nút
+                                const attributeId = this.getAttribute('data-attribute-id');
+                                document.getElementById('attributeIdInput').value = attributeId; // Set giá trị vào input hidden trong modal
+
+                                // Hiển thị modal
+                                var modal = new bootstrap.Modal(document.getElementById('dynamicValueModal'));
+                                modal.show();
+                            });
                         })
                         .catch(error => console.error('Error fetching attribute values:', error));
                 }
+
             });
         }
 
@@ -493,6 +559,125 @@
         }
 
     </script> 
+
+    
+    <!-- Add new attribute -->
+        <script>
+        document.getElementById('createAttributeBtn').addEventListener('click', function () {
+            var attributeName = document.getElementById('attributeName').value.trim();
+            var attributeError = document.getElementById('attributeError');
+
+            // Kiểm tra nếu input trống
+            if (attributeName === "") {
+                document.getElementById('attributeName').classList.add('is-invalid');
+                attributeError.style.display = "block";
+            } else {
+                document.getElementById('attributeName').classList.remove('is-invalid');
+                attributeError.style.display = "none";
+
+                // Call API
+                fetch('https://localhost:7095/api/AttributeEAV/Create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Name: attributeName
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Hiển thị phản hồi thành công
+                            alert(data.message);
+                            document.getElementById('attributeForm').reset();
+                            var modal = bootstrap.Modal.getInstance(document.getElementById('attributeModal'));
+                            modal.hide();
+                            location.reload();
+                        } else {
+                            // Xử lý khi lỗi
+                            alert('Có lỗi xảy ra: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        alert('Lỗi kết nối hoặc máy chủ: ' + error.message);
+                        console.error('Error:', error);
+                    });
+            }
+        });
+
+        </script>
+    <!-- add new value attribute-->
+    <script>
+        // Mở modal và thiết lập thuộc tính
+        function openModal(attributeId) {
+            document.getElementById('valueModal').setAttribute('data-attribute-id', attributeId);
+            $('#valueModal').modal('show'); // Hiển thị modal bằng Bootstrap
+        }
+
+        // Thêm ô input
+        function addInput() {
+            const container = document.getElementById('input-container');
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'input-group mb-3';
+            inputGroup.innerHTML = '<input type="text" class="form-control value-input" placeholder="Nhập giá trị">';
+            container.appendChild(inputGroup);
+        }
+
+        // Kiểm tra input trống
+        function validateInputs() {
+            const inputs = document.querySelectorAll('.value-input');
+            for (let input of inputs) {
+                if (input.value.trim() === '') {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Submit dữ liệu đến API
+        async function submitValues() {
+            if (!validateInputs()) {
+                alert('Vui lòng nhập đầy đủ các giá trị!');
+                return;
+            }
+
+            const attributeId = document.getElementById('valueModal').getAttribute('data-attribute-id');
+            const inputs = document.querySelectorAll('.value-input');
+            const values = [];
+
+            inputs.forEach(input => {
+                values.push({
+                    AttributeId: attributeId,
+                    ValueText: input.value
+                });
+            });
+
+            try {
+                const response = await fetch('https://localhost:7095/api/AttributeVLEAV/Create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(values)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    alert(`Lỗi: ${errorText}`);
+                    return;
+                }
+
+                const result = await response.json();
+                alert('Thêm giá trị thành công!');
+                $('#valueModal').modal('hide'); // Ẩn modal sau khi thành công
+                location.reload();
+            } catch (error) {
+                alert(`Có lỗi xảy ra: ${error.message}`);
+            }
+        }
+
+    </script>
     <!-- add Specification per variant -->
    @*  <script>
         // Hàm tạo biến thể
