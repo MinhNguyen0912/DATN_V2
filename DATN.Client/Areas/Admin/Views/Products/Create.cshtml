@@ -441,7 +441,7 @@
 
     </script>
     <!-- Gen bien the -->
-    <script>
+  @*   <script>
         // Hàm để lấy danh sách ID thuộc tính (hidden)
         function getAttributeValueIds(variant) {
 
@@ -491,7 +491,7 @@
                     <td>${index + 1}</td>
                     <td>
                         <input type="hidden" name="Variants[${index}].Name" value="${variantName}" />
-                        // <input type="" name="Variants[${index}].attributeValueIds" value="${getAttributeValueIds(variant)}" 
+                        <input type="" name="Variants[${index}].attributeValueIds" value="${getAttributeValueIds(variant)}" 
                         ${variantName}
                     </td>
                     <td><input type="number" class="form-control" name="Variants[${index}].Quantity" value="10" min="1" /></td>
@@ -560,7 +560,7 @@
             return arr.reduce((a, b) => a.flatMap(d => b.map(e => [...d, e])), [[]]);
         }
 
-    </script> 
+    </script>  *@
 
     
     <!-- Add new attribute -->
@@ -681,7 +681,7 @@
 
     </script>
     <!-- add Specification per variant -->
-   @*  <script>
+    <script>
         // Hàm tạo biến thể
         function generateVariants() {
             const variantList = document.getElementById('variant-list');
@@ -714,12 +714,18 @@
                                                                     <input type="hidden" name="Variants[${index}].attributeValueIds" value="${variantId}" />
                                     <td><input type="hidden" name="Variants[${index}].Name" value="${variantName}" />
                                             ${variantName}</td>
-                                    <td><input type="number" class="form-control quantity" name="Variants[${index}].Quantity" value="10" min="1" oninput="validateInput(this, 1)" /></td>
-                                    <td><input type="number" class="form-control price-import" name="Variants[${index}].ImportPrice" value="10000000" min="1000000" oninput="validateInput(this, 1000000)" /></td>
-                                    <td><input type="number" class="form-control price-sell" name="Variants[${index}].SellPrice" value="11000000" /></td>
-                                    <td><input type="number" class="form-control price-discount" name="Variants[${index}].AfterDiscountPrice" value="11000000" /></td>
-                                    <td><input type="number" class="form-control year" name="Variants[${index}].YearOfManufacture" value="2024" /></td>
-                                    <td><input type="radio" name="defaultVariant" class="default-variant" value="${index}" ${index === 0 ? 'checked' : ''} required onclick="setDefaultVariant(${index})" /></td>
+
+                                                <td><input type="number" class="form-control" name="Variants[${index}].Quantity" value="10" min="1" /></td>
+                            <td><input type="number" class="form-control" name="Variants[${index}].PuscharPrice" value="10000000" min="1000000" /></td>
+                                    <td><input type="number" class="form-control" name="Variants[${index}].SalelPrice" value="11000000" /></td>
+                            <td><input type="number" class="form-control" name="Variants[${index}].AfterDiscountPrice" value="11000000" /></td>
+                            <td><input type="number" class="form-control" name="Variants[${index}].MaximumQuantityPerOrder" value="3" /></td>
+                            <td><input type="number" class="form-control" name="Variants[${index}].Weight" value="5000" /></td>
+                            <td>
+                                <input type="radio" name="defaultVariant" value="${index}" ${index === 0 ? 'checked' : ''} />
+                                <input type="hidden" name="Variants[${index}].IsDefault" value="${index === 0}" />
+                            </td>
+
                                     <td><button type="button" class="btn btn-danger" onclick="removeVariant(this)">Xóa</button></td>
                                     <td><button type="button" class="btn btn-primary" onclick="toggleSpecifications(this, ${index})"> +</button></td>
                                 `;
@@ -832,6 +838,7 @@
                 document.querySelector(".dropdownCate").innerHTML=html
             })
         }
+
         document.querySelector(".main-form").addEventListener("submit", (e) => {
             e.preventDefault()
             var selectedId = []
@@ -846,7 +853,4 @@
             e.target.submit()
         })
     </script>
- *@
   }
-
-}

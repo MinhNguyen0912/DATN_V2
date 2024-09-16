@@ -4,6 +4,7 @@ using DATN.Client.Helper;
 using DATN.Client.Services;
 using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
+using DATN.Core.Model;
 using DATN.Core.Model.Product_EAV;
 using DATN.Core.ViewModel.BrandVM;
 using DATN.Core.ViewModel.CategoryVM;
@@ -92,73 +93,106 @@ namespace DATN.Client.Areas.Admin.Controllers
             {
                 try
                 {
-                    // Create the Product
+                    // Tách cateIds từ chuỗi và chuyển thành danh sách số nguyên
+                    List<int> cateIdList = productVM.cateIds.Split(',').Select(int.Parse).ToList();
+
+                    // Tạo đối tượng Product_EAV
                     Product_EAV product = new Product_EAV
                     {
                         ProductName = productVM.ProductName,
                         Description = productVM.Description,
                         Status = productVM.Status,
                         OriginId = productVM.OriginId,
-                        BrandId = productVM.BrandId,
+                        BrandId = productVM.BrandId
                     };
 
                     var resultProduct = _unitOfWork.ProductEAVRepository.Create(product);
+                    _unitOfWork.SaveChanges();
                     if (resultProduct == null)
                     {
                         throw new Exception("Failed to create product.");
                     }
 
-                    // Create Variants and VariantAttributes
+                    var productId = product.ProductId;
+                    // Kiểm tra và tạo CategoryProducts
+                    foreach (var cateId in cateIdList)
+                    {
+                        // Kiểm tra xem ProductId và CategoryId đã tồn tại chưa
+                        var existingCategoryProduct = _unitOfWork.CategoryProductRepository
+                            .Find(cp => cp.ProductId == productId && cp.CategoryId == cateId);
+
+                        // Nếu chưa tồn tại thì thêm mới
+                        if (existingCategoryProduct == null)
+                        {
+                            CategoryProduct categoryProduct = new CategoryProduct
+                            {
+                                ProductId = productId,
+                                CategoryId = cateId
+                            };
+                            var categoryProductResult = _unitOfWork.CategoryProductRepository.Create(categoryProduct);
+                            if (categoryProductResult == null)
+                            {
+                                throw new Exception("Failed to create category product.");
+                            }
+                        }
+                    }
+
+                    // Tạo Variants và VariantAttributes
                     if (productVM.Variants != null)
                     {
                         foreach (var item in productVM.Variants)
                         {
+                            // Tạo Variant
                             Variant variant = new Variant
                             {
-                                ProductId = resultProduct.Id,
+                                ProductId = productId,
                                 VariantName = item.Name,
                                 Quantity = item.Quantity,
                                 PuscharPrice = item.PuscharPrice,
                                 SalePrice = item.SalelPrice,
                                 AfterDiscountPrice = item.AfterDiscountPrice,
                                 IsDefault = item.IsDefault,
-                                //MaximumQuantityPerOrder 
-                                //Weight
+                                MaximumQuantityPerOrder = item.MaximumQuantityPerOrder,
+                                Weight = item.Weight,
                             };
 
                             var variantResult = _unitOfWork.VariantRepository.Create(variant);
+                            _unitOfWork.SaveChanges();
                             if (variantResult == null)
                             {
                                 throw new Exception("Failed to create variant.");
                             }
+                            var variantId = variant.VariantId;
+                            // Tách attributeValueIds và tạo VariantAttributes
+                            var attributeValueIds = item.attributeValueIds.Split('/').Select(int.Parse).ToList();
+                            foreach (var attributeValueId in attributeValueIds)
+                            {
+                                VariantAttribute variantAttribute = new VariantAttribute
+                                {
+                                    VariantId = variantId,
+                                    AttributeValueId = attributeValueId
+                                };
+                                var variantAttributeResult = _unitOfWork.VariantAttributeRepository.Create(variantAttribute);
+                                _unitOfWork.SaveChanges();
+                                if (variantAttributeResult == null)
+                                {
+                                    throw new Exception("Failed to create variant attribute.");
+                                }
+                            }
 
-                            //// Create VariantAttributes for this variant
-                            //foreach (var attributeValueId in item.AttributeValueIds)
-                            //{
-                            //    VariantAttribute variantAttribute = new VariantAttributes
-                            //    {
-                            //        VariantId = variantResult.Id,
-                            //        AttributeValueId = attributeValueId,
-                            //    };
-                            //    var variantAttributeResult = _unitOfWork.VariantAttributeRepository.Create(variantAttribute);
-                            //    if (variantAttributeResult == null)
-                            //    {
-                            //        throw new Exception("Failed to create variant attribute.");
-                            //    }
-                            //}
-
-                            // Create Specifications for this variant
+                            // Tạo Specifications cho từng Variant
                             if (item.Specifications != null)
                             {
                                 foreach (var spec in item.Specifications)
                                 {
                                     Specification specification = new Specification
                                     {
-                                        VariantId = variantResult.Id,
+                                        VariantId = variantId,
                                         Key = spec.Name,
                                         Value = spec.Value
                                     };
                                     var specResult = _unitOfWork.SpecificationRepository.Create(specification);
+                                    _unitOfWork.SaveChanges();
                                     if (specResult == null)
                                     {
                                         throw new Exception("Failed to create specification.");
@@ -168,7 +202,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                         }
                     }
 
-                    // Handle default image upload
+                    // Xử lý upload ảnh mặc định
                     if (productVM.ImagesDefault != null)
                     {
                         var imageDefaultResponse = await UploadImage(productVM.ImagesDefault);
@@ -181,12 +215,12 @@ namespace DATN.Client.Areas.Admin.Controllers
                         {
                             ImagePath = imageDefaultResponse,
                             IsDefault = true,
-                            ProductId = resultProduct.Id
+                            ProductId = productId
                         };
                         await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", defaultImageVm);
                     }
 
-                    // Handle additional images upload
+                    // Xử lý upload ảnh bổ sung
                     if (productVM.Images != null && productVM.Images.Count > 0)
                     {
                         foreach (var file in productVM.Images)
@@ -201,26 +235,27 @@ namespace DATN.Client.Areas.Admin.Controllers
                             {
                                 ImagePath = imageResponse,
                                 IsDefault = false,
-                                ProductId = resultProduct.Id
+                                ProductId = productId
                             };
                             await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", additionalImageVm);
                         }
                     }
 
-                    // Commit the transaction if everything is successful
+                    // Commit transaction nếu mọi thứ thành công
                     transaction.Commit();
                     ToastHelper.ShowSuccess(TempData, "Product created successfully!");
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    // Rollback transaction in case of an error
+                    // Rollback transaction nếu có lỗi
                     transaction.Rollback();
                     ToastHelper.ShowError(TempData, $"Error: {ex.Message}");
                     return await ReturnToCreateViewWithErrors(productVM);
                 }
             }
         }
+
 
         private async Task<string> UploadImage(IFormFile imageFile)
         {
