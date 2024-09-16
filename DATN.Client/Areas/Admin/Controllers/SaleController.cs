@@ -28,7 +28,7 @@ namespace DATN.Client.Areas.Admin.Controllers
 		}
 
 		[Area("Admin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [Route("Admin/[controller]/[action]")]
         public IActionResult Index()
         {	
@@ -77,12 +77,28 @@ namespace DATN.Client.Areas.Admin.Controllers
 
 			try
 			{
+				if (string.IsNullOrEmpty(FullName) || !FullName.Contains('/'))
+				{
+					return Json(new {isSucccess=false, data = "Vui lòng nhập đúng định dạng Họtên/sđt"});
+				}
+
+				var seqData = FullName.Split('/');
+				if (seqData.Length != 2)
+				{
+					return Json(new {isSucccess=false, data = "Vui lòng nhập đúng định dạng Họtên/sđt"});
+				}
+
+				if (!IsValidVietnamesePhoneNumber(seqData[1]))
+				{
+					return Json(new {isSucccess=false, data = "Vui lòng nhập đúng định dạng sđt"});
+				}
+				
 				var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
 				var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
 				QuickCreateUserVM quickCreateUserVm = new QuickCreateUserVM();
 				quickCreateUserVm.UserId = new Guid();
-				quickCreateUserVm.FullName = FullName;
-				quickCreateUserVm.PhoneNumber = IsValidVietnamesePhoneNumber(FullName) == true ? FullName : "";
+				quickCreateUserVm.FullName = seqData[0];
+				quickCreateUserVm.PhoneNumber = seqData[1];
 			
 				var response = await _clientService.Post($"https://localhost:7095/api/User/QuickCreateUser/quick-create",quickCreateUserVm);
 				var userCreated = JsonConvert.DeserializeObject<AppUser>(response);
@@ -90,10 +106,11 @@ namespace DATN.Client.Areas.Admin.Controllers
 				{
 					saleProuductVm.QuickCreateUserVM.UserId = userCreated.Id;
 					saleProuductVm.QuickCreateUserVM.FullName = userCreated.FullName;
+					saleProuductVm.QuickCreateUserVM.PhoneNumber = userCreated.PhoneNumber;
 				}
 				var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
 				HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
-				return Json(new { data =  SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList()});
+				return Json(new {isSucccess=true, data =  SaleProductDeserialized.Where(c=>c.TabIndex==Tab).ToList()});
 			}
 			catch (Exception e)
 			{
@@ -103,7 +120,7 @@ namespace DATN.Client.Areas.Admin.Controllers
 			
 		}
 		[HttpPost]
-		public async Task<IActionResult> AddUserToTab(int Tab, Guid UserId, string FullName)
+		public async Task<IActionResult> AddUserToTab(int Tab, Guid UserId, string FullName,string PhoneNumber)
 		{
 			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
 			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
@@ -111,6 +128,7 @@ namespace DATN.Client.Areas.Admin.Controllers
 			{
 				saleProuductVm.QuickCreateUserVM.UserId = UserId;
 				saleProuductVm.QuickCreateUserVM.FullName = FullName;
+				saleProuductVm.QuickCreateUserVM.PhoneNumber = PhoneNumber;
 			}
 			var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
 			HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
@@ -409,10 +427,11 @@ namespace DATN.Client.Areas.Admin.Controllers
 						$"https://localhost:7095/api/Voucher/GetBatchByCode";
 					var response = await _clientService.Post<Batch>(url,getVoucher);
 					paymentTab.BacthName = Name;
+					paymentTab.MustPay=(Convert.ToDecimal(paymentTab.MustPay) - response.DiscountAmount);
+
 					if (response.DiscountAmount>0)
 					{
 						
-						paymentTab.MustPay=(Convert.ToDecimal(paymentTab.MustPay) - response.DiscountAmount);
 						paymentTab.DicountAmount = response.DiscountAmount;
 						paymentTab.BatchId=response.Id;
 						var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
@@ -450,11 +469,27 @@ namespace DATN.Client.Areas.Admin.Controllers
 			var getSaleProductStored = HttpContext.Session.GetString("SaleProductStored");
 			var SaleProductDeserialized = string.IsNullOrEmpty(getSaleProductStored) == false ? JsonConvert.DeserializeObject<List<SaleProuductVM>>(getSaleProductStored) : new List<SaleProuductVM>();
 			var paymentTab = SaleProductDeserialized.FirstOrDefault(c => c.TabIndex == Tab);
-			if (SaleProductDeserialized.Count==1)
-			{
-				return Json(new {isSucccess=false, data = "Bạn phải để ít nhất 1 Tab thanh toán"});
-			}
 			SaleProductDeserialized.Remove(paymentTab);
+			if (SaleProductDeserialized.Count == 0)
+			{
+				List<SaleProuductVM>  saleProuductVm = new List<SaleProuductVM>();
+				SaleProuductVM saleProuduct = new SaleProuductVM();
+				saleProuduct.TabName = "Tab 1";
+				saleProuduct.TabIndex = 1;
+				saleProuduct.DicountAmount = 0;
+				saleProuduct.ChangeMoney = 0;
+				saleProuduct.MustPay = 0;
+				saleProuduct.CustomerGivenMoney = 0;
+				saleProuduct.DicountAmount = 0;
+				saleProuduct.BacthName = "";
+				saleProuduct.QuickCreateUserVM = new QuickCreateUserVM();
+				saleProuduct.ShoppingTabs = new List<ShoppingTab>();
+				saleProuduct.ProductCount = saleProuduct.ShoppingTabs.Count();
+				saleProuductVm.Add(saleProuduct);
+				var SaleProuductVMStoredNew = JsonConvert.SerializeObject(saleProuductVm);
+				HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStoredNew);
+				return Json(new {isSucccess=true, data = saleProuductVm.ToList()});
+			}
 			var SaleProuductVMStored = JsonConvert.SerializeObject(SaleProductDeserialized);
 			HttpContext.Session.SetString("SaleProductStored", SaleProuductVMStored);
 			return Json(new {isSucccess=true, data = SaleProductDeserialized.ToList()});

@@ -279,7 +279,7 @@ ViewData["Title"] = "Admin Page";
                         {
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Tên khách hàng
-                                <span id="bill-full-name">@x.QuickCreateUserVM.FullName </span>
+                                <span id="bill-full-name"> </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Số lượng sản phẩm
@@ -432,7 +432,7 @@ ViewData["Title"] = "Admin Page";
                         <td colspan="3">
                             <table>
                                 <tr>
-                                    <td>Tên khách hàng: <span>${response.data.quickCreateUserVM.fullName}</span></td>
+                                    <td>Tên khách hàng: <span>${response.data.quickCreateUserVM.fullName +"/"}${response.data.quickCreateUserVM.phoneNumber}</span></td>
                                 </tr>
                             </table>
                         </td>
@@ -445,7 +445,7 @@ ViewData["Title"] = "Admin Page";
                     <tr class="details">
                         <td><span>Số tiền</span></td>
                         <td></td>
-                        <td class="text-end"><span>${response.data.changeMoney.toLocaleString()}</span></td>
+                        <td class="text-end"><span>${response.data.customerGivenMoney.toLocaleString()}</span></td>
                     </tr>
                     <tr class="heading">
                         <td>Tên sản phẩm</td>
@@ -599,7 +599,6 @@ ViewData["Title"] = "Admin Page";
    function PrintBill(){
 
         var content=document.getElementById('data-bill-container');
-        console.log(content)
        html2canvas(content, { scale: 2 }).then(function (canvas) {
            const imageURL = canvas.toDataURL("image/png");
            // Create an iframe for printing
@@ -670,7 +669,7 @@ ViewData["Title"] = "Admin Page";
                        var rowHtml = `       
                <li class="list-group-item d-flex justify-content-between align-items-center">
      Tên khách hàng
-     <span id="bill-full-name">${sp.quickCreateUserVM.fullName==null?"":sp.quickCreateUserVM.fullName}</span>
+     <span id="bill-full-name">${sp.quickCreateUserVM.fullName==null?"":sp.quickCreateUserVM.fullName +"/"}${sp.quickCreateUserVM.phoneNumber==null?"":sp.quickCreateUserVM.phoneNumber}</span>
    </li>
    <li class="list-group-item d-flex justify-content-between align-items-center">
      Số lượng sản phẩm
@@ -826,7 +825,7 @@ ViewData["Title"] = "Admin Page";
            var rowHtml = `       
                <li class="list-group-item d-flex justify-content-between align-items-center">
      Tên khách hàng
-     <span id="bill-full-name">${item.quickCreateUserVM.fullName==null?"":item.quickCreateUserVM.fullName}</span>
+     <span id="bill-full-name">${item.quickCreateUserVM.fullName==null?"":item.quickCreateUserVM.fullName +"/"}${item.quickCreateUserVM.phoneNumber==null?"":item.quickCreateUserVM.phoneNumber}</span>
    </li>
    <li class="list-group-item d-flex justify-content-between align-items-center">
      Số lượng sản phẩm
@@ -870,6 +869,7 @@ ViewData["Title"] = "Admin Page";
    }
    
    function closeTab(index) {
+    console.log(index)
        $.ajax({
            url: '@Url.Action("CloseTab", "Sale")', // Adjust controller and action as needed
            type: 'POST',
@@ -877,11 +877,7 @@ ViewData["Title"] = "Admin Page";
                Tab:index,
            },
            success: function (response) {
-               if (response.isSucccess==false){
-                   toastr['error'](response.data);
-                   $('#loadingOverlay').hide();
-                   return;
-               }
+              
                var infoTab = $('#dynamicTabs');
                infoTab.empty();
                addTabBtn=` <li class="nav-item">
@@ -901,6 +897,7 @@ ViewData["Title"] = "Admin Page";
                    const addTabButton = document.getElementById('addTabButton').parentNode;
                    document.getElementById('dynamicTabs').insertBefore(newTab, addTabButton);
                })
+               
              
                 tabCount-=1;
                 currentTab=1;
@@ -926,17 +923,19 @@ ViewData["Title"] = "Admin Page";
     $(document).on('click', '.user-searched', function() {
        const userName = this.getAttribute('data-fullName');
        const userId = this.getAttribute('data-userid');
+       const phoneNumber = this.getAttribute('data-phoneNumber');
         $.ajax({
             url: '@Url.Action("AddUserToTab", "Sale")', // Adjust controller and action as needed
             type: 'POST',
             data: {
                 Tab:currentTab,
                 UserId:userId,
-                FullName:userName
+                FullName:userName,
+                PhoneNumber:phoneNumber,
             },
             success: function (response) {
                 response.data.$values.forEach(function(item) {
-                    $('#bill-full-name').text(item.quickCreateUserVM.fullName);
+                    $('#bill-full-name').text(item.quickCreateUserVM.fullName +'/'+item.quickCreateUserVM.phoneNumber );
                    })
                 document.getElementById('userDropdown').style.display = 'none';
                 $('#loadingOverlay').hide();
@@ -958,13 +957,19 @@ ViewData["Title"] = "Admin Page";
                FullName:fullName
            },
            success: function (response) {
+               if (response.isSucccess==false){
+                   toastr['error'](response.data);
+                   $('#loadingOverlay').hide();
+                   return;
+               }
+              
                var infoTab = $('.info-tab');
                infoTab.empty();
                response.data.$values.forEach(function(item) {
                    var rowHtml = `       
                <li class="list-group-item d-flex justify-content-between align-items-center">
      Tên khách hàng
-     <span id="bill-full-name">${item.quickCreateUserVM.fullName==null?"":item.quickCreateUserVM.fullName}</span>
+     <span id="bill-full-name">${item.quickCreateUserVM.fullName==null?"":item.quickCreateUserVM.fullName +"/"}${item.quickCreateUserVM.phoneNumber==null?"":item.quickCreateUserVM.phoneNumber}</span>
    </li>
    <li class="list-group-item d-flex justify-content-between align-items-center">
      Số lượng sản phẩm
@@ -1165,7 +1170,7 @@ ViewData["Title"] = "Admin Page";
                    if (response.data!=null){
                        response.data.$values.forEach(function(item) {
                            var rowHtml = `       
-                               <li class="dropdown-item user-searched d-flex align-items-center" data-userId="${item.id}" data-fullName="${item.fullName}" >
+                               <li class="dropdown-item user-searched d-flex align-items-center" data-userId="${item.id}" data-fullName="${item.fullName}" data-phoneNumber="${item.phoneNumber}" >
                                        <div class="flex-grow-1">
                                            <div>Tên/sdt: ${item.fullName } / ${item.phoneNumber==null?"":item.phoneNumber}</div>
                                        </div>
