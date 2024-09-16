@@ -11,7 +11,7 @@ namespace DATN.Core.Model
         public InvoiceStatus Status { get; set; }
         //public decimal? TotalAmount { get; set; }
         //public decimal? Discount { get; set; }
-        public decimal? FinalAmount { get; set; }
+        //public decimal? FinalAmount { get; set; }
 
         // Foreign Key
         public Guid UserId { get; set; }
@@ -24,7 +24,7 @@ namespace DATN.Core.Model
         public Voucher? Voucher { get; set; }
         public string? Note { get; set; }
         public int? VoucherId { get; set; }
-        public ShippingOrder? ShippingOrder { get; set; }
+        public List<ShippingOrder>? ShippingOrders { get; set; }
 
 
     }

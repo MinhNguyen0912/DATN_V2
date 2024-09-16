@@ -214,12 +214,12 @@ namespace DATN.Core.Data
             );
             #endregion
             #region InvoiceDetail
-            //modelBuilder.Entity<InvoiceDetail>().HasData(
-            //    new InvoiceDetail { InvoiceDetailId = 1, InvoiceId = 1, Quantity = 2, ProductAttributeId = 1, NewPrice = 10000000, PuscharPrice = 9354545 , OldPrice = 10290000 },
-            //    new InvoiceDetail { InvoiceDetailId = 2, InvoiceId = 2, Quantity = 1, ProductAttributeId = 2, NewPrice = 11000000, PuscharPrice = 10809091, OldPrice= 11990000 },
-            //    new InvoiceDetail { InvoiceDetailId = 3, InvoiceId = 3, Quantity = 1, ProductAttributeId = 3, NewPrice = 11500000, PuscharPrice = 10627273, OldPrice= 11690000 },
-            //    new InvoiceDetail { InvoiceDetailId = 4, InvoiceId = 3, Quantity = 1, ProductAttributeId = 2, NewPrice = 11000000, PuscharPrice = 10809091, OldPrice = 11990000 }
-            //);
+            modelBuilder.Entity<InvoiceDetail>().HasData(
+                new InvoiceDetail { InvoiceDetailId = 1, InvoiceId = 1, Quantity = 2, VariantId = 1, NewPrice = 70000, PuscharPrice = 50000, OldPrice = 75000 },
+                new InvoiceDetail { InvoiceDetailId = 2, InvoiceId = 1, Quantity = 1, VariantId = 2, NewPrice = 71000, PuscharPrice = 52000, OldPrice = 78000 },
+                new InvoiceDetail { InvoiceDetailId = 3, InvoiceId = 1, Quantity = 1, VariantId = 5, NewPrice = 71000, PuscharPrice = 49000, OldPrice = 74000 }
+  
+            );
             #endregion
             #region Comment
             //modelBuilder.Entity<Comment>().HasData(
@@ -229,18 +229,16 @@ namespace DATN.Core.Data
             //);
             #endregion
             #region Invoice
-            //modelBuilder.Entity<Invoice>().HasData(
-            //    new Invoice { InvoiceId = 1, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), VoucherUserId=1 },
-            //    new Invoice { InvoiceId = 2, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749") },
-            //    new Invoice { InvoiceId = 3, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749") }
-            //);
+            modelBuilder.Entity<Invoice>().HasData(
+                new Invoice { InvoiceId = 1, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),Note="abc-0989982563-Hải Dương-0-0",VoucherId=1 }
+
+            );
             #endregion
             #region PaymentInfo
-            //modelBuilder.Entity<PaymentInfo>().HasData(
-            //    new PaymentInfo { PaymentInfoId = 1, InvoiceId = 1, PaymentMethod = PaymentMethod.VNPay, PaymentStatus = PaymentStatus.Success },
-            //    new PaymentInfo { PaymentInfoId = 2, InvoiceId = 2, PaymentMethod = PaymentMethod.MomoQR, PaymentStatus = PaymentStatus.Success },
-            //    new PaymentInfo { PaymentInfoId = 3, InvoiceId = 3, PaymentMethod = PaymentMethod.Cash, PaymentStatus = PaymentStatus.Success }
-            //);
+            modelBuilder.Entity<PaymentInfo>().HasData(
+                new PaymentInfo { PaymentInfoId = 1, InvoiceId = 1, PaymentMethod = PaymentMethod.Cash, PaymentStatus = PaymentStatus.Success }
+   
+            );
             #endregion
             #region Role
             modelBuilder.Entity<IdentityRole<Guid>>().HasData(

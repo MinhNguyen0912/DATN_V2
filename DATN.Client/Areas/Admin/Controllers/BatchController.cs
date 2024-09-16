@@ -48,5 +48,27 @@ namespace DATN.Client.Areas.Admin.Controllers
             }
             return View(request);
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var result = await _clientService.Get<Batch>($"https://localhost:7095/api/Batch/get/{id}");
+            if (result == null)
+            {
+                return NotFound();
+            }
+            //var assignVoucherExist = result.Vouchers.Where(x=>x.Status == Core.Enum.VoucherStatus.NotUsed || x.Status == Core.Enum.VoucherStatus.Used).Any();
+            //ViewBag.AssignVoucherExist = assignVoucherExist;
+            return View(result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditBatchRequest request)
+        {
+            var result = await _clientService.Post<Batch>("https://localhost:7095/api/Batch/Edit", request);
+            if (result != null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(request);
+        }
     }
 }

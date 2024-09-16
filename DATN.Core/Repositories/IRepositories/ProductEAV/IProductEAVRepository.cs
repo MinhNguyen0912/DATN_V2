@@ -9,8 +9,8 @@ namespace DATN.Core.Repositories.IRepositories.ProductEAV
     {
         public Product_EAV GetByIdCustom(int id);
         public Product_EAV GetByIdWithPromotion(int id);
-
-		public ProductPaging ProductPaging(ProductPaging request);
-
-	}
+        public List<Product_EAV> GetAllCustom();
+        List<Product_EAV> GetAll();
+        public ProductPaging ProductPaging(ProductPaging request);
+    }
 }

@@ -7,17 +7,24 @@ namespace DATN.Core.ViewModel.InvoiceVM
     public class InvoiceVM
     {
         public int InvoiceId { get; set; }
+
         public DateTime CreateDate { get; set; }
+        public InvoiceStatus Status { get; set; }
         //public decimal? TotalAmount { get; set; }
         //public decimal? Discount { get; set; }
-        //public decimal? FinalAmount { get; set; }
-        public InvoiceStatus Status { get; set; }
-        public Guid? UserId { get; set; }
-        public AppUser? User { get; set; }
-        public ICollection<InvoiceDetailVM.InvoiceDetailVM>? InvoiceDetails { get; set; }
-        public string? Note { get; set; }
-        public int? VoucherUserId { get; set; }
-        public ShippingOrder? ShippingOrder { get; set; }
+        public decimal? FinalAmount { get; set; }
 
+        // Foreign Key
+        public Guid UserId { get; set; }
+        // Navigation property
+        public AppUser User { get; set; }
+        // Navigation property
+        public ICollection<InvoiceDetail> InvoiceDetails { get; set; }
+        // Navigation property
+        public PaymentInfo? PaymentInfo { get; set; }
+        public Voucher? Voucher { get; set; }
+        public string? Note { get; set; }
+        public int? VoucherId { get; set; }
+        public List<ShippingOrder>? ShippingOrders { get; set; }
     }
 }

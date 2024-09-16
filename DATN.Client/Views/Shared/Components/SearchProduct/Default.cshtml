@@ -127,25 +127,32 @@
             {
                 <div class="product-item">
                     <div class="card">
-                        <img src="" class="card-img-top" alt="0">
+                        <img src="@product.Images.FirstOrDefault(p=>p.IsDefault==true).ImagePath" class="card-img-top" alt="0">
                         <div class="card-body">
-                            <div class="card-title text-ellipsis">@product.ProductName</div>
-                            <p class="card-text">
-                                <span style="position: relative;">
-                                    @String.Format(new CultureInfo("vi-VN"), "{0:N0}", 0)đ
-                                    <span style="content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background-color: rgba(0, 0, 0, 0.5); pointer-events: none;"></span>
+                            <div class="card-title text-ellipsis" style="line-height: 21px; height: 63px; font-size:14px;">@product.ProductName</div>
+                            <div class="d-flex align-items-center" style="align-items:baseline!important">
+                                <span style="position: relative; font-size:14px;color:#666;text-decoration:line-through">
+                                    @{
+                                        // Định dạng số theo chuẩn Việt Nam
+                                        CultureInfo vietnamCulture = new CultureInfo("vi-VN");
+                                        string formattedPrice = String.Format(vietnamCulture, "{0:N0}", product.Variants.FirstOrDefault(p => p.IsDefault == true).SalePrice);
+                                        string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", product.Variants.FirstOrDefault(p => p.IsDefault == true).AfterDiscountPrice);
+                                    }
                                 </span>
-                                <strong>-0%</strong>
-                                <br />
-                                <span class="text-danger fw-bolder">@String.Format(new CultureInfo("vi-VN"), "{0:N0}", 0)đ</span>
-                            </p>
-                            <div class="rating d-flex align-items-center">
-                                <span class="text-dark" style="padding-right: 8px; font-size:14px;">0</span>
-                                <i class="fa fa-star" style="padding-right: 8px; font-size:14px;"></i>
-                                <p style="margin: 0; font-size: 14px; color: #999999;">0</p>
+                                    <div>
+                                        <strong style="font-size:18px;color:#D0021C">@(formattedPrice)đ</strong>
+                                        <p style="font-size:14px;color:#666;text-decoration:line-through">@(formattedSalePrice)đ</p>
+                                    </div>
+                                    <strong style="font-size:14px;color:#EB5757;background-color:#FFF0E9;margin-left:8px">-@(product.Variants.FirstOrDefault(p => p.IsDefault == true).Discount)%</strong>
                             </div>
-                            <div class="product-detail" product-id="@product.ProductId">Xem chi tiết</div>
+                            <div class="d-flex align-items-center">
+                                <p style="color:#FB6E2E;font-size:14px;margin:0;padding-right:8px">@product.Rating</p>
+                                <i style="color:#FB6E2E;font-size:14px;padding-right:8px" class="fa-solid fa-star"></i>
+                                <p style="margin:0;font-size:14px;color:#999999">(@(product.RateCount))</p>
+                            </div>
+                  
                         </div>
+                        <div product-id="@product.ProductId" class="product-detail">Xem chi tiết</div>
                     </div>
                 </div>
             }

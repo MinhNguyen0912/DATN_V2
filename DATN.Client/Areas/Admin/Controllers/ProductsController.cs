@@ -272,6 +272,56 @@ namespace DATN.Client.Areas.Admin.Controllers
             return View(productVM);
         }
 
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await _clientService.Get<ProductVM_EAV>($"{ApiPaths.ProductEAV}/GetById/{id}");
+            ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
+            {
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList(), "Value", "Text");
+
+            //https://localhost:7095/api/Brand/GetAll
+            var brandRespon = await _clientService.Get<List<BrandVM>>($"{ApiPaths.Brand}/GetAll");
+
+
+            //https://localhost:7095/api/Brand/GetAll
+            var cateRespon = await _clientService.Get<List<CategoryVM>>($"{ApiPaths.Category}/GetAll");
+
+            //https://localhost:7095/api/Origin/GetAll
+            var originRespon = await _clientService.Get<List<OriginVM>>($"{ApiPaths.Origin}/GetAll");
+
+            //list Attribute 
+            //https://localhost:7095/api/AttributeEAV/GetAll
+            var listAttributes = await _clientService.Get<List<AttributeVM_EAV>>($"{ApiPaths.AttributeEAV}/GetAll");
+
+            ViewBag.listOrigin = new SelectList((System.Collections.IEnumerable)originRespon, "Id", "Name");
+            ViewBag.listBrand = new SelectList((System.Collections.IEnumerable)brandRespon, "BrandId", "Name");
+            ViewBag.listCate = new SelectList((System.Collections.IEnumerable)cateRespon, "Id", "Name");
+            ViewBag.listAttributes = new SelectList((System.Collections.IEnumerable)listAttributes, "AttributeId", "AttributeName");
+
+
+            return View(product);
+        }
+        //private async Task<IActionResult> ReturnToCreateViewWithErrors(CreateProductVM productVM)
+        //{
+        //    ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
+        //    {
+        //        Text = v.ToString(),
+        //        Value = ((int)v).ToString()
+        //    }).ToList(), "Value", "Text");
+
+        //    //https://localhost:7095/api/Origin/GetAll
+        //    var originRespon = await _clientService.Get<List<OriginVM>>($"{ApiPaths.Origin}/GetAll");
+        //    //https://localhost:7095/api/Brand/GetAll
+        //    var brandRespon = await _clientService.Get<List<BrandVM>>($"{ApiPaths.Brand}/GetAll");
+
+        //    ViewBag.listOrigin = new SelectList((System.Collections.IEnumerable)originRespon, "Id", "Name");
+        //    ViewBag.listBrand = new SelectList((System.Collections.IEnumerable)brandRespon, "BrandId", "Name");
+        //    return View(productVM);
+        //}
+
         //private async Task<string> UploadImageAsync(IFormFile file)
         //{
         //    using (var memoryStream = new MemoryStream())

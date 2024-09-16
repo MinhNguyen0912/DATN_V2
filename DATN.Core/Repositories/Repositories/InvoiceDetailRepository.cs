@@ -22,6 +22,10 @@ namespace DATN.Core.Repositories.Repositories
         {
             return _context.InvoiceDetails.Include(p => p.Variant).Include(p => p.Comment);
         }
+        public List<InvoiceDetail> FincByInvoiceIdCustom(int invoiceId)
+        {
+            return _context.InvoiceDetails.Where(p=>p.InvoiceId == invoiceId).Include(p=>p.Variant).ThenInclude(p=>p.Product).ToList();
+        }
         public List<InvoiceDetailForCommentVM> GetInvoiceDetailByInvoiceId(int invoiceId, Guid userId)
         {
             //try

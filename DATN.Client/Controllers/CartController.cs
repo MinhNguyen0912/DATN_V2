@@ -4,14 +4,21 @@ using DATN.Client.Models;
 using DATN.Client.Services;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
+using DATN.Core.Model.Product_EAV;
 using DATN.Core.ViewModel.GHNVM;
+using DATN.Core.ViewModel.InvoiceDetailVM;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.PendingCartVM;
+using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModels.VNPayVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace DATN.Client.Controllers
 {
+    [Authorize(Roles = "User")]
     public class CartController : Controller
     {
         private readonly ClientService _clientService;
@@ -35,12 +42,13 @@ namespace DATN.Client.Controllers
                 return Redirect("~/Identity/Account/Login");
             }
             var pendingCart = await _clientService.Post<PendingCartVM>("https://localhost:7095/api/PendingCart/GetByUserId",user.UserId);
-            //var voucher = await _clientService.GetList<VoucherUser>($"https://localhost:7095/api/VoucherUser/GetVoucherByUser?Id={user.UserId}");
+            var voucher = await _clientService.GetList<VoucherVM>($"https://localhost:7095/api/Voucher/GetVoucherByUserId/{user.UserId}");
             try
             {
                 //ViewData["voucher"] = voucher;
                 ViewData["user"] = user;
                 ViewData["pendingCart"] = pendingCart;
+                ViewData["voucher"] = voucher;
             }
             catch (Exception ex)
             {
@@ -69,16 +77,18 @@ namespace DATN.Client.Controllers
             if (request.PaymentMethod == Core.Enum.PaymentMethod.Cash)
             {
                 await _clientService.Post($"https://localhost:7095/api/PendingCart/UpdatePendingCart?pendingCartId={request.pendingCartId}", new List<PendingCartVariant>());
-            }else if (request.PaymentMethod == Core.Enum.PaymentMethod.TheNoiDia)
-            {
-                var totalMoney = invoice.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
-                return RedirectToAction("Pay", new {typePayment=1, money =totalMoney+request.ShippingFee,invoiceId =invoice.InvoiceId, pendingCartId = request.pendingCartId});
-            }else if (request.PaymentMethod == Core.Enum.PaymentMethod.TheQuocTe)
-            {
-                var totalMoney = invoice.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
-                return RedirectToAction("Pay", new { typePayment = 2, money = totalMoney + request.ShippingFee, invoiceId = invoice.InvoiceId , pendingCartId = request.pendingCartId });
             }
-            return RedirectToAction("Index");
+            else if (request.PaymentMethod == Core.Enum.PaymentMethod.TheNoiDia)
+            {
+                var totalMoney = invoice.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
+                return RedirectToAction("Pay", new { typePayment = 1, money = totalMoney + request.ShippingFee, invoiceId = invoice.InvoiceId, pendingCartId = request.pendingCartId });
+            }
+            else if (request.PaymentMethod == Core.Enum.PaymentMethod.TheQuocTe)
+            {
+                var totalMoney = invoice.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
+                return RedirectToAction("Pay", new { typePayment = 2, money = totalMoney + request.ShippingFee, invoiceId = invoice.InvoiceId, pendingCartId = request.pendingCartId });
+            }
+            return Redirect("Home/Index");
         }
         public IActionResult Pay(int typePayment, decimal money, int invoiceId, int pendingCartId)
         {
@@ -143,6 +153,40 @@ namespace DATN.Client.Controllers
             }
 
         }
+        private List<List<Variant>> CalculateShipments(List<Variant> variants, double maxWeightPerShipment) //max = 10000
+        {
+            // Sắp xếp các sản phẩm theo thứ tự giảm dần trọng lượng
+            variants.Sort((a, b) => b.Weight.CompareTo(a.Weight));
+
+            // Danh sách các lần ship, mỗi lần ship là một danh sách chứa các Variant
+            List<List<Variant>> shipments = new List<List<Variant>>();
+
+            foreach (var variant in variants)
+            {
+                bool added = false;
+
+                // Tìm xem có chuyến ship nào có thể thêm được sản phẩm này mà không vượt quá maxWeightPerShipment
+                foreach (var shipment in shipments)
+                {
+                    double currentShipmentWeight = shipment.Sum(v => v.Weight);
+                    if (currentShipmentWeight + (variant.Weight <= maxWeightPerShipment ? variant.Weight : maxWeightPerShipment) <= maxWeightPerShipment)
+                    {
+                        shipment.Add(variant);
+                        added = true;
+                        break;
+                    }
+                }
+
+                // Nếu không thể thêm sản phẩm vào chuyến ship nào thì tạo một chuyến ship mới
+                if (!added)
+                {
+                    shipments.Add(new List<Variant> { variant });
+                }
+            }
+
+            // Trả về danh sách các đơn hàng
+            return shipments;
+        }
         public async Task<IActionResult> vnpay_return()
         {
 
@@ -186,27 +230,79 @@ namespace DATN.Client.Controllers
                         //Thanh toan thanh cong
                         ViewBag.displayMsg = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
 
-                        var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
-                        var bodyGHN = new CreateGHNOrderAdmin()
+                        var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(invoiceId.Value);
+                        var cart = _unitOfWork.InvoiceDetailRepository.FincByInvoiceIdCustom(invoiceId.Value).Select(p => p.Variant).ToList();
+
+                        var cartCaculate = CalculateShipments(cart, 10000);
+
+                        foreach (var item in cartCaculate)
                         {
-                            to_name = invoice.Note.Split('-')[0],
-                            to_phone = invoice.Note.Split('-')[1],
-                            to_address = invoice.Note.Split('-')[2],
-                            to_ward_code = invoice.Note.Split('-')[3],
-                            to_district_id = invoice.Note.Split('-')[4],
-                            //cod_amount = 
-                        };
-                        await _clientService.Post($"https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create", new List<PendingCartVariant>());
+                            var items = new List<OrderItemsGHNAdmin>();
+                            foreach (var item1 in item)
+                            {
+                                var itemz = new OrderItemsGHNAdmin()
+                                {
+                                    name = $"{item1.Product.ProductName}-{item1.VariantName}",
+                                    quantity = item1.Quantity,
+                                    weight = item1.Weight
+                                };
+                                items.Add(itemz);
+                            }
+                            var bodyGHN = new CreateGHNOrderAdmin()
+                            {
+                                to_name = invoice.Note.Split('-')[0],
+                                to_phone = invoice.Note.Split('-')[1],
+                                to_address = invoice.Note.Split('-')[2],
+                                to_ward_code = invoice.Note.Split('-')[3],
+                                to_district_id = invoice.Note.Split('-')[4],
+                                cod_amount = 0,
+                                weight = item.Sum(p => p.Weight),
+                                Items = items
+
+                            };
+                            using (var client = new HttpClient())
+                            {
+                                client.DefaultRequestHeaders.Add("Token", "af9239df-2402-11ef-8e53-0a00184fe694");
+                                client.DefaultRequestHeaders.Add("shop_Id", "192491");
+
+                                // Convert bodyGHN to JSON (if it's an object)
+                                var jsonBody = JsonConvert.SerializeObject(bodyGHN);
+                                var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                                // Gửi yêu cầu POST
+                                var response = await client.PostAsync("https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create", content);
+                                var responseContent = await response.Content.ReadAsStringAsync();
+                                var data = JsonConvert.DeserializeObject<CreateGHNResponse>(responseContent);
+
+                                var shippingOrder = new ShippingOrder()
+                                {
+                                    OrderCode = data.Data.order_code,
+                                    Price = double.Parse(data.Data.total_fee),
+                                    UserId = SessionHelper.GetObject<UserInfo>(HttpContext.Session, "user").UserId,
+                                    InvoiceId = invoiceId.Value
+                                };
+                                await _unitOfWork.ShippingOrderRepository.Create(shippingOrder);
+                            }
+                        }
                         await _clientService.Post($"https://localhost:7095/api/PendingCart/UpdatePendingCart?pendingCartId={pendingCartId}", new List<PendingCartVariant>());
-                        
-                        await _clientService.Get($"{ApiPaths.Invoice}/ChangeStatus?invoiceId={invoiceId}&status={4}");
+                        invoice.PaymentInfo.PaymentStatus = Core.Enum.PaymentStatus.Success;
+                        invoice.Status = Core.Enum.InvoiceStatus.Delivery;
+                        _unitOfWork.InvoiceRepository.Update(invoice);
+                        _unitOfWork.SaveChanges();
+                        return Redirect("/Home/Index");
 
                     }
                     else
                     {
                         //Thanh toan khong thanh cong. Ma loi: vnp_ResponseCode
                         ViewBag.displayMsg = "Có lỗi xảy ra trong quá trình xử lý.Mã lỗi: " + vnp_ResponseCode;
-                        await _clientService.Get($"{ApiPaths.Invoice}/ChangeStatus?invoiceId={invoiceId}&status={5}");
+                        //await _clientService.Get($"{ApiPaths.Invoice}/ChangeStatus?invoiceId={invoiceId}&status={5}");
+
+                        var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(invoiceId.Value);
+                        invoice.PaymentInfo.PaymentStatus = Core.Enum.PaymentStatus.Fail;
+                        invoice.Status = Core.Enum.InvoiceStatus.Fail;
+                        _unitOfWork.InvoiceRepository.Update(invoice);
+                        _unitOfWork.SaveChanges();
                     }
                     ViewBag.displayTmnCode = "Mã Website (Terminal ID):" + TerminalID;
                     ViewBag.displayTxnRef = "Mã giao dịch thanh toán:" + orderId.ToString();

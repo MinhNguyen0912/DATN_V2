@@ -3,12 +3,14 @@ using DATN.Client.Models;
 using DATN.Client.Services;
 using DATN.Core.ViewModel.CategoryVM;
 using DATN.Core.ViewModel.PromotionVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace DATN.Client.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

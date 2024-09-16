@@ -1,10 +1,12 @@
 ﻿using DATN.Client.Constants;
 using DATN.Client.Services;
 using DATN.Core.ViewModel.MagazineVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DATN.Client.Controllers
 {
+    [AllowAnonymous]
     public class MagazineController : Controller
     {
         private readonly ClientService _clientService;

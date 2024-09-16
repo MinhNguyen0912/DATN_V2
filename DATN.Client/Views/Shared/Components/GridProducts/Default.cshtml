@@ -1,6 +1,6 @@
-﻿@* @using System.Linq
+﻿@using System.Linq
 @using System.Globalization
-@model List<DATN.Core.ViewModel.ProductVM.ProductVM>
+@model List<DATN.Core.ViewModel.Product_EAV.ProductVM_EAV>
 
 @{
     var initialProducts = Model.Take(5).ToList();
@@ -14,24 +14,31 @@
         {
             <div class="col-md-2 product-item align-items-center" style="width: 20%; padding-left: 0; padding-right: 0;">
                 <div class="card" style="border-radius: 0!important; height: 412px;">
-                    <img src="@product.Images.FirstOrDefault(p=>p.IsDefault==true).ImagePath" class="card-img-top" alt="@product.Name Image" style="height: 220px;">
+                    <img src="@product.Images.FirstOrDefault(p=>p.IsDefault==true).ImagePath" class="card-img-top" alt="@product.ProductName Image" style="height: 220px;">
                     <div class="card-body">
-                        <div class="card-title text-ellipsis" style="line-height: 21px; height: 63px; font-size:14px;">@product.Name</div>
-                        <p class="card-text">
+                        <div class="card-title text-ellipsis" style="line-height: 21px; height: 63px; font-size:14px;">@product.ProductName</div>
+                        <div class="d-flex align-items-center" style="align-items:baseline!important">
                             <span style="position: relative; font-size:14px;color:#666;text-decoration:line-through">
-                                @String.Format(new CultureInfo("vi-VN"), "{0:N0}", product.ProductAttributes.FirstOrDefault(p=>p.IsDefault==true).SalePrice)đ
+                                @{
+                                    // Định dạng số theo chuẩn Việt Nam
+                                    CultureInfo vietnamCulture = new CultureInfo("vi-VN");
+                                    string formattedPrice = String.Format(vietnamCulture, "{0:N0}", product.Variants.FirstOrDefault(p => p.IsDefault == true).SalePrice);
+                                    string formattedSalePrice = String.Format(vietnamCulture, "{0:N0}", product.Variants.FirstOrDefault(p => p.IsDefault == true).AfterDiscountPrice);
+                                }
                             </span>
-                            <strong style="font-size: 14px; color: #EB5757; background-color: #FFF0E9; margin-left: 8px;">-@(product.Discount)%</strong>
-                            <br />
-                            <span style="font-size:18px;" class="text-danger fw-bolder">@String.Format(new CultureInfo("vi-VN"), "{0:N0}", product.DefaultPrice)đ</span>
-                        </p>
-                        <div class="rating d-flex align-items-center">
-                            <span class="text-dark" style="padding-right: 8px; font-size:14px;">@product.Rating</span>
-                            <i class="fa fa-star" style="padding-right: 8px; font-size:14px;"></i>
-                            <p style="margin: 0; font-size: 14px; color: #999999;">(@product.RateCount)</p>
+                            <div>
+                                <strong style="font-size:18px;color:#D0021C">@(formattedPrice)đ</strong>
+                                <p style="font-size:14px;color:#666;text-decoration:line-through">@(formattedSalePrice)đ</p>
+                            </div>
+                            <strong style="font-size:14px;color:#EB5757;background-color:#FFF0E9;margin-left:8px">-@(product.Variants.FirstOrDefault(p => p.IsDefault == true).Discount)%</strong>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <p style="color:#FB6E2E;font-size:14px;margin:0;padding-right:8px">@product.Rating</p>
+                            <i style="color:#FB6E2E;font-size:14px;padding-right:8px" class="fa-solid fa-star"></i>
+                            <p style="margin:0;font-size:14px;color:#999999">(@(product.RateCount))</p>
                         </div>
                     </div>
-                    <div product-id="@product.Id" class="product-detail">Xem chi tiết</div>
+                    <div product-id="@product.ProductId" class="product-detail">Xem chi tiết</div>
                 </div>
             </div>
         }
@@ -101,4 +108,4 @@
             location.href = `/product/edit?id=${id}`
         })
     }
-</script> *@
+</script>
