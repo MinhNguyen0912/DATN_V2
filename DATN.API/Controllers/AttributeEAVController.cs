@@ -5,7 +5,9 @@ using DATN.Core.Model;
 using DATN.Core.Model.Product_EAV;
 using DATN.Core.ViewModel.AttributeEAVVM;
 using DATN.Core.ViewModel.BrandVM;
+using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.Product_EAV;
+using DATN.Core.ViewModels.Paging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Asn1.Cms;
@@ -27,7 +29,12 @@ namespace DATN.API.Controllers
             _context = context;
         }
 
-
+        [HttpPost]
+        public IActionResult GetAttributePaging([FromBody] AttributesPaging request)
+        {
+            AttributesPaging Paging = _unitOfWork.AttributeEAVRepository.GetAttributePaging(request);
+            return Ok(Paging);
+        }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
