@@ -311,7 +311,7 @@ namespace DATN.Client.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await _clientService.Get<ProductVM_EAV>($"{ApiPaths.ProductEAV}/GetById/{id}");
+            var product = _unitOfWork.ProductEAVRepository.GetByIdCustom(id);
             var result = new UpdateProductVM
             {
                 ProductId = product.ProductId,
