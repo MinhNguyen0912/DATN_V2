@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Areas\Admin\Views\Attributes\Index.cshtml" />
     <None Include="Areas\Admin\Views\Category\Creat.cshtml" />
     <None Include="Areas\Admin\Views\Category\Details.cshtml" />
     <None Include="Areas\Admin\Views\Category\Edit.cshtml" />
