@@ -340,21 +340,30 @@ namespace DATN.Client.Areas.Admin.Controllers
             return View(product);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductVM_EAV request)
+        public async Task<IActionResult> Update(ProductVM_EAV productVM)
         {
-            var product = _unitOfWork.ProductEAVRepository.GetByIdCustom(request.ProductId);
-            //List<int> cateIdList = request.cateIds.Split(',').Select(int.Parse).ToList();
+            using (var transaction = _unitOfWork.BeginTransaction())
+            {
+                    // Tìm sản phẩm cần cập nhật
+                    var product = _unitOfWork.ProductEAVRepository.GetByIdCustom(productVM.ProductId);
+                    if (product == null)
+                    {
+                        throw new Exception("Product not found.");
+                    }
 
-            product.ProductName = request.ProductName;
-            product.Description = request.Description;
-            product.Status = request.Status;
-            product.OriginId = request.OriginId;
-            product.BrandId = request.BrandId;
-
-            _unitOfWork.ProductEAVRepository.Update(product);
-            _unitOfWork.SaveChanges();
-            return RedirectToAction(nameof(Index));
+                    // Cập nhật thông tin sản phẩm
+                    product.ProductName = productVM.ProductName;
+                    product.Description = productVM.Description;
+                    product.Status = productVM.Status;
+                    product.OriginId = productVM.OriginId;
+                    product.BrandId = productVM.BrandId;
+                    _unitOfWork.ProductEAVRepository.Update(product);
+                    _unitOfWork.SaveChanges();
+                    return RedirectToAction(nameof(Index));
+            }
         }
+
+
         //private async Task<IActionResult> ReturnToCreateViewWithErrors(CreateProductVM productVM)
         //{
         //    ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem

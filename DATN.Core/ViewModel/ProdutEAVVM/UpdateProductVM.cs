@@ -9,19 +9,21 @@ using System.Threading.Tasks;
 
 namespace DATN.Core.ViewModel.ProdutEAVVM
 {
-    public class UpdateProductEAVNM
+    public class UpdateProductVM
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; }
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; }
         public int? OriginId { get; set; }
         public ProductStatus Status { get; set; }
         public int? BrandId { get; set; }
-        public string cateIds { get; set; }
         public List<CategoryProduct>? CategoryProducts { get; set; }
+        public string cateIds { get; set; }
         public Brand? Brand { get; set; }
         public Origin? Origin { get; set; }
         public List<IFormFile>? Images { get; set; }
         public IFormFile? ImagesDefault { get; set; }
+        public List<CreateVariantsVM>? Variants { get; set; }
+
     }
 }

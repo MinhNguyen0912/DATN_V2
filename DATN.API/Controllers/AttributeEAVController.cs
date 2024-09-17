@@ -69,35 +69,34 @@ namespace DATN.API.Controllers
             return NotFound(new { Message = "Attribute not found" });
         }
         [HttpGet("{id}")]
-        public IActionResult GetAttributeValueByProductId(int id)
+        public IActionResult GetAttributesWithValuesByProductId(int id)
         {
-            // Lấy dữ liệu từ cơ sở dữ liệu và ánh xạ vào các lớp DTO
-            var attributes = _context.AttributeValue_EAVs
-        .Include(av => av.Attribute) // Bao gồm thuộc tính liên quan
-        .Where(av => _context.Variants
-            .Where(v => v.ProductId == id)
-            .SelectMany(v => v.VariantAttributes)
-            .Select(va => va.AttributeValueId)
-            .Contains(av.AttributeValueId))
-        .GroupBy(av => av.Attribute)
-        .Select(g => new AttributeDTO
-        {
-            AttributeId = g.Key.AttributeId,
-            AttributeName = g.Key.AttributeName,
-            AttributeValues = g.Select(av => new AttributeValueDTO
-            {
-                AttributeValueId = av.AttributeValueId,
-                ValueText = av.ValueText
-            }).ToList()
-        })
-        .ToList();
+            // Lấy tất cả các giá trị thuộc tính liên quan đến sản phẩm
+            var relatedAttributeValueIds = _context.Variants
+                .Where(v => v.ProductId == id)
+                .SelectMany(v => v.VariantAttributes)
+                .Select(va => va.AttributeValueId)
+                .Distinct()
+                .ToList();
+
+            // Lấy tất cả các thuộc tính có các giá trị thuộc tính liên quan
+            var attributes = _context.Attribute_EAVs
+                .Include(a => a.AttributeValues) // Bao gồm giá trị thuộc tính liên quan
+                .Where(a => a.AttributeValues.Any(av => relatedAttributeValueIds.Contains(av.AttributeValueId)))
+                .Select(a => new AttributeDTO
+                {
+                    AttributeId = a.AttributeId,
+                    AttributeName = a.AttributeName,
+                    AttributeValues = a.AttributeValues.Select(av => new AttributeValueDTO
+                    {
+                        AttributeValueId = av.AttributeValueId,
+                        ValueText = av.ValueText
+                    }).ToList()
+                })
+                .ToList();
 
             return Ok(attributes);
         }
-
-
-
-
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateAttributeEAVVM attributeVM)
