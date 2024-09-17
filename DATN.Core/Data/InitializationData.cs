@@ -352,6 +352,7 @@ namespace DATN.Core.Data
                     IsDefault = true,
                     MaximumQuantityPerOrder = 3,
                     Weight = 5000,
+                    IsActive = true,
                 },
                 new Variant
                 {
@@ -365,6 +366,7 @@ namespace DATN.Core.Data
                     IsDefault = false,
                     MaximumQuantityPerOrder = 4,
                     Weight = 6000,
+                    IsActive= true,
                 },
                 new Variant
                 {
@@ -378,6 +380,7 @@ namespace DATN.Core.Data
                     IsDefault = false,
                     MaximumQuantityPerOrder = 5,
                     Weight = 5000,
+                    IsActive= true,
                 },
                 new Variant
                 {
@@ -391,6 +394,7 @@ namespace DATN.Core.Data
                     IsDefault = false,
                     MaximumQuantityPerOrder = 6,
                     Weight = 6000,
+                    IsActive = true,
                 },
                 new Variant
                 {
@@ -404,6 +408,7 @@ namespace DATN.Core.Data
                     IsDefault = true,
                     MaximumQuantityPerOrder = 7,
                     Weight = 20000,
+                    IsActive = true,
                 },
                 new Variant
                 {
@@ -417,6 +422,7 @@ namespace DATN.Core.Data
                     IsDefault = false,
                     MaximumQuantityPerOrder = 8,
                     Weight = 22000,
+                    IsActive= false,
                 }
             );
             // Seed VariantAttributes

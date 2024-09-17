@@ -118,12 +118,12 @@ namespace DATN.Client.Areas.Admin.Controllers
                     foreach (var cateId in cateIdList)
                     {
                         // Kiểm tra xem ProductId và CategoryId đã tồn tại chưa
-                        var existingCategoryProduct = _unitOfWork.CategoryProductRepository
-                            .Find(cp => cp.ProductId == productId && cp.CategoryId == cateId);
+                        //var existingCategoryProduct = _unitOfWork.CategoryProductRepository
+                        //    .Find(cp => cp.ProductId == productId && cp.CategoryId == cateId);
 
                         // Nếu chưa tồn tại thì thêm mới
-                        if (existingCategoryProduct == null)
-                        {
+                        //if (existingCategoryProduct == null)
+                        //{
                             CategoryProduct categoryProduct = new CategoryProduct
                             {
                                 ProductId = productId,
@@ -134,7 +134,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                             {
                                 throw new Exception("Failed to create category product.");
                             }
-                        }
+                        //}
                     }
 
                     // Tạo Variants và VariantAttributes
@@ -151,9 +151,10 @@ namespace DATN.Client.Areas.Admin.Controllers
                                 PuscharPrice = item.PuscharPrice,
                                 SalePrice = item.SalelPrice,
                                 AfterDiscountPrice = item.AfterDiscountPrice,
-                                IsDefault = item.IsDefault,
                                 MaximumQuantityPerOrder = item.MaximumQuantityPerOrder,
                                 Weight = item.Weight,
+                                IsDefault = item.IsDefault,
+                                IsActive = item.IsActive
                             };
 
                             var variantResult = _unitOfWork.VariantRepository.Create(variant);
@@ -211,13 +212,19 @@ namespace DATN.Client.Areas.Admin.Controllers
                             throw new Exception("Failed to upload default image.");
                         }
 
-                        ImageVM defaultImageVm = new ImageVM
+                        Image defaultImageVm = new Image
                         {
                             ImagePath = imageDefaultResponse,
                             IsDefault = true,
                             ProductId = productId
                         };
-                        await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", defaultImageVm);
+                        //await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", defaultImageVm);
+                        var ImageResult = _unitOfWork.imageReponsiroty.Create(defaultImageVm);
+                        _unitOfWork.SaveChanges();
+                        if (ImageResult == null)
+                        {
+                            throw new Exception("Failed to create specification.");
+                        }
                     }
 
                     // Xử lý upload ảnh bổ sung
@@ -231,13 +238,20 @@ namespace DATN.Client.Areas.Admin.Controllers
                                 throw new Exception("Failed to upload additional image.");
                             }
 
-                            ImageVM additionalImageVm = new ImageVM
+                            Image additionalImageVm = new Image
                             {
                                 ImagePath = imageResponse,
                                 IsDefault = false,
                                 ProductId = productId
                             };
-                            await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", additionalImageVm);
+                            //await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", additionalImageVm);
+
+                            var ImageResult = _unitOfWork.imageReponsiroty.Create(additionalImageVm);
+                            _unitOfWork.SaveChanges();
+                            if (ImageResult == null)
+                            {
+                                throw new Exception("Failed to create specification.");
+                            }
                         }
                     }
 
