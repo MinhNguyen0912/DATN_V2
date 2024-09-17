@@ -6,8 +6,10 @@ using DATN.Core.Model;
 using DATN.Core.Models;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.Paging;
+using DATN.Core.ViewModel.SaleProductVM;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DATN.API.Controllers
 {
@@ -123,6 +125,67 @@ namespace DATN.API.Controllers
             if (reponse > 0)
             {
                 return Ok(invoice); // 200 OK
+            }
+            return BadRequest();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreatePaymentOffline([FromBody] SaleProuductVM saleProuductVm)
+        {                                                              
+            // Tạo đối tượng Invoice
+            var invoice = new Invoice()
+            {
+                UserId =Guid.Parse(saleProuductVm.QuickCreateUserVM.UserId.ToString())  ,
+                CreateDate = DateTime.Now,
+                InvoiceDetails = new List<InvoiceDetail>(),
+                Note = saleProuductVm.Note,
+                FinalAmount = saleProuductVm.MustPay,
+                VoucherId = saleProuductVm.VoucherId,
+            };
+
+            // Tạo đối tượng PaymentInfo
+            var paymentMethod = new PaymentInfo()
+            {
+                PaymentMethod = 0,
+                PaymentStatus = 0,
+            };
+
+            invoice.PaymentInfo = paymentMethod;
+
+            // Thêm các chi tiết hóa đơn vào Invoice
+            foreach (var item in saleProuductVm.ShoppingTabs)
+            {
+                var product =await  _unitOfWork.ProductEAVRepository.GetByIdAsync(item.ProductId);
+                var productByVariant = product.Variants.AsQueryable().AsNoTracking().FirstOrDefault(c => c.VariantId == item.VariantId);
+                if (product == null)
+                {
+                    return BadRequest($"Product with ID {item.ProductId} not found");
+                }
+                var invoiceDetail = new InvoiceDetail()
+                {
+                    VariantId = item.ProductId,
+                    Quantity = item.Quantity,
+                    NewPrice = Convert.ToDecimal(item.Price),
+                    OldPrice =Convert.ToDecimal(productByVariant.SalePrice),
+                    PuscharPrice =Convert.ToDecimal(productByVariant.PuscharPrice)
+                };
+              var resUpdateQuantity=  await _unitOfWork.ProductEAVRepository.UpdateQuantiyVariant(item.ProductId, item.VariantId,
+                    item.Quantity);
+              if (resUpdateQuantity)
+              {
+                  invoice.InvoiceDetails.Add(invoiceDetail);
+              }
+              else
+              {
+                    return BadRequest($"{product.ProductName +"/"+productByVariant.VariantName} không còn đủ số lượng vui lòng kiểm giảm bớt số lượng");
+              }
+            }
+        
+            await _unitOfWork.InvoiceRepository.Create(invoice);
+            var reponse = _unitOfWork.SaveChanges();
+            if (reponse > 0)
+            {
+                return Ok(invoice); // 200 OK
+
             }
             return BadRequest();
         }

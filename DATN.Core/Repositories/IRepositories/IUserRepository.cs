@@ -15,6 +15,8 @@ namespace DATN.Core.Repositories.IRepositories
         int UpdateUser(AppUser user);
         AppUser GetByIdCustom(Guid userId);
         AppUser GetUserByEmail(string email);
+
+        public Task<List<AppUser>> SearchUser(string search);
         //Task<IEnumerable<string>> GetListVoucherByUserId(Guid userId);
         List<AppUser> GetUsersExport(string search, string lastLoginTimeFilter);
         IEnumerable<AppUser> GetUsersByIds(List<Guid> userIds);

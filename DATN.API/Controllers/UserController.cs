@@ -41,6 +41,16 @@ namespace DATN.Api.Controllers
                 return Ok(user);
             }
             return BadRequest();
+        } 
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchUserByInput([FromQuery]string search)
+        {
+            var user =await _unitOfWork.UserRepository.SearchUser(search);
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            return BadRequest();
         }
         [HttpPut]
         public IActionResult UpdateUser(UserVM userVM)
@@ -109,7 +119,36 @@ namespace DATN.Api.Controllers
             userProfile = _unitOfWork.UserRepository.GetUserProfile(userProfile);
             return Ok(userProfile);
         }
-
+        
+        [HttpPost("quick-create")]
+        public async Task<IActionResult> QuickCreateUser([FromBody] QuickCreateUserVM userVm)
+        {
+            try
+            {
+                Random random = new Random();
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                var userName= new string(Enumerable.Repeat(chars, 30)
+                    .Select(s => s[random.Next(s.Length)]).ToArray());
+                AppUser userCreate = new AppUser();
+                userCreate.Id = Guid.NewGuid();
+                userCreate.UserName = (userName+".com").ToUpper();
+                userCreate.NormalizedUserName =(userName).ToUpper();
+                userCreate.NormalizedEmail = (userName+"@gmail.com").ToUpper();
+                userCreate.SecurityStamp = Guid.NewGuid().ToString();
+                userCreate.PasswordHash = new PasswordHasher<AppUser>().HashPassword(null, "Ab@123");
+                userCreate.EmailConfirmed = true;
+                userCreate.FullName = userVm.FullName;
+                userCreate.PhoneNumber = userVm.PhoneNumber;
+                userCreate.isActive = true;
+                userCreate.LastLoginTime = DateTime.Now;
+                var result = await _userManager.CreateAsync(userCreate);
+                return Ok(userCreate);
+            }
+            catch
+            {
+                return StatusCode(500, new { Message = "There was an error creating the user. Please try again later." });
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserVM userVm)
         {

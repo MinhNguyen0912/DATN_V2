@@ -12,6 +12,7 @@ namespace DATN.Core.Repositories.IRepositories
 {
     public interface IBatchRepository:IBaseRepository<Batch>
     {
+        public Task<Batch> GetByName(string Name, DateTime CurrentDate, decimal GrandTotalValue);
         BatchPaging batchPaging(BatchPaging request);
         Batch GetByIdCustom(int id);
         Task<bool> AnyAsync(Expression<Func<Batch, bool>> predicate);
