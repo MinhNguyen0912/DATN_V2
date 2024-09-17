@@ -1,1242 +1,1243 @@
 ﻿@model List<DATN.Core.ViewModel.SaleProductVM.SaleProuductVM>
-@{
-var currentTab = 1;
-ViewData["Title"] = "Admin Page";
-}
-<style>
-    .invoice-box {
-        width: 100%;
-        margin: auto;
-        padding: 30px;
-        border: 1px solid #eee;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-        background-color: white;
-        font-size: 16px;
-        line-height: 24px;
-        color: #555;
+    @{
+        var currentTab = 1;
+        ViewData["Title"] = "Admin Page";
     }
+    <style>
+        .invoice-box {
+            width: 100%;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            background-color: white;
+            font-size: 16px;
+            line-height: 24px;
+            color: #555;
+        }
 
-    .invoice-box table {
-        width: 100%;
-        line-height: inherit;
-        text-align: left;
-    }
+            .invoice-box table {
+                width: 100%;
+                line-height: inherit;
+                text-align: left;
+            }
 
-    .invoice-box table td {
-        padding: 5px;
-        vertical-align: top;
-    }
+                .invoice-box table td {
+                    padding: 5px;
+                    vertical-align: top;
+                }
 
-    .invoice-box table tr td:nth-child(2) {
-        text-align: right;
-    }
+                .invoice-box table tr td:nth-child(2) {
+                    text-align: right;
+                }
 
-    .invoice-box table tr.top table td {
-        padding-bottom: 20px;
-    }
+                .invoice-box table tr.top table td {
+                    padding-bottom: 20px;
+                }
 
-    .invoice-box table tr.top table td.title {
-        font-size: 45px;
-        line-height: 45px;
-        color: #333;
-    }
-
-    .invoice-box table tr.information table td {
-        padding-bottom: 40px;
-    }
-
-    .invoice-box table tr.heading td {
-        background-color: #eee;
-        border-bottom: 1px solid #ddd;
-        font-weight: bold;
-    }
-
-    .invoice-box table tr.details td {
-        padding-bottom: 20px;
-    }
-
-    .invoice-box table tr.item td {
-        border-bottom: 1px solid #eee;
-    }
-
-    .invoice-box table tr.item.last td {
-        border-bottom: none;
-    }
-
-    .invoice-box table tr.total td:nth-child(2) {
-        border-top: 2px solid #eee;
-        font-weight: bold;
-    }
-   .final-price {
-   color: red;
-   font-weight: bold;
-   }
-   .old-pirce {
-   color: #888; font-weight: 400;font-size:14px!important;text-decoration:line-through;
-   }
-   /* Container background and padding */
-   .container-fluid {
-   background-color: #007bff; /* Primary blue background */
-   padding: 16px;
-   }
-   /* Input Group Styling */
-   .input-group .form-control {
-   background-color: #f8f9fa;
-   border: none;
-   box-shadow: none;
-   }
-   .header-space {
-   border-bottom: 1px solid gray;
-   }
-   /* Button Styles */
-   .btn-dark {
-   background-color: #343a40;
-   border: none;
-   }
-   .btn-outline-light {
-   border: none;
-   }
-   .btn-light {
-   background-color: #f8f9fa;
-   border: none;
-   color: #343a40;
-   }
-   .btn-danger {
-   background-color: #dc3545;
-   border: none;
-   }
-   .btn-primary {
-   background-color: #007bff;
-   border: none;
-   }
-   /* Button Hover Effects */
-   .btn-dark:hover, .btn-danger:hover, .btn-primary:hover, .btn-light:hover {
-   opacity: 0.9;
-   }
-   /* Additional Styling for Icons */
-   .bi {
-   font-size: 1.2em;
-   }
-   .nav-item {
-   position: relative;
-   display: flex;
-   align-items: center;
-   padding: 10px;
-   }
-   .nav-item .btn-close {
-   position: absolute;
-   right: 2px; /* Khoảng cách từ nút đóng đến cạnh phải của tab */
-   }
-   #productDropdown {
-   margin-top: 60px;
-   display: none;
-   max-height: 300px;
-   overflow-y: auto;
-   border-radius: 0.5rem;
-   }
-   #productSearch:focus + #productDropdown,
-   #productDropdown:hover {
-   display: block;
-   }
-   #productDropdown .dropdown-item {
-   cursor: pointer;
-   }
-   #productDropdown .dropdown-item img {
-   width: 50px;
-   height: 50px;
-   object-fit: cover;
-   border-radius: 0.25rem;
-   }
-   #addNewProduct {
-   font-weight: bold;
-   text-align: center;
-   border-bottom: 1px solid #dee2e6;
-   }
-   .loading-overlay {
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
-   background-color: rgba(255, 255, 255, 0.8);
-   display: none;
-   align-items: center;
-   justify-content: center;
-   z-index: 1000;
-   }
-</style>
-
-<div class="row" id="data-bill">
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Add product -->
-    <div class="container-fluid p-3 bg-primary text-white">
-        <div class="d-flex justify-content-between align-items-center">
-            <!-- Input Group for Adding Products -->
-            <div class="input-group w-50 position-relative">
-                <button class="btn btn-dark" type="button">
-                    <i class="bi bi-search"></i>
-                </button>
-                <input type="text" class="form-control" placeholder="Tìm kiếm theo tên sản phầm (Enter)" id="productSearch" onkeydown="searchProduct(event)" >
-                <button class="btn btn-outline-light" type="button">
-                    <i class="bi bi-upc-scan"></i>
-                </button>
-                <ul class="dropdown-menu position-absolute w-100" id="productDropdown" style="margin-top: 60px;">
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-8">
-        <div class="tab-content" id="dynamicTabContent">
-            <div class="tabInvoice">
-                <!-- Tab Navigation -->
-                <ul class="nav nav-tabs" id="dynamicTabs" role="tablist" style="white-space: nowrap; overflow-x: auto;" >
-                    
-                    <li class="nav-item d-flex align-items-center " role="presentation">
-                        @foreach (var tab in @Model)
-                        {
-                            <button class="nav-link active  d-flex align-items-center" id="tab-0" onclick="openCurrentTab(@tab.TabIndex)" data-bs-toggle="tab" data-bs-target="#content-0" type="button" role="tab" aria-controls="content-0" aria-selected="true" style="display: inline-flex; width: 90px">
-                                Tab 1
-                                <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(@tab.TabIndex)" style="position: absolute; right: 10px;"></button>
-                            </button>
-                        }
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" id="addTabButton" onclick="addNewtab()" type="button">+</button>
-                    </li>
-                </ul>
-            </div>
-            <div class="tab-pane fade show active" id="content-0" role="tabpanel" aria-labelledby="tab-0">
-                <div class="row  py-2 m-2 header-space">
-                    <div class="col-1">SKU</div>
-                    <div class="col-5">
-                        Tên sản phẩm
-                    </div>
-                    <div class="col-1">
-                        SL
-                    </div>
-                    <div class="col-2 text-end">
-                        Đơn giá
-                    </div>
-                    <div class="col-2 text-end">
-                        Thành tiền
-                    </div>
-                    <div class="col-1">
-                    </div>
-                </div>
-                <div class="overflow-auto product-added-space"  >
-                    @foreach (var x in @Model.Where(c => c.TabIndex == 1))
-                    {
-                        foreach (var item in x.ShoppingTabs)
-                        { 
-                            <div class="col-1">
-                                <span class="badge bg-secondary">PVN0 @item.ProductId}</span>
-                            </div>
-                            <div class="col-5">
-                                <h6 class="mb-0">@item.ProductName</h6>
-                                <div class="text-warning">@item.Variant</div>
-                            </div>
-                            <div class="col-1">
-                                <input type="number" class="form-control form-control-sm qty-input" data-id="@item.ProductId" data-variantId="@item.VariantId" value="@item.Quantity" style="width: 60px;" min="1" max="3" data-price="@item.Price"  oninput="updateTotalPrice(this)" >
-                            </div>
-                            <div class="col-2 text-end">
-                                <span class="unit-price">@item.Price.ToString() VND</span>
-                            </div>
-                            <div class="col-2 text-end">
-                                <span class="total-price">@(item.Price* item.Quantity) VND</span>
-                            </div>
-                            <div class="col-1 text-end">
-                                <button type="button" class="btn btn-outline-danger btn-sm"  data-id="@item.ProductId" data-variantId="@item.VariantId" onclick="removeProduct(this)">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        }
+                    .invoice-box table tr.top table td.title {
+                        font-size: 45px;
+                        line-height: 45px;
+                        color: #333;
                     }
-                </div>
+
+                .invoice-box table tr.information table td {
+                    padding-bottom: 40px;
+                }
+
+                .invoice-box table tr.heading td {
+                    background-color: #eee;
+                    border-bottom: 1px solid #ddd;
+                    font-weight: bold;
+                }
+
+                .invoice-box table tr.details td {
+                    padding-bottom: 20px;
+                }
+
+                .invoice-box table tr.item td {
+                    border-bottom: 1px solid #eee;
+                }
+
+                .invoice-box table tr.item.last td {
+                    border-bottom: none;
+                }
+
+                .invoice-box table tr.total td:nth-child(2) {
+                    border-top: 2px solid #eee;
+                    font-weight: bold;
+                }
+
+        .final-price {
+            color: red;
+            font-weight: bold;
+        }
+
+        .old-pirce {
+            color: #888;
+            font-weight: 400;
+            font-size: 14px !important;
+            text-decoration: line-through;
+        }
+        /* Container background and padding */
+        .container-fluid {
+            background-color: #007bff; /* Primary blue background */
+            padding: 16px;
+        }
+        /* Input Group Styling */
+        .input-group .form-control {
+            background-color: #f8f9fa;
+            border: none;
+            box-shadow: none;
+        }
+
+        .header-space {
+            border-bottom: 1px solid gray;
+        }
+        /* Button Styles */
+        .btn-dark {
+            background-color: #343a40;
+            border: none;
+        }
+
+        .btn-outline-light {
+            border: none;
+        }
+
+        .btn-light {
+            background-color: #f8f9fa;
+            border: none;
+            color: #343a40;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+            /* Button Hover Effects */
+            .btn-dark:hover, .btn-danger:hover, .btn-primary:hover, .btn-light:hover {
+                opacity: 0.9;
+            }
+        /* Additional Styling for Icons */
+        .bi {
+            font-size: 1.2em;
+        }
+
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+            .nav-item .btn-close {
+                position: absolute;
+                right: 2px; /* Khoảng cách từ nút đóng đến cạnh phải của tab */
+            }
+
+        #productDropdown {
+            margin-top: 60px;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 0.5rem;
+        }
+
+            #productSearch:focus + #productDropdown,
+            #productDropdown:hover {
+                display: block;
+            }
+
+            #productDropdown .dropdown-item {
+                cursor: pointer;
+            }
+
+                #productDropdown .dropdown-item img {
+                    width: 50px;
+                    height: 50px;
+                    object-fit: cover;
+                    border-radius: 0.25rem;
+                }
+
+        #addNewProduct {
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+    </style>
+    <div class="row" id="data-bill">
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="InforInvoice row">
-            <div class="overflow-auto"  >
-                <div class="card shadow-sm p-3">
-                    <div class="input-group mb-3 position-relative">
-                        <span class="input-group-text" id="search-icon">
-                            <i class="bi bi-search"></i>
-                        </span>
-                        <input type="text" class="form-control" id="searchUser" placeholder="Tìm kiếm khách hàng bằng tên hoặc sđt (Enter)" aria-label="Search" onkeydown="searchUser(event)" aria-describedby="search-icon">
-                        <button class="btn btn-outline-secondary" onclick="addNonExistingUser()" type="button">
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
-                        <ul class="dropdown-menu position-absolute w-100" id="userDropdown" style="margin-top: 60px;">
-                        </ul>
-                    </div>
-                    <ul class="list-group list-group-flush info-tab">
-                        @foreach (var x in @Model.Where(c => c.TabIndex == 1))
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Tên khách hàng
-                                <span id="bill-full-name"> </span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Số lượng sản phẩm
-                                <span>@x.ProductCount </span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Tổng tiền
-                                <span>@x.TotalAmount</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                VAT
-                                <span>10%</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span style="width: 100%;"> Mã giảm giá <input type="text" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
-
-                            </li> 
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Chiết khấu
-                                <span>@x.DicountAmount</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-                                Khách phải trả
-                                <span>@(x.TotalAmount-@x.DicountAmount)</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                               <span style="width: 100%;">Tiền khách đưa <input type="number" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
-                                Tiền thừa
-                                <span class="change-money">@x.ChangeMoney</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                              <span style="width: 100%">Ghi chú  <input class="form-control" type="text" maxlength="500" id="bill-note" value="@x.Note" onblur="saveNote()"></span>
-                               
-                            </li>
-                        }
+        <!-- Add product -->
+        <div class="container-fluid p-3 bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Input Group for Adding Products -->
+                <div class="input-group w-50 position-relative">
+                    <button class="btn btn-dark" type="button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <input type="text" class="form-control" placeholder="Tìm kiếm theo tên sản phầm (Enter)" id="productSearch" onkeydown="searchProduct(event)">
+                    <button class="btn btn-outline-light" type="button">
+                        <i class="bi bi-upc-scan"></i>
+                    </button>
+                    <ul class="dropdown-menu position-absolute w-100" id="productDropdown" style="margin-top: 60px;">
                     </ul>
                 </div>
             </div>
-            <div class="row mt-2">
-                <div class="col-6">
-                    <button class="btn btn-success col-7 ms-2 w-full" id="paymentButton" style="width: 100%;" onclick="paymentProcess(event,false)">Thanh toán</button>
-                </div> 
-                <div class="col-6">
-                    <button class="btn btn-success col-7 ms-2 w-full" id="paymentButton" style="width: 100%;" onclick="paymentProcess(event,true)">Thanh toán & In hóa đơn</button>
+        </div>
+        <div class="col-md-8">
+            <div class="tab-content" id="dynamicTabContent">
+                <div class="tabInvoice">
+                    <!-- Tab Navigation -->
+                    <ul class="nav nav-tabs" id="dynamicTabs" role="tablist" style="white-space: nowrap; overflow-x: auto;">
+                        <li class="nav-item d-flex align-items-center " role="presentation">
+                            @foreach (var tab in @Model)
+                            {
+                                <button class="nav-link active  d-flex align-items-center" id="tab-0" onclick="openCurrentTab(@tab.TabIndex)" data-bs-toggle="tab" data-bs-target="#content-0" type="button" role="tab" aria-controls="content-0" aria-selected="true" style="display: inline-flex; width: 90px">
+                                    Tab 1
+                                    <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(@tab.TabIndex)" style="position: absolute; right: 10px;"></button>
+                                </button>
+                            }
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="addTabButton" onclick="addNewtab()" type="button">+</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-pane fade show active" id="content-0" role="tabpanel" aria-labelledby="tab-0">
+                    <div class="row  py-2 m-2 header-space">
+                        <div class="col-1">SKU</div>
+                        <div class="col-5">
+                            Tên sản phẩm
+                        </div>
+                        <div class="col-1">
+                            SL
+                        </div>
+                        <div class="col-2 text-end">
+                            Đơn giá
+                        </div>
+                        <div class="col-2 text-end">
+                            Thành tiền
+                        </div>
+                        <div class="col-1">
+                        </div>
+                    </div>
+                    <div class="overflow-auto product-added-space">
+                        @foreach (var x in @Model.Where(c => c.TabIndex == 1))
+                        {
+                            foreach (var item in x.ShoppingTabs)
+                            {
+                                <div class="col-1">
+                                    <span class="badge bg-secondary">PVN0 @item.ProductId}</span>
+                                </div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">@item.ProductName</h6>
+                                    <div class="text-warning">@item.Variant</div>
+                                </div>
+                                <div class="col-1">
+                                    <input type="number" class="form-control form-control-sm qty-input" data-id="@item.ProductId" data-variantId="@item.VariantId" value="@item.Quantity" style="width: 60px;" min="1" max="3" data-price="@item.Price" oninput="updateTotalPrice(this)">
+                                </div>
+                                <div class="col-2 text-end">
+                                    <span class="unit-price">@item.Price.ToString() VND</span>
+                                </div>
+                                <div class="col-2 text-end">
+                                    <span class="total-price">@(item.Price * item.Quantity) VND</span>
+                                </div>
+                                <div class="col-1 text-end">
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-id="@item.ProductId" data-variantId="@item.VariantId" onclick="removeProduct(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="InforInvoice row">
+                <div class="overflow-auto">
+                    <div class="card shadow-sm p-3">
+                        <div class="input-group mb-3 position-relative">
+                            <span class="input-group-text" id="search-icon">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" class="form-control" id="searchUser" placeholder="Tìm kiếm khách hàng bằng tên hoặc sđt (Enter)" aria-label="Search" onkeydown="searchUser(event)" aria-describedby="search-icon">
+                            <button class="btn btn-outline-secondary" onclick="addNonExistingUser()" type="button">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                            <ul class="dropdown-menu position-absolute w-100" id="userDropdown" style="margin-top: 60px;">
+                            </ul>
+                        </div>
+                        <ul class="list-group list-group-flush info-tab">
+                            @foreach (var x in @Model.Where(c => c.TabIndex == 1))
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Tên khách hàng
+                                    <span id="bill-full-name"> </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Số lượng sản phẩm
+                                    <span>@x.ProductCount </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Tổng tiền
+                                    <span>@x.TotalAmount</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    VAT
+                                    <span>10%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span style="width: 100%;"> Mã giảm giá <input type="text" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Chiết khấu
+                                    <span>@x.DicountAmount</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                                    Khách phải trả
+                                    <span>@(x.TotalAmount - @x.DicountAmount)</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span style="width: 100%;">Tiền khách đưa <input type="number" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
+                                    Tiền thừa
+                                    <span class="change-money">@x.ChangeMoney</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span style="width: 100%">Ghi chú  <input class="form-control" type="text" maxlength="500" id="bill-note" value="@x.Note" onblur="saveNote()"></span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <button class="btn btn-success col-7 ms-2 w-full" id="paymentButton" style="width: 100%;" onclick="paymentProcess(event,false)">Thanh toán</button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-success col-7 ms-2 w-full" id="paymentButton" style="width: 100%;" onclick="paymentProcess(event,true)">Thanh toán & In hóa đơn</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="row" style="height: 0vh; width: 100%;overflow-y: scroll;
-    overflow-x: hidden;">
-    <div class="col-12" >
-       <div  id="data-bill-container" ></div>
-    </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="~/js/toast.js" asp-append-version="true"></script>
-<script>
-   let tabCount = 1;
-   let currentTab = 1;
-   let productCounters = {}; // Object to keep track of product counts per tab
-   function GetBatchVoucher(e){
-
-       if (e.key === 'Enter') {
-           setTimeout(function () {
-               var batchName=$('#voucher-input').val();
-               $.ajax({
-                   url: '@Url.Action("SearchBatchForUser", "Sale")', // Adjust controller and action as needed
-                   type: 'GET',
-                   data: {
-                       Tab:currentTab,
-                       Name:batchName
-                   },
-                   success: function (response) {
-                       console.log(response)
-                       if (response.isSucccess==false){
-                           toastr['error'](response.data);
-                           return;
-                       }
-                       ReUpdateTabInfo(response.data.$values);
-
-                   },
-                   error: function (xhr, status, error) {
-                   }
-               })
-           },500)
-       }
-       else {
-           setTimeout(function () {
-               var batchName=$('#voucher-input').val();
-               $.ajax({
-                   url: '@Url.Action("SaveBatchForUser", "Sale")', // Adjust controller and action as needed
-                   type: 'GET',
-                   data: {
-                       Tab:currentTab,
-                       Name:batchName
-                   },
-                   success: function (response) {
-                    
-                   },
-                   error: function (xhr, status, error) {
-                   }
-               })
-           },500)
-       }
-    
-   }
-   function  paymentProcess(e,isPrint){
-   console.log(currentTab);
-        e.preventDefault();
-       var money=parseInt( $('#customer-money').val()==NaN?0: $('#customer-money').val(), 0);
-       $.ajax({
-           url: '@Url.Action("PaymentProcess", "Sale")', // Adjust controller and action as needed
-           type: 'POST',
-           data: {
-               Tab:currentTab,
-               ChangeMoney:money
-           },
-           success: function (response) {
-           if (response.isSucccess==false){
-               toastr['error'](response.data);
-               return;
-           }
-           if (isPrint==true){
-               var now = new Date();
-               var formattedDate = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN');
-               var shoppingTabs=response.data.shoppingTabs;
-               var rowHtml = `
-<div id="data-bill">
-    <div class="row">
+    <div class="row" style="height: 0vh; width: 100%;overflow-y: scroll;
+   overflow-x: hidden;">
         <div class="col-12">
-            <div class="invoice-box">
-                <table cellpadding="0" cellspacing="0">
-                    <tr class="top">
-                        <td colspan="3">
-                            <table>
-                                <tr>
-                                    <td class="title">
-                                        <h1>DATN - Shop</h1>
-                                    </td>
-                                    <td></td> 
-                                    <td>Ngày tạo hoá đơn: <span>${formattedDate}</span><br></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr class="information">
-                        <td colspan="3">
-                            <table>
-                                <tr>
-                                    <td>Tên khách hàng: <span>${response.data.quickCreateUserVM.fullName +"/"}${response.data.quickCreateUserVM.phoneNumber}</span></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr class="heading">
-                        <td>Hình thức thanh toán</td>
-                        <td></td>
-                        <td class="text-end">Thanh toán tại quầy</td>
-                    </tr>
-                    <tr class="details">
-                        <td><span>Số tiền</span></td>
-                        <td></td>
-                        <td class="text-end"><span>${response.data.customerGivenMoney.toLocaleString()}</span></td>
-                    </tr>
-                    <tr class="heading">
-                        <td>Tên sản phẩm</td>
-                        <td>Số lượng</td>
-                        <td class="text-end">Đơn giá</td>
-                    </tr>`;
-               for (var i = 0; i < shoppingTabs.$values.length; i++) {
-                   rowHtml += `
-    <tr class="item">
-        <td>${shoppingTabs.$values[i].productName}</td>
-        <td>${shoppingTabs.$values[i].quantity}</td>
-        <td class="text-end">${shoppingTabs.$values[i].price.toLocaleString()}</td>
-    </tr>`;
-               }
-               rowHtml += `
-<tr class="total text-end">
-    <td>Ghi chú: ${response.data.note==null?"":response.data.note}</td>
-    <td>Giá VAT: 10%</td>
-    <td class="text-end">Tổng tiền: ${response.data.mustPay.toLocaleString()}</td>
-</tr>
-</table>
-</div>
-</div>
-</div>`;
-               var biller = $('.data-bill-container');
-               biller.empty();
-               document.getElementById('data-bill-container').innerHTML = rowHtml;
-               setTimeout(function () {
-                   PrintBill();
-               },500)
-           }
-           else {
-               closeTab(currentTab)
-               clearInfoTab();
-           }
-           
-            toastr['success']("Thanh toán thành công");
-            
-           },
-           error: function (xhr, status, error) {
-               toastr['error']("Thanh toán thất bai vui lòng liên hệ admin");
-           }
-       });
-   }
-   function clearInfoTab(){
-       var infoTab = $('.info-tab');
-       infoTab.empty();
-       var rowHtml = `       
-               <li class="list-group-item d-flex justify-content-between align-items-center">
-     Tên khách hàng
-     <span id="bill-full-name"></span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Số lượng sản phẩm
-     <span id="quantity-bill">0</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Tổng tiền
-     <span id="grand-total-bill">0</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     VAT
-     <span>10%</span>
-   </li>
- <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span style="width: 100%;"> Mã giảm giá <input type="text" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
+            <div id="data-bill-container"></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/toast.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        let tabCount = 1;
+        let currentTab = 1;
+        let productCounters = {}; // Object to keep track of product counts per tab
+        function GetBatchVoucher(e) {
 
-                            </li> 
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Chiết khấu
-     <span>0</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-     Khách phải trả
-     <span>0</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     <span style="width: 100%;">Tiền khách đưa <input type="number" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
-     Tiền thừa
-     <span class="change-money"></span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     <span style="width: 100%;">Ghi chú  <input class="form-control" type="text" maxlength="500" value="" id="bill-note" onblur="saveNote()"></span>
-    
-   </li>
-                `;
-       infoTab.append(rowHtml);
-   }
-    function addNewtab () {
-       $('#loadingOverlay').show();
-       $.ajax({
-           url: '@Url.Action("AddNewTab", "Sale")', // Adjust controller and action as needed
-           type: 'POST',
-           data: {
-           },
-           success: function (response) {
-           if (response.isSucccess==false){
-               toastr['error'](response.data);
-               $('#loadingOverlay').hide();
-               return;
-           }
-               const newTabId = `tab-${tabCount}`;
-               const newContentId = `content-${tabCount}`;
-               const newTab = document.createElement('li');
-               newTab.className = 'nav-item';
-               newTab.setAttribute('role', 'presentation');
-               newTab.innerHTML = `
-                           <button onclick="openCurrentTab(${tabCount+1})" class="nav-link d-flex align-items-center" id="${newTabId}" data-bs-toggle="tab" data-bs-target="#${newContentId}" type="button" role="tab" aria-controls="${newContentId}" aria-selected="false" style="display: inline-flex; width: 90px">
-                               Tab ${tabCount+1}
-                               <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(${tabCount})" style="position: absolute; right: 10px;"></button>
-                           </button>
-                       `;
-               const addTabButton = document.getElementById('addTabButton').parentNode;
-               document.getElementById('dynamicTabs').insertBefore(newTab, addTabButton);
-               var lstDropDownProduct = $('.tab-pane.active .overflow-auto');
-               lstDropDownProduct.empty();
-               tabCount++;
-               currentTab=tabCount;
-               const newTabButton = new bootstrap.Tab(newTab.querySelector('.nav-link'));
-               newTabButton.show();
-               clearInfoTab();
-               $('#loadingOverlay').hide();
-           },
-           error: function (xhr, status, error) {
-               $('#loadingOverlay').hide();
-           }
-       });
-   }
-   function caculateChangeMoney(e){
-   setTimeout(function () {
-      e.preventDefault();
-      var money=parseInt( $('#customer-money').val()==NaN?0: $('#customer-money').val(), 0);
-      $.ajax({
-          url: '@Url.Action("CaculateChangeMoneny", "Sale")', // Adjust controller and action as needed
-          type: 'GET',
-          data: {
-              ChangeMoney:money,
-              Tab:tabCount
-          },
-          success: function (response) {
-              $('.change-money').text(response.data.toLocaleString())
-          },
-          error: function (xhr, status, error) {
-          }
-      });
-   },500)
-        
-   }
-   function PrintBill(){
+            if (e.key === 'Enter') {
+                setTimeout(function () {
+                    var batchName = $('#voucher-input').val();
+                    $.ajax({
+                        url: '@Url.Action("SearchBatchForUser", "Sale")', // Adjust controller and action as needed
+                        type: 'GET',
+                        data: {
+                            Tab: currentTab,
+                            Name: batchName
+                        },
+                        success: function (response) {
+                            console.log(response)
+                            if (response.isSucccess == false) {
+                                toastr['error'](response.data);
+                                return;
+                            }
+                            ReUpdateTabInfo(response.data.$values);
 
-        var content=document.getElementById('data-bill-container');
-       html2canvas(content, { scale: 2 }).then(function (canvas) {
-           const imageURL = canvas.toDataURL("image/png");
-           // Create an iframe for printing
-           let iframe = document.createElement('iframe');
-           iframe.style.position = "absolute";
-           iframe.style.top = "-10000px";
-           document.body.appendChild(iframe);
-
-           const printWindow = iframe.contentWindow;
-           const printDocument = printWindow.document;
-
-           // Set the width to match A4 dimensions in pixels at 96 DPI (approx 8.27 inches by 11.69 inches)
-           let imgWidth = 208;  // A4 size in mm (width of A4 in mm)
-           let pageHeight = 297; // A4 size in mm (height of A4 in mm)
-
-           // Calculate the image height to maintain aspect ratio
-           let imgHeight = canvas.height * imgWidth / canvas.width;
-
-           // Write the image to the iframe's document and adjust to fit A4 size
-           printDocument.open();
-           printDocument.write(`
-        <html>
-        <head>
-          <style>
-            body { margin: 0; }
-            img { width: ${imgWidth}mm; height: auto; }
-          </style>
-        </head>
-        <body>
-          <img src="${imageURL}" />
-        </body>
-        </html>
-      `);
-           printDocument.close();
-           // Wait for the image to load, then trigger the print
-           printWindow.onload = function () {
-               printWindow.focus();
-               printWindow.print();
-
-               // Clean up the iframe after printing
-               setTimeout(function () {
-                   document.body.removeChild(iframe);
-               }, 100);
-               closeTab(currentTab);
-               clearInfoTab();
-           };
-       });
-
-      
-   }
-   function openCurrentTab(tab) {
-       currentTab=tab;
-       $.ajax({
-           url: '@Url.Action("OpenCurrentTab", "Sale")', // Adjust controller and action as needed
-           type: 'GET',
-           data: {
-               Tab:tab
-           },
-           success: function (response) {
-               var lstDropDownProduct = $('.tab-pane.active .overflow-auto');
-               lstDropDownProduct.empty();
-               const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
-               const activeTabId = activeTabPane.parentNode.id;
-               if (response.data!=null){
-                   response.data.$values.forEach(function(sp) {
-                       var infoTab = $('.info-tab');
-                       infoTab.empty();
-                       var rowHtml = `       
-               <li class="list-group-item d-flex justify-content-between align-items-center">
-     Tên khách hàng
-     <span id="bill-full-name">${sp.quickCreateUserVM.fullName==null?"":sp.quickCreateUserVM.fullName +"/"}${sp.quickCreateUserVM.phoneNumber==null?"":sp.quickCreateUserVM.phoneNumber}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Số lượng sản phẩm
-     <span>${sp.productCount} </span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Tổng tiền
-     <span>${sp.totalAmount}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     VAT
-     <span>10%</span>
-   </li>
-
- <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span style="width: 100%;"> Mã giảm giá <input type="text" value="${sp.bacthName}" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
-
-                            </li> 
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Chiết khấu
-     <span>${sp.dicountAmount}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-     Khách phải trả
-     <span>${sp.mustPay}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-    <span style="width: 100%;">Tiền khách đưa  <input type="number" value="${sp.customerGivenMoney}" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
-    
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
-     Tiền thừa
-     <span class="change-money">${sp.changeMoney}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-  <span style="width: 100%;">Ghi chú   <input class="form-control" type="text" value="${sp.note==null?"":sp.note}" maxlength="500" id="bill-note" onblur="saveNote()"></span>
-   
-   </li>
-                `;
-                       infoTab.append(rowHtml);
-                       
-                       sp.shoppingTabs.$values.forEach(item=>{
-                           const productRow = document.createElement('div');
-                           productRow.className = 'row align-items-center border-bottom py-2 m-2 shadow-sm';
-                           productRow.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-                           productRow.innerHTML = `
-                          <div class="col-1">
-   <span class="badge bg-secondary">PVN0${item.productId}</span>
-   </div>
-                           <div class="col-5">
-                               <h6 class="mb-0">${item.productName}</h6>
-                               <div class="text-warning">${item.variant}</div>
-                           </div>
-                           <div class="col-1">
-                               <input type="number" class="form-control form-control-sm qty-input" data-id="${item.productId}" data-variantId="${item.variantId}" value="${item.quantity}" style="width: 60px;" min="1" max="3" data-price="${item.price}"  oninput="updateTotalPrice(this)" >
-                           </div>
-                           <div class="col-2 text-end">
-                               <span class="unit-price">${item.price.toLocaleString()} VND</span>
-                           </div>
-                           <div class="col-2 text-end">
-                               <span class="total-price">${(item.price* item.quantity).toLocaleString()} VND</span>
-                           </div>
-                           <div class="col-1 text-end">
-                               <button type="button" class="btn btn-outline-danger btn-sm"  data-id="${item.productId}" data-variantId="${item.variantId}" onclick="removeProduct(this)">
-                                   <i class="bi bi-trash"></i>
-                               </button>
-                           </div>
-                       `;
-   
-                           activeTabPane.appendChild(productRow);
-                           productCounters[activeTabId]++;
-                       })
-   
-                   })}
-               document.getElementById('productDropdown').style.display = 'none';
-               $('#loadingOverlay').hide();
-           },
-           error: function (xhr, status, error) {
-               $('#loadingOverlay').hide();
-           }
-       });
-    }
-   function addProductToCurrentTab(name, price, qty, id,variant,variantId) {
-   
-       $.ajax({
-           url: '@Url.Action("AddProdToCurrentTab", "Sale")', // Adjust controller and action as needed
-           type: 'POST',
-           data: {
-               ProductId:id,
-               VariantId:variantId,
-               Quantity:qty,
-               Price:price,
-               Tab:currentTab,
-               ProductName:name,
-               Variant:variant
-           },
-           success: function (response) {
-               var lstDropDownProduct = $('.tab-pane.active .overflow-auto');
-               lstDropDownProduct.empty();
-               const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
-               const activeTabId = activeTabPane.parentNode.id;
-               if (response.data!=null){
-                   response.data.$values.forEach(function(sp) {
-                   sp.shoppingTabs.$values.forEach(item=>{
-    const productRow = document.createElement('div');
-    productRow.className = 'row align-items-center border-bottom py-2 m-2 shadow-sm';
-    productRow.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-    productRow.innerHTML = `
-                           <div class="col-1">
-   <span class="badge bg-secondary">PVN0${item.productId}</span>
-   </div>
-                           <div class="col-5">
-                               <h6 class="mb-0">${item.productName}</h6>
-                               <div class="text-warning">${item.variant}</div>
-                           </div>
-                           <div class="col-1">
-                               <input type="number" class="form-control form-control-sm qty-input" data-id="${item.productId}" data-variantId="${item.variantId}" value="${item.quantity}" style="width: 60px;" min="1" max="3" data-price="${item.price}"  oninput="updateTotalPrice(this)" >
-                           </div>
-                           <div class="col-2 text-end">
-                               <span class="unit-price">${item.price.toLocaleString()} VND</span>
-                           </div>
-                           <div class="col-2 text-end">
-                               <span class="total-price">${(item.price* item.quantity).toLocaleString()} VND</span>
-                           </div>
-                           <div class="col-1 text-end">
-                               <button type="button" class="btn btn-outline-danger btn-sm"  data-id="${item.productId}" data-variantId="${item.variantId}" onclick="removeProduct(this)">
-                                   <i class="bi bi-trash"></i>
-                               </button>
-                           </div>
-                       `;
-                       ReUpdateTabInfo(response.data.$values);
-                     
-                       activeTabPane.appendChild(productRow);
-    productCounters[activeTabId]++;
-   })
-                       
-                   })}
-              
-               
-               document.getElementById('productDropdown').style.display = 'none';
-               $('#loadingOverlay').hide();
-           },
-           error: function (xhr, status, error) {
-               $('#loadingOverlay').hide();
-           }
-       });
-       
-   }
-   function ReUpdateTabInfo(data){
-       var infoTab = $('.info-tab');
-       infoTab.empty();
-       data.forEach(function(item) {
-           var rowHtml = `       
-               <li class="list-group-item d-flex justify-content-between align-items-center">
-     Tên khách hàng
-     <span id="bill-full-name">${item.quickCreateUserVM.fullName==null?"":item.quickCreateUserVM.fullName +"/"}${item.quickCreateUserVM.phoneNumber==null?"":item.quickCreateUserVM.phoneNumber}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Số lượng sản phẩm
-     <span>${item.productCount} </span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Tổng tiền
-     <span>${item.totalAmount}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     VAT
-     <span>10%</span>
-   </li>
- <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span style="width: 100%;"> Mã giảm giá <input type="text" value="${item.bacthName}" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
-
-                            </li> 
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Chiết khấu
-     <span>${item.dicountAmount}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-     Khách phải trả
-     <span>${item.mustPay}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-<span style="width: 100%;">Tiền khách đưa  <input type="number" class="form-control" value="${item.customerGivenMoney}" id="customer-money" onkeydown="caculateChangeMoney(event)"></span>
-         
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
-     Tiền thừa
-     <span class="change-money">${item.changeMoney}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-   <span style="width: 100%;">Ghi chú <input class="form-control" type="text" value="${item.note==null?"":item.note}" maxlength="500" id="bill-note" onblur="saveNote()">
-</span>
-   </li>
-                `;
-           infoTab.append(rowHtml);
-       });
-   }
-   
-   function closeTab(index) {
-    console.log(index)
-       $.ajax({
-           url: '@Url.Action("CloseTab", "Sale")', // Adjust controller and action as needed
-           type: 'POST',
-           data: {
-               Tab:index,
-           },
-           success: function (response) {
-              
-               var infoTab = $('#dynamicTabs');
-               infoTab.empty();
-               addTabBtn=` <li class="nav-item">
-                        <button class="nav-link" id="addTabButton" onclick="addNewtab()" type="button">+</button>
-                    </li>`;
-               infoTab.append(addTabBtn);
-               response.data.$values.forEach(item =>{
-                   const newTab = document.createElement('li');
-                   newTab.className = 'nav-item';
-                   newTab.setAttribute('role', 'presentation');
-                   newTab.innerHTML = `
-                         <button onclick="openCurrentTab(${item.tabIndex})" class="nav-link d-flex align-items-center" id="tab-${item.tabIndex}" data-bs-toggle="tab" data-bs-target="content-${item.tabIndex}" type="button" role="tab" aria-controls="content-${item.tabIndex}" aria-selected="false" style="display: inline-flex; width: 90px">
-              ${item.tabName}
-                <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(${item.tabIndex})" style="position: absolute; right: 10px;"></button>
-            </button>
-                       `;
-                   const addTabButton = document.getElementById('addTabButton').parentNode;
-                   document.getElementById('dynamicTabs').insertBefore(newTab, addTabButton);
-               })
-               
-             
-                tabCount-=1;
-                currentTab=1;
-              openCurrentTab(currentTab);
-           },
-           error: function (xhr, status, error) {
-               $('#loadingOverlay').hide();
-              
-           }
-       });
-   
-      
-   }
-   $(document).on('click', '.product-searched', function() {
-       const productName = this.getAttribute('data-name');
-       const productPrice = parseInt(this.getAttribute('data-price'), 10);
-       const productQty = this.getAttribute('data-qty');
-       const productId = this.getAttribute('data-id');
-       const variant = this.getAttribute('data-variant');
-       const variantId = this.getAttribute('data-variantId');
-       addProductToCurrentTab(productName, productPrice, productQty, productId,variant,variantId);
-   }) 
-    $(document).on('click', '.user-searched', function() {
-       const userName = this.getAttribute('data-fullName');
-       const userId = this.getAttribute('data-userid');
-       const phoneNumber = this.getAttribute('data-phoneNumber');
-        $.ajax({
-            url: '@Url.Action("AddUserToTab", "Sale")', // Adjust controller and action as needed
-            type: 'POST',
-            data: {
-                Tab:currentTab,
-                UserId:userId,
-                FullName:userName,
-                PhoneNumber:phoneNumber,
-            },
-            success: function (response) {
-                response.data.$values.forEach(function(item) {
-                    $('#bill-full-name').text(item.quickCreateUserVM.fullName +'/'+item.quickCreateUserVM.phoneNumber );
-                   })
-                document.getElementById('userDropdown').style.display = 'none';
-                $('#loadingOverlay').hide();
-            },
-            error: function (xhr, status, error) {
-                $('#loadingOverlay').hide();
-                console.log(error);
+                        },
+                        error: function (xhr, status, error) {
+                        }
+                    })
+                }, 500)
             }
-        });
-      
-   })
-   function addNonExistingUser(){
-       var fullName=$('#searchUser').val();
-       $.ajax({
-           url: '@Url.Action("AddNonExistingUserToTab", "Sale")', // Adjust controller and action as needed
-           type: 'POST',
-           data: {
-               Tab:currentTab,
-               FullName:fullName
-           },
-           success: function (response) {
-               if (response.isSucccess==false){
-                   toastr['error'](response.data);
-                   $('#loadingOverlay').hide();
-                   return;
-               }
-              
-               var infoTab = $('.info-tab');
-               infoTab.empty();
-               response.data.$values.forEach(function(item) {
-                   var rowHtml = `       
-               <li class="list-group-item d-flex justify-content-between align-items-center">
-     Tên khách hàng
-     <span id="bill-full-name">${item.quickCreateUserVM.fullName==null?"":item.quickCreateUserVM.fullName +"/"}${item.quickCreateUserVM.phoneNumber==null?"":item.quickCreateUserVM.phoneNumber}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Số lượng sản phẩm
-     <span>${item.productCount} </span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Tổng tiền
-     <span>${item.totalAmount}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     VAT
-     <span>10%</span>
-   </li>
-<li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span style="width: 100%;"> Mã giảm giá <input type="text" value="${item.bacthName}" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
+            else {
+                setTimeout(function () {
+                    var batchName = $('#voucher-input').val();
+                    $.ajax({
+                        url: '@Url.Action("SaveBatchForUser", "Sale")', // Adjust controller and action as needed
+                        type: 'GET',
+                        data: {
+                            Tab: currentTab,
+                            Name: batchName
+                        },
+                        success: function (response) {
 
-                            </li> 
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-     Chiết khấu
-     <span>${item.dicountAmount}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-     Khách phải trả
-     <span>${item.mustPay}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-    <span> Tiền khách đưa <input type="number" value="${item.customerGivenMoney}" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
-          
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
-     Tiền thừa
-     <span class="change-money">${item.changeMoney}</span>
-   </li>
-   <li class="list-group-item d-flex justify-content-between align-items-center">
-    <span style="width: 100%"> Ghi chú <input class="form-control" type="text" value="${item.note==null?"":item.note}" maxlength="500" id="bill-note" onblur="saveNote()"></span>
-     
-   </li>
-                `;
-                   infoTab.append(rowHtml);
-               });
-   
-   
-              
-   
-               document.getElementById('userDropdown').style.display = 'none';
-               $('#loadingOverlay').hide();
-           },
-           error: function (xhr, status, error) {
-               $('#loadingOverlay').hide();
-           }
-       });
-   }
-   function removeProduct(button) {
-       const ProductId= parseInt(button.getAttribute('data-id'), 10);
-       const VariantId= parseInt(button.getAttribute('data-variantId'), 10);
-       $.ajax({
-           url: '@Url.Action("DeleteProduct", "Sale")', // Adjust controller and action as needed
-           type: 'DELETE',
-           data: {
-               ProductId:ProductId,
-               VariantId:VariantId,
-               Tab:currentTab
-           },
-           success: function (response) {
-               const row = button.closest('.row');
-               row.remove();
-               ReUpdateTabInfo(response.data.$values);
-           },
-           error: function (xhr, status, error) {
-               $('#loadingOverlay').hide();
-           }
-       });
-      
-   }
-   function updateProductNumbers() {
-       const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
-       const activeTabId = activeTabPane.parentNode.id;
-       const rows = activeTabPane.querySelectorAll('.row');
-       productCounters[activeTabId] = 1; // Reset the counter
-       rows.forEach((row, index) => {
-           const numCell = row.querySelector('.col-auto:first-child');
-           numCell.textContent = productCounters[activeTabId];
-           productCounters[activeTabId]++;
-       });
-   
-      
-   }
-   function updateTotalPrice(input) {
-       const qty = parseInt(input.value, 10);
-       const ProductId= parseInt(input.getAttribute('data-id'), 10);
-       const VariantId= parseInt(input.getAttribute('data-variantId'), 10);
-       $.ajax({
-           url: '@Url.Action("UpdateQuantityProduct", "Sale")', // Adjust controller and action as needed
-           type: 'POST',
-           data: {
-               ProductId:ProductId,
-               VariantId:VariantId,
-               Quantity:qty,
-               Tab:currentTab 
-           },
-           success: function (response) {
-              
-               const price = parseInt(input.getAttribute('data-price'), 10);
-               const totalPriceElement = input.closest('.row').querySelector('.total-price');
-               if (qty >= 1 && qty <= 3) {
-                   const totalPrice = price * qty;
-                   totalPriceElement.textContent = totalPrice.toLocaleString() + " VND";
-               } else {
-                   input.value = qty < 1 ? 1 : 3;
-                   updateTotalPrice(input);
-               }
-               ReUpdateTabInfo(response.data.$values);
-           },
-           error: function (xhr, status, error) {
-               $('#loadingOverlay').hide();
-           }
-       });
-   
-      
-   }
-   function searchProduct(e) {
-   var contentSearch=$('#productSearch').val();
-   if (contentSearch.trim()!=''){
-       if (e.key === 'Enter') {
-           $('#loadingOverlay').show();
-           $.ajax({
-               url: '@Url.Action("GetProductByName", "Sale")', // Adjust controller and action as needed
-               type: 'GET',
-               data: {
-                   name:contentSearch
-               },
-               success: function (response) {
-               console.log(response)
-                   var lstDropDownProduct = $('#productDropdown');
-                   lstDropDownProduct.empty();
-                   if (response.data!=null){
-                       response.data.$values.forEach(function(item) {
-                           item.variants.$values.forEach(function(childer) {
-                               var rowHtml = `       
-                               <li class="dropdown-item product-searched d-flex align-items-center" data-variantId="${childer.variantId}" data-variant="${childer.variantName}" data-id="${item.productId}" data-name="${item.productName}" data-price="${childer.afterDiscountPrice}" data-qty="${childer.quantity}">
-                                   <img src="${item.images.$values[0].imagePath}" alt="Product 1" class="me-3" style="width: 50px">
-                                       <div class="flex-grow-1">
-                                           <div>${item.productName}</div>
-                                           <small class="text-muted" >${childer.variantName}</small>
-                                           <div class="d-flex justify-content-between mt-2">
-                                               <span class="final-price">${parseInt(childer.afterDiscountPrice).toLocaleString('vi-VN') + '₫'}
-   <span class="mx-lg-3 old-pirce">${parseInt(childer.salePrice ).toLocaleString('vi-VN') + '₫'}</span>
-   </span>
-                                               <span>Có thể bán: ${childer.quantity}</span>
-                                           </div>
-                                       </div>
-                               </li>
-                                `;
-                               lstDropDownProduct.append(rowHtml);
-                           })
-                       });
-                   }
-                   else {
-                       var rowHtml = `       
-                               <li class="dropdown-item d-flex align-items-center">
-                                   <div class="row" style="width:100%">
-                                   <div class="col-12 d-flex justify-content-center">
-   <div class="text-danger">Không tìm thấy sản phẩm nào !</div>                                   
-   </div>
-   </div>
-                                `;
-                       lstDropDownProduct.append(rowHtml);
-                   }
-                   document.getElementById('productDropdown').style.display = 'block';
-                   $('#loadingOverlay').hide();
-               },
-               error: function (xhr, status, error) {
-                   $('#loadingOverlay').hide();
-               }
-           });
-   
-       }
-   }
-   else {
-       document.getElementById('productDropdown').style.display = 'none';
-   }
-      }
-   function searchUser(e) {
-   var contentSearch=$('#searchUser').val();
-   if (contentSearch.trim()!=''){
-       if (e.key === 'Enter') {
-           $('#loadingOverlay').show();
-           $.ajax({
-               url: '@Url.Action("SearchUser", "Sale")', // Adjust controller and action as needed
-               type: 'GET',
-               data: {
-                   search:contentSearch
-               },
-               success: function (response) {
-               console.log(response)
-                   var lstDropDownProduct = $('#userDropdown');
-                   lstDropDownProduct.empty();
-                   if (response.data!=null){
-                       response.data.$values.forEach(function(item) {
-                           var rowHtml = `       
-                               <li class="dropdown-item user-searched d-flex align-items-center" data-userId="${item.id}" data-fullName="${item.fullName}" data-phoneNumber="${item.phoneNumber}" >
-                                       <div class="flex-grow-1">
-                                           <div>Tên/sdt: ${item.fullName } / ${item.phoneNumber==null?"":item.phoneNumber}</div>
-                                       </div>
-                               </li>
-                                `;
-                           lstDropDownProduct.append(rowHtml);
-                       });
-                   }
-                   else {
-                       var rowHtml = `       
-                               <li class="dropdown-item d-flex align-items-center">
-                                   <div class="row" style="width:100%">
-                                   <div class="col-12 d-flex justify-content-center">
-   <div class="text-danger">Không tìm thấy sản phẩm nào !</div>                                   
-   </div>
-   </div>
-                                `;
-                       lstDropDownProduct.append(rowHtml);
-                   }
-                   document.getElementById('userDropdown').style.display = 'block';
-                   $('#loadingOverlay').hide();
-               },
-               error: function (xhr, status, error) {
-                   $('#loadingOverlay').hide();
-               }
-           });
-       }
-   }
-   else {
-       document.getElementById('productDropdown').style.display = 'none';
-   }
-      }
-   toastr.options = {
-       "closeButton": true,
-       "debug": false,
-       "newestOnTop": true,
-       "progressBar": true,
-       "positionClass": "toast-bottom-right",
-       "preventDuplicates": false,
-       "onclick": null,
-       "showDuration": "200",
-       "hideDuration": "1000",
-       "timeOut": "5000",
-       "extendedTimeOut": "1000",
-       "showEasing": "swing",
-       "hideEasing": "linear",
-       "showMethod": "fadeIn",
-       "hideMethod": "fadeOut"
-   }
-   function saveNote() {
-       var note=$('#bill-note').val();
-       $.ajax({
-           url: '@Url.Action("SaveNote", "Sale")', // Adjust controller and action as needed
-           type: 'POST',
-           data: {
-               Tab:currentTab,
-               Note:note
-           },
-           success: function (response) {
-               
-           },
-           error: function (xhr, status, error) {
-               $('#loadingOverlay').hide();
-           }
-       });
-   }
-   
-   
-</script>
+                        },
+                        error: function (xhr, status, error) {
+                        }
+                    })
+                }, 500)
+            }
+
+        }
+        function paymentProcess(e, isPrint) {
+            console.log(currentTab);
+            e.preventDefault();
+            var money = parseInt($('#customer-money').val() == NaN ? 0 : $('#customer-money').val(), 0);
+            $.ajax({
+                url: '@Url.Action("PaymentProcess", "Sale")', // Adjust controller and action as needed
+                type: 'POST',
+                data: {
+                    Tab: currentTab,
+                    ChangeMoney: money
+                },
+                success: function (response) {
+                    if (response.isSucccess == false) {
+                        toastr['error'](response.data);
+                        return;
+                    }
+                    if (isPrint == true) {
+                        var now = new Date();
+                        var formattedDate = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN');
+                        var shoppingTabs = response.data.shoppingTabs;
+                        var rowHtml = `
+           <div id="data-bill">
+            <div class="row">
+                <div class="col-12">
+                    <div class="invoice-box">
+                        <table cellpadding="0" cellspacing="0">
+                            <tr class="top">
+                                <td colspan="3">
+                                    <table>
+                                        <tr>
+                                            <td class="title">
+                                                <h1>DATN - Shop</h1>
+                                            </td>
+                                            <td></td>
+                                            <td>Ngày tạo hoá đơn: <span>${formattedDate}</span><br></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="information">
+                                <td colspan="3">
+                                    <table>
+                                        <tr>
+                                            <td>Tên khách hàng: <span>${response.data.quickCreateUserVM.fullName + "/"}${response.data.quickCreateUserVM.phoneNumber}</span></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="heading">
+                                <td>Hình thức thanh toán</td>
+                                <td></td>
+                                <td class="text-end">Thanh toán tại quầy</td>
+                            </tr>
+                            <tr class="details">
+                                <td><span>Số tiền</span></td>
+                                <td></td>
+                                <td class="text-end"><span>${response.data.customerGivenMoney.toLocaleString()}</span></td>
+                            </tr>
+                            <tr class="heading">
+                                <td>Tên sản phẩm</td>
+                                <td>Số lượng</td>
+                                <td class="text-end">Đơn giá</td>
+                            </tr>`;
+                        for (var i = 0; i < shoppingTabs.$values.length; i++) {
+                            rowHtml += `
+            <tr class="item">
+                <td>${shoppingTabs.$values[i].productName}</td>
+                <td>${shoppingTabs.$values[i].quantity}</td>
+                <td class="text-end">${shoppingTabs.$values[i].price.toLocaleString()}</td>
+            </tr>`;
+                        }
+                        rowHtml += `
+           <tr class="total text-end">
+            <td>Ghi chú: ${response.data.note == null ? "" : response.data.note}</td>
+            <td>Giá VAT: 10%</td>
+            <td class="text-end">Tổng tiền: ${response.data.mustPay.toLocaleString()}</td>
+           </tr>
+           </table>
+           </div>
+           </div>
+           </div>`;
+                        var biller = $('.data-bill-container');
+                        biller.empty();
+                        document.getElementById('data-bill-container').innerHTML = rowHtml;
+                        setTimeout(function () {
+                            PrintBill();
+                        }, 500)
+                    }
+                    else {
+                        closeTab(currentTab)
+                        clearInfoTab();
+                    }
+
+                    toastr['success']("Thanh toán thành công");
+
+                },
+                error: function (xhr, status, error) {
+                    toastr['error']("Thanh toán thất bai vui lòng liên hệ admin");
+                }
+            });
+        }
+        function clearInfoTab() {
+            var infoTab = $('.info-tab');
+            infoTab.empty();
+            var rowHtml = `
+                       <li class="list-group-item d-flex justify-content-between align-items-center">
+             Tên khách hàng
+             <span id="bill-full-name"></span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Số lượng sản phẩm
+             <span id="quantity-bill">0</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Tổng tiền
+             <span id="grand-total-bill">0</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             VAT
+             <span>10%</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span style="width: 100%;"> Mã giảm giá <input type="text" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
+
+                                    </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Chiết khấu
+             <span>0</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+             Khách phải trả
+             <span>0</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             <span style="width: 100%;">Tiền khách đưa <input type="number" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
+             Tiền thừa
+             <span class="change-money"></span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             <span style="width: 100%;">Ghi chú  <input class="form-control" type="text" maxlength="500" value="" id="bill-note" onblur="saveNote()"></span>
+
+           </li>
+                        `;
+            infoTab.append(rowHtml);
+        }
+        function addNewtab() {
+            $('#loadingOverlay').show();
+            $.ajax({
+                url: '@Url.Action("AddNewTab", "Sale")', // Adjust controller and action as needed
+                type: 'POST',
+                data: {
+                },
+                success: function (response) {
+                    if (response.isSucccess == false) {
+                        toastr['error'](response.data);
+                        $('#loadingOverlay').hide();
+                        return;
+                    }
+                    const newTabId = `tab-${tabCount}`;
+                    const newContentId = `content-${tabCount}`;
+                    const newTab = document.createElement('li');
+                    newTab.className = 'nav-item';
+                    newTab.setAttribute('role', 'presentation');
+                    newTab.innerHTML = `
+                                   <button onclick="openCurrentTab(${tabCount + 1})" class="nav-link d-flex align-items-center" id="${newTabId}" data-bs-toggle="tab" data-bs-target="#${newContentId}" type="button" role="tab" aria-controls="${newContentId}" aria-selected="false" style="display: inline-flex; width: 90px">
+                                       Tab ${tabCount + 1}
+                                       <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(${tabCount})" style="position: absolute; right: 10px;"></button>
+                                   </button>
+                               `;
+                    const addTabButton = document.getElementById('addTabButton').parentNode;
+                    document.getElementById('dynamicTabs').insertBefore(newTab, addTabButton);
+                    var lstDropDownProduct = $('.tab-pane.active .overflow-auto');
+                    lstDropDownProduct.empty();
+                    tabCount++;
+                    currentTab = tabCount;
+                    const newTabButton = new bootstrap.Tab(newTab.querySelector('.nav-link'));
+                    newTabButton.show();
+                    clearInfoTab();
+                    $('#loadingOverlay').hide();
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+                }
+            });
+        }
+        function caculateChangeMoney(e) {
+            setTimeout(function () {
+                e.preventDefault();
+                var money = parseInt($('#customer-money').val() == NaN ? 0 : $('#customer-money').val(), 0);
+                $.ajax({
+                    url: '@Url.Action("CaculateChangeMoneny", "Sale")', // Adjust controller and action as needed
+                    type: 'GET',
+                    data: {
+                        ChangeMoney: money,
+                        Tab: tabCount
+                    },
+                    success: function (response) {
+                        $('.change-money').text(response.data.toLocaleString())
+                    },
+                    error: function (xhr, status, error) {
+                    }
+                });
+            }, 500)
+
+        }
+        
+        function openCurrentTab(tab) {
+            currentTab = tab;
+            $.ajax({
+                url: '@Url.Action("OpenCurrentTab", "Sale")', // Adjust controller and action as needed
+                type: 'GET',
+                data: {
+                    Tab: tab
+                },
+                success: function (response) {
+                    var lstDropDownProduct = $('.tab-pane.active .overflow-auto');
+                    lstDropDownProduct.empty();
+                    const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
+                    const activeTabId = activeTabPane.parentNode.id;
+                    if (response.data != null) {
+                        response.data.$values.forEach(function (sp) {
+                            var infoTab = $('.info-tab');
+                            infoTab.empty();
+                            var rowHtml = `
+                       <li class="list-group-item d-flex justify-content-between align-items-center">
+             Tên khách hàng
+             <span id="bill-full-name">${sp.quickCreateUserVM.fullName == null ? "" : sp.quickCreateUserVM.fullName + "/"}${sp.quickCreateUserVM.phoneNumber == null ? "" : sp.quickCreateUserVM.phoneNumber}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Số lượng sản phẩm
+             <span>${sp.productCount} </span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Tổng tiền
+             <span>${sp.totalAmount}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             VAT
+             <span>10%</span>
+           </li>
+
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span style="width: 100%;"> Mã giảm giá <input type="text" value="${sp.bacthName}" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
+
+                                    </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Chiết khấu
+             <span>${sp.dicountAmount}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+             Khách phải trả
+             <span>${sp.mustPay}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span style="width: 100%;">Tiền khách đưa  <input type="number" value="${sp.customerGivenMoney}" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
+
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
+             Tiền thừa
+             <span class="change-money">${sp.changeMoney}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+           <span style="width: 100%;">Ghi chú   <input class="form-control" type="text" value="${sp.note == null ? "" : sp.note}" maxlength="500" id="bill-note" onblur="saveNote()"></span>
+
+           </li>
+                        `;
+                            infoTab.append(rowHtml);
+
+                            sp.shoppingTabs.$values.forEach(item => {
+                                const productRow = document.createElement('div');
+                                productRow.className = 'row align-items-center border-bottom py-2 m-2 shadow-sm';
+                                productRow.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+                                productRow.innerHTML = `
+                                  <div class="col-1">
+           <span class="badge bg-secondary">PVN0${item.productId}</span>
+           </div>
+                                   <div class="col-5">
+                                       <h6 class="mb-0">${item.productName}</h6>
+                                       <div class="text-warning">${item.variant}</div>
+                                   </div>
+                                   <div class="col-1">
+                                       <input type="number" class="form-control form-control-sm qty-input" data-id="${item.productId}" data-variantId="${item.variantId}" value="${item.quantity}" style="width: 60px;" min="1" max="3" data-price="${item.price}"  oninput="updateTotalPrice(this)" >
+                                   </div>
+                                   <div class="col-2 text-end">
+                                       <span class="unit-price">${item.price.toLocaleString()} VND</span>
+                                   </div>
+                                   <div class="col-2 text-end">
+                                       <span class="total-price">${(item.price * item.quantity).toLocaleString()} VND</span>
+                                   </div>
+                                   <div class="col-1 text-end">
+                                       <button type="button" class="btn btn-outline-danger btn-sm"  data-id="${item.productId}" data-variantId="${item.variantId}" onclick="removeProduct(this)">
+                                           <i class="bi bi-trash"></i>
+                                       </button>
+                                   </div>
+                               `;
+
+                                activeTabPane.appendChild(productRow);
+                                productCounters[activeTabId]++;
+                            })
+
+                        })
+                    }
+                    document.getElementById('productDropdown').style.display = 'none';
+                    $('#loadingOverlay').hide();
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+                }
+            });
+        }
+        function addProductToCurrentTab(name, price, qty, id, variant, variantId) {
+
+            $.ajax({
+                url: '@Url.Action("AddProdToCurrentTab", "Sale")', // Adjust controller and action as needed
+                type: 'POST',
+                data: {
+                    ProductId: id,
+                    VariantId: variantId,
+                    Quantity: qty,
+                    Price: price,
+                    Tab: currentTab,
+                    ProductName: name,
+                    Variant: variant
+                },
+                success: function (response) {
+                    var lstDropDownProduct = $('.tab-pane.active .overflow-auto');
+                    lstDropDownProduct.empty();
+                    const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
+                    const activeTabId = activeTabPane.parentNode.id;
+                    if (response.data != null) {
+                        response.data.$values.forEach(function (sp) {
+                            sp.shoppingTabs.$values.forEach(item => {
+                                const productRow = document.createElement('div');
+                                productRow.className = 'row align-items-center border-bottom py-2 m-2 shadow-sm';
+                                productRow.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+                                productRow.innerHTML = `
+                                   <div class="col-1">
+           <span class="badge bg-secondary">PVN0${item.productId}</span>
+           </div>
+                                   <div class="col-5">
+                                       <h6 class="mb-0">${item.productName}</h6>
+                                       <div class="text-warning">${item.variant}</div>
+                                   </div>
+                                   <div class="col-1">
+                                       <input type="number" class="form-control form-control-sm qty-input" data-id="${item.productId}" data-variantId="${item.variantId}" value="${item.quantity}" style="width: 60px;" min="1" max="3" data-price="${item.price}"  oninput="updateTotalPrice(this)" >
+                                   </div>
+                                   <div class="col-2 text-end">
+                                       <span class="unit-price">${item.price.toLocaleString()} VND</span>
+                                   </div>
+                                   <div class="col-2 text-end">
+                                       <span class="total-price">${(item.price * item.quantity).toLocaleString()} VND</span>
+                                   </div>
+                                   <div class="col-1 text-end">
+                                       <button type="button" class="btn btn-outline-danger btn-sm"  data-id="${item.productId}" data-variantId="${item.variantId}" onclick="removeProduct(this)">
+                                           <i class="bi bi-trash"></i>
+                                       </button>
+                                   </div>
+                               `;
+                                ReUpdateTabInfo(response.data.$values);
+
+                                activeTabPane.appendChild(productRow);
+                                productCounters[activeTabId]++;
+                            })
+
+                        })
+                    }
+
+
+                    document.getElementById('productDropdown').style.display = 'none';
+                    $('#loadingOverlay').hide();
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+                }
+            });
+
+        }
+        function ReUpdateTabInfo(data) {
+            var infoTab = $('.info-tab');
+            infoTab.empty();
+            data.forEach(function (item) {
+                var rowHtml = `
+                       <li class="list-group-item d-flex justify-content-between align-items-center">
+             Tên khách hàng
+             <span id="bill-full-name">${item.quickCreateUserVM.fullName == null ? "" : item.quickCreateUserVM.fullName + "/"}${item.quickCreateUserVM.phoneNumber == null ? "" : item.quickCreateUserVM.phoneNumber}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Số lượng sản phẩm
+             <span>${item.productCount} </span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Tổng tiền
+             <span>${item.totalAmount}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             VAT
+             <span>10%</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span style="width: 100%;"> Mã giảm giá <input type="text" value="${item.bacthName}" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
+
+                                    </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Chiết khấu
+             <span>${item.dicountAmount}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+             Khách phải trả
+             <span>${item.mustPay}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+           <span style="width: 100%;">Tiền khách đưa  <input type="number" class="form-control" value="${item.customerGivenMoney}" id="customer-money" onkeydown="caculateChangeMoney(event)"></span>
+
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
+             Tiền thừa
+             <span class="change-money">${item.changeMoney}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+           <span style="width: 100%;">Ghi chú <input class="form-control" type="text" value="${item.note == null ? "" : item.note}" maxlength="500" id="bill-note" onblur="saveNote()">
+           </span>
+           </li>
+                        `;
+                infoTab.append(rowHtml);
+            });
+        }
+
+        function closeTab(index) {
+            console.log(index)
+            $.ajax({
+                url: '@Url.Action("CloseTab", "Sale")', // Adjust controller and action as needed
+                type: 'POST',
+                data: {
+                    Tab: index,
+                },
+                success: function (response) {
+
+                    var infoTab = $('#dynamicTabs');
+                    infoTab.empty();
+                    addTabBtn = ` <li class="nav-item">
+                                <button class="nav-link" id="addTabButton" onclick="addNewtab()" type="button">+</button>
+                            </li>`;
+                    infoTab.append(addTabBtn);
+                    response.data.$values.forEach(item => {
+                        const newTab = document.createElement('li');
+                        newTab.className = 'nav-item';
+                        newTab.setAttribute('role', 'presentation');
+                        newTab.innerHTML = `
+                                 <button onclick="openCurrentTab(${item.tabIndex})" class="nav-link d-flex align-items-center" id="tab-${item.tabIndex}" data-bs-toggle="tab" data-bs-target="content-${item.tabIndex}" type="button" role="tab" aria-controls="content-${item.tabIndex}" aria-selected="false" style="display: inline-flex; width: 90px">
+                      ${item.tabName}
+                        <button type="button" class="btn-close ms-2" aria-label="Close" onclick="closeTab(${item.tabIndex})" style="position: absolute; right: 10px;"></button>
+                    </button>
+                               `;
+                        const addTabButton = document.getElementById('addTabButton').parentNode;
+                        document.getElementById('dynamicTabs').insertBefore(newTab, addTabButton);
+                    })
+
+
+                    tabCount -= 1;
+                    currentTab = 1;
+                    openCurrentTab(currentTab);
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+
+                }
+            });
+
+
+        }
+        $(document).on('click', '.product-searched', function () {
+            const productName = this.getAttribute('data-name');
+            const productPrice = parseInt(this.getAttribute('data-price'), 10);
+            const productQty = this.getAttribute('data-qty');
+            const productId = this.getAttribute('data-id');
+            const variant = this.getAttribute('data-variant');
+            const variantId = this.getAttribute('data-variantId');
+            addProductToCurrentTab(productName, productPrice, productQty, productId, variant, variantId);
+        })
+        $(document).on('click', '.user-searched', function () {
+            const userName = this.getAttribute('data-fullName');
+            const userId = this.getAttribute('data-userid');
+            const phoneNumber = this.getAttribute('data-phoneNumber');
+            $.ajax({
+                url: '@Url.Action("AddUserToTab", "Sale")', // Adjust controller and action as needed
+                type: 'POST',
+                data: {
+                    Tab: currentTab,
+                    UserId: userId,
+                    FullName: userName,
+                    PhoneNumber: phoneNumber,
+                },
+                success: function (response) {
+                    response.data.$values.forEach(function (item) {
+                        $('#bill-full-name').text(item.quickCreateUserVM.fullName + '/' + item.quickCreateUserVM.phoneNumber);
+                    })
+                    document.getElementById('userDropdown').style.display = 'none';
+                    $('#loadingOverlay').hide();
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+                    console.log(error);
+                }
+            });
+
+        })
+        function addNonExistingUser() {
+            var fullName = $('#searchUser').val();
+            $.ajax({
+                url: '@Url.Action("AddNonExistingUserToTab", "Sale")', // Adjust controller and action as needed
+                type: 'POST',
+                data: {
+                    Tab: currentTab,
+                    FullName: fullName
+                },
+                success: function (response) {
+                    if (response.isSucccess == false) {
+                        toastr['error'](response.data);
+                        $('#loadingOverlay').hide();
+                        return;
+                    }
+
+                    var infoTab = $('.info-tab');
+                    infoTab.empty();
+                    response.data.$values.forEach(function (item) {
+                        var rowHtml = `
+                       <li class="list-group-item d-flex justify-content-between align-items-center">
+             Tên khách hàng
+             <span id="bill-full-name">${item.quickCreateUserVM.fullName == null ? "" : item.quickCreateUserVM.fullName + "/"}${item.quickCreateUserVM.phoneNumber == null ? "" : item.quickCreateUserVM.phoneNumber}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Số lượng sản phẩm
+             <span>${item.productCount} </span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Tổng tiền
+             <span>${item.totalAmount}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             VAT
+             <span>10%</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span style="width: 100%;"> Mã giảm giá <input type="text" value="${item.bacthName}" class="form-control" id="voucher-input" onkeydown="GetBatchVoucher(event)"></span>
+
+                                    </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+             Chiết khấu
+             <span>${item.dicountAmount}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+             Khách phải trả
+             <span>${item.mustPay}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span> Tiền khách đưa <input type="number" value="${item.customerGivenMoney}" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
+
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
+             Tiền thừa
+             <span class="change-money">${item.changeMoney}</span>
+           </li>
+           <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span style="width: 100%"> Ghi chú <input class="form-control" type="text" value="${item.note == null ? "" : item.note}" maxlength="500" id="bill-note" onblur="saveNote()"></span>
+
+           </li>
+                        `;
+                        infoTab.append(rowHtml);
+                    });
+
+
+
+
+                    document.getElementById('userDropdown').style.display = 'none';
+                    $('#loadingOverlay').hide();
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+                }
+            });
+        }
+        function removeProduct(button) {
+            const ProductId = parseInt(button.getAttribute('data-id'), 10);
+            const VariantId = parseInt(button.getAttribute('data-variantId'), 10);
+            $.ajax({
+                url: '@Url.Action("DeleteProduct", "Sale")', // Adjust controller and action as needed
+                type: 'DELETE',
+                data: {
+                    ProductId: ProductId,
+                    VariantId: VariantId,
+                    Tab: currentTab
+                },
+                success: function (response) {
+                    const row = button.closest('.row');
+                    row.remove();
+                    ReUpdateTabInfo(response.data.$values);
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+                }
+            });
+
+        }
+        function updateProductNumbers() {
+            const activeTabPane = document.querySelector('.tab-pane.active .overflow-auto');
+            const activeTabId = activeTabPane.parentNode.id;
+            const rows = activeTabPane.querySelectorAll('.row');
+            productCounters[activeTabId] = 1; // Reset the counter
+            rows.forEach((row, index) => {
+                const numCell = row.querySelector('.col-auto:first-child');
+                numCell.textContent = productCounters[activeTabId];
+                productCounters[activeTabId]++;
+            });
+
+
+        }
+        function updateTotalPrice(input) {
+            const qty = parseInt(input.value, 10);
+            const ProductId = parseInt(input.getAttribute('data-id'), 10);
+            const VariantId = parseInt(input.getAttribute('data-variantId'), 10);
+            $.ajax({
+                url: '@Url.Action("UpdateQuantityProduct", "Sale")', // Adjust controller and action as needed
+                type: 'POST',
+                data: {
+                    ProductId: ProductId,
+                    VariantId: VariantId,
+                    Quantity: qty,
+                    Tab: currentTab
+                },
+                success: function (response) {
+
+                    const price = parseInt(input.getAttribute('data-price'), 10);
+                    const totalPriceElement = input.closest('.row').querySelector('.total-price');
+                    if (qty >= 1 && qty <= 3) {
+                        const totalPrice = price * qty;
+                        totalPriceElement.textContent = totalPrice.toLocaleString() + " VND";
+                    } else {
+                        input.value = qty < 1 ? 1 : 3;
+                        updateTotalPrice(input);
+                    }
+                    ReUpdateTabInfo(response.data.$values);
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+                }
+            });
+
+
+        }
+        function searchProduct(e) {
+            var contentSearch = $('#productSearch').val();
+            if (contentSearch.trim() != '') {
+                if (e.key === 'Enter') {
+                    $('#loadingOverlay').show();
+                    $.ajax({
+                        url: '@Url.Action("GetProductByName", "Sale")', // Adjust controller and action as needed
+                        type: 'GET',
+                        data: {
+                            name: contentSearch
+                        },
+                        success: function (response) {
+                            console.log(response)
+                            var lstDropDownProduct = $('#productDropdown');
+                            lstDropDownProduct.empty();
+                            if (response.data != null) {
+                                response.data.$values.forEach(function (item) {
+                                    item.variants.$values.forEach(function (childer) {
+                                        var rowHtml = `
+                                       <li class="dropdown-item product-searched d-flex align-items-center" data-variantId="${childer.variantId}" data-variant="${childer.variantName}" data-id="${item.productId}" data-name="${item.productName}" data-price="${childer.afterDiscountPrice}" data-qty="${childer.quantity}">
+                                           <img src="${item.images.$values[0].imagePath}" alt="Product 1" class="me-3" style="width: 50px">
+                                               <div class="flex-grow-1">
+                                                   <div>${item.productName}</div>
+                                                   <small class="text-muted" >${childer.variantName}</small>
+                                                   <div class="d-flex justify-content-between mt-2">
+                                                       <span class="final-price">${parseInt(childer.afterDiscountPrice).toLocaleString('vi-VN') + '₫'}
+           <span class="mx-lg-3 old-pirce">${parseInt(childer.salePrice).toLocaleString('vi-VN') + '₫'}</span>
+           </span>
+                                                       <span>Có thể bán: ${childer.quantity}</span>
+                                                   </div>
+                                               </div>
+                                       </li>
+                                        `;
+                                        lstDropDownProduct.append(rowHtml);
+                                    })
+                                });
+                            }
+                            else {
+                                var rowHtml = `
+                                       <li class="dropdown-item d-flex align-items-center">
+                                           <div class="row" style="width:100%">
+                                           <div class="col-12 d-flex justify-content-center">
+           <div class="text-danger">Không tìm thấy sản phẩm nào !</div>
+           </div>
+           </div>
+                                        `;
+                                lstDropDownProduct.append(rowHtml);
+                            }
+                            document.getElementById('productDropdown').style.display = 'block';
+                            $('#loadingOverlay').hide();
+                        },
+                        error: function (xhr, status, error) {
+                            $('#loadingOverlay').hide();
+                        }
+                    });
+
+                }
+            }
+            else {
+                document.getElementById('productDropdown').style.display = 'none';
+            }
+        }
+        function searchUser(e) {
+            var contentSearch = $('#searchUser').val();
+            if (contentSearch.trim() != '') {
+                if (e.key === 'Enter') {
+                    $('#loadingOverlay').show();
+                    $.ajax({
+                        url: '@Url.Action("SearchUser", "Sale")', // Adjust controller and action as needed
+                        type: 'GET',
+                        data: {
+                            search: contentSearch
+                        },
+                        success: function (response) {
+                            console.log(response)
+                            var lstDropDownProduct = $('#userDropdown');
+                            lstDropDownProduct.empty();
+                            if (response.data != null) {
+                                response.data.$values.forEach(function (item) {
+                                    var rowHtml = `
+                                       <li class="dropdown-item user-searched d-flex align-items-center" data-userId="${item.id}" data-fullName="${item.fullName}" data-phoneNumber="${item.phoneNumber}" >
+                                               <div class="flex-grow-1">
+                                                   <div>Tên/sdt: ${item.fullName} / ${item.phoneNumber == null ? "" : item.phoneNumber}</div>
+                                               </div>
+                                       </li>
+                                        `;
+                                    lstDropDownProduct.append(rowHtml);
+                                });
+                            }
+                            else {
+                                var rowHtml = `
+                                       <li class="dropdown-item d-flex align-items-center">
+                                           <div class="row" style="width:100%">
+                                           <div class="col-12 d-flex justify-content-center">
+           <div class="text-danger">Không tìm thấy sản phẩm nào !</div>
+           </div>
+           </div>
+                                        `;
+                                lstDropDownProduct.append(rowHtml);
+                            }
+                            document.getElementById('userDropdown').style.display = 'block';
+                            $('#loadingOverlay').hide();
+                        },
+                        error: function (xhr, status, error) {
+                            $('#loadingOverlay').hide();
+                        }
+                    });
+                }
+            }
+            else {
+                document.getElementById('productDropdown').style.display = 'none';
+            }
+        }
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "200",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        function saveNote() {
+            var note = $('#bill-note').val();
+            $.ajax({
+                url: '@Url.Action("SaveNote", "Sale")', // Adjust controller and action as needed
+                type: 'POST',
+                data: {
+                    Tab: currentTab,
+                    Note: note
+                },
+                success: function (response) {
+
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+                }
+            });
+        }
+    function PrintBill() {
+        var content = document.getElementById('data-bill-container');
+
+        html2canvas(content, { scale: 2 }).then(function (canvas) {
+            const imageURL = canvas.toDataURL("image/png");
+            let iframe = document.createElement('iframe');
+            console.log(content)
+            iframe.style.position = "absolute";
+            iframe.style.top = "-10000px";
+            document.body.appendChild(iframe);
+
+            const printWindow = iframe.contentWindow;
+            const printDocument = printWindow.document;
+
+            let imgWidth = 208;  // Width of the image in mm
+            let pageHeight = 297; // A4 page height in mm
+            let imgHeight = canvas.height * imgWidth / canvas.width; // Calculate the height maintaining the aspect ratio
+
+             printDocument.open();
+                    printDocument.write( `<img src="${imageURL}" style="width: ${imgWidth}mm; height: auto;" />`);
+                    printDocument.close();
+
+            printDocument.close();
+
+            printWindow.onload = function () {
+                printWindow.focus();
+                printWindow.print();
+
+                setTimeout(function () {
+                    document.body.removeChild(iframe);
+                }, 100);
+
+                closeTab(currentTab);
+                clearInfoTab();
+            };
+        });
+    }
+
+
+    </script>

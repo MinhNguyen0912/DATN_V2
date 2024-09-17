@@ -28,7 +28,7 @@ namespace DATN.Client.Areas.Admin.Controllers
 		}
 
 		[Area("Admin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [Route("Admin/[controller]/[action]")]
         public IActionResult Index()
         {	
