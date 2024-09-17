@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DATN.Core.ViewModel.Product_EAV;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace DATN.Core.ViewModel.ProdutEAVVM
     {
         public int VariantId { get; set; }
         public string Name { get; set; }
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
         public decimal PuscharPrice { get; set; }
         public decimal SalelPrice { get; set; }
         public decimal AfterDiscountPrice { get; set; }
@@ -18,6 +19,6 @@ namespace DATN.Core.ViewModel.ProdutEAVVM
         public int Weight { get; set; }
         public bool IsDefault { get; set; }
         public string attributeValueIds { get; set; }
-        public List<CreateSpecificationsVM> Specifications { get; set; } = new List<CreateSpecificationsVM>();
+        public List<SpecificationVM>? Specifications { get; set; }
     }
 }
