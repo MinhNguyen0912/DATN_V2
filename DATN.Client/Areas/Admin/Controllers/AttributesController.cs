@@ -4,8 +4,6 @@ using DATN.Client.Helper;
 using DATN.Client.Services;
 using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
-using DATN.Core.ViewModel.AttributeVM.AttributeDynamic;
-using DATN.Core.ViewModel.AttributeVM.AtttributeVariation;
 using DATN.Core.ViewModel.BrandVM;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.Product_EAV;
