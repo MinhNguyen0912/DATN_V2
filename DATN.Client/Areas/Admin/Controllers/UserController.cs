@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 namespace DATN.Client.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [Route("Admin/[controller]/[action]")]
     //[Authorize(Roles = "Admin")]
     public class UserController : Controller
@@ -54,6 +54,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                     var user = await _userManager.FindByIdAsync(item.Id.ToString());
                     if (user != null)
                     {
+                        
                         var roles = await _userManager.GetRolesAsync(user);
                         item.Roles = roles.ToList();
                     }
@@ -160,7 +161,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                 //var addedVoucher = await _unitOfWork.UserRepository.AddVoucherToListUser(userPagingDeserialized.UserVoucherShowModal);
             }
 
-            userPagingDeserialized.ListVoucherDropDown = new List<VoucherVM>();
+            //userPagingDeserialized.ListVoucherDropDown = new List<VoucherVM>();
             var userPagingStored = JsonConvert.SerializeObject(userPagingDeserialized);
             HttpContext.Session.SetString("UserPaging", userPagingStored);
             return RedirectToAction("Index", userPagingDeserialized);

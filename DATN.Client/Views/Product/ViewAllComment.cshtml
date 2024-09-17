@@ -1,4 +1,4 @@
-﻿@* @model DATN.Core.ViewModel.ProductVM.ProductEditViewModel *@
+﻿@model DATN.Core.ViewModel.ProdutEAVVM.Product_EAV_VM
 
 @{
 
@@ -32,7 +32,7 @@ var currentFilterStar = @Model.CommentOverviewVm.StarRating;
             <div class="col-lg-8 off-set-2">
                 <div class="row ">
                     <div class="col-lg-12">
-                        <h2 class="boxrate__title">@Model.CommentOverviewVm.GrandTotalCount đánh giá @Model.Product.Name</h2>
+                        <h2 class="boxrate__title">@Model.CommentOverviewVm.GrandTotalCount đánh giá @Model.Product.ProductName</h2>
 
                     </div>
 
@@ -100,22 +100,22 @@ var currentFilterStar = @Model.CommentOverviewVm.StarRating;
                     </div>
 
                     <div class="col-12 mt-2 mb-4 d-flex">
-                        <span class="filter-all rating @(currentFilterStar==0?"filter-active":"")" data-param="0" data-paramprod="@Model.Product.Id">
+                        <span class="filter-all rating @(currentFilterStar==0?"filter-active":"")" data-param="0" data-paramprod="@Model.Product.ProductId">
                             Tất cả
                         </span>
-                        <span class="filter-star rating @(currentFilterStar==5?"filter-active":"")" data-param="5" data-paramprod="@Model.Product.Id">
+                        <span class="filter-star rating @(currentFilterStar==5?"filter-active":"")" data-param="5" data-paramprod="@Model.Product.ProductId">
                             <span >5 <i class="bi bi-star-fill me-2 voted"></i></span>
                         </span>
-                        <span class="filter-star rating @(currentFilterStar==4?"filter-active":"")" data-param="4" data-paramprod="@Model.Product.Id">
+                        <span class="filter-star rating @(currentFilterStar==4?"filter-active":"")" data-param="4" data-paramprod="@Model.Product.ProductId">
                             <span data-pram="4" class="">4 <i class="bi bi-star-fill me-2 voted"></i></span>
                         </span>
-                        <span class="filter-star rating @(currentFilterStar==3?"filter-active":"")" data-param="3" data-paramprod="@Model.Product.Id">
+                        <span class="filter-star rating @(currentFilterStar==3?"filter-active":"")" data-param="3" data-paramprod="@Model.Product.ProductId">
                             <span data-pram="3" class="">3 <i class="bi bi-star-fill me-2 voted"></i></span>
                         </span>
-                        <span class="filter-star rating @(currentFilterStar==2?"filter-active":"")" data-param="2" data-paramprod="@Model.Product.Id">
+                        <span class="filter-star rating @(currentFilterStar==2?"filter-active":"")" data-param="2" data-paramprod="@Model.Product.ProductId">
                             <span data-pram="2" class="">2 <i class="bi bi-star-fill me-2 voted"></i></span>
                         </span>
-                        <span class="filter-star rating @(currentFilterStar==1?"filter-active":"")" data-param="1" data-paramprod="@Model.Product.Id">
+                        <span class="filter-star rating @(currentFilterStar==1?"filter-active":"")" data-param="1" data-paramprod="@Model.Product.ProductId">
                             <span data-pram="1" class="">1 <i class="bi bi-star-fill me-2 voted"></i></span>
                         </span>
                     </div>
@@ -152,7 +152,7 @@ var currentFilterStar = @Model.CommentOverviewVm.StarRating;
                         <div class="col-12 d-flex justify-content-center">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
-                                    <li class="page-item @((currentPage == 1) ? "disabled" : "")"  data-param="@(currentPage-1>=1?currentPage-1:1)" data-paramprod="@Model.Product.Id">
+                                    <li class="page-item @((currentPage == 1) ? "disabled" : "")"  data-param="@(currentPage-1>=1?currentPage-1:1)" data-paramprod="@Model.Product.ProductId">
                                         <a class="page-link link-paging" tabindex="-1" aria-disabled="true">
                                             Previous
                                         </a>
@@ -166,7 +166,7 @@ var currentFilterStar = @Model.CommentOverviewVm.StarRating;
                                     }
                                     @for (int pageIndex = startPage; pageIndex <= endPage; pageIndex++)
                                     {
-                                        <li class="page-item "  data-param="@pageIndex" data-paramprod="@Model.Product.Id"><a class="page-link @(currentPage == pageIndex ? "active-page" : "")">@(pageIndex)</a></li>
+                                        <li class="page-item "  data-param="@pageIndex" data-paramprod="@Model.Product.ProductId"><a class="page-link @(currentPage == pageIndex ? "active-page" : "")">@(pageIndex)</a></li>
                                     }
 
                                     @if (currentPage < Math.Ceiling(Model.CommentOverviewVm.TotalRecord / 10.0) - 2)
@@ -176,7 +176,7 @@ var currentFilterStar = @Model.CommentOverviewVm.StarRating;
                                     </li>
                                     }
 
-                                    <li class="page-item @((currentPage == Model.CommentOverviewVm.TotalPages) ? "disabled" : "")" data-param="@(currentPage+1 <=Model.CommentOverviewVm.TotalPages?currentPage+1:Model.CommentOverviewVm.TotalPages)" data-paramprod="@Model.Product.Id">
+                                    <li class="page-item @((currentPage == Model.CommentOverviewVm.TotalPages) ? "disabled" : "")" data-param="@(currentPage+1 <=Model.CommentOverviewVm.TotalPages?currentPage+1:Model.CommentOverviewVm.TotalPages)" data-paramprod="@Model.Product.ProductId">
                                         <a  class="page-link link-paging">
                                             Next
                                         </a>
