@@ -41,19 +41,7 @@
                         </span> Chuyển trạng thái
                     </a>
                 </button>
-                <select class="form-select-sm col-2 ms-2" id="voucherSelect">
-                    @foreach (var x in Model.ListVoucherDropDown)
-                    {
-                        // <option data-param-vouchername="@x.Name" value="@x.Id">@x.Name</option>
-                    }
-                </select>
-                <button class="btn btn-info ms-2" id="btn" data-bs-toggle="modal" data-bs-target="#addVoucherForUser">
-                    <a class="text-white text-decoration-none">
-                        <span style="font-size:20px; margin-right:5px">
-                         <i class="fa-solid fa-ticket"></i>
-                        </span> Thêm Voucher
-                    </a>
-                </button>
+                
             </div>
 
             <form id="form-search" asp-area="Admin" asp-controller="User" asp-action="Index">
@@ -132,7 +120,7 @@
                                 <td style=" padding: 8px 0px 8px 8px;">@user.Email</td>
                                 <td style=" padding: 8px 0px 8px 8px;">@user.PhoneNumber</td>
                                 <td style=" padding: 8px 0px 8px 8px;">
-                                    @if (user.Roles != null)
+                                    @if (user.Roles.Count()>0)
                                     {
                                         <span>@string.Join(", ", user.Roles)</span>
                                     }
@@ -141,7 +129,11 @@
                                     @user.GrandTotalAmountPurchased
                                 </td>
                                 <td style=" padding: 8px 0px 8px 8px;">
-                                    @(string.Join(", ", user.ListVoucherNameByUser))
+                                    @if (user.ListVoucherNameByUser.Count()>0)
+                                    {
+                                        @(string.Join(", ", user.ListVoucherNameByUser))
+                                    }
+                                   
                                 </td>
                                 <td style=" padding: 8px 0px 8px 8px;">
                                     @if (user.LastLoginTime == default(DateTime))

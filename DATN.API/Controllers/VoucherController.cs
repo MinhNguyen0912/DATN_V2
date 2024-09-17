@@ -277,6 +277,19 @@ namespace DATN.API.Controllers
                 return Ok(vouchersVM);
             }
             return NoContent(); // Trả về 204 nếu không tìm thấy newfeed
+        } 
+        [HttpPost("")]
+        public async Task<IActionResult> GetBatchByCode([FromBody] GetVoucherByBatchNameOfflineVM input)
+        {
+            var response =await _unitOfWork.BatchRepository.GetByName(input.Name,input.CurrentDate,input.GrandTotal);
+             return Ok(response);
+           
+        }
+        [HttpPost("")]
+        public async Task<IActionResult> AddVoucherForUserOffline([FromBody]CreateVoucherOfflineVM createVoucherOfflineVM)
+        {
+            var response = await _unitOfWork.VoucherRepository.AddVoucherForUserOffline(createVoucherOfflineVM);
+             return Ok(response);
         }
     }
 }

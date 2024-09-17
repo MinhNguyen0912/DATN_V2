@@ -2,6 +2,7 @@
 
 using DATN.Core.Repositories.IRepositories;
 using DATN.Core.Repositories.IRepositories.ProductEAV;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DATN.Core.Infrastructures
 {
@@ -49,6 +50,13 @@ namespace DATN.Core.Infrastructures
         public IVariantAttributeRepository VariantAttributeRepository { get; }
         public IVariantRepository VariantRepository { get; }
 
+        public ISpecificationRepository SpecificationRepository { get; }
+
         int SaveChanges();
+
+        IDbContextTransaction BeginTransaction();
+        void Commit();
+        void Rollback();
+        Task SaveAsync();
     }
 }

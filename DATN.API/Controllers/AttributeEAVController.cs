@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
 using DATN.Core.Data;
 using DATN.Core.Infrastructures;
+using DATN.Core.Model;
+using DATN.Core.Model.Product_EAV;
+using DATN.Core.ViewModel.AttributeEAVVM;
 using DATN.Core.ViewModel.BrandVM;
+using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.Product_EAV;
+using DATN.Core.ViewModels.Paging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Asn1.Cms;
@@ -24,7 +29,12 @@ namespace DATN.API.Controllers
             _context = context;
         }
 
-
+        [HttpPost]
+        public IActionResult GetAttributePaging([FromBody] AttributesPaging request)
+        {
+            AttributesPaging Paging = _unitOfWork.AttributeEAVRepository.GetAttributePaging(request);
+            return Ok(Paging);
+        }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -63,5 +73,22 @@ namespace DATN.API.Controllers
             // If no attribute is found for the given id, return a 404 Not Found status
             return NotFound(new { Message = "Attribute not found" });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateAttributeEAVVM attributeVM)
+        {
+            if (attributeVM == null || string.IsNullOrWhiteSpace(attributeVM.Name))
+            {
+                return BadRequest("Attribute name is null or empty"); // 400 Bad Request
+            }
+
+            Attribute_EAV attribute_EAV = new Attribute_EAV() { AttributeName = attributeVM.Name };
+
+            await _unitOfWork.AttributeEAVRepository.Create(attribute_EAV);
+            _unitOfWork.SaveChanges();
+
+            return Ok(new { success = true, message = "Attribute created successfully", attribute = attribute_EAV });
+        }
+
     }
 }

@@ -8,14 +8,14 @@ namespace DATN.Core.Model.Product_EAV
         public int VariantId { get; set; }
         public int ProductId { get; set; }
         public string VariantName { get; set; }
+        public int? Quantity { get; set; }
         public decimal PuscharPrice { get; set; }
         public decimal SalePrice { get; set; }
         public decimal AfterDiscountPrice { get; set; }
-        public int? Quantity { get; set; }
-        public bool IsDefault {  get; set; } = false;
         public int MaximumQuantityPerOrder {  get; set; } 
         public int Weight {  get; set; } 
-        //public bool isShow {  get; set; }
+        public bool IsDefault {  get; set; }
+        public bool IsActive { get; set; }
 
         // Navigation property
         public Product_EAV Product { get; set; }

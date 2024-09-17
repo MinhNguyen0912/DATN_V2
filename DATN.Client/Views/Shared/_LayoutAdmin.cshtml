@@ -26,6 +26,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/js/admin.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     @RenderSection("Style", required: false)
 
 </head>
@@ -242,6 +244,9 @@
     <script src="~/assets/vendor/ckeditor5/build/ckeditor.js" asp-append-version="true"></script>
     <script src="~/js/moment.js" asp-append-version="true"></script>
     <script src="~/js/toast.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
     <script>
         toastr.options = {
