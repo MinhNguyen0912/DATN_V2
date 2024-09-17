@@ -7,7 +7,7 @@ namespace DATN.Core.ViewModels.Paging
     public class UserPaging : PagingRequestBase<UserVM>
     {
         public LastLoginTimeFilter? LastLoginTimeFilter { get; set; }
-        public List<VoucherVM> ListVoucherDropDown { get; set; }
+        //public List<VoucherVM> ListVoucherDropDown { get; set; }
         public List<UserVoucherShowModal> UserVoucherShowModal { get; set; } = new List<UserVoucherShowModal>();
 
     }

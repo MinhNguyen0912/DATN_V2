@@ -119,12 +119,12 @@ namespace DATN.Client.Areas.Admin.Controllers
                     foreach (var cateId in cateIdList)
                     {
                         // Kiểm tra xem ProductId và CategoryId đã tồn tại chưa
-                        var existingCategoryProduct = _unitOfWork.CategoryProductRepository
-                            .Find(cp => cp.ProductId == productId && cp.CategoryId == cateId);
+                        //var existingCategoryProduct = _unitOfWork.CategoryProductRepository
+                        //    .Find(cp => cp.ProductId == productId && cp.CategoryId == cateId);
 
                         // Nếu chưa tồn tại thì thêm mới
-                        if (existingCategoryProduct == null)
-                        {
+                        //if (existingCategoryProduct == null)
+                        //{
                             CategoryProduct categoryProduct = new CategoryProduct
                             {
                                 ProductId = productId,
@@ -135,7 +135,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                             {
                                 throw new Exception("Failed to create category product.");
                             }
-                        }
+                        //}
                     }
 
                     // Tạo Variants và VariantAttributes
@@ -152,9 +152,10 @@ namespace DATN.Client.Areas.Admin.Controllers
                                 PuscharPrice = item.PuscharPrice,
                                 SalePrice = item.SalelPrice,
                                 AfterDiscountPrice = item.AfterDiscountPrice,
-                                IsDefault = item.IsDefault,
                                 MaximumQuantityPerOrder = item.MaximumQuantityPerOrder,
                                 Weight = item.Weight,
+                                IsDefault = item.IsDefault,
+                                IsActive = item.IsActive
                             };
 
                             var variantResult = _unitOfWork.VariantRepository.Create(variant);
@@ -212,13 +213,19 @@ namespace DATN.Client.Areas.Admin.Controllers
                             throw new Exception("Failed to upload default image.");
                         }
 
-                        ImageVM defaultImageVm = new ImageVM
+                        Image defaultImageVm = new Image
                         {
                             ImagePath = imageDefaultResponse,
                             IsDefault = true,
                             ProductId = productId
                         };
-                        await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", defaultImageVm);
+                        //await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", defaultImageVm);
+                        var ImageResult = _unitOfWork.imageReponsiroty.Create(defaultImageVm);
+                        _unitOfWork.SaveChanges();
+                        if (ImageResult == null)
+                        {
+                            throw new Exception("Failed to create specification.");
+                        }
                     }
 
                     // Xử lý upload ảnh bổ sung
@@ -232,13 +239,20 @@ namespace DATN.Client.Areas.Admin.Controllers
                                 throw new Exception("Failed to upload additional image.");
                             }
 
-                            ImageVM additionalImageVm = new ImageVM
+                            Image additionalImageVm = new Image
                             {
                                 ImagePath = imageResponse,
                                 IsDefault = false,
                                 ProductId = productId
                             };
-                            await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", additionalImageVm);
+                            //await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", additionalImageVm);
+
+                            var ImageResult = _unitOfWork.imageReponsiroty.Create(additionalImageVm);
+                            _unitOfWork.SaveChanges();
+                            if (ImageResult == null)
+                            {
+                                throw new Exception("Failed to create specification.");
+                            }
                         }
                     }
 
@@ -320,7 +334,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                 Status = product.Status,
                 OriginId = product.OriginId,
                 BrandId = product.BrandId,
-                Variants = product.Variants.Select(v => new UpdateVariantVM
+                Variants = product.Variants?.Select(v => new UpdateVariantVM
                 {
                     VariantId = v.VariantId,
                     Name = v.VariantName,
@@ -331,13 +345,14 @@ namespace DATN.Client.Areas.Admin.Controllers
                     IsDefault = v.IsDefault,
                     MaximumQuantityPerOrder = v.MaximumQuantityPerOrder,
                     Weight = v.Weight,
-                    attributeValueIds = string.Join("/", v.VariantAttributes.Select(va => va.AttributeValueId)),
-                    Specifications = v.Specifications.Select(s => new SpecificationVM
+                    IsActive = v.IsActive,
+                    Specifications = v.Specifications?.Select(s => new UpdateSpecificationVM
                     {
+                        Id = s.Id,
                         Key = s.Key,
                         Value = s.Value
-                    }).ToList()
-                }).ToList()
+                    }).ToList() ?? new List<UpdateSpecificationVM>()
+                }).ToList() ?? new List<UpdateVariantVM>()
             };
             ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
             {
@@ -435,7 +450,9 @@ namespace DATN.Client.Areas.Admin.Controllers
                                 variant.AfterDiscountPrice = item.AfterDiscountPrice;
                                 variant.IsDefault = item.IsDefault;
                                 variant.MaximumQuantityPerOrder = item.MaximumQuantityPerOrder;
+                                variant.IsActive = item.IsActive;
                                 variant.Weight = item.Weight;
+                                _unitOfWork.VariantRepository.Update(variant);
                             }
                             else
                             {
@@ -448,6 +465,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                                     SalePrice = item.SalelPrice,
                                     AfterDiscountPrice = item.AfterDiscountPrice,
                                     IsDefault = item.IsDefault,
+                                    IsActive = true,
                                     MaximumQuantityPerOrder = item.MaximumQuantityPerOrder,
                                     Weight = item.Weight,
                                 };

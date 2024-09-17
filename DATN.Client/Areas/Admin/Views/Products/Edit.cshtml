@@ -272,30 +272,39 @@
                                 <input type="number" class="form-control quantity" name="Variants[@item.index].Quantity" value="@item.variant.Quantity" min="1" oninput="validateInput(this, 1)" />
                             </td>
                             <td>
-                                <input type="number" class="form-control price-import" name="Variants[@item.index].ImportPrice" value="@item.variant.PuscharPrice.ToString("0.##", CultureInfo.InvariantCulture)" min="1000000" oninput="validateInput(this, 1000000)" />
+                                <input type="number" class="form-control price-import" name="Variants[@item.index].PuscharPrice" value="@item.variant.PuscharPrice.ToString("0.##", CultureInfo.InvariantCulture)" min="1000000" oninput="validateInput(this, 1000000)" />
                             </td>
                             <td>
-                                <input type="number" class="form-control price-sell" name="Variants[@item.index].SellPrice" value="@item.variant.SalelPrice.ToString("0.##", CultureInfo.InvariantCulture)" />
+                                <input type="number" class="form-control price-sell" name="Variants[@item.index].SalelPrice" value="@item.variant.SalelPrice.ToString("0.##", CultureInfo.InvariantCulture)" />
                             </td>
                             <td>
                                 <input type="number" class="form-control price-discount" name="Variants[@item.index].AfterDiscountPrice" value="@item.variant.AfterDiscountPrice.ToString("0.##", CultureInfo.InvariantCulture)" />
                             </td>
                             <td>
-                                <input type="number" class="form-control quantity" name="Variants[@item.index].Quantity" value="@item.variant.MaximumQuantityPerOrder" min="1" oninput="validateInput(this, 1)" />
+                                <input type="number" class="form-control quantity" name="Variants[@item.index].MaximumQuantityPerOrder" value="@item.variant.MaximumQuantityPerOrder" min="1" oninput="validateInput(this, 1)" />
                             </td>
                             <td>
-                                <input type="number" class="form-control quantity" name="Variants[@item.index].Quantity" value="@item.variant.Weight" min="1" oninput="validateInput(this, 1)" />
+                                <input type="number" class="form-control quantity" name="Variants[@item.index].Weight" value="@item.variant.Weight" min="1" oninput="validateInput(this, 1)" />
                             </td>
                             <td>
-                                <input type="radio" name="defaultVariant" class="default-variant" value="@item.index" @(item.index == 0 ? "checked" : "") required onclick="setDefaultVariant(@item.index)" />
+                                <input type="radio" name="Variants[@item.index].IsDefault" class="default-variant" value="@item.variant.IsDefault" @(item.index == 0 ? "checked" : "")  onclick="setDefaultVariant(@item.index)" />
                             </td>
                             <td>
+                                <input type="checkbox" name="Variants[@item.index].IsActive" class="active-variant" value="@item.variant.IsActive" @(item.index == 0 ? "checked" : "") >
                             </td>
                             <td>
                                 <button type="button" class="btn btn-primary" onclick="toggleSpecifications(this, @item.index)"> +</button>
                             </td>
                         </tr>
                         <tr class="specifications-row" style="display: none;">
+                            @foreach (var Spe in item.variant.Specifications)
+                            {
+                                <td>
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="Variants[@item.index].Specifications[].Name" value="@Spe.Key" placeholder="Tên thông số" required />
+                                        <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[].Value" value="@Spe.Value" placeholder="Giá trị" required />
+                                </td>
+                            }
                             <td colspan="9">
                                 <div class="variant-specifications">
                                     <div class="specification-list" id="specification-list-@item.index"></div>

@@ -13,7 +13,7 @@ namespace DATN.Core.ViewModel.ProdutEAVVM
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public int? OriginId { get; set; }
         public ProductStatus Status { get; set; }
         public int? BrandId { get; set; }

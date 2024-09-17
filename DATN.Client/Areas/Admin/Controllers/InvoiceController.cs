@@ -1,13 +1,17 @@
 ﻿using DATN.Client.Helper;
+using DATN.Client.Models;
 using DATN.Client.Services;
 using DATN.Core.Data;
 using DATN.Core.Infrastructures;
+using DATN.Core.Model;
+using DATN.Core.Model.Product_EAV;
 using DATN.Core.ViewModel.GHNVM;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.ShippingOrderVM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Text;
 using CreateGHNOrderAdmin = DATN.Core.ViewModel.GHNVM.CreateGHNOrderAdmin;
 using OrderItemsGHNAdmin = DATN.Core.ViewModel.GHNVM.OrderItemsGHNAdmin;
@@ -66,83 +70,102 @@ namespace DATN.Client.Areas.Admin.Controllers
             _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        private List<List<Variant>> CalculateShipments(List<Variant> variants, double maxWeightPerShipment) //max = 10000
+        {
+            // Sắp xếp các sản phẩm theo thứ tự giảm dần trọng lượng
+            variants.Sort((a, b) => b.Weight.CompareTo(a.Weight));
+
+            // Danh sách các lần ship, mỗi lần ship là một danh sách chứa các Variant
+            List<List<Variant>> shipments = new List<List<Variant>>();
+
+            foreach (var variant in variants)
+            {
+                bool added = false;
+
+                // Tìm xem có chuyến ship nào có thể thêm được sản phẩm này mà không vượt quá maxWeightPerShipment
+                foreach (var shipment in shipments)
+                {
+                    double currentShipmentWeight = shipment.Sum(v => v.Weight);
+                    if (currentShipmentWeight + (variant.Weight <= maxWeightPerShipment ? variant.Weight : maxWeightPerShipment) <= maxWeightPerShipment)
+                    {
+                        shipment.Add(variant);
+                        added = true;
+                        break;
+                    }
+                }
+
+                // Nếu không thể thêm sản phẩm vào chuyến ship nào thì tạo một chuyến ship mới
+                if (!added)
+                {
+                    shipments.Add(new List<Variant> { variant });
+                }
+            }
+
+            // Trả về danh sách các đơn hàng
+            return shipments;
+        }
         public async Task<IActionResult> CreateShippingOrder(int invoiceId)
         {
-            var invoice = await _unitOfWork.InvoiceRepository.GetById(invoiceId);
-            var to_name = invoice.Note.Split("-")[0];
-            var to_phone = invoice.Note.Split("-")[1];
-            var to_address = invoice.Note.Split("-")[2];
-            var to_ward_code = invoice.Note.Split("-")[3];
-            var to_district_id = invoice.Note.Split("-")[4];
-            var cod_amount = invoice.Note.Split("-")[5];
-            var listItem = new List<OrderItemsGHNAdmin>();
-            foreach (var item in invoice.InvoiceDetails)
+            var invoice = _unitOfWork.InvoiceRepository.GetByIdCustom(invoiceId);
+            var cart = _unitOfWork.InvoiceDetailRepository.FincByInvoiceIdCustom(invoiceId).Select(p => p.Variant).ToList();
+
+            var cartCaculate = CalculateShipments(cart, 10000);
+
+            foreach (var item in cartCaculate)
             {
-                listItem.Add(new OrderItemsGHNAdmin()
+                var items = new List<OrderItemsGHNAdmin>();
+                foreach (var item1 in item)
                 {
-                    name = item.Variant.Product.ProductName,
-                    quantity = item.Quantity
-                });
-            }
-            var body = new CreateGHNOrderAdmin()
-            {
-                to_name = to_name,
-                to_phone = to_phone,
-                to_address = to_address,
-                to_ward_code = to_ward_code,
-                to_district_id = to_district_id,
-                cod_amount = int.Parse(cod_amount),
-                Items = listItem
-            };
-            using (HttpClient client = new HttpClient())
-            {
-                // URL của API
-                string url = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create";
-
-                // Chuyển đổi object thành JSON string
-                string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(body);
-
-                // Tạo nội dung của body
-                StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-
-                // Thêm các header
-                client.DefaultRequestHeaders.Add("Token", "af9239df-2402-11ef-8e53-0a00184fe694");
-                client.DefaultRequestHeaders.Add("shop_Id", "192491");
-
-                try
+                    var itemz = new OrderItemsGHNAdmin()
+                    {
+                        name = $"{item1.Product.ProductName}-{item1.VariantName}",
+                        quantity = item1.Quantity,
+                        weight = item1.Weight
+                    };
+                    items.Add(itemz);
+                }
+                var bodyGHN = new CreateGHNOrderAdmin()
                 {
+                    to_name = invoice.Note.Split('-')[0],
+                    to_phone = invoice.Note.Split('-')[1],
+                    to_address = invoice.Note.Split('-')[2],
+                    to_ward_code = invoice.Note.Split('-')[3],
+                    to_district_id = invoice.Note.Split('-')[4],
+                    cod_amount = 0,
+                    weight = item.Sum(p => p.Weight),
+                    Items = items
+
+                };
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("Token", "af9239df-2402-11ef-8e53-0a00184fe694");
+                    client.DefaultRequestHeaders.Add("shop_Id", "192491");
+
+                    // Convert bodyGHN to JSON (if it's an object)
+                    var jsonBody = JsonConvert.SerializeObject(bodyGHN);
+                    var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
                     // Gửi yêu cầu POST
-                    HttpResponseMessage response = await client.PostAsync(url, content);
+                    var response = await client.PostAsync("https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create", content);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<CreateGHNResponse>(responseContent);
 
-                    // Kiểm tra nếu yêu cầu thành công
-                    if (response.IsSuccessStatusCode)
+                    var shippingOrder = new ShippingOrder()
                     {
-                        // Đọc nội dung phản hồi từ API
-                        string responseData = await response.Content.ReadAsStringAsync();
-                        var lastData = Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResponse>(responseData);
-                        var a = await _clientService.Post("https://localhost:7095/api/ShippingOrder/Create", new CreateShippingOrderRepuest()
-                        {
-                            ShippingOrderCode = lastData.data.order_code,
-                            ShippingFee = lastData.data.total_fee,
-                            CustomerId = invoice.UserId,
-                            InvoiceId = invoice.InvoiceId
-                        });
-                        invoice.Status = Core.Enum.InvoiceStatus.Delivery;
-                        _unitOfWork.InvoiceRepository.Update(invoice);
-                        _unitOfWork.SaveChanges();
-                    }
-                    else
-                    {
-
-                        Console.WriteLine("API call failed with status code: " + response.StatusCode);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Xử lý lỗi nếu có
-                    Console.WriteLine("An error occurred: " + ex.Message);
+                        OrderCode = data.Data.order_code,
+                        Price = double.Parse(data.Data.total_fee),
+                        UserId = SessionHelper.GetObject<UserInfo>(HttpContext.Session, "user").UserId,
+                        InvoiceId = invoiceId
+                    };
+                    await _unitOfWork.ShippingOrderRepository.Create(shippingOrder);
                 }
             }
+            invoice.PaymentInfo.PaymentStatus = Core.Enum.PaymentStatus.Success;
+            invoice.Status = Core.Enum.InvoiceStatus.Delivery;
+            _unitOfWork.InvoiceRepository.Update(invoice);
+            _unitOfWork.SaveChanges();
+
+            
             return RedirectToAction("Index");
 
         }

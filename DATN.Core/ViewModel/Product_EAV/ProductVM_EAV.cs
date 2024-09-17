@@ -13,12 +13,12 @@ namespace DATN.Core.ViewModel.Product_EAV
         public string ProductName { get; set; }
 
         // Navigation property
-        public List<VariantVM> Variants { get; set; }
+        public List<VariantVM>? Variants { get; set; }
         public double Rating { get; set; } = 5;
         public int RateCount { get; set; } = 0;
         public string? ImagePath { get; set; }
 
-        public string? Description { get; set; }
+        public string Description { get; set; }
         public int? OriginId { get; set; }
         public ProductStatus Status { get; set; }
         public int? BrandId { get; set; }

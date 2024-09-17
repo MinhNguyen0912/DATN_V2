@@ -18,7 +18,8 @@ namespace DATN.Core.ViewModel.ProdutEAVVM
         public int MaximumQuantityPerOrder { get; set; }
         public int Weight { get; set; }
         public bool IsDefault { get; set; }
-        public string attributeValueIds { get; set; }
-        public List<SpecificationVM>? Specifications { get; set; }
+        public bool IsActive { get; set; }
+        public string? attributeValueIds { get; set; }
+        public List<UpdateSpecificationVM>? Specifications { get; set; }
     }
 }
