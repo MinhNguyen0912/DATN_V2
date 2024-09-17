@@ -151,9 +151,10 @@ namespace DATN.Client.Areas.Admin.Controllers
                                 PuscharPrice = item.PuscharPrice,
                                 SalePrice = item.SalelPrice,
                                 AfterDiscountPrice = item.AfterDiscountPrice,
-                                IsDefault = item.IsDefault,
                                 MaximumQuantityPerOrder = item.MaximumQuantityPerOrder,
                                 Weight = item.Weight,
+                                IsDefault = item.IsDefault,
+                                IsActive = item.IsActive
                             };
 
                             var variantResult = _unitOfWork.VariantRepository.Create(variant);

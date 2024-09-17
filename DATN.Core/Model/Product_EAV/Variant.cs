@@ -14,8 +14,8 @@ namespace DATN.Core.Model.Product_EAV
         public decimal AfterDiscountPrice { get; set; }
         public int MaximumQuantityPerOrder {  get; set; } 
         public int Weight {  get; set; } 
-        public bool IsDefault {  get; set; } = false;
-        //public bool isShow {  get; set; }
+        public bool IsDefault {  get; set; }
+        public bool IsActive { get; set; }
 
         // Navigation property
         public Product_EAV Product { get; set; }
