@@ -72,6 +72,21 @@ namespace DATN.API.Controllers
                 return NotFound();
             }
         }
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var products = await _unitOfWork.ProductEAVRepository.GetByName(name);
+            
+            if (products.Count>0)
+            {
+                var lstproductsVM = _mapper.Map<List<ProductVM_EAV>>(products);
+                return Ok(lstproductsVM);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
         [HttpGet]
         public IActionResult GetAll_Viet()
         {

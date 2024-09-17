@@ -35,6 +35,24 @@ namespace DATN.Core.Repositories.Repositories
             return Context.Vouchers.Include(b => b.Batch).Include(u => u.User).FirstOrDefault(x => x.Id == id);
         }
 
+        public async Task<Voucher> AddVoucherForUserOffline(CreateVoucherOfflineVM createVoucherOfflineVM)
+        {
+            var voucherAdded = new Voucher
+            {
+                Code = "UNEWAU" + GenerateVoucherCode(),
+                Status = VoucherStatus.NotUsed,
+                ReleaseDate = DateTime.Now,
+                ExpiryDate = DateTime.Now,
+                ActivationTime = DateTime.Now,
+                UserId = createVoucherOfflineVM.UserId,
+                BatchId = createVoucherOfflineVM.BatchId,
+            };
+           await _context.Vouchers.AddAsync(voucherAdded);
+           await _context.SaveChangesAsync();
+           return voucherAdded;
+        }
+
+
         public VoucherPaging GetVoucherPaging(VoucherPaging request)
         {
             var query = Context.Vouchers.AsQueryable();

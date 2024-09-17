@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Hangfire.Processing;
 
 namespace DATN.Core.Repositories.Repositories
 {
@@ -27,6 +28,31 @@ namespace DATN.Core.Repositories.Repositories
         public Task<bool> AnyAsync(Expression<Func<Batch, bool>> predicate)
         {
             return Context.Batches.AnyAsync(predicate);
+        }
+
+   
+        public async Task<Batch> GetByName(string Name,DateTime CurrentDate,decimal GrandTotalValue)
+        {
+            var queryabler = Context.Batches.AsQueryable();
+            var batch = await queryabler.Where(x => x.Name == Name).FirstOrDefaultAsync();
+            if (batch is not null)
+            {
+                if ((batch.StartDate <= CurrentDate && CurrentDate < batch.EndDate) &&
+                    batch.MinOrderAmount <= GrandTotalValue)
+                {
+                    return batch;
+                }
+                else
+                {
+                    Batch batchNull = new Batch();
+                    return batchNull;
+                }
+            }
+            else
+            {
+                Batch batchNull = new Batch();
+                return batchNull;
+            }
         }
 
         public BatchPaging batchPaging(BatchPaging request)
