@@ -7,6 +7,7 @@ using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.PendingCartVM;
 using DATN.Core.ViewModel.Product_EAV;
 using DATN.Core.ViewModel.ProductCommentVM;
+using DATN.Core.ViewModel.ProdutEAVVM;
 using DATN.Core.ViewModel.PromotionVM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -70,34 +71,32 @@ namespace DATN.Client.Controllers
         }
         public async Task<IActionResult> ViewAllComment(int? id, int? pageIndex, int? ratingStar)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            //var requestUrl = $"{ApiPaths.Product}/GetById/{id}";
-            //var productResponse = await _clientService.Get<ProductVM_EAV>(requestUrl);
+            var requestUrl = $"{ApiPaths.ProductEAV}/GetById/{id}";
+            var productResponse = await _clientService.Get<ProductVM_EAV>(requestUrl);
+            CommentPaging commentPaging = new CommentPaging();
+            commentPaging.CurrentPage = pageIndex.HasValue ? (int)pageIndex : 0;
+            commentPaging.PageSize = 20;
+            commentPaging.StarRating = ratingStar;
+            commentPaging.ProductId = id;
+            var productCommentResponse = await _clientService.Post<CommentOverviewVM>($"{ApiPaths.Comment}/comment-by-product-id", commentPaging);
+            var productEditViewModel = new Product_EAV_VM
+            {
+                Product = productResponse,
+                CommentOverviewVm = productCommentResponse
+            };
 
-
-            //CommentPaging commentPaging = new CommentPaging();
-            //commentPaging.CurrentPage = pageIndex.HasValue ? (int)pageIndex : 0;
-            //commentPaging.PageSize = 20;
-            //commentPaging.StarRating = ratingStar;
-            //commentPaging.ProductId = id;
-            //var productCommentResponse = await _clientService.Post<CommentOverviewVM>($"{ApiPaths.Comment}/comment-by-product-id", commentPaging);
-            //var productEditViewModel = new ProductEditViewModel
-            //{
-            //    Product = productResponse,
-            //    CommentOverviewVm = productCommentResponse
-            //};
-
-            //ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
-            //{
-            //    Text = v.ToString(),
-            //    Value = ((int)v).ToString()
-            //}).ToList(), "Value", "Text");
-            //return View(productEditViewModel);
-            return View();
+            ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
+            {
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList(), "Value", "Text");
+            return View(productEditViewModel);
+           
         }
 
         public async Task<IActionResult> Search(string query)

@@ -29,7 +29,9 @@ namespace DATN.Core.Repositories.Repositories
         }
         public UserPaging GetUserPaging(UserPaging request)
         {
-            var query = Context.Users.AsQueryable();
+            try
+            {
+ var query = Context.Users.AsQueryable();
             if (request.LastLoginTimeFilter != LastLoginTimeFilter.All && request.LastLoginTimeFilter != null)
             {
                 DateTime filterTime = DateTime.Now;
@@ -66,18 +68,17 @@ namespace DATN.Core.Repositories.Repositories
             request.TotalRecord = query.Count();
             request.TotalPages = (int)Math.Ceiling(request.TotalRecord / (double)request.PageSize);
             var list = query.Skip((request.CurrentPage - 1) * request.PageSize).Take(request.PageSize).ToList();
-            var listUserId = list.Select(c => c.Id);
+            var listUserId = list.Select(c => c.Id).ToList();
             var lstInvoiceByUserId = Context.Invoices.AsQueryable().Where(c => listUserId.Contains(c.UserId)).ToList();
-            //var lstVoucherUsers = Context.VoucherUsers.AsQueryable().Where(c => listUserId.Contains(c.AppUserId))
-            //    .ToList();
-            //var lstVoucherId = lstVoucherUsers.Select(c => c.VoucherId);
-            //var lstVoucher = Context.Vouchers.AsQueryable();
-            //var lstVoucherById = lstVoucher.Where(c => lstVoucherId.Contains(c.Id)).ToList();
+
+            var lstVoucher = Context.Vouchers.AsQueryable();
+            var lstBatches = Context.Batches.AsQueryable();
             request.Items = _mapper.Map<List<UserVM>>(list);
             FormatCurrency formatCurrency = new FormatCurrency();
             foreach (var x in request.Items)
             {
                 List<decimal> listFinalPrice = new List<decimal>();
+                
                 foreach (var invoice in lstInvoiceByUserId.Where(c => c.UserId == x.Id))
                 {
 
@@ -85,18 +86,17 @@ namespace DATN.Core.Repositories.Repositories
                         .Where(c => c.InvoiceId == invoice.InvoiceId).Sum(su => su.Quantity * su.NewPrice);
                     if (totalBill > 1)
                     {
-                        //var getVoucher = lstVoucherUsers.FirstOrDefault(c => c.Id == invoice.VoucherUserId);
-                        //if (getVoucher != null)
-                        //{
-                        //    var Voucher = lstVoucherById.FirstOrDefault(vou => vou.Id == getVoucher.VoucherId);
-                        //    var discountValuePercent = (totalBill / 100) * Voucher.DiscountByPercent;
-                        //    var final = totalBill - discountValuePercent - Voucher.DiscountByPrice;
-                        //    listFinalPrice.Add((decimal)final);
-                        //}
-                        //else
-                        //{
-                        //    listFinalPrice.Add(totalBill);
-                        //}
+                        var getVoucher = lstVoucher.FirstOrDefault(c => c.Id.ToString() == invoice.UserId.ToString());
+                        if (getVoucher!=null)
+                        {
+                            var bacth = lstBatches.FirstOrDefault(c => c.Id == getVoucher.BatchId);
+                            var final = totalBill - bacth.DiscountAmount;
+                            listFinalPrice.Add((decimal)final);
+                        }
+                        else
+                        {
+                            listFinalPrice.Add(totalBill);
+                        }
                     }
                     else
                     {
@@ -106,16 +106,21 @@ namespace DATN.Core.Repositories.Repositories
 
                 }
 
-                //var listVoucherByCondition = lstVoucherUsers.Where(c => c.AppUserId == x.Id).Select(c => c.VoucherId);
                 x.GrandTotalAmountPurchased = formatCurrency.GetCurrency(
                     Convert.ToDecimal(listFinalPrice.Sum(c => c)));
-                //x.ListVoucherNameByUser = lstVoucherById.Where(c =>
-                //    lstVoucherUsers.Where(c => c.AppUserId == x.Id).Select(inv => inv.VoucherId).ToList()
-                //        .Contains(c.Id)).Select(c => c.Name);
+                x.ListVoucherNameByUser = lstBatches.Where(c => lstVoucher.Where(c=>c.UserId==x.Id).Select(c=>c.BatchId).Contains(c.Id)).Select(c => c.Name).ToList();
             }
 
             //request.ListVoucherDropDown = _mapper.Map<List<VoucherVM>>(lstVoucher);
+            var xx= request;
             return request;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+           
         }
 
         //public async Task<int> AddVoucherToListUser(List<UserVoucherShowModal> input)
@@ -170,6 +175,12 @@ namespace DATN.Core.Repositories.Repositories
         public AppUser GetUserByEmail(string email)
         {
             return Context.Users.FirstOrDefault(x => x.Email == email);
+        }
+
+        public async Task<List<AppUser>> SearchUser(string search)
+        {
+            var res=await Context.Users.AsQueryable().Where(c=>c.PhoneNumber.ToLower().Contains(search.ToLower()) || c.FullName.ToLower().Contains(search.ToLower())).ToListAsync();
+            return res;
         }
 
         //public async Task<IEnumerable<string>> GetListVoucherByUserId(Guid userId)
