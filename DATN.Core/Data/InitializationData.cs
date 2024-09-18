@@ -196,20 +196,27 @@ namespace DATN.Core.Data
             #region Image
             modelBuilder.Entity<Image>().HasData(
                 new Image() { ImageId = 1, ImagePath = "/Images/Component/ListProduct/product1.webp", IsDefault = true, ProductId = 1 },
-                new Image() { ImageId = 2, ImagePath = "/Images/Component/ListProduct/product2.webp", IsDefault = true, ProductId = 2 },
+                new Image() { ImageId = 2, ImagePath = "/Images/Component/ListProduct/product2.webp", IsDefault = true, ProductId = 5 },
                 new Image() { ImageId = 3, ImagePath = "/Images/Component/ListProduct/product1-1.jpg", IsDefault = false, ProductId = 1 },
                 new Image() { ImageId = 4, ImagePath = "/Images/Component/ListProduct/product1-2.jpg", IsDefault = false, ProductId = 1 },
                 new Image() { ImageId = 5, ImagePath = "/Images/Component/ListProduct/product1-3.jpg", IsDefault = false, ProductId = 1 },
                 new Image() { ImageId = 6, ImagePath = "/Images/Component/ListProduct/product1-4.jpg", IsDefault = false, ProductId = 1 },
-                new Image() { ImageId = 7, ImagePath = "/Images/Component/ListProduct/product1-5.jpg", IsDefault = false, ProductId = 1 }
+                new Image() { ImageId = 7, ImagePath = "/Images/Component/ListProduct/product1-5.jpg", IsDefault = false, ProductId = 1 },
+                new Image() { ImageId = 8, ImagePath = "/Images/Component/ListProduct/tulanh.jpg", IsDefault = true, ProductId = 2 },
+                new Image() { ImageId = 9, ImagePath = "/Images/Component/ListProduct/tulanh1.jpg", IsDefault = true, ProductId = 3 },
+                new Image() { ImageId = 10, ImagePath = "/Images/Component/ListProduct/tulanh2.jpg", IsDefault = true, ProductId = 4 },
+                new Image() { ImageId = 11, ImagePath = "/Images/Component/ListProduct/tivi.jpg", IsDefault = true, ProductId = 6 }
             );
             #endregion
             #region CategoryProduct
             modelBuilder.Entity<CategoryProduct>().HasData(
                 new CategoryProduct { CategoryProductId = 1, CategoryId = 33, ProductId = 1 },
-                new CategoryProduct { CategoryProductId = 2, CategoryId = 35, ProductId = 1 },
-                new CategoryProduct { CategoryProductId = 3, CategoryId = 54, ProductId = 2 }
-                // Thêm dữ liệu mẫu khác nếu cần
+                new CategoryProduct { CategoryProductId = 2, CategoryId = 54, ProductId = 2 },
+                new CategoryProduct { CategoryProductId = 3, CategoryId = 54, ProductId = 3 },
+                new CategoryProduct { CategoryProductId = 4, CategoryId = 54, ProductId = 4 },
+                new CategoryProduct { CategoryProductId = 5, CategoryId = 32, ProductId = 5 },
+                new CategoryProduct { CategoryProductId = 6, CategoryId = 35, ProductId = 6 }
+            // Thêm dữ liệu mẫu khác nếu cần
             );
             #endregion
             #region InvoiceDetail
@@ -293,7 +300,11 @@ namespace DATN.Core.Data
             #region ProductPromotion
             modelBuilder.Entity<ProductPromotion>().HasData(
                 new ProductPromotion { ProductPromotionId = 1, PromotionId = 11, ProductId = 1 },
-                new ProductPromotion { ProductPromotionId = 2, PromotionId = 11, ProductId = 2 }
+                new ProductPromotion { ProductPromotionId = 2, PromotionId = 11, ProductId = 2 },
+                new ProductPromotion { ProductPromotionId = 3, PromotionId = 11, ProductId = 3 },
+                new ProductPromotion { ProductPromotionId = 4, PromotionId = 11, ProductId = 4 },
+                new ProductPromotion { ProductPromotionId = 5, PromotionId = 11, ProductId = 5 },
+                new ProductPromotion { ProductPromotionId = 6, PromotionId = 11, ProductId = 6 }
             // Add more seed data as needed
             );
             #endregion
@@ -303,7 +314,19 @@ namespace DATN.Core.Data
                 new Product_EAV { ProductId = 1, ProductName = "Samsung Smart TV QLED QA55Q70C", OriginId = 1, Status = ProductStatus.Sale, BrandId = 2, Description = "<p><span style=\"color:#ff4500;\"><strong>Lorem ipsum dolor sit amet</strong></span>, consectetur adipiscing elit. Vivamus <u>lacinia odio vitae</u> vestibulum <em>vestibulum. Cras</em> vehicula, mi eget <span style=\"color:#00bfff;\">dictum cursus</span>, sapien est ultrices lectus, at volutpat sapien enim non mauris. Proin euismod nisl sit amet <span style=\"background-color:#ffff00;\">mi gravida, non venenatis lectus auctor</span>. Aenean sit amet nulla id dui facilisis scelerisque. <span style=\"font-size:18px;\">Nullam non leo libero.</span></p><p>Mauris <span style=\"font-family:Georgia,serif;\"><strong>finibus</strong></span> orci nec ante auctor, id aliquam <span style=\"color:#228b22;\">metus volutpat</span>. Suspendisse consequat lorem quis risus ultricies, id tempus odio dapibus. Aliquam erat volutpat. Donec tincidunt, sapien nec gravida blandit, <u>magna justo ultrices dui</u>, a scelerisque augue erat in erat.</p><p><span style=\"color:#ff69b4;\"><em>Fusce efficitur</em></span> erat eget justo vulputate, id <span style=\"background-color:#7fff00;\">volutpat justo</span> ultrices. Vivamus ut ultricies odio, at dignissim leo. <span style=\"font-size:20px;\"><u>Pellentesque nec purus magna</u>.</span> Donec ut vehicula lectus. Etiam fringilla purus sed nulla facilisis, ac malesuada orci blandit.</p><p>Nam vehicula, magna ut malesuada <span style=\"color:#8a2be2;\"><strong>porttitor</strong></span>, odio libero consequat libero, sit amet venenatis felis turpis id mi. Integer ullamcorper lorem <u>quis justo sagittis</u>, non tincidunt nulla vestibulum. <span style=\"background-color:#ffebcd;\">Praesent vel lacus libero.</span> Sed non <em>luctus</em> metus. Aenean id <span style=\"color:#dc143c;\"><u>ante sit amet libero ultrices dictum</u></span>. Sed sit amet felis eu felis bibendum tincidunt.</p><p><span style=\"color:#00008b;\"><strong>In tempor felis</strong></span> ac ligula faucibus, at pellentesque lacus lacinia. Curabitur aliquet, sapien nec cursus tincidunt, sem neque facilisis justo, et suscipit libero mauris non libero. Nulla facilisi. Proin id malesuada felis. <span style=\"font-size:16px;\"><u>Quisque a auctor metus</u>.</span></p>" }
             );
             modelBuilder.Entity<Product_EAV>().HasData(
-                new Product_EAV { ProductId = 2, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL", OriginId = 1, Status = ProductStatus.Sale, BrandId = 1, Description = "<p><span style=\"color:#ff4500;\"><strong>Lorem ipsum dolor sit amet</strong></span>, consectetur adipiscing elit. Vivamus <u>lacinia odio vitae</u> vestibulum <em>vestibulum. Cras</em> vehicula, mi eget <span style=\"color:#00bfff;\">dictum cursus</span>, sapien est ultrices lectus, at volutpat sapien enim non mauris. Proin euismod nisl sit amet <span style=\"background-color:#ffff00;\">mi gravida, non venenatis lectus auctor</span>. Aenean sit amet nulla id dui facilisis scelerisque. <span style=\"font-size:18px;\">Nullam non leo libero.</span></p><p>Mauris <span style=\"font-family:Georgia,serif;\"><strong>finibus</strong></span> orci nec ante auctor, id aliquam <span style=\"color:#228b22;\">metus volutpat</span>. Suspendisse consequat lorem quis risus ultricies, id tempus odio dapibus. Aliquam erat volutpat. Donec tincidunt, sapien nec gravida blandit, <u>magna justo ultrices dui</u>, a scelerisque augue erat in erat.</p><p><span style=\"color:#ff69b4;\"><em>Fusce efficitur</em></span> erat eget justo vulputate, id <span style=\"background-color:#7fff00;\">volutpat justo</span> ultrices. Vivamus ut ultricies odio, at dignissim leo. <span style=\"font-size:20px;\"><u>Pellentesque nec purus magna</u>.</span> Donec ut vehicula lectus. Etiam fringilla purus sed nulla facilisis, ac malesuada orci blandit.</p><p>Nam vehicula, magna ut malesuada <span style=\"color:#8a2be2;\"><strong>porttitor</strong></span>, odio libero consequat libero, sit amet venenatis felis turpis id mi. Integer ullamcorper lorem <u>quis justo sagittis</u>, non tincidunt nulla vestibulum. <span style=\"background-color:#ffebcd;\">Praesent vel lacus libero.</span> Sed non <em>luctus</em> metus. Aenean id <span style=\"color:#dc143c;\"><u>ante sit amet libero ultrices dictum</u></span>. Sed sit amet felis eu felis bibendum tincidunt.</p><p><span style=\"color:#00008b;\"><strong>In tempor felis</strong></span> ac ligula faucibus, at pellentesque lacus lacinia. Curabitur aliquet, sapien nec cursus tincidunt, sem neque facilisis justo, et suscipit libero mauris non libero. Nulla facilisi. Proin id malesuada felis. <span style=\"font-size:16px;\"><u>Quisque a auctor metus</u>.</span></p>" }
+           new Product_EAV { ProductId = 2, ProductName = "Tủ lạnh LG Inverter Multi Door GR-B50BL", OriginId = 1, Status = ProductStatus.Sale, BrandId = 1, Description = "<p><span style=\"color:#ff4500;\"><strong>Lorem ipsum dolor sit amet</strong></span>, consectetur adipiscing elit. Vivamus <u>lacinia odio vitae</u> vestibulum <em>vestibulum. Cras</em> vehicula, mi eget <span style=\"color:#00bfff;\">dictum cursus</span>, sapien est ultrices lectus, at volutpat sapien enim non mauris. Proin euismod nisl sit amet <span style=\"background-color:#ffff00;\">mi gravida, non venenatis lectus auctor</span>. Aenean sit amet nulla id dui facilisis scelerisque. <span style=\"font-size:18px;\">Nullam non leo libero.</span></p><p>Mauris <span style=\"font-family:Georgia,serif;\"><strong>finibus</strong></span> orci nec ante auctor, id aliquam <span style=\"color:#228b22;\">metus volutpat</span>. Suspendisse consequat lorem quis risus ultricies, id tempus odio dapibus. Aliquam erat volutpat. Donec tincidunt, sapien nec gravida blandit, <u>magna justo ultrices dui</u>, a scelerisque augue erat in erat.</p><p><span style=\"color:#ff69b4;\"><em>Fusce efficitur</em></span> erat eget justo vulputate, id <span style=\"background-color:#7fff00;\">volutpat justo</span> ultrices. Vivamus ut ultricies odio, at dignissim leo. <span style=\"font-size:20px;\"><u>Pellentesque nec purus magna</u>.</span> Donec ut vehicula lectus. Etiam fringilla purus sed nulla facilisis, ac malesuada orci blandit.</p><p>Nam vehicula, magna ut malesuada <span style=\"color:#8a2be2;\"><strong>porttitor</strong></span>, odio libero consequat libero, sit amet venenatis felis turpis id mi. Integer ullamcorper lorem <u>quis justo sagittis</u>, non tincidunt nulla vestibulum. <span style=\"background-color:#ffebcd;\">Praesent vel lacus libero.</span> Sed non <em>luctus</em> metus. Aenean id <span style=\"color:#dc143c;\"><u>ante sit amet libero ultrices dictum</u></span>. Sed sit amet felis eu felis bibendum tincidunt.</p><p><span style=\"color:#00008b;\"><strong>In tempor felis</strong></span> ac ligula faucibus, at pellentesque lacus lacinia. Curabitur aliquet, sapien nec cursus tincidunt, sem neque facilisis justo, et suscipit libero mauris non libero. Nulla facilisi. Proin id malesuada felis. <span style=\"font-size:16px;\"><u>Quisque a auctor metus</u>.</span></p>" }
+            );
+            modelBuilder.Entity<Product_EAV>().HasData(
+           new Product_EAV { ProductId = 3, ProductName = "Tủ lạnh LG Inverter Multi Door G-DRAGON", OriginId = 1, Status = ProductStatus.Sale, BrandId = 1, Description = "<p><span style=\"color:#ff4500;\"><strong>Lorem ipsum dolor sit amet</strong></span>, consectetur adipiscing elit. Vivamus <u>lacinia odio vitae</u> vestibulum <em>vestibulum. Cras</em> vehicula, mi eget <span style=\"color:#00bfff;\">dictum cursus</span>, sapien est ultrices lectus, at volutpat sapien enim non mauris. Proin euismod nisl sit amet <span style=\"background-color:#ffff00;\">mi gravida, non venenatis lectus auctor</span>. Aenean sit amet nulla id dui facilisis scelerisque. <span style=\"font-size:18px;\">Nullam non leo libero.</span></p><p>Mauris <span style=\"font-family:Georgia,serif;\"><strong>finibus</strong></span> orci nec ante auctor, id aliquam <span style=\"color:#228b22;\">metus volutpat</span>. Suspendisse consequat lorem quis risus ultricies, id tempus odio dapibus. Aliquam erat volutpat. Donec tincidunt, sapien nec gravida blandit, <u>magna justo ultrices dui</u>, a scelerisque augue erat in erat.</p><p><span style=\"color:#ff69b4;\"><em>Fusce efficitur</em></span> erat eget justo vulputate, id <span style=\"background-color:#7fff00;\">volutpat justo</span> ultrices. Vivamus ut ultricies odio, at dignissim leo. <span style=\"font-size:20px;\"><u>Pellentesque nec purus magna</u>.</span> Donec ut vehicula lectus. Etiam fringilla purus sed nulla facilisis, ac malesuada orci blandit.</p><p>Nam vehicula, magna ut malesuada <span style=\"color:#8a2be2;\"><strong>porttitor</strong></span>, odio libero consequat libero, sit amet venenatis felis turpis id mi. Integer ullamcorper lorem <u>quis justo sagittis</u>, non tincidunt nulla vestibulum. <span style=\"background-color:#ffebcd;\">Praesent vel lacus libero.</span> Sed non <em>luctus</em> metus. Aenean id <span style=\"color:#dc143c;\"><u>ante sit amet libero ultrices dictum</u></span>. Sed sit amet felis eu felis bibendum tincidunt.</p><p><span style=\"color:#00008b;\"><strong>In tempor felis</strong></span> ac ligula faucibus, at pellentesque lacus lacinia. Curabitur aliquet, sapien nec cursus tincidunt, sem neque facilisis justo, et suscipit libero mauris non libero. Nulla facilisi. Proin id malesuada felis. <span style=\"font-size:16px;\"><u>Quisque a auctor metus</u>.</span></p>" }
+            );
+            modelBuilder.Entity<Product_EAV>().HasData(
+           new Product_EAV { ProductId = 4, ProductName = "Tủ lạnh LG Inverter Multi Door BTS", OriginId = 1, Status = ProductStatus.Sale, BrandId = 1, Description = "<p><span style=\"color:#ff4500;\"><strong>Lorem ipsum dolor sit amet</strong></span>, consectetur adipiscing elit. Vivamus <u>lacinia odio vitae</u> vestibulum <em>vestibulum. Cras</em> vehicula, mi eget <span style=\"color:#00bfff;\">dictum cursus</span>, sapien est ultrices lectus, at volutpat sapien enim non mauris. Proin euismod nisl sit amet <span style=\"background-color:#ffff00;\">mi gravida, non venenatis lectus auctor</span>. Aenean sit amet nulla id dui facilisis scelerisque. <span style=\"font-size:18px;\">Nullam non leo libero.</span></p><p>Mauris <span style=\"font-family:Georgia,serif;\"><strong>finibus</strong></span> orci nec ante auctor, id aliquam <span style=\"color:#228b22;\">metus volutpat</span>. Suspendisse consequat lorem quis risus ultricies, id tempus odio dapibus. Aliquam erat volutpat. Donec tincidunt, sapien nec gravida blandit, <u>magna justo ultrices dui</u>, a scelerisque augue erat in erat.</p><p><span style=\"color:#ff69b4;\"><em>Fusce efficitur</em></span> erat eget justo vulputate, id <span style=\"background-color:#7fff00;\">volutpat justo</span> ultrices. Vivamus ut ultricies odio, at dignissim leo. <span style=\"font-size:20px;\"><u>Pellentesque nec purus magna</u>.</span> Donec ut vehicula lectus. Etiam fringilla purus sed nulla facilisis, ac malesuada orci blandit.</p><p>Nam vehicula, magna ut malesuada <span style=\"color:#8a2be2;\"><strong>porttitor</strong></span>, odio libero consequat libero, sit amet venenatis felis turpis id mi. Integer ullamcorper lorem <u>quis justo sagittis</u>, non tincidunt nulla vestibulum. <span style=\"background-color:#ffebcd;\">Praesent vel lacus libero.</span> Sed non <em>luctus</em> metus. Aenean id <span style=\"color:#dc143c;\"><u>ante sit amet libero ultrices dictum</u></span>. Sed sit amet felis eu felis bibendum tincidunt.</p><p><span style=\"color:#00008b;\"><strong>In tempor felis</strong></span> ac ligula faucibus, at pellentesque lacus lacinia. Curabitur aliquet, sapien nec cursus tincidunt, sem neque facilisis justo, et suscipit libero mauris non libero. Nulla facilisi. Proin id malesuada felis. <span style=\"font-size:16px;\"><u>Quisque a auctor metus</u>.</span></p>" }
+            );
+            modelBuilder.Entity<Product_EAV>().HasData(
+           new Product_EAV { ProductId = 5, ProductName = "Samsung Smart TV QLED VIP", OriginId = 1, Status = ProductStatus.Sale, BrandId = 2, Description = "<p><span style=\"color:#ff4500;\"><strong>Lorem ipsum dolor sit amet</strong></span>, consectetur adipiscing elit. Vivamus <u>lacinia odio vitae</u> vestibulum <em>vestibulum. Cras</em> vehicula, mi eget <span style=\"color:#00bfff;\">dictum cursus</span>, sapien est ultrices lectus, at volutpat sapien enim non mauris. Proin euismod nisl sit amet <span style=\"background-color:#ffff00;\">mi gravida, non venenatis lectus auctor</span>. Aenean sit amet nulla id dui facilisis scelerisque. <span style=\"font-size:18px;\">Nullam non leo libero.</span></p><p>Mauris <span style=\"font-family:Georgia,serif;\"><strong>finibus</strong></span> orci nec ante auctor, id aliquam <span style=\"color:#228b22;\">metus volutpat</span>. Suspendisse consequat lorem quis risus ultricies, id tempus odio dapibus. Aliquam erat volutpat. Donec tincidunt, sapien nec gravida blandit, <u>magna justo ultrices dui</u>, a scelerisque augue erat in erat.</p><p><span style=\"color:#ff69b4;\"><em>Fusce efficitur</em></span> erat eget justo vulputate, id <span style=\"background-color:#7fff00;\">volutpat justo</span> ultrices. Vivamus ut ultricies odio, at dignissim leo. <span style=\"font-size:20px;\"><u>Pellentesque nec purus magna</u>.</span> Donec ut vehicula lectus. Etiam fringilla purus sed nulla facilisis, ac malesuada orci blandit.</p><p>Nam vehicula, magna ut malesuada <span style=\"color:#8a2be2;\"><strong>porttitor</strong></span>, odio libero consequat libero, sit amet venenatis felis turpis id mi. Integer ullamcorper lorem <u>quis justo sagittis</u>, non tincidunt nulla vestibulum. <span style=\"background-color:#ffebcd;\">Praesent vel lacus libero.</span> Sed non <em>luctus</em> metus. Aenean id <span style=\"color:#dc143c;\"><u>ante sit amet libero ultrices dictum</u></span>. Sed sit amet felis eu felis bibendum tincidunt.</p><p><span style=\"color:#00008b;\"><strong>In tempor felis</strong></span> ac ligula faucibus, at pellentesque lacus lacinia. Curabitur aliquet, sapien nec cursus tincidunt, sem neque facilisis justo, et suscipit libero mauris non libero. Nulla facilisi. Proin id malesuada felis. <span style=\"font-size:16px;\"><u>Quisque a auctor metus</u>.</span></p>" }
+            );
+            modelBuilder.Entity<Product_EAV>().HasData(
+           new Product_EAV { ProductId = 6, ProductName = "TV LG QLED ", OriginId = 1, Status = ProductStatus.Sale, BrandId = 2, Description = "<p><span style=\"color:#ff4500;\"><strong>Lorem ipsum dolor sit amet</strong></span>, consectetur adipiscing elit. Vivamus <u>lacinia odio vitae</u> vestibulum <em>vestibulum. Cras</em> vehicula, mi eget <span style=\"color:#00bfff;\">dictum cursus</span>, sapien est ultrices lectus, at volutpat sapien enim non mauris. Proin euismod nisl sit amet <span style=\"background-color:#ffff00;\">mi gravida, non venenatis lectus auctor</span>. Aenean sit amet nulla id dui facilisis scelerisque. <span style=\"font-size:18px;\">Nullam non leo libero.</span></p><p>Mauris <span style=\"font-family:Georgia,serif;\"><strong>finibus</strong></span> orci nec ante auctor, id aliquam <span style=\"color:#228b22;\">metus volutpat</span>. Suspendisse consequat lorem quis risus ultricies, id tempus odio dapibus. Aliquam erat volutpat. Donec tincidunt, sapien nec gravida blandit, <u>magna justo ultrices dui</u>, a scelerisque augue erat in erat.</p><p><span style=\"color:#ff69b4;\"><em>Fusce efficitur</em></span> erat eget justo vulputate, id <span style=\"background-color:#7fff00;\">volutpat justo</span> ultrices. Vivamus ut ultricies odio, at dignissim leo. <span style=\"font-size:20px;\"><u>Pellentesque nec purus magna</u>.</span> Donec ut vehicula lectus. Etiam fringilla purus sed nulla facilisis, ac malesuada orci blandit.</p><p>Nam vehicula, magna ut malesuada <span style=\"color:#8a2be2;\"><strong>porttitor</strong></span>, odio libero consequat libero, sit amet venenatis felis turpis id mi. Integer ullamcorper lorem <u>quis justo sagittis</u>, non tincidunt nulla vestibulum. <span style=\"background-color:#ffebcd;\">Praesent vel lacus libero.</span> Sed non <em>luctus</em> metus. Aenean id <span style=\"color:#dc143c;\"><u>ante sit amet libero ultrices dictum</u></span>. Sed sit amet felis eu felis bibendum tincidunt.</p><p><span style=\"color:#00008b;\"><strong>In tempor felis</strong></span> ac ligula faucibus, at pellentesque lacus lacinia. Curabitur aliquet, sapien nec cursus tincidunt, sem neque facilisis justo, et suscipit libero mauris non libero. Nulla facilisi. Proin id malesuada felis. <span style=\"font-size:16px;\"><u>Quisque a auctor metus</u>.</span></p>" }
             );
 
             // Seed Attributes
@@ -317,7 +340,7 @@ namespace DATN.Core.Data
             modelBuilder.Entity<AttributeValue_EAV>().HasData(
                 new AttributeValue_EAV { AttributeValueId = 1, AttributeId = 1, ValueText = "Đen" },
                 new AttributeValue_EAV { AttributeValueId = 2, AttributeId = 1, ValueText = "Trắng" },
-                new AttributeValue_EAV { AttributeValueId = 3, AttributeId = 2, ValueText = "50 inch" },
+           new AttributeValue_EAV { AttributeValueId = 3, AttributeId = 2, ValueText = "50 inch" },
                 new AttributeValue_EAV { AttributeValueId = 4, AttributeId = 2, ValueText = "60 inch" },
                 new AttributeValue_EAV { AttributeValueId = 5, AttributeId = 3, ValueText = "40 lít" },
                 new AttributeValue_EAV { AttributeValueId = 6, AttributeId = 3, ValueText = "50 lít" }
@@ -348,9 +371,9 @@ namespace DATN.Core.Data
                     ProductId = 1,
                     VariantName = "Đen/50 inch",
                     Quantity = 100,
-                    PuscharPrice = 50000, // Giá nhập
-                    SalePrice = 75000,   // Giá bán
-                    AfterDiscountPrice = 70000,
+                    PuscharPrice = 5000000, // Giá nhập
+                    SalePrice = 7500000,   // Giá bán
+                    AfterDiscountPrice = 7000000,
                     IsDefault = true,
                     MaximumQuantityPerOrder = 3,
                     Weight = 5000,
@@ -362,13 +385,13 @@ namespace DATN.Core.Data
                     ProductId = 1,
                     VariantName = "Đen/60 inch",
                     Quantity = 50,
-                    PuscharPrice = 52000,
-                    SalePrice = 78000,
-                    AfterDiscountPrice = 71000,
+                    PuscharPrice = 5200000,
+                    SalePrice = 7800000,
+                    AfterDiscountPrice = 7100000,
                     IsDefault = false,
                     MaximumQuantityPerOrder = 4,
                     Weight = 6000,
-                    IsActive= true,
+                    IsActive = true,
                 },
                 new Variant
                 {
@@ -376,13 +399,13 @@ namespace DATN.Core.Data
                     ProductId = 1,
                     VariantName = "Trắng/50 inch",
                     Quantity = 75,
-                    PuscharPrice = 48000,
-                    SalePrice = 73000,
-                    AfterDiscountPrice = 70500,
+                    PuscharPrice = 4800000,
+                    SalePrice = 7300000,
+                    AfterDiscountPrice = 7050000,
                     IsDefault = false,
                     MaximumQuantityPerOrder = 5,
                     Weight = 5000,
-                    IsActive= true,
+                    IsActive = true,
                 },
                 new Variant
                 {
@@ -390,9 +413,9 @@ namespace DATN.Core.Data
                     ProductId = 1,
                     VariantName = "Trắng/60 inch",
                     Quantity = 80,
-                    PuscharPrice = 49000,
-                    SalePrice = 74000,
-                    AfterDiscountPrice = 71000,
+                    PuscharPrice = 4900000,
+                    SalePrice = 7400000,
+                    AfterDiscountPrice = 7100000,
                     IsDefault = false,
                     MaximumQuantityPerOrder = 6,
                     Weight = 6000,
@@ -404,9 +427,9 @@ namespace DATN.Core.Data
                     ProductId = 2,
                     VariantName = "Đen/40 lít",
                     Quantity = 0,
-                    PuscharPrice = 49000,
-                    SalePrice = 74000,
-                    AfterDiscountPrice = 71000,
+                    PuscharPrice = 4900000,
+                    SalePrice = 7400000,
+                    AfterDiscountPrice = 7100000,
                     IsDefault = true,
                     MaximumQuantityPerOrder = 7,
                     Weight = 20000,
@@ -418,14 +441,71 @@ namespace DATN.Core.Data
                     ProductId = 2,
                     VariantName = "Đen/50 lít",
                     Quantity = 80,
-                    PuscharPrice = 49000,
-                    SalePrice = 74000,
-                    AfterDiscountPrice = 71000,
+                    PuscharPrice = 4900000,
+                    SalePrice = 7400000,
+                    AfterDiscountPrice = 7100000,
                     IsDefault = false,
                     MaximumQuantityPerOrder = 8,
-                    Weight = 22000,
-                    IsActive= false,
+                    Weight = 5000,
+                    IsActive = false,
+                },
+                new Variant
+                {
+                    VariantId = 7,
+                    ProductId = 3,
+                    VariantName = "Trắng/50 lít",
+                    Quantity = 80,
+                    PuscharPrice = 4900000,
+                    SalePrice = 7400000,
+                    AfterDiscountPrice = 7100000,
+                    IsDefault = true,
+                    MaximumQuantityPerOrder = 3,
+                    Weight = 6000,
+                    IsActive = false,
+                },
+                new Variant
+                {
+                    VariantId = 8,
+                    ProductId = 4,
+                    VariantName = "Đen/50 lít",
+                    Quantity = 80,
+                    PuscharPrice = 4900000,
+                    SalePrice = 7000000,
+                    AfterDiscountPrice = 6000000,
+                    IsDefault = true,
+                    MaximumQuantityPerOrder = 3,
+                    Weight = 5000,
+                    IsActive = false,
+                },
+                new Variant
+                {
+                    VariantId = 9,
+                    ProductId = 5,
+                    VariantName = "Trắng/50 inch",
+                    Quantity = 80,
+                    PuscharPrice = 4900000,
+                    SalePrice = 7400000,
+                    AfterDiscountPrice = 7100000,
+                    IsDefault = true,
+                    MaximumQuantityPerOrder = 3,
+                    Weight = 6000,
+                    IsActive = false,
+                },
+                new Variant
+                {
+                    VariantId = 10,
+                    ProductId = 6,
+                    VariantName = "Trắng/50 inch",
+                    Quantity = 80,
+                    PuscharPrice = 4900000,
+                    SalePrice = 7000000,
+                    AfterDiscountPrice = 5000000,
+                    IsDefault = true,
+                    MaximumQuantityPerOrder = 3,
+                    Weight = 5000,
+                    IsActive = false,
                 }
+
             );
             // Seed VariantAttributes
             modelBuilder.Entity<VariantAttribute>().HasData(
@@ -441,8 +521,8 @@ namespace DATN.Core.Data
                 new VariantAttribute { VariantAttributeId = 5, VariantId = 3, AttributeValueId = 2 }, // Trắng
                 new VariantAttribute { VariantAttributeId = 6, VariantId = 3, AttributeValueId = 3 }, // 50inch
 
-                // Variant 4
-                new VariantAttribute { VariantAttributeId = 7, VariantId = 4, AttributeValueId = 2 }, // Trắng
+           // Variant 4
+           new VariantAttribute { VariantAttributeId = 7, VariantId = 4, AttributeValueId = 2 }, // Trắng
                 new VariantAttribute { VariantAttributeId = 8, VariantId = 4, AttributeValueId = 4 }, // 60inch
 
                 // Variant 5
