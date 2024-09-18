@@ -50,7 +50,10 @@ namespace DATN.API.Controllers
             var data = _unitOfWork.InvoiceDetailRepository.GetAll().Where(p => p.Variant.ProductId == productId).ToList();
             if (data != null && data.Count > 0)
             {
-                return Ok(Math.Round((decimal)data.Where(p => p.Comment != null).Average(p => p.Comment.Rating), 1));
+                if (data.Where(p => p.Comment != null).Count()>0)
+                {
+                    return Ok(Math.Round((decimal)data.Where(p => p.Comment != null).Average(p => p.Comment.Rating), 1));
+                }              
             }
             return Ok(5);
 

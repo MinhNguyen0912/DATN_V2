@@ -38,33 +38,33 @@ namespace DATN.Client.Areas.Admin.Controllers
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _httpClient = httpClient;
-           _context = context;
+            _context = context;
         }
 
-		// GET: Admin/Products
-		public async Task<IActionResult> Index(ProductPaging request)
-		{
-			// Tạo đối tượng ProductPaging để lưu kết quả
-			ProductPaging productPaging = new ProductPaging();
+        // GET: Admin/Products
+        public async Task<IActionResult> Index(ProductPaging request)
+        {
+            // Tạo đối tượng ProductPaging để lưu kết quả
+            ProductPaging productPaging = new ProductPaging();
 
-			// Gửi yêu cầu tới API và nhận dữ liệu
-			productPaging = await _clientService.Post<ProductPaging>("https://localhost:7095/api/ProductEAV/GetProductPaging", request);
+            // Gửi yêu cầu tới API và nhận dữ liệu
+            productPaging = await _clientService.Post<ProductPaging>("https://localhost:7095/api/ProductEAV/GetProductPaging", request);
 
-			// Kiểm tra nếu không có dữ liệu trả về
-			if (productPaging == null)
-			{
-				return NotFound();
-			}
+            // Kiểm tra nếu không có dữ liệu trả về
+            if (productPaging == null)
+            {
+                return NotFound();
+            }
 
-			// Sắp xếp danh sách sản phẩm theo ProductId (giảm dần)
-			productPaging.Items = productPaging.Items.OrderByDescending(p => p.ProductId).ToList();
+            // Sắp xếp danh sách sản phẩm theo ProductId (giảm dần)
+            productPaging.Items = productPaging.Items.OrderByDescending(p => p.ProductId).ToList();
 
-			// Trả dữ liệu về View
-			return View(productPaging);
-		}
+            // Trả dữ liệu về View
+            return View(productPaging);
+        }
 
 
-		public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create()
         {
             ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
             {
@@ -134,16 +134,16 @@ namespace DATN.Client.Areas.Admin.Controllers
                         // Nếu chưa tồn tại thì thêm mới
                         //if (existingCategoryProduct == null)
                         //{
-                            CategoryProduct categoryProduct = new CategoryProduct
-                            {
-                                ProductId = productId,
-                                CategoryId = cateId
-                            };
-                            var categoryProductResult = _unitOfWork.CategoryProductRepository.Create(categoryProduct);
-                            if (categoryProductResult == null)
-                            {
-                                throw new Exception("Failed to create category product.");
-                            }
+                        CategoryProduct categoryProduct = new CategoryProduct
+                        {
+                            ProductId = productId,
+                            CategoryId = cateId
+                        };
+                        var categoryProductResult = _unitOfWork.CategoryProductRepository.Create(categoryProduct);
+                        if (categoryProductResult == null)
+                        {
+                            throw new Exception("Failed to create category product.");
+                        }
                         //}
                     }
 
@@ -406,7 +406,7 @@ namespace DATN.Client.Areas.Admin.Controllers
             {
                 try
                 {
-                                   
+
                     var product = _unitOfWork.ProductEAVRepository.GetByIdCustom(productVM.ProductId);
                     // Tạo đối tượng Product_EAV
 
@@ -426,33 +426,33 @@ namespace DATN.Client.Areas.Admin.Controllers
                     if (productVM.cateIds != null)
                     {
                         cateIdList = productVM.cateIds.Split(',').Select(int.Parse).ToList();
+                        var cateExist = product.CategoryProducts.ToList();
+                        foreach (var item in cateExist)
+                        {
+                            _unitOfWork.CategoryProductRepository.Delete(item);
+                        }
+                       
                         // Kiểm tra và tạo CategoryProducts
                         foreach (var cateId in cateIdList)
                         {
-                            // Kiểm tra xem ProductId và CategoryId đã tồn tại chưa
-                            var existingCategoryProduct = _unitOfWork.CategoryProductRepository
-                                .Find(cp => cp.ProductId == productId && cp.CategoryId == cateId);
 
-                            // Nếu chưa tồn tại thì thêm mới
-                            if (existingCategoryProduct == null)
+                            CategoryProduct categoryProduct = new CategoryProduct
                             {
-                                CategoryProduct categoryProduct = new CategoryProduct
-                                {
-                                    ProductId = productId,
-                                    CategoryId = cateId
-                                };
-                                var categoryProductResult = _unitOfWork.CategoryProductRepository.Create(categoryProduct);
-                                if (categoryProductResult == null)
-                                {
-                                    throw new Exception("Failed to create category product.");
-                                }
+                                ProductId = productId,
+                                CategoryId = cateId
+                            };
+                            var categoryProductResult = _unitOfWork.CategoryProductRepository.Create(categoryProduct);
+                            if (categoryProductResult == null)
+                            {
+                                throw new Exception("Failed to create category product.");
                             }
                         }
+
                     }
                     // Tạo Variants và VariantAttributes
                     if (productVM.Variants != null)
                     {
-                        
+
                         foreach (var item in productVM.Variants)
                         {
                             Variant variant;
@@ -472,7 +472,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                             }
                             else
                             {
-                                 variant = new Variant
+                                variant = new Variant
                                 {
                                     ProductId = productId,
                                     VariantName = item.Name,
@@ -486,7 +486,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                                     Weight = item.Weight,
                                 };
 
-                               _unitOfWork.VariantRepository.Create(variant);
+                                _unitOfWork.VariantRepository.Create(variant);
                                 _unitOfWork.SaveChanges();
                                 // Tách attributeValueIds và tạo VariantAttributes
                                 var attributeValueIds = item.attributeValueIds.Split('/').Select(int.Parse).ToList();
@@ -506,7 +506,7 @@ namespace DATN.Client.Areas.Admin.Controllers
                                 }
                             }
                             // Tạo Variant
-                            
+
                             _unitOfWork.SaveChanges();
 
 
@@ -517,9 +517,9 @@ namespace DATN.Client.Areas.Admin.Controllers
                                 foreach (var spec in item.Specifications)
                                 {
                                     Specification specification;
-                                    if (spec.Id!=0)
+                                    if (spec.Id != 0)
                                     {
-                                        specification =await _unitOfWork.SpecificationRepository.GetById(spec.Id);
+                                        specification = await _unitOfWork.SpecificationRepository.GetById(spec.Id);
                                         specification.Key = spec.Key;
                                         specification.Value = spec.Value;
                                         _unitOfWork.SpecificationRepository.Update(specification);

@@ -48,7 +48,9 @@ namespace DATN.Client.Controllers
             }
 
             var requestUrl = $"{ApiPaths.ProductEAV}/GetById/{id}";
-            var productResponse = await _clientService.Get<ProductVM_EAV>(requestUrl);
+            var product = _unitOfWork.ProductEAVRepository.GetByIdCustom((int)id);
+            var productResponse = _mapper.Map<ProductVM_EAV>(product);
+            
             CommentPaging commentPaging = new CommentPaging();
             commentPaging.CurrentPage = 0;
             commentPaging.PageSize = 2;
