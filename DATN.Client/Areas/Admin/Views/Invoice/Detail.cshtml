@@ -20,7 +20,7 @@
                     <input asp-for="InvoiceId" class="form-control" readonly />
                     <span asp-validation-for="InvoiceId" class="text-danger"></span>
                 </div>
-                @if (Model.Note!=null)
+                @if (Model.Note != null)
                 {
                     <div class="form-group">
                         <label class="control-label">Tên người nhận</label>
@@ -70,28 +70,34 @@
                         <tr>
                             <th style="color:red" scope="row">Tổng tiền hàng</th>
                             <td colspan="2"></td>
-                            <td style="color:red">@Model.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity)</td>
+                            <td style="color:red">@Model.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity).ToString().Split(",")[0]</td>
                         </tr>
-                        <tr>
-                            <th style="color:red" scope="row">Voucher</th>
-                            @if (Model.VoucherId != null)
-                            {
-                                @* <td colspan="2">@Model.VoucherUser.Voucher.Name</td> *@
-                                var total = @Model.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
-                                //var discount = total * (Model.VoucherUser.Voucher.DiscountByPercent / (double)100) + (double)Model.VoucherUser.Voucher.DiscountByPrice;
-                                //<td style="color:red">-@discount</td>
-                            }
-                            else
-                            {
+                        @if (Model.Note != null)
+                        {
+                            <tr>
+                                <th style="color:red" scope="row">Phí ship</th>
                                 <td style="color:red" colspan="2"></td>
-                                <td style="color:red">0</td>
-                            }
-                        </tr>
-                        <tr>
-                            <th style="color:red" scope="row">Tổng cộng</th>
-                            <td colspan="2"></td>
-                            <td style="color:red">@Model.Note.Split("-")[5].Split(",")[0]</td>
-                        </tr>
+                                <td style="color:red">@Model.Note.Split("-")[7].Split(",")[0]</td>
+                            </tr>
+                            <tr>
+                                <th style="color:red" scope="row">Voucher</th>
+                                @if (Model.VoucherId != null)
+                                {
+                                    <td style="color:red" colspan="2"></td>
+                                    <td style="color:red">@Model.Note.Split("-")[8].Split(",")[0]</td>
+                                }
+                                else
+                                {
+                                    <td style="color:red" colspan="2"></td>
+                                    <td style="color:red">0</td>
+                                }
+                            </tr>
+                            <tr>
+                                <th style="color:red" scope="row">Tổng cộng</th>
+                                <td colspan="2"></td>
+                                <td style="color:red">@Model.Note.Split("-")[5].Split(",")[0]</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
                 <div class="form-group">
