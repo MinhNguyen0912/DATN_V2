@@ -195,6 +195,8 @@ namespace DATN.Client.Areas.Identity.Pages.Account
                                     return RedirectToAction("Index", "Home", new { area = "Admin" });
                                 case Role.User:
                                     return RedirectToAction("Index", "Home", new { area = "" });
+                                case Role.Sale:
+                                    return RedirectToAction("Index", "Sale", new { area = "Admin" });
                                 default:
                                     return RedirectToAction("Index", "Home", new { area = "" });
                             }

@@ -80,20 +80,19 @@ namespace DATN.Core.Data
                 , new AppUser
                 {
                     Id = Guid.Parse("AA7C5218-4F1E-4AC6-A3B4-08DCB162E29E"),
-                    UserName = "customer2@gmail.com",
-                    NormalizedUserName = "CUSTOMER2@GMAIL.COM",
-                    Email = "customer2@gmail.com",
-                    NormalizedEmail = "CUSTOMER2@GMAIL.COM",
+                    UserName = "sale@gmail.com",
+                    NormalizedUserName = "SALE@GMAIL.COM",
+                    Email = "sale@gmail.com",
+                    NormalizedEmail = "SALE@GMAIL.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "Abc@123"),
                     SecurityStamp = string.Empty,
-                    FullName = "Customer",
+                    FullName = "Sale",
                     Dob = new DateTime(1991, 2, 2),
                     Address = "456 Oak St, City B",
-                    Description = "Customer",
+                    Description = "Sale",
                     LastLoginTime = DateTime.UtcNow,
                     isActive = true,
-                    PendingCartId = 2
                 }
 
             // Add more users as needed
@@ -244,7 +243,8 @@ namespace DATN.Core.Data
             modelBuilder.Entity<IdentityRole<Guid>>().HasData(
                 //new IdentityRole<Guid> { Id = Guid.Parse("30A990C6-33C7-4884-9DCB-718CE356EB0D"), Name = "SupperAdmin", NormalizedName = "SupperAdmin" },
                 new IdentityRole<Guid> { Id = Guid.Parse("B8FD818F-63F1-49EE-BEC5-F7B66CAFBFCA"), Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole<Guid> { Id = Guid.Parse("FE0E9C2D-6ABD-4F73-A635-63FC58EC700E"), Name = "User", NormalizedName = "USER" }
+                new IdentityRole<Guid> { Id = Guid.Parse("FE0E9C2D-6ABD-4F73-A635-63FC58EC700E"), Name = "User", NormalizedName = "USER" },
+                new IdentityRole<Guid> { Id = Guid.Parse("2253a858-9743-4878-a5af-38afc9bedda7"), Name = "Sale", NormalizedName = "SALE" }
             );
             #endregion
             #region UserRole
@@ -252,7 +252,9 @@ namespace DATN.Core.Data
                 //Seed admin
                 new IdentityUserRole<Guid> { UserId = Guid.Parse("2753c921-2304-4f8d-b8d5-75229d3b20d6"), RoleId = Guid.Parse("B8FD818F-63F1-49EE-BEC5-F7B66CAFBFCA") },
                 //Seend user
-                new IdentityUserRole<Guid> { UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), RoleId = Guid.Parse("FE0E9C2D-6ABD-4F73-A635-63FC58EC700E") }
+                new IdentityUserRole<Guid> { UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), RoleId = Guid.Parse("FE0E9C2D-6ABD-4F73-A635-63FC58EC700E") },
+                //Seed sale
+                new IdentityUserRole<Guid> { UserId = Guid.Parse("AA7C5218-4F1E-4AC6-A3B4-08DCB162E29E"), RoleId = Guid.Parse("2253a858-9743-4878-a5af-38afc9bedda7") }
             );
             #endregion
             #region TimeRange
