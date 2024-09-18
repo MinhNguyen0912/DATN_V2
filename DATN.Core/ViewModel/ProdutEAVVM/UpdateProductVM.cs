@@ -22,10 +22,13 @@ namespace DATN.Core.ViewModel.ProdutEAVVM
         public string cateIds { get; set; }
         public Brand? Brand { get; set; }
         public Origin? Origin { get; set; }
+        public int ImagedefaultId { get; set; }
         public List<IFormFile>? Images { get; set; }
         public List<ImageVM> ImageGetDB { get; set; }
         public IFormFile? ImagesDefault { get; set; }
         public List<UpdateVariantVM>? Variants { get; set; }
+
+
 
     }
 }

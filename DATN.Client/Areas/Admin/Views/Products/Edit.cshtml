@@ -197,7 +197,7 @@
                             if (image.IsDefault)
                             {
                                 <div class="row justify-content-center mb-3">
-                                    <input type="hidden" name="ImageIds" value="@image.ImageId" />
+                                    <input type="hidden" name="ImagedefaultId" value="@image.ImageId" />
                                     <img src="@image.ImagePath" class="img-fluid w-100 h-auto" alt="Oculus VR" style="max-width: 300px;">
                                 </div>
                             }
@@ -235,21 +235,22 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <div class="col-md-6">
-                    <label for="BrandId">Thương hiệu</label>
-                    <select class="form-control" id="BrandId" asp-for="BrandId" asp-items="ViewBag.listBrand">
-                    </select>
-                </div>
-                <input type="checkbox" id="CheckChangeCate" />
-                <div class="col-md-6">
-                    <label for="CategoryProducts">Loại sản phẩm</label>
-                    <select class="form-control" id="CategoryProducts" asp-for="CategoryProducts" asp-items="ViewBag.listCate">
-                    </select>
-                </div>
-                <select id="mySelect" class="dropdownCate form-select form-select-lg mb-3" aria-label=".form-select-lg example" multiple>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label for="BrandId">Thương hiệu</label>
+                <select class="form-control" id="BrandId" asp-for="BrandId" asp-items="ViewBag.listBrand">
                 </select>
-                <input type="hidden" class="listCateHidden" name="listCateHidden" />
+            </div>
+            
+            <div class="col-md-6">
+                <label for="CategoryProducts">Loại sản phẩm</label>
+                <select class="form-control" id="CategoryProducts" asp-for="CategoryProducts" asp-items="ViewBag.listCate">
+                </select>
+                <input type="checkbox" id="CheckChangeCate" /> Chọn lại danh mục
+            </div>
+            <select id="mySelect" class="dropdownCate form-select form-select-lg mb-3" aria-label=".form-select-lg example" multiple>
+            </select>
+            <input type="hidden" class="listCateHidden" name="cateIds" />
 
             </div>
 
@@ -303,95 +304,95 @@
                 </div>
             </div>
 
-            <!-- Table Variant -->
-            <div class="product-section">
-                <table class="table table-bordered mt-3">
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên biến thể</th>
-                            <th>Số lượng</th>
-                            <th>Giá nhập</th>
-                            <th>Giá bán</th>
-                            <th>Giá sau chiết khấu</th>
-                            <th>Số lượng tối đa</th>
-                            <th>Cân nặng</th>
-                            <th>Biến thể mặc định</th>
-                            <th>Hành động</th>
-                            <th>Thông số KT</th>
+        <!-- Table Variant -->
+        <div class="product-section">
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên biến thể</th>
+                        <th>Số lượng</th>
+                        <th>Giá nhập</th>
+                        <th>Giá bán</th>
+                        <th>Giá sau chiết khấu</th>
+                        <th>Số lượng tối đa</th>
+                        <th>Cân nặng</th>
+                        <th>Biến thể mặc định</th>
+                        <th>Hành động</th>
+                        <th>Thông số KT</th>
+                    </tr>
+                </thead>
+                <tbody id="variant-list">
+                    @foreach (var item in Model.Variants.Select((variant, index) => new { variant, index }))
+                    {                       
+                        <tr data-exists="true">
+                            <input type="text" name="Variants[@item.index].VariantId" value="@item.variant.VariantId" hidden />
+                            <td>@(item.index + 1)</td>
+                            <td>
+                                <input type="hidden" name="Variants[@item.index].Name" value="@item.variant.Name" />
+                                @item.variant.Name
+                            </td>
+                            <td>
+                                <input type="number" class="form-control quantity" name="Variants[@item.index].Quantity" value="@item.variant.Quantity" min="1" oninput="validateInput(this, 1)" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control price-import" name="Variants[@item.index].PuscharPrice" value="@item.variant.PuscharPrice.ToString("0.##", CultureInfo.InvariantCulture)" min="1000" oninput="validateInput(this, 1000)" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control price-sell" name="Variants[@item.index].SalelPrice" value="@item.variant.SalelPrice.ToString("0.##", CultureInfo.InvariantCulture)" min="1000" oninput="validateInput(this, 1000)" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control price-discount" name="Variants[@item.index].AfterDiscountPrice" value="@item.variant.AfterDiscountPrice.ToString("0.##", CultureInfo.InvariantCulture)" min="1000" oninput="validateInput(this, 1000)" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control maximumQuantityPerOrder" name="Variants[@item.index].MaximumQuantityPerOrder" value="@item.variant.MaximumQuantityPerOrder" min="1" oninput="validateInput(this, 1)" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control weight" name="Variants[@item.index].Weight" value="@item.variant.Weight" min="1" oninput="validateInput(this, 1)" />
+                            </td>
+                            <td>
+                                <!-- Kiểm tra giá trị từ server để chọn radio button phù hợp -->
+                                <input type="radio" name="defaultVariant" value="@item.index" @(item.variant.IsDefault ? "checked" : "") />
+                                <input type="hidden" name="Variants[@item.index].IsDefault" value="@(item.variant.IsDefault ? "true" : "false")" />
+                            </td>
+                            <td>
+                                <input type="checkbox" name="Variants[@item.index].IsActive" class="active-variant" value="true" @(item.variant.IsActive ? "checked" : "") />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="toggleSpecifications(this, @item.index)"> +</button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody id="variant-list">
-                            @foreach (var item in Model.Variants.Select((variant, index) => new { variant, index }))
-                            {
-                            <tr data-exists="true">
-                                <input type="text" name="Variants[@item.index].VariantId" value="@item.variant.VariantId" hidden />
-                                <td>@(item.index + 1)</td>
-                                <td>
-                                    <input type="hidden" name="Variants[@item.index].Name" value="@item.variant.Name" />
-                                        @item.variant.Name
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control quantity" name="Variants[@item.index].Quantity" value="@item.variant.Quantity" min="1" oninput="validateInput(this, 1)" />
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control price-import" name="Variants[@item.index].PuscharPrice" value="@item.variant.PuscharPrice.ToString("0.##", CultureInfo.InvariantCulture)" min="1000000" oninput="validateInput(this, 1000000)" />
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control price-sell" name="Variants[@item.index].SalelPrice" value="@item.variant.SalelPrice.ToString("0.##", CultureInfo.InvariantCulture)" />
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control price-discount" name="Variants[@item.index].AfterDiscountPrice" value="@item.variant.AfterDiscountPrice.ToString("0.##", CultureInfo.InvariantCulture)" />
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control quantity" name="Variants[@item.index].MaximumQuantityPerOrder" value="@item.variant.MaximumQuantityPerOrder" min="1" oninput="validateInput(this, 1)" />
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control quantity" name="Variants[@item.index].Weight" value="@item.variant.Weight" min="1" oninput="validateInput(this, 1)" />
-                                </td>
-                                <td>
-                                    <!-- Kiểm tra giá trị từ server để chọn radio button phù hợp -->
-                                    <input type="radio" name="defaultVariant" value="@item.index" @(item.variant.IsDefault ? "checked" : "") />
-                                    <input type="hidden" name="Variants[@item.index].IsDefault" value="@(item.variant.IsDefault ? "true" : "false")" />
-                                </td>
-                                <td>
-                                    <input type="checkbox" name="Variants[@item.index].IsActive" class="active-variant" value="true" @(item.variant.IsActive ? "checked" : "") />
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary" onclick="toggleSpecifications(this, @item.index)"> +</button>
-                                </td>
-                            </tr>
-                            <tr class="specifications-row" style="display: none;">
-                                <td colspan="9">
-                                    <div class="variant-specifications">
-                                        <div id="specification-list-@item.index">
-                                                @for (var specIndex = 0; specIndex < item.variant.Specifications.Count; specIndex++)
-                                                {
-                                                    var spec = item.variant.Specifications[specIndex];
-                                                <div class="input-group mb-2 specification-row">
-                                                    <input type="hidden" name="Variants[@item.index].Specifications[@specIndex].Id" value="@spec.Id" />
-                                                    <input type="text" class="form-control" name="Variants[@item.index].Specifications[@specIndex].Key" value="@spec.Key" placeholder="Tên thông số" required />
-                                                    <input type="text" class="form-control" name="Variants[@item.index].Specifications[@specIndex].Value" value="@spec.Value" placeholder="Giá trị" required />
-                                                </div>
-                                                }
-                                        </div>
-                                        <button type="button" class="btn btn-secondary" onclick="addSpecificationRow(@item.index)">+ Thêm thông số</button>
+                        <tr class="specifications-row" style="display: none;">
+                            <td colspan="9">
+                                <div class="variant-specifications">
+                                    <div id="specification-list-@item.index">
+                                        @for (var specIndex = 0; specIndex < item.variant.Specifications.Count; specIndex++)
+                                        {
+                                            var spec = item.variant.Specifications[specIndex];
+                                            <div class="input-group mb-2 specification-row">
+                                                <input type="hidden" name="Variants[@item.index].Specifications[@specIndex].Id" value="@spec.Id" />
+                                                <input type="text" class="form-control" name="Variants[@item.index].Specifications[@specIndex].Key" value="@spec.Key" placeholder="Tên thông số" required />
+                                                <input type="text" class="form-control" name="Variants[@item.index].Specifications[@specIndex].Value" value="@spec.Value" placeholder="Giá trị" required />
+                                            </div>
+                                        }
                                     </div>
-                                </td>
-                            </tr>
+                                    <button type="button" class="btn btn-secondary" onclick="addSpecificationRow(@item.index)">+ Thêm thông số</button>
+                                </div>
+                            </td>
+                        </tr>
 
 
                             }
                     </tbody>
 
-                </table>
-            </div>
-            <button type="button" onclick="generateVariants()">Tạo Biến Thể</button>
-            <input class="listCateHidden" type="hidden" name="cateIds" />
-            <!-- Button tạo sản phẩm -->
-            <div class="d-flex justify-content-end mt-3">
-                <button type="submit" class="btn btn-primary" id="createProductBtn">Create</button>
-            </div>
+            </table>
+        </div>
+        <button type="button" onclick="generateVariants()">Tạo Biến Thể</button>
+        <input class="listCateHidden" type="hidden" name="cateIds" />
+        <!-- Button tạo sản phẩm -->
+        <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-primary" id="createProductBtn">Save</button>
+        </div>
     </form>
 </div>
 
@@ -910,10 +911,8 @@
                 document.querySelector(".dropdownCate").innerHTML = html
             })
         }
-
         document.querySelector(".main-form").addEventListener("submit", (e) => {
             e.preventDefault();
-
             // Kiểm tra nếu checkbox được chọn
             if (document.querySelector("#CheckChangeCate").checked) {
                 var selectedId = [];
@@ -925,17 +924,13 @@
                         selectedId.push(select.options[i].value);
                     }
                 }
-
                 // Nối các giá trị được chọn thành chuỗi
                 var result = selectedId.join(',');
-
-                // Gán giá trị cho input ẩn
                 document.querySelector(".listCateHidden").value = result;
             } else {
                 // Nếu checkbox không được chọn, xóa giá trị
                 document.querySelector(".listCateHidden").value = "";
             }
-
             // Gửi form sau khi xử lý xong
             e.target.submit();
         });

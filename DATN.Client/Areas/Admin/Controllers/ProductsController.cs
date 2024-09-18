@@ -2,6 +2,7 @@
 using DATN.Client.Constants;
 using DATN.Client.Helper;
 using DATN.Client.Services;
+using DATN.Core.Data;
 using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
@@ -29,13 +30,15 @@ namespace DATN.Client.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly HttpClient _httpClient;
+        private readonly DATNDbContext _context;
 
-        public ProductsController(ClientService clientService, IMapper mapper, IUnitOfWork unitOfWork, HttpClient httpClient)
+        public ProductsController(ClientService clientService, IMapper mapper, IUnitOfWork unitOfWork, HttpClient httpClient, DATNDbContext context)
         {
             _clientService = clientService;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _httpClient = httpClient;
+           _context = context;
         }
 
 		// GET: Admin/Products
@@ -550,14 +553,14 @@ namespace DATN.Client.Areas.Admin.Controllers
                         {
                             throw new Exception("Failed to upload default image.");
                         }
-
-                        ImageVM defaultImageVm = new ImageVM
+                        if (productVM.ImagedefaultId != null)
                         {
-                            ImagePath = imageDefaultResponse,
-                            IsDefault = true,
-                            ProductId = productId
-                        };
-                        await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", defaultImageVm);
+                            var existingImage = _context.Images.FirstOrDefault(x => x.ImageId == productVM.ImagedefaultId);/* var existingImage = await _clientService.Post<ImageVM>($"{ApiPaths.Images}/Get", productVM.ImagedefaultId);*/
+
+                            existingImage.ImagePath = imageDefaultResponse;
+
+                            _unitOfWork.imageReponsiroty.Update(existingImage);
+                        }
                     }
 
                     // Xử lý upload ảnh bổ sung
@@ -571,13 +574,20 @@ namespace DATN.Client.Areas.Admin.Controllers
                                 throw new Exception("Failed to upload additional image.");
                             }
 
-                            ImageVM additionalImageVm = new ImageVM
+                            Image additionalImageVm = new Image
                             {
                                 ImagePath = imageResponse,
                                 IsDefault = false,
                                 ProductId = productId
                             };
-                            await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", additionalImageVm);
+                            //await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", additionalImageVm);
+
+                            var ImageResult = _unitOfWork.imageReponsiroty.Create(additionalImageVm);
+                            _unitOfWork.SaveChanges();
+                            if (ImageResult == null)
+                            {
+                                throw new Exception("Failed to create specification.");
+                            }
                         }
                     }
 

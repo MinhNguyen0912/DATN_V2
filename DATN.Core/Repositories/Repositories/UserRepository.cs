@@ -86,7 +86,7 @@ namespace DATN.Core.Repositories.Repositories
                 }
                 x.GrandTotalAmountPurchased = formatCurrency.GetCurrency(
                     Convert.ToDecimal(listFinalPrice.Sum(c => c)));
-                x.ListVoucherNameByUser = lstBatches.Where(c => lstVoucher.Where(c=>c.UserId==x.Id).Select(c=>c.BatchId).Contains(c.Id)).Select(c => c.Name).ToList();
+                x.ListVoucherNameByUser = lstBatches.Where(c => lstVoucher.Where(c=>c.UserId==x.Id).Select(c=>c.BatchId).Contains(c.Id) && c.IsActive==true).Select(c => c.Name).ToList();
             }
 
             //request.ListVoucherDropDown = _mapper.Map<List<VoucherVM>>(lstVoucher);
