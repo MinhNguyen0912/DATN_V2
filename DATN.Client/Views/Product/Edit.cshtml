@@ -14,7 +14,7 @@
     var a = Model;
     var userId = Guid.Empty;
     var dataSession = HttpContextAccessor.HttpContext.Session.GetString("user");
-    if (dataSession != null)
+    if (dataSession != null )
     {
         userId = SessionHelper.GetObjectFromJson<UserInfo>(HttpContextAccessor.HttpContext.Session, "user").UserId;
 

@@ -66,8 +66,8 @@ namespace DATN.Client.Areas.Admin.Controllers
             }
             else { order.Status = DATN.Core.Enum.InvoiceStatus.Cancel; }
             // Cập nhật trạng thái của đơn hàng
-
-            _context.SaveChangesAsync();
+            _context.Invoices.Update(order);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
         private List<List<Variant>> CalculateShipments(List<Variant> variants, double maxWeightPerShipment) //max = 10000
@@ -193,8 +193,8 @@ namespace DATN.Client.Areas.Admin.Controllers
             }
             _unitOfWork.InvoiceRepository.Update(invoice);
             _unitOfWork.SaveChanges();
-            var content = CancelnvoiceContent.GenerateContentMail(invoice.User, invoice);
-            var sendemail = await _clientService.Post("https://localhost:7095/api/SendMail/SendMail", content);
+            //var content = CancelnvoiceContent.GenerateContentMail(invoice.Note.Split("-")[6], invoice);
+            //var sendemail = await _clientService.Post("https://localhost:7095/api/SendMail/SendMail", content);
             return RedirectToAction("Index");
         }
 

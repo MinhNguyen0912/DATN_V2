@@ -81,12 +81,12 @@ namespace DATN.Client.Controllers
             else if (request.PaymentMethod == Core.Enum.PaymentMethod.TheNoiDia)
             {
                 var totalMoney = invoice.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
-                return RedirectToAction("Pay", new { typePayment = 1, money = totalMoney + request.ShippingFee, invoiceId = invoice.InvoiceId, pendingCartId = request.pendingCartId });
+                return RedirectToAction("Pay", new { typePayment = 1, money = totalMoney + request.ShippingFee - request.Discount, invoiceId = invoice.InvoiceId, pendingCartId = request.pendingCartId });
             }
             else if (request.PaymentMethod == Core.Enum.PaymentMethod.TheQuocTe)
             {
                 var totalMoney = invoice.InvoiceDetails.Sum(p => p.NewPrice * p.Quantity);
-                return RedirectToAction("Pay", new { typePayment = 2, money = totalMoney + request.ShippingFee, invoiceId = invoice.InvoiceId, pendingCartId = request.pendingCartId });
+                return RedirectToAction("Pay", new { typePayment = 2, money = totalMoney + request.ShippingFee - request.Discount, invoiceId = invoice.InvoiceId, pendingCartId = request.pendingCartId });
             }
             return Redirect("Home/Index");
         }
