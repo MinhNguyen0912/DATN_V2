@@ -178,6 +178,13 @@ namespace DATN.Client.Areas.Admin.Controllers
             //    invoice.VoucherUser.IsDeleted = false;
             //}
             var decent = await _clientService.Get($"https://localhost:7095/api/Invoice/ChangeStatus2?invoiceId={invoiceId}");
+            if (invoice.VoucherId!=null)
+            {
+                var voucher = await _unitOfWork.VoucherRepository.GetById(invoice.VoucherId);
+                voucher.Status = Core.Enum.VoucherStatus.NotUsed;
+                _unitOfWork.VoucherRepository.Update(voucher);
+                invoice.VoucherId = null;
+            }
             _unitOfWork.InvoiceRepository.Update(invoice);
             _unitOfWork.SaveChanges();
             var content = CancelnvoiceContent.GenerateContentMail(invoice.User, invoice);
