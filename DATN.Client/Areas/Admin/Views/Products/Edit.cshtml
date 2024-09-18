@@ -154,6 +154,30 @@
         margin: auto;
     }
 </style>
+@* Images *@
+<style>
+    .delete-button {
+        position: absolute;
+        top: -5px; /* Adjust to bring the button closer to the top */
+        left: 80%; /* Adjust to bring the button closer to the right */
+        border-radius: 50%;
+        padding: 0.1rem 0.1rem; /* Smaller padding */
+        font-size: 0.4rem; /* Smaller font size */
+        width: 15px; /* Smaller width */
+        height: 18px; /* Smaller height */
+        border: none;
+        cursor: pointer;
+        background-color: red;
+    }
+
+        .delete-button:hover {
+            background-color: #01b6f0;
+        }
+
+    .position-relative {
+        position: relative;
+    }
+</style>
 
 <!-- Thông tin sản phẩm -->
 <div class="product-form">
@@ -161,16 +185,55 @@
     <form class="main-form" asp-action="edit" method="post" enctype="multipart/form-data">
         <input type="text" class="form-control" asp-for="ProductId" id="ProductId" hidden>
         <div class="form-group row">
-            <div class="col-md-12">
-                <label for="ProductName">Tên sản phẩm</label>
-                <input type="text" class="form-control" id="ProductName" asp-for="ProductName" placeholder="Nhập tên sản phẩm">
-            </div>
-        </div>
+            <div class="col-md-6 d-flex flex-column align-items-center">
 
-        <div class="form-group">
-            <label for="Description">Mô tả sản phẩm</label>
-            <textarea class="form-control description-area" id="Description" asp-for="Description" rows="4" placeholder="Nhập mô tả sản phẩm"></textarea>
-        </div>
+                <div class="row justify-content-center">
+                        @if (Model.ImageGetDB.Count > 0)
+                        {
+
+                        @foreach (var image in Model.ImageGetDB)
+                            {
+                            <!-- Hình ảnh chính -->
+                            if (image.IsDefault)
+                            {
+                                <div class="row justify-content-center mb-3">
+                                    <input type="hidden" name="ImagedefaultId" value="@image.ImageId" />
+                                    <img src="@image.ImagePath" class="img-fluid w-100 h-auto" alt="Oculus VR" style="max-width: 300px;">
+                                </div>
+                            }
+                            <!-- Hàng chứa các ảnh nhỏ -->
+                            if (!image.IsDefault)
+                                {
+                                <div class="col-auto px-1 position-relative" style="width: 80px;">
+                                    <input type="hidden" name="ImageIds" value="@image.ImageId" />
+                                    <img src="@image.ImagePath" class="img-fluid" style="width:70px; height:50px;" alt="Oculus VR" />
+                                    <!-- Button to delete image -->
+                                    <button type="button" class="delete-button btn btn-danger btn-sm" onclick="deleteImage(@image.ImageId)">x</button>
+
+                                </div>
+                                }
+                            <input type="hidden" id="deletedImageIds" name="DeletedImageIds" value="" />
+                            } 
+                        }
+                        else
+                        {
+                        <p>Sản phẩm không có hình ảnh phụ</p>
+                        }
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="col-md-12">
+                    <label for="ProductName">Tên sản phẩm</label>
+                    <input type="text" class="form-control" id="ProductName" asp-for="ProductName" placeholder="Nhập tên sản phẩm">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Description">Mô tả sản phẩm</label>
+                    <textarea class="form-control description-area" id="Description" asp-for="Description" rows="4" placeholder="Nhập mô tả sản phẩm"></textarea>
+                </div>
+            </div>
 
         <div class="form-group row">
             <div class="col-md-6">
@@ -189,57 +252,57 @@
             </select>
             <input type="hidden" class="listCateHidden" name="cateIds" />
 
-        </div>
-
-        <div class="form-group row">
-            <div class="col-md-6">
-                <label for="OriginId">Xuất xứ</label>
-                <select class="form-control" id="OriginId" asp-for="OriginId" asp-items="ViewBag.listOrigin">
-                </select>
             </div>
 
-            <div class="col-md-6">
-                <label for="Status">Trạng thái</label>
-                <select class="form-control" id="Status" asp-for="Status" asp-items="ViewBag.StatusList">
-                </select>
-            </div>
-        </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="OriginId">Xuất xứ</label>
+                    <select class="form-control" id="OriginId" asp-for="OriginId" asp-items="ViewBag.listOrigin">
+                    </select>
+                </div>
 
-        <div class="form-group row">
-            <div class="col-md-6">
-                <label for="ImagesDefault" class="control-label">Ảnh chính sản phẩm</label>
-                <input id="ImagesDefault" name="ImagesDefault" type="file" class="form-control" accept="image/*" />
-            </div>
-
-            <div class="col-md-6">
-                <label for="Images" class="control-label">Các ảnh khác (tối đa 6)</label>
-                <input id="Images" name="Images" type="file" class="form-control" multiple accept="image/*" />
-            </div>
-        </div>
-
-        <!-- Block thông tin biến thể -->
-        <div class="product-section">
-            <div class="form-title">Biến thể sản phẩm</div>
-            <div class="variant-row">
-                @* <div class="col-6">
-                <label for="variantType">Thuộc tính</label>
-                <!-- Dropdown select for multiple attributes -->
-                <select multiple class="form-control" id="variantType" asp-items="ViewBag.listAttributes" onchange="fetchVariantValues(this)">
-                </select>
-                <small class="form-text text-muted">Tối đa 3 thuộc tính có thể được chọn.</small>
-                </div> *@
-                <div class="col-6" id="variantValuesContainer">
-                    <!-- Giá trị biến thể sẽ được sinh ra tại đây -->
+                <div class="col-md-6">
+                    <label for="Status">Trạng thái</label>
+                    <select class="form-control" id="Status" asp-for="Status" asp-items="ViewBag.StatusList">
+                    </select>
                 </div>
             </div>
 
-            <!-- Add attribute and value buttons -->
-            <div class="row">
-                <div class="add-attribute-btn mt-4 col-6">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#attributeModal">+ Thêm thuộc tính khác</button>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="ImagesDefault" class="control-label">Ảnh chính sản phẩm</label>
+                    <input id="ImagesDefault" name="ImagesDefault" type="file" class="form-control" accept="image/*" />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="Images" class="control-label">Các ảnh khác (tối đa 6)</label>
+                    <input id="Images" name="Images" type="file" class="form-control" multiple accept="image/*" />
                 </div>
             </div>
-        </div>
+
+            <!-- Block thông tin biến thể -->
+            <div class="product-section">
+                <div class="form-title">Biến thể sản phẩm</div>
+                <div class="variant-row">
+                         <div class="col-6">
+                    <label for="variantType">Thuộc tính</label>
+                    <!-- Dropdown select for multiple attributes -->
+                    <select multiple class="form-control" id="variantType" asp-items="ViewBag.listAttributes" onchange="fetchVariantValues(this)">
+                    </select>
+                    <small class="form-text text-muted">Tối đa 3 thuộc tính có thể được chọn.</small>
+                    </div>
+                    <div class="col-6" id="variantValuesContainer">
+                        <!-- Giá trị biến thể sẽ được sinh ra tại đây -->
+                    </div>
+                </div>
+
+                <!-- Add attribute and value buttons -->
+                <div class="row">
+                    <div class="add-attribute-btn mt-4 col-6">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#attributeModal">+ Thêm thuộc tính khác</button>
+                    </div>
+                </div>
+            </div>
 
         <!-- Table Variant -->
         <div class="product-section">
@@ -319,8 +382,8 @@
                         </tr>
 
 
-                    }
-                </tbody>
+                            }
+                    </tbody>
 
             </table>
         </div>
@@ -422,22 +485,22 @@
 
                                 // Tạo khối HTML với hidden input để chứa AttributeId
                                 attributeBlock.innerHTML = `
-                                                <label>${attribute.attributeName}</label>
-                                                <input type="hidden" name="attributeIds[]" value="${attribute.attributeId}" />
-                                                <div class="value-group">
-                                                    ${attributeValues.map(value => `
-                                                        <div class="input-group mb-2">
-                                                            <input type="text" data-id="${value.attributeValueId}" class="form-control" name="attributeValues[]" value="${value.valueText}" />
-                                                            <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
-                                                            </div>
-                                                        </div>
-                                                    `).join('')}
-                                                </div>
-                                                <!-- Nút Thêm Giá Trị -->
-                                                <button type="button" class="btn btn-secondary addValueBtn" data-attribute-id="${attribute.attributeId}">+ Thêm giá trị</button>
-                                            `;
+                                                                <label>${attribute.attributeName}</label>
+                                                                <input type="hidden" name="attributeIds[]" value="${attribute.attributeId}" />
+                                                                <div class="value-group">
+                                                                    ${attributeValues.map(value => `
+                                                                        <div class="input-group mb-2">
+                                                                            <input type="text" data-id="${value.attributeValueId}" class="form-control" name="attributeValues[]" value="${value.valueText}" />
+                                                                            <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
+                                                                            <div class="input-group-append">
+                                                                                <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    `).join('')}
+                                                                </div>
+                                                                <!-- Nút Thêm Giá Trị -->
+                                                                <button type="button" class="btn btn-secondary addValueBtn" data-attribute-id="${attribute.attributeId}">+ Thêm giá trị</button>
+                                                            `;
 
                                 // Thêm khối vào container và lưu trữ trong Map
                                 container.appendChild(attributeBlock);
@@ -481,11 +544,11 @@
             const newValueInput = document.createElement('div');
             newValueInput.classList.add('input-group', 'mb-2');
             newValueInput.innerHTML = `
-                            <input type="text" class="form-control" placeholder="Nhập giá trị mới" />
-                            <div class="input-group-append">
-                                <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
-                            </div>
-                        `;
+                                            <input type="text" class="form-control" placeholder="Nhập giá trị mới" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
+                                            </div>
+                                        `;
 
             valueGroup.appendChild(newValueInput);
         }
@@ -548,11 +611,11 @@
                 const newInputGroup = document.createElement('div');
                 newInputGroup.classList.add('input-group', 'mb-2');
                 newInputGroup.innerHTML = `
-                                <input type="text" class="form-control" placeholder="Nhập giá trị mới">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">Xóa</button>
-                                </div>
-                            `;
+                                                <input type="text" class="form-control" placeholder="Nhập giá trị mới">
+                                                <div class="input-group-append">
+                                                    <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">Xóa</button>
+                                                </div>
+                                            `;
                 container.appendChild(newInputGroup);
             });
 
@@ -602,12 +665,12 @@
                             const newValueInput = document.createElement('div');
                             newValueInput.classList.add('input-group', 'mb-2');
                             newValueInput.innerHTML = `
-                                        <input type="text" class="form-control" name="attributeValues[]" value="${value.valueText}" />
-                                        <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
-                                        <div class="input-group-append">
-                                            <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
-                                        </div>
-                                    `;
+                                                        <input type="text" class="form-control" name="attributeValues[]" value="${value.valueText}" />
+                                                        <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
+                                                        </div>
+                                                    `;
                             valueGroup.appendChild(newValueInput);
                         });
 
@@ -715,23 +778,23 @@
                     const row = document.createElement('tr');
                     row.setAttribute('data-exists', 'false'); // Thêm thuộc tính data-exists cho hàng mới
                     row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <input type="hidden" name="Variants[${index}].attributeValueIds" value="${variantId}" />
-                        <td><input type="hidden" name="Variants[${index}].Name" value="${variantName}" />
-                        ${variantName}</td>
-                        <td><input type="number" class="form-control" name="Variants[${index}].Quantity" value="10" min="1" /></td>
-                        <td><input type="number" class="form-control" name="Variants[${index}].ImportPrice" value="10000000" min="1000000" /></td>
-                        <td><input type="number" class="form-control" name="Variants[${index}].SellPrice" value="11000000" /></td>
-                        <td><input type="number" class="form-control" name="Variants[${index}].AfterDiscountPrice" value="11000000" /></td>
-                        <td><input type="number" class="form-control" name="Variants[${index}].MaximumQuantityPerOrder" value="3" /></td>
-                        <td><input type="number" class="form-control" name="Variants[${index}].Weight" value="5000" /></td>
-                        <td>
-                            <input type="radio" name="defaultVariant" value="${index}" ${index === 0 ? 'checked' : ''} />
-                            <input type="hidden" name="Variants[${index}].IsDefault" value="${index === 0}" />
-                        </td>
-                        <td><button type="button" class="btn btn-danger" onclick="removeVariant(this)">Xóa</button></td>
-                        <td><button type="button" class="btn btn-primary" onclick="toggleSpecifications(this, ${index})"> +</button></td>
-                    `;
+                                        <td>${index + 1}</td>
+                                        <input type="hidden" name="Variants[${index}].attributeValueIds" value="${variantId}" />
+                                        <td><input type="hidden" name="Variants[${index}].Name" value="${variantName}" />
+                                        ${variantName}</td>
+                                        <td><input type="number" class="form-control" name="Variants[${index}].Quantity" value="10" min="1" /></td>
+                                        <td><input type="number" class="form-control" name="Variants[${index}].ImportPrice" value="10000000" min="1000000" /></td>
+                                        <td><input type="number" class="form-control" name="Variants[${index}].SellPrice" value="11000000" /></td>
+                                        <td><input type="number" class="form-control" name="Variants[${index}].AfterDiscountPrice" value="11000000" /></td>
+                                        <td><input type="number" class="form-control" name="Variants[${index}].MaximumQuantityPerOrder" value="3" /></td>
+                                        <td><input type="number" class="form-control" name="Variants[${index}].Weight" value="5000" /></td>
+                                        <td>
+                                            <input type="radio" name="defaultVariant" value="${index}" ${index === 0 ? 'checked' : ''} />
+                                            <input type="hidden" name="Variants[${index}].IsDefault" value="${index === 0}" />
+                                        </td>
+                                        <td><button type="button" class="btn btn-danger" onclick="removeVariant(this)">Xóa</button></td>
+                                        <td><button type="button" class="btn btn-primary" onclick="toggleSpecifications(this, ${index})"> +</button></td>
+                                    `;
 
                     // Khối chứa form nhập thông số kỹ thuật (ẩn ban đầu)
                     const specRow = document.createElement('tr');
@@ -801,10 +864,10 @@
             const row = document.createElement('div');
             row.classList.add('input-group', 'mb-2', 'specification-row');
             row.innerHTML = `
-                <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[${newSpecIndex}].Key" placeholder="Tên thông số" required />
-                <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[${newSpecIndex}].Value" placeholder="Giá trị" required />
-                <button class="btn btn-danger" type="button" onclick="removeSpecificationRow(this)">Xóa</button>
-            `;
+                                <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[${newSpecIndex}].Key" placeholder="Tên thông số" required />
+                                <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[${newSpecIndex}].Value" placeholder="Giá trị" required />
+                                <button class="btn btn-danger" type="button" onclick="removeSpecificationRow(this)">Xóa</button>
+                            `;
 
             specificationList.appendChild(row);
         }
@@ -812,7 +875,7 @@
 
         function removeSpecificationRow(button) {
             const row = button.closest('.specification-row');
-                row.remove();
+            row.remove();
         }
         // Hàm kiểm tra và hiển thị lỗi nếu nhập giá trị không hợp lệ
         function validateInput(input, minValue) {
@@ -872,5 +935,35 @@
             e.target.submit();
         });
 
+    </script>
+
+    <!-- Script -->
+    <script>
+        function deleteImage(imageId) {
+            // Hiển thị thông báo xác nhận trước khi xoá
+            const userConfirmed = confirm("Bạn có chắc chắn muốn xoá ảnh này không?");
+
+            if (userConfirmed) {
+                // Gọi đến API xóa ảnh nếu người dùng xác nhận
+                fetch(`https://localhost:7095/api/Images/Delete/${imageId}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Thông báo xoá thành công và tải lại trang để cập nhật
+                            alert("Xoá ảnh thành công!");
+                            location.reload(); // Reload trang để cập nhật sau khi xoá
+                        } else {
+                            // Thông báo lỗi nếu xoá không thành công
+                            alert("Xoá ảnh thất bại.");
+                        }
+                    })
+                    .catch(error => {
+                        // Xử lý lỗi khi kết nối đến API
+                        console.error('Lỗi:', error);
+                        alert("Đã xảy ra lỗi khi xoá ảnh.");
+                    });
+            }
+        }
     </script>
 }
