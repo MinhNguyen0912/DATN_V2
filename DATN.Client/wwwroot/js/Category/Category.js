@@ -198,8 +198,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0
                     }).format(item.variants.find(p => p.isDefault == true).afterDiscountPrice);
-                    var productRatingResponse = await fetch(`https://localhost:7095/api/ProductEAV/GetProductRating?productId=${item.id}`)
-                    var productRateCountResponse = await fetch(`https://localhost:7095/api/ProductEAV/GetProductRateCount?productId=${item.id}`)
+                    var productRatingResponse = await fetch(`https://localhost:7095/api/ProductEAV/GetProductRating?productId=${item.productId}`)
+                    var productRateCountResponse = await fetch(`https://localhost:7095/api/ProductEAV/GetProductRateCount?productId=${item.productId}`)
                     var productRating = await productRatingResponse.json()
                     var productRateCount = await productRateCountResponse.json()
                     html += `
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                             <p style="margin:0;font-size:14px;color:#999999">${productRateCount}</p>
                                         </div>
                                     </div>
-                                         <div product-id="${item.id}" class="product-detail">Xem chi tiết</div>
+                                         <div product-id="${item.productId}" class="product-detail">Xem chi tiết</div>
                                 </div>
                             </div>`
                 }
