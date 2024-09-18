@@ -320,7 +320,17 @@
                 }
             });
         });
-
+    document.querySelectorAll('.voucher-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                document.querySelectorAll('.voucher-checkbox').forEach(cb => {
+                    if (cb !== this) {
+                        cb.checked = false; 
+                    }
+                });
+            }
+        });
+    });
     document.querySelectorAll('.increase').forEach(button => {
         button.addEventListener('click', function () {
             const productId = this.dataset.id;
