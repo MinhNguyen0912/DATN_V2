@@ -287,6 +287,12 @@ namespace DATN.Client.Controllers
                         await _clientService.Post($"https://localhost:7095/api/PendingCart/UpdatePendingCart?pendingCartId={pendingCartId}", new List<PendingCartVariant>());
                         invoice.PaymentInfo.PaymentStatus = Core.Enum.PaymentStatus.Success;
                         invoice.Status = Core.Enum.InvoiceStatus.Delivery;
+                        foreach (var item in invoice.InvoiceDetails)
+                        {
+                            var variant = await _unitOfWork.VariantRepository.GetById(item.VariantId);
+                            variant.Quantity -= item.Quantity;
+                            _unitOfWork.VariantRepository.Update(variant);
+                        }
                         _unitOfWork.InvoiceRepository.Update(invoice);
                         _unitOfWork.SaveChanges();
                         return Redirect("/Home/Index");

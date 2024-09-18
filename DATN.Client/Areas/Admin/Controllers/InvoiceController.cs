@@ -161,6 +161,12 @@ namespace DATN.Client.Areas.Admin.Controllers
                 }
             }
             invoice.PaymentInfo.PaymentStatus = Core.Enum.PaymentStatus.Success;
+            foreach (var item in invoice.InvoiceDetails)
+            {
+                var variant = await _unitOfWork.VariantRepository.GetById(item.VariantId);
+                variant.Quantity -= item.Quantity;
+                _unitOfWork.VariantRepository.Update(variant);
+            }
             invoice.Status = Core.Enum.InvoiceStatus.Delivery;
             _unitOfWork.InvoiceRepository.Update(invoice);
             _unitOfWork.SaveChanges();
