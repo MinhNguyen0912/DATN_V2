@@ -16,6 +16,9 @@ using Newtonsoft.Json;
 
 namespace DATN.Client.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Route("Admin/[controller]/[action]")]
+    [Authorize(Roles ="Sale")]
 	public class SaleController : Controller
 	{
 		private IUnitOfWork _unitOfWork;
@@ -27,9 +30,8 @@ namespace DATN.Client.Areas.Admin.Controllers
 			_clientService = clientService;
 		}
 
-		[Area("Admin")]
-        [Authorize(Roles = "Admin")]
-        [Route("Admin/[controller]/[action]")]
+		
+        
         public IActionResult Index()
         {	
 	        List<SaleProuductVM>  saleProuductVm = new List<SaleProuductVM>();

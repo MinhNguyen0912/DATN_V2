@@ -78,8 +78,9 @@ namespace DATN.API.Controllers
                 UserId = payment.UserId,
                 CreateDate = DateTime.Now,
                 InvoiceDetails = new List<InvoiceDetail>(),
-                Note = $"{payment.FirstName} {payment.LastName}-{payment.PhoneNumber}-{payment.to_address}-{payment.to_ward_code}-{payment.to_district_id}-{payment.CodAmount}-{payment.Email}",
-                Status = InvoiceStatus.Pending
+                Note = $"{payment.FirstName} {payment.LastName}-{payment.PhoneNumber}-{payment.to_address}-{payment.to_ward_code}-{payment.to_district_id}-{payment.CodAmount}-{payment.Email}-{payment.ShippingFee}-{payment.Discount}",
+                Status = InvoiceStatus.Pending,
+                FinalAmount = payment.CodAmount
             };
 
             // Tạo đối tượng PaymentInfo
