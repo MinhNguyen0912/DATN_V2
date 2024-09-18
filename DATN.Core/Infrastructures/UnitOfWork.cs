@@ -57,6 +57,8 @@ namespace DATN.Core.Infrastructures
         private IVariantRepository _variantRepository;
         private ISpecificationRepository _specificationRepository;
 
+        private IStatisticRepository _statisticRepository;
+
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IConfiguration _configuration;
@@ -118,6 +120,8 @@ namespace DATN.Core.Infrastructures
         public IBatchRepository BatchRepository => (_batchRepository = new BatchRepository(_context,_mapper));
 
         public ISpecificationRepository SpecificationRepository => _specificationRepository ?? (_specificationRepository = new SpecificationRepository(_context, _mapper));
+
+        public IStatisticRepository StatisticRepository => _statisticRepository ?? (_statisticRepository = new StatisticRepository(_context));
 
 
         // Begin a database transaction
