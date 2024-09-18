@@ -87,7 +87,7 @@
                                            
                                             @if (item.Status == DATN.Core.Enum.InvoiceStatus.Delivery)
                                             {
-                                                <a asp-action="ChangeStatus" asp-route-id="@item.InvoiceId" asp-route-status="1" class="btn btn-warning text-decoration-none">Xác Thành công</a>
+                                                <a asp-action="ChangeStatus" asp-route-id="@item.InvoiceId" asp-route-status="1" class="btn btn-warning text-decoration-none">Xác nhận Thành công</a>
                                                 @if (item.PaymentInfo.PaymentMethod == DATN.Core.Enum.PaymentMethod.Cash)
                                                 {
                                                     <a asp-action="ChangeStatus" asp-route-id="@item.InvoiceId" asp-route-status="0" class="btn btn-warning text-decoration-none">Xác nhận thất bại</a>

@@ -450,6 +450,8 @@
         let required_note = 'CHOXEMHANGKHONGTHU'
         let to_ward_code = document.getElementById("wardSelect").value;
         let service_type_id = 5;
+        var selectWard = document.getElementById("wardSelect");
+        var wardName = selectWard.options[selectWard.selectedIndex].text
         let to_district_id = parseInt(document.getElementById("districtSelect").value);
         let height = 50;
         let width = 50;
@@ -589,49 +591,7 @@
         };
     }
 
-    // Hàm lấy thông tin hóa đơn
-    function GetInvoiceData(paymentMethod) {
-
-        const cart = JSON.parse(localStorage.getItem(`giohang-${document.getElementsByClassName("user-email")[0].innerHTML}`)) || [];
-        const cartItems = GetCartItem();
-        let voucherId = 0;
-        let voucherSelect = document.getElementById('voucherSelect');
-        if (voucherSelect) {
-            let selectedOption = voucherSelect.options[voucherSelect.selectedIndex];
-            voucherId = parseFloat(selectedOption.getAttribute('value'));
-        }
-        // const paymentMethod = getPaymentMethod();
-        const paymentMethodMapping = {
-            "Cash": 0,
-            "MomoQR": 1,
-            "VNPay": 2
-        };
-        const userId = '@user.UserId';
-        // let totalAmount = 0;
-        // for (const item of cart) {
-        //     totalAmount += item.soluong * item.dongia;
-        // }
-        // const finalAmount = parseFloat(document.querySelector('.pricetotal').textContent.replace(/[^\d.-]/g, ''));
-        // const discount = totalAmount - finalAmount;
-        let orderData = GetOrderData(paymentMethod)
-        return {
-            cartItems,
-            paymentMethod: paymentMethod,
-            userId,
-            voucherId: voucherId,
-            pendingShippingOrder: {
-                to_name: orderData.to_name,
-                to_phone: orderData.to_phone,
-                to_address: orderData.to_address.replace("-", ","),
-                to_ward_code: orderData.to_ward_code,
-                to_district_id: orderData.to_district_id.toString(),
-                cod_amount: orderData.cod_amount.toString()
-            }
-            // totalAmount,
-            // finalAmount,
-            // discount
-        }
-    }
+    
     // Hàm tạo đơn hàng
     async function CreateOrder(invoiceId) {
         const dataOrder = GetOrderData();
