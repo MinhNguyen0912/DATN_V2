@@ -27,7 +27,7 @@ namespace DATN.API.Controllers
             {
                 return BadRequest("Batch data is null"); // 400 Bad Request
             }
-            var exists = await _unitOfWork.BatchRepository.AnyAsync(b => b.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase));
+            var exists = _unitOfWork.BatchRepository.GetAll().Where(x=>x.Name == request.Name).Any();
             if (exists)
             {
                 ModelState.AddModelError("Name", "Tên voucher đã tồn tại.");

@@ -25,7 +25,7 @@ namespace DATN.Core.Repositories.Repositories.ProductEAV
         }
         public Product_EAV GetByIdCustom(int id)
         {
-            return _context.Product_EAVs.Where(p=>p.ProductId==id).Include(p => p.Variants).ThenInclude(p => p.VariantAttributes).ThenInclude(p=>p.AttributeValue).ThenInclude(p=>p.Attribute).Include(p=>p.Brand).Include(p=>p.Origin).Include(p=>p.Images).FirstOrDefault();
+            return _context.Product_EAVs.Where(p=>p.ProductId==id).Include(p => p.Variants).ThenInclude(p => p.VariantAttributes).ThenInclude(p=>p.AttributeValue).ThenInclude(p=>p.Attribute).Include(p=>p.Brand).Include(p=>p.Origin).Include(p=>p.Images).Include(p=>p.Variants).ThenInclude(p=>p.Specifications).FirstOrDefault();
         }
 
         public async Task<Product_EAV> GetByIdAsync(int id)
