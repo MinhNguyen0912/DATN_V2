@@ -70,12 +70,6 @@ namespace DATN.API.Controllers
                 return BadRequest("Create ShippingOrder fail");
             }
             var user = await _userManager.FindByIdAsync(Convert.ToString(request.CustomerId));
-            if (user != null)
-            {
-                var invoice = await _unitOfWork.InvoiceRepository.GetById(request.InvoiceId);
-                var sendMail = InvoiceContent.GenerateContentMail(user, invoice);
-                await _emailService.SendEmailAsync(sendMail);
-            }
             return Ok(result);
         }
         [HttpGet]
