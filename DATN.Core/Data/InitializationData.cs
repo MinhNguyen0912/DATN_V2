@@ -224,7 +224,7 @@ namespace DATN.Core.Data
                 new InvoiceDetail { InvoiceDetailId = 1, InvoiceId = 1, Quantity = 2, VariantId = 1, NewPrice = 70000, PuscharPrice = 50000, OldPrice = 75000 },
                 new InvoiceDetail { InvoiceDetailId = 2, InvoiceId = 1, Quantity = 1, VariantId = 2, NewPrice = 71000, PuscharPrice = 52000, OldPrice = 78000 },
                 new InvoiceDetail { InvoiceDetailId = 3, InvoiceId = 1, Quantity = 1, VariantId = 5, NewPrice = 71000, PuscharPrice = 49000, OldPrice = 74000 }
-  
+
             );
             #endregion
             #region Comment
@@ -236,14 +236,14 @@ namespace DATN.Core.Data
             #endregion
             #region Invoice
             modelBuilder.Entity<Invoice>().HasData(
-                new Invoice { InvoiceId = 1, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"),Note="abc-0989982563-Hải Dương-0-0",VoucherId=1 }
+                new Invoice { InvoiceId = 1, CreateDate = DateTime.Now, Status = InvoiceStatus.Success, UserId = Guid.Parse("00bb44d1-f674-49f6-bdae-afb143ab9749"), Note = "abc-0989982563-Hải Dương-0-0", VoucherId = 1 }
 
             );
             #endregion
             #region PaymentInfo
             modelBuilder.Entity<PaymentInfo>().HasData(
                 new PaymentInfo { PaymentInfoId = 1, InvoiceId = 1, PaymentMethod = PaymentMethod.Cash, PaymentStatus = PaymentStatus.Success }
-   
+
             );
             #endregion
             #region Role
@@ -531,7 +531,16 @@ namespace DATN.Core.Data
 
                 // Variant 6
                 new VariantAttribute { VariantAttributeId = 11, VariantId = 6, AttributeValueId = 1 }, // Trắng
-                new VariantAttribute { VariantAttributeId = 12, VariantId = 6, AttributeValueId = 6 }  // 60inch
+                new VariantAttribute { VariantAttributeId = 12, VariantId = 6, AttributeValueId = 6 },  // 60inch
+                new VariantAttribute { VariantAttributeId = 13, VariantId = 7, AttributeValueId = 2 }, // Trắng
+                new VariantAttribute { VariantAttributeId = 14, VariantId = 7, AttributeValueId = 6 },  // 60inch
+
+                new VariantAttribute { VariantAttributeId = 15, VariantId = 8, AttributeValueId = 1 }, // Trắng
+                new VariantAttribute { VariantAttributeId = 16, VariantId = 8, AttributeValueId = 6 }, // 60inch
+                 new VariantAttribute { VariantAttributeId = 17, VariantId = 9, AttributeValueId = 2 }, // Trắng
+                 new VariantAttribute { VariantAttributeId = 18, VariantId = 9, AttributeValueId = 3 },  // 60inch
+                new VariantAttribute { VariantAttributeId = 19, VariantId = 10, AttributeValueId = 2 }, // Trắng
+                new VariantAttribute { VariantAttributeId = 20, VariantId = 10, AttributeValueId = 3 }  // 60inch
             );
             #endregion
             #region Batch   

@@ -470,7 +470,7 @@
                 .then(response => response.json())
                 .then(data => {
                     const container = document.getElementById('variantValuesContainer');
-
+                    console.log(data)
                     // Kiểm tra xem data có phải là mảng không và không phải là undefined
                     if (Array.isArray(data)) {
                         data.forEach(attribute => {
