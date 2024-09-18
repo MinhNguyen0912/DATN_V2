@@ -38,24 +38,30 @@ namespace DATN.Client.Areas.Admin.Controllers
             _httpClient = httpClient;
         }
 
-        // GET: Admin/Products
-        public async Task<IActionResult> Index(ProductPaging request)
-        {
-            ProductPaging partnerPaging = new ProductPaging();
+		// GET: Admin/Products
+		public async Task<IActionResult> Index(ProductPaging request)
+		{
+			// Tạo đối tượng ProductPaging để lưu kết quả
+			ProductPaging productPaging = new ProductPaging();
+
+			// Gửi yêu cầu tới API và nhận dữ liệu
+			productPaging = await _clientService.Post<ProductPaging>("https://localhost:7095/api/ProductEAV/GetProductPaging", request);
+
+			// Kiểm tra nếu không có dữ liệu trả về
+			if (productPaging == null)
+			{
+				return NotFound();
+			}
+
+			// Sắp xếp danh sách sản phẩm theo ProductId (giảm dần)
+			productPaging.Items = productPaging.Items.OrderByDescending(p => p.ProductId).ToList();
+
+			// Trả dữ liệu về View
+			return View(productPaging);
+		}
 
 
-            partnerPaging = await _clientService.Post<ProductPaging>("https://localhost:7095/api/ProductEAV/GetProductPaging", request);
-
-            if (partnerPaging == null)
-            {
-                return NotFound();
-            }
-
-            return View(partnerPaging);
-        }
-
-
-        public async Task<IActionResult> Create()
+		public async Task<IActionResult> Create()
         {
             ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
             {
