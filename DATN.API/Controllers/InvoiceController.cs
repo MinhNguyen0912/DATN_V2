@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DATN.Api.MailService;
+using DATN.API.Helpers;
 using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
@@ -7,6 +8,7 @@ using DATN.Core.Models;
 using DATN.Core.ViewModel.InvoiceVM;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.SaleProductVM;
+using DATN.Core.ViewModels.SendMailVM;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -124,6 +126,8 @@ namespace DATN.API.Controllers
             var reponse = _unitOfWork.SaveChanges();
             if (reponse > 0)
             {
+                var content = InvoiceContent.GenerateContentMail(payment.Email,invoice);
+                await _emailService.SendEmailAsync(content);
                 return Ok(invoice); // 200 OK
             }
             return BadRequest();
