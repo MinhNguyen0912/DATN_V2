@@ -81,31 +81,9 @@ namespace DATN.Core.Repositories.Repositories
                 
                 foreach (var invoice in lstInvoiceByUserId.Where(c => c.UserId == x.Id))
                 {
-
-                    var totalBill = (decimal)Context.InvoiceDetails.AsQueryable()
-                        .Where(c => c.InvoiceId == invoice.InvoiceId).Sum(su => su.Quantity * su.NewPrice);
-                    if (totalBill > 1)
-                    {
-                        var getVoucher = lstVoucher.FirstOrDefault(c => c.Id.ToString() == invoice.UserId.ToString());
-                        if (getVoucher!=null)
-                        {
-                            var bacth = lstBatches.FirstOrDefault(c => c.Id == getVoucher.BatchId);
-                            var final = totalBill - bacth.DiscountAmount;
-                            listFinalPrice.Add((decimal)final);
-                        }
-                        else
-                        {
-                            listFinalPrice.Add(totalBill);
-                        }
-                    }
-                    else
-                    {
-                        listFinalPrice.Add(0);
-                    }
-
+                    listFinalPrice.Add((invoice.FinalAmount.HasValue?(decimal)invoice.FinalAmount:0));
 
                 }
-
                 x.GrandTotalAmountPurchased = formatCurrency.GetCurrency(
                     Convert.ToDecimal(listFinalPrice.Sum(c => c)));
                 x.ListVoucherNameByUser = lstBatches.Where(c => lstVoucher.Where(c=>c.UserId==x.Id).Select(c=>c.BatchId).Contains(c.Id)).Select(c => c.Name).ToList();
