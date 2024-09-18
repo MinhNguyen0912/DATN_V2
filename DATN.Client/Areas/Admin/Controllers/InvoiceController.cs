@@ -180,7 +180,7 @@ namespace DATN.Client.Areas.Admin.Controllers
             var decent = await _clientService.Get($"https://localhost:7095/api/Invoice/ChangeStatus2?invoiceId={invoiceId}");
             _unitOfWork.InvoiceRepository.Update(invoice);
             _unitOfWork.SaveChanges();
-            var content = CancelnvoiceContent.GenerateContentMail(invoice.User, invoice);
+            var content = CancelnvoiceContent.GenerateContentMail(invoice.Note.Split("-")[6], invoice);
             var sendemail = await _clientService.Post("https://localhost:7095/api/SendMail/SendMail", content);
             return RedirectToAction("Index");
         }

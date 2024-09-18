@@ -284,13 +284,13 @@
             <div class="product-section">
                 <div class="form-title">Biến thể sản phẩm</div>
                 <div class="variant-row">
-                         <div class="col-6">
+                      @*    <div class="col-6">
                     <label for="variantType">Thuộc tính</label>
                     <!-- Dropdown select for multiple attributes -->
                     <select multiple class="form-control" id="variantType" asp-items="ViewBag.listAttributes" onchange="fetchVariantValues(this)">
                     </select>
                     <small class="form-text text-muted">Tối đa 3 thuộc tính có thể được chọn.</small>
-                    </div>
+                    </div> *@
                     <div class="col-6" id="variantValuesContainer">
                         <!-- Giá trị biến thể sẽ được sinh ra tại đây -->
                     </div>
@@ -657,26 +657,27 @@
                         alert('Thêm giá trị thành công!');
 
                         // Cập nhật UI sau khi thêm giá trị mới mà không cần reload trang
-                        const attributeBlock = attributeBlocks.get(attributeId);
-                        const valueGroup = attributeBlock.querySelector('.value-group');
+                        // const attributeBlock = attributeBlocks.get(attributeId);
+                        // const valueGroup = attributeBlock.querySelector('.value-group');
 
-                        // Thêm các giá trị mới vào giao diện
-                        data.forEach(value => {
-                            const newValueInput = document.createElement('div');
-                            newValueInput.classList.add('input-group', 'mb-2');
-                            newValueInput.innerHTML = `
-                                                        <input type="text" class="form-control" name="attributeValues[]" value="${value.valueText}" />
-                                                        <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
-                                                        </div>
-                                                    `;
-                            valueGroup.appendChild(newValueInput);
-                        });
+                        // // Thêm các giá trị mới vào giao diện
+                        // data.forEach(value => {
+                        //     const newValueInput = document.createElement('div');
+                        //     newValueInput.classList.add('input-group', 'mb-2');
+                        //     newValueInput.innerHTML = `
+                        //                                 <input type="text" class="form-control" name="attributeValues[]" value="${value.valueText}" />
+                        //                                 <input type="hidden" name="attributeValueIds[]" value="${value.attributeValueId}" />
+                        //                                 <div class="input-group-append">
+                        //                                     <button class="btn btn-danger" type="button" onclick="removeVariantValue(this)">X</button>
+                        //                                 </div>  
+                        //                             `;
+                        //     valueGroup.appendChild(newValueInput);
+                        // });
 
                         // Ẩn modal sau khi lưu thành công
                         var modal = bootstrap.Modal.getInstance(document.getElementById('dynamicValueModal'));
                         modal.hide();
+                        location.reload();
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -783,8 +784,8 @@
                                         <td><input type="hidden" name="Variants[${index}].Name" value="${variantName}" />
                                         ${variantName}</td>
                                         <td><input type="number" class="form-control" name="Variants[${index}].Quantity" value="10" min="1" /></td>
-                                        <td><input type="number" class="form-control" name="Variants[${index}].ImportPrice" value="10000000" min="1000000" /></td>
-                                        <td><input type="number" class="form-control" name="Variants[${index}].SellPrice" value="11000000" /></td>
+                                        <td><input type="number" class="form-control" name="Variants[${index}].PuscharPrice" value="10000000" min="1000000" /></td>
+                                        <td><input type="number" class="form-control" name="Variants[${index}].SalePrice" value="11000000" /></td>
                                         <td><input type="number" class="form-control" name="Variants[${index}].AfterDiscountPrice" value="11000000" /></td>
                                         <td><input type="number" class="form-control" name="Variants[${index}].MaximumQuantityPerOrder" value="3" /></td>
                                         <td><input type="number" class="form-control" name="Variants[${index}].Weight" value="5000" /></td>

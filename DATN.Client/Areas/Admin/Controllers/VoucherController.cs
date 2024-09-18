@@ -8,6 +8,7 @@ using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.voucherVM;
 using DATN.Core.ViewModel.VoucherVM;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -24,18 +25,36 @@ namespace DATN.Client.Areas.Admin.Controllers
         private readonly ClientService _clientService;
         private readonly HttpClient _httpClient;
         private readonly DATNDbContext _dbContext;
-        public VoucherController(IUnitOfWork unitOfWork, IMapper mapper, ClientService clientService, HttpClient httpClient, DATNDbContext dbContext)
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
+        public VoucherController(IUnitOfWork unitOfWork, IMapper mapper, ClientService clientService, HttpClient httpClient, DATNDbContext dbContext, RoleManager<IdentityRole<Guid>> roleManager, UserManager<AppUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _clientService = clientService;
             _httpClient = httpClient;
             _dbContext = dbContext;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index(int BatchId, string userName = null, Core.Enum.VoucherStatus? status = null)
         {
+            // Lấy danh sách tất cả người dùng
             var allUsers = await _clientService.Get<List<AppUser>>("https://localhost:7095/api/User/GetAllUser");
-            var users = allUsers.Where(x=>x.Description == "Customer").ToList();
+
+            // Lọc những người dùng có vai trò "Customer"
+            var usersWithRole = new List<AppUser>();
+
+            foreach (var user in allUsers)
+            {
+                // Kiểm tra nếu user có vai trò "Customer"
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("User"))
+                {
+                    usersWithRole.Add(user);
+                }
+            }
+
             var request = new SearchVoucherRequest
             {
                 BatchId = BatchId,
@@ -57,7 +76,8 @@ namespace DATN.Client.Areas.Admin.Controllers
             {
                 vouchers = new List<VoucherVM>();
             }
-            ViewBag.Users = users;
+
+            ViewBag.Users = usersWithRole;
             ViewBag.BatchId = BatchId;
             return View(vouchers);
         }

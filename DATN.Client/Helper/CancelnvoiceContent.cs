@@ -7,11 +7,11 @@ namespace DATN.Client.Helper
 {
     public class CancelnvoiceContent
     {
-        public static SendMailVM GenerateContentMail(AppUser user, Invoice invoice)
+        public static SendMailVM GenerateContentMail(string email, Invoice invoice)
         {
             SendMailVM sendMail = new SendMailVM
             {
-                Email = user.Email,
+                Email = email,
                 Subject = "DATN - Đơn Hàng Đã Bị Hủy",
                 Content = $@"
         <!DOCTYPE html>
@@ -74,7 +74,7 @@ namespace DATN.Client.Helper
           <body>
             <div class='container'>
               <h3 class='text-center'>DATN - Đơn Hàng Đã Bị Hủy</h3>
-              <p>Xin chào {user.FullName},</p>
+              <p>Xin chào {email},</p>
               <p>Chúng tôi rất tiếc phải thông báo rằng đơn hàng của bạn đã bị hủy. Dưới đây là thông tin chi tiết về đơn hàng:</p>
               <p><b>Mã hóa đơn:</b> {invoice.InvoiceId}</p>
               <p><b>Ngày mua:</b> {invoice.CreateDate.ToString("dd/MM/yyyy")}</p>
