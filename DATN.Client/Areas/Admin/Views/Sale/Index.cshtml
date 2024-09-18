@@ -321,7 +321,7 @@
                                     <span>@(x.TotalAmount - @x.DicountAmount)</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span style="width: 100%;">Tiền khách đưa <input type="number" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
+                                    <span style="width: 100%;">Tiền khách đưa <input type="number" class="form-control" min="0" id="customer-money" oninput="caculateChangeMoney(event)"></span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
                                     Tiền thừa
@@ -458,6 +458,11 @@
                                 <td></td>
                                 <td class="text-end"><span>${response.data.customerGivenMoney.toLocaleString()}</span></td>
                             </tr>
+                            <tr class="details">
+                                <td><span>Mã giảm giá ${response.data.bacthName==null?"":response.data.bacthName}</td>
+                                <td></td>
+                                <td class="text-end"><span>Chiết khấu  ${response.data.dicountAmount==null?0:response.data.dicountAmount}</span></td>
+                            </tr>
                             <tr class="heading">
                                 <td>Tên sản phẩm</td>
                                 <td>Số lượng</td>
@@ -473,7 +478,7 @@
                         }
                         rowHtml += `
            <tr class="total text-end">
-            <td>Ghi chú: ${response.data.note == null ? "" : response.data.note}</td>
+            <td class="text-start">Ghi chú: ${response.data.note == null ? "" : response.data.note}</td>
             <td>Giá VAT: 10%</td>
             <td class="text-end">Tổng tiền: ${response.data.mustPay.toLocaleString()}</td>
            </tr>
@@ -534,7 +539,7 @@
              <span>0</span>
            </li>
            <li class="list-group-item d-flex justify-content-between align-items-center">
-             <span style="width: 100%;">Tiền khách đưa <input type="number" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
+             <span style="width: 100%;">Tiền khách đưa <input type="number" class="form-control" min="0" id="customer-money" oninput="caculateChangeMoney(event)"></span>
            </li>
            <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
              Tiền thừa
@@ -656,7 +661,7 @@
              <span>${sp.mustPay}</span>
            </li>
            <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span style="width: 100%;">Tiền khách đưa  <input type="number" value="${sp.customerGivenMoney}" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
+            <span style="width: 100%;">Tiền khách đưa  <input type="number" value="${sp.customerGivenMoney}" min="0" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
 
            </li>
            <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
@@ -813,7 +818,7 @@
              <span>${item.mustPay}</span>
            </li>
            <li class="list-group-item d-flex justify-content-between align-items-center">
-           <span style="width: 100%;">Tiền khách đưa  <input type="number" class="form-control" value="${item.customerGivenMoney}" id="customer-money" onkeydown="caculateChangeMoney(event)"></span>
+           <span style="width: 100%;">Tiền khách đưa  <input type="number" class="form-control" min="0" value="${item.customerGivenMoney}" id="customer-money" onkeydown="caculateChangeMoney(event)"></span>
 
            </li>
            <li class="list-group-item d-flex justify-content-between align-items-center text-muted">
@@ -957,7 +962,7 @@
              <span>${item.mustPay}</span>
            </li>
            <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span> Tiền khách đưa <input type="number" value="${item.customerGivenMoney}" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
+            <span> Tiền khách đưa <input type="number" value="${item.customerGivenMoney}" min="0" class="form-control" id="customer-money" oninput="caculateChangeMoney(event)"></span>
 
            </li>
            <li class="list-group-item d-flex justify-content-between align-items-center text-muted">

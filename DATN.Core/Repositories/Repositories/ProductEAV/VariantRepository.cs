@@ -20,5 +20,10 @@ namespace DATN.Core.Repositories.Repositories.ProductEAV
         {
             return _context.Variants.Where(p => p.VariantId == variantId).Include(p => p.Specifications).Include(p=>p.Product).ThenInclude(p=>p.Images).FirstOrDefault();
         }
+
+        public List<Variant> GetByIdProduct(int productId)
+        {
+            return _context.Variants.Where(p=>p.ProductId == productId).Include(p=>p.VariantAttributes).ThenInclude(p=>p.AttributeValue).ToList();
+        }
     }
 }

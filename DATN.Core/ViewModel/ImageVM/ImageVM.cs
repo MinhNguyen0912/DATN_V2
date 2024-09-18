@@ -28,4 +28,5 @@ namespace DATN.Core.ViewModel.ImagePath
         [Required(ErrorMessage = "Không được để trống")]
         public bool IsDefault { get; set; }
     }
+
 }

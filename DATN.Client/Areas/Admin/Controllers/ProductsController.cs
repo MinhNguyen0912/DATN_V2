@@ -2,6 +2,7 @@
 using DATN.Client.Constants;
 using DATN.Client.Helper;
 using DATN.Client.Services;
+using DATN.Core.Data;
 using DATN.Core.Enum;
 using DATN.Core.Infrastructures;
 using DATN.Core.Model;
@@ -15,6 +16,7 @@ using DATN.Core.ViewModel.Product_EAV;
 using DATN.Core.ViewModel.ProdutEAVVM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Newtonsoft.Json.Linq;
 
 
@@ -28,33 +30,41 @@ namespace DATN.Client.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly HttpClient _httpClient;
+        private readonly DATNDbContext _context;
 
-        public ProductsController(ClientService clientService, IMapper mapper, IUnitOfWork unitOfWork, HttpClient httpClient)
+        public ProductsController(ClientService clientService, IMapper mapper, IUnitOfWork unitOfWork, HttpClient httpClient, DATNDbContext context)
         {
             _clientService = clientService;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _httpClient = httpClient;
+           _context = context;
         }
 
-        // GET: Admin/Products
-        public async Task<IActionResult> Index(ProductPaging request)
-        {
-            ProductPaging partnerPaging = new ProductPaging();
+		// GET: Admin/Products
+		public async Task<IActionResult> Index(ProductPaging request)
+		{
+			// Tạo đối tượng ProductPaging để lưu kết quả
+			ProductPaging productPaging = new ProductPaging();
+
+			// Gửi yêu cầu tới API và nhận dữ liệu
+			productPaging = await _clientService.Post<ProductPaging>("https://localhost:7095/api/ProductEAV/GetProductPaging", request);
+
+			// Kiểm tra nếu không có dữ liệu trả về
+			if (productPaging == null)
+			{
+				return NotFound();
+			}
+
+			// Sắp xếp danh sách sản phẩm theo ProductId (giảm dần)
+			productPaging.Items = productPaging.Items.OrderByDescending(p => p.ProductId).ToList();
+
+			// Trả dữ liệu về View
+			return View(productPaging);
+		}
 
 
-            partnerPaging = await _clientService.Post<ProductPaging>("https://localhost:7095/api/ProductEAV/GetProductPaging", request);
-
-            if (partnerPaging == null)
-            {
-                return NotFound();
-            }
-
-            return View(partnerPaging);
-        }
-
-
-        public async Task<IActionResult> Create()
+		public async Task<IActionResult> Create()
         {
             ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
             {
@@ -324,7 +334,42 @@ namespace DATN.Client.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await _clientService.Get<ProductVM_EAV>($"{ApiPaths.ProductEAV}/GetById/{id}");
+            var product = _unitOfWork.ProductEAVRepository.GetByIdCustom(id);
+            var result = new UpdateProductVM
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                Description = product.Description,
+                Status = product.Status,
+                OriginId = product.OriginId,
+                BrandId = product.BrandId,
+                ImageGetDB = product.Images?.Select(i => new ImageVM
+                {
+                    ImageId = i.ImageId,
+                    ImagePath = i.ImagePath,
+                    IsDefault = i.IsDefault
+                }).ToList() ?? new List<ImageVM>(), // Bổ sung ánh xạ cho Images
+                Variants = product.Variants?.Select(v => new UpdateVariantVM
+                {
+                    VariantId = v.VariantId,
+                    Name = v.VariantName,
+                    Quantity = v.Quantity,
+                    PuscharPrice = v.PuscharPrice,
+                    SalelPrice = v.SalePrice,
+                    AfterDiscountPrice = v.AfterDiscountPrice,
+                    IsDefault = v.IsDefault,
+                    MaximumQuantityPerOrder = v.MaximumQuantityPerOrder,
+                    Weight = v.Weight,
+                    IsActive = v.IsActive,
+                    Specifications = v.Specifications?.Select(s => new UpdateSpecificationVM
+                    {
+                        Id = s.Id,
+                        Key = s.Key,
+                        Value = s.Value
+                    }).ToList() ?? new List<UpdateSpecificationVM>()
+                }).ToList() ?? new List<UpdateVariantVM>()
+            };
+
             ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem
             {
                 Text = v.ToString(),
@@ -351,8 +396,217 @@ namespace DATN.Client.Areas.Admin.Controllers
             ViewBag.listAttributes = new SelectList((System.Collections.IEnumerable)listAttributes, "AttributeId", "AttributeName");
 
 
-            return View(product);
+            return View(result);
         }
+        [HttpPost]
+        public async Task<IActionResult> Edit(UpdateProductVM productVM)
+        {
+
+            using (var transaction = _unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                                   
+                    var product = _unitOfWork.ProductEAVRepository.GetByIdCustom(productVM.ProductId);
+                    // Tạo đối tượng Product_EAV
+
+                    product.ProductName = productVM.ProductName;
+                    product.Description = productVM.Description;
+                    product.Status = productVM.Status;
+                    product.OriginId = productVM.OriginId;
+                    product.BrandId = productVM.BrandId;
+
+
+                    _unitOfWork.ProductEAVRepository.Update(product);
+                    _unitOfWork.SaveChanges();
+
+                    var productId = product.ProductId;
+                    List<int> cateIdList = new List<int>();
+                    // Tách cateIds từ chuỗi và chuyển thành danh sách số nguyên
+                    if (productVM.cateIds != null)
+                    {
+                        cateIdList = productVM.cateIds.Split(',').Select(int.Parse).ToList();
+                        // Kiểm tra và tạo CategoryProducts
+                        foreach (var cateId in cateIdList)
+                        {
+                            // Kiểm tra xem ProductId và CategoryId đã tồn tại chưa
+                            var existingCategoryProduct = _unitOfWork.CategoryProductRepository
+                                .Find(cp => cp.ProductId == productId && cp.CategoryId == cateId);
+
+                            // Nếu chưa tồn tại thì thêm mới
+                            if (existingCategoryProduct == null)
+                            {
+                                CategoryProduct categoryProduct = new CategoryProduct
+                                {
+                                    ProductId = productId,
+                                    CategoryId = cateId
+                                };
+                                var categoryProductResult = _unitOfWork.CategoryProductRepository.Create(categoryProduct);
+                                if (categoryProductResult == null)
+                                {
+                                    throw new Exception("Failed to create category product.");
+                                }
+                            }
+                        }
+                    }
+                    // Tạo Variants và VariantAttributes
+                    if (productVM.Variants != null)
+                    {
+                        
+                        foreach (var item in productVM.Variants)
+                        {
+                            Variant variant;
+                            if (item.VariantId != 0)
+                            {
+                                variant = _unitOfWork.VariantRepository.GetByIdCustom(item.VariantId);
+                                variant.VariantName = item.Name;
+                                variant.Quantity = item.Quantity;
+                                variant.PuscharPrice = item.PuscharPrice;
+                                variant.SalePrice = item.SalelPrice;
+                                variant.AfterDiscountPrice = item.AfterDiscountPrice;
+                                variant.IsDefault = item.IsDefault;
+                                variant.MaximumQuantityPerOrder = item.MaximumQuantityPerOrder;
+                                variant.IsActive = item.IsActive;
+                                variant.Weight = item.Weight;
+                                _unitOfWork.VariantRepository.Update(variant);
+                            }
+                            else
+                            {
+                                 variant = new Variant
+                                {
+                                    ProductId = productId,
+                                    VariantName = item.Name,
+                                    Quantity = item.Quantity,
+                                    PuscharPrice = item.PuscharPrice,
+                                    SalePrice = item.SalelPrice,
+                                    AfterDiscountPrice = item.AfterDiscountPrice,
+                                    IsDefault = item.IsDefault,
+                                    IsActive = true,
+                                    MaximumQuantityPerOrder = item.MaximumQuantityPerOrder,
+                                    Weight = item.Weight,
+                                };
+
+                               _unitOfWork.VariantRepository.Create(variant);
+                                _unitOfWork.SaveChanges();
+                                // Tách attributeValueIds và tạo VariantAttributes
+                                var attributeValueIds = item.attributeValueIds.Split('/').Select(int.Parse).ToList();
+                                foreach (var attributeValueId in attributeValueIds)
+                                {
+                                    VariantAttribute variantAttribute = new VariantAttribute
+                                    {
+                                        VariantId = variant.VariantId,
+                                        AttributeValueId = attributeValueId
+                                    };
+                                    var variantAttributeResult = _unitOfWork.VariantAttributeRepository.Create(variantAttribute);
+                                    _unitOfWork.SaveChanges();
+                                    if (variantAttributeResult == null)
+                                    {
+                                        throw new Exception("Failed to create variant attribute.");
+                                    }
+                                }
+                            }
+                            // Tạo Variant
+                            
+                            _unitOfWork.SaveChanges();
+
+
+                            var variantid = variant.VariantId;
+                            // tạo specifications cho từng variant
+                            if (item.Specifications != null)
+                            {
+                                foreach (var spec in item.Specifications)
+                                {
+                                    Specification specification;
+                                    if (spec.Id!=0)
+                                    {
+                                        specification =await _unitOfWork.SpecificationRepository.GetById(spec.Id);
+                                        specification.Key = spec.Key;
+                                        specification.Value = spec.Value;
+                                        _unitOfWork.SpecificationRepository.Update(specification);
+                                    }
+                                    else
+                                    {
+                                        specification = new Specification
+                                        {
+                                            VariantId = variantid,
+                                            Key = spec.Key,
+                                            Value = spec.Value
+                                        };
+                                        var specresult = _unitOfWork.SpecificationRepository.Create(specification);
+                                        _unitOfWork.SaveChanges();
+                                        if (specresult == null)
+                                        {
+                                            throw new Exception("failed to create specification.");
+                                        }
+                                    }
+                                }
+                                _unitOfWork.SaveChanges();
+                            }
+                        }
+                    }
+
+                    // Xử lý upload ảnh mặc định
+                    if (productVM.ImagesDefault != null)
+                    {
+                        var imageDefaultResponse = await UploadImage(productVM.ImagesDefault);
+                        if (imageDefaultResponse == null)
+                        {
+                            throw new Exception("Failed to upload default image.");
+                        }
+                        if (productVM.ImagedefaultId != null)
+                        {
+                            var existingImage = _context.Images.FirstOrDefault(x => x.ImageId == productVM.ImagedefaultId);/* var existingImage = await _clientService.Post<ImageVM>($"{ApiPaths.Images}/Get", productVM.ImagedefaultId);*/
+
+                            existingImage.ImagePath = imageDefaultResponse;
+
+                            _unitOfWork.imageReponsiroty.Update(existingImage);
+                        }
+                    }
+
+                    // Xử lý upload ảnh bổ sung
+                    if (productVM.Images != null && productVM.Images.Count > 0)
+                    {
+                        foreach (var file in productVM.Images)
+                        {
+                            var imageResponse = await UploadImage(file);
+                            if (imageResponse == null)
+                            {
+                                throw new Exception("Failed to upload additional image.");
+                            }
+
+                            Image additionalImageVm = new Image
+                            {
+                                ImagePath = imageResponse,
+                                IsDefault = false,
+                                ProductId = productId
+                            };
+                            //await _clientService.Post<ImageVM>($"{ApiPaths.Images}/CreateImageProduct", additionalImageVm);
+
+                            var ImageResult = _unitOfWork.imageReponsiroty.Create(additionalImageVm);
+                            _unitOfWork.SaveChanges();
+                            if (ImageResult == null)
+                            {
+                                throw new Exception("Failed to create specification.");
+                            }
+                        }
+                    }
+
+                    // Commit transaction nếu mọi thứ thành công
+                    transaction.Commit();
+                    ToastHelper.ShowSuccess(TempData, "Product created successfully!");
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    // Rollback transaction nếu có lỗi
+                    transaction.Rollback();
+                    ToastHelper.ShowError(TempData, $"Error: {ex.Message}");
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+        }
+
+
         //private async Task<IActionResult> ReturnToCreateViewWithErrors(CreateProductVM productVM)
         //{
         //    ViewBag.StatusList = new SelectList(Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>().Select(v => new SelectListItem

@@ -34,7 +34,7 @@ namespace DATN.Core.Repositories.Repositories
         public async Task<Batch> GetByName(string Name,DateTime CurrentDate,decimal GrandTotalValue)
         {
             var queryabler = Context.Batches.AsQueryable();
-            var batch = await queryabler.Where(x => x.Name == Name).FirstOrDefaultAsync();
+            var batch = await queryabler.Where(x => x.Name == Name && x.IsActive==true).FirstOrDefaultAsync();
             if (batch is not null)
             {
                 if ((batch.StartDate <= CurrentDate && CurrentDate < batch.EndDate) &&
@@ -74,7 +74,7 @@ namespace DATN.Core.Repositories.Repositories
 
         public Batch GetByIdCustom(int id)
         {
-            return Context.Batches.FirstOrDefault(x => x.Id == id);
+            return Context.Batches.Include(v=>v.Vouchers).ThenInclude(v=>v.User).FirstOrDefault(x => x.Id == id);
         }
     }
 }

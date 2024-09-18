@@ -21,7 +21,62 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.min.js'></script>
 
+<style>
+    .promotioncodebox_input {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
 
+    .form-group {
+        margin: 0;
+    }
+
+    .voucher-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 400px; /* Cố định kích thước của ul */
+        overflow-y: auto; /* Thêm thanh cuộn nếu cần */
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .voucher-item {
+        border-bottom: 1px solid #ddd;
+    }
+
+        .voucher-item:last-child {
+            border-bottom: none;
+        }
+
+        .voucher-item label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+    .voucher-checkbox {
+        margin-right: 10px;
+    }
+
+    .voucher-details {
+        flex: 1;
+    }
+
+    .voucher-name {
+        font-weight: bold;
+    }
+    .voucher-code, .voucher-description {
+        display: block;
+        font-size: 0.9em;
+        color: #555;
+    }
+
+</style>
 <div class="cart-container">
     <section>
         <form asp-controller="Cart" asp-action="PaymentProcess" method="post">
@@ -155,35 +210,38 @@
                     <div class="promotioncodebox_input" id="promotioncodebox_input">
                         <div class="form-group">
                             <label class="control-label">Mã giảm giá</label>
-                            <select name="VoucherId" class="form-control" id="voucherSelect" style="max-height: 400px; cursor: pointer;">
-                                <option value="0" > Chọn mã giảm giá</option>
-                                @{
-                                    decimal totalCartAmount = 0;
-                                    foreach (var item in pendingCart.PendingCartVariants)
-                                    {
-                                        totalCartAmount += item.Variant.AfterDiscountPrice * item.Quantity;
-                                    }
+                            @{
+                                // Tính tổng số tiền giỏ hàng
+                                decimal totalCartAmount = 0;
+                                foreach (var item in pendingCart.PendingCartVariants)
+                                {
+                                    totalCartAmount += item.Variant.AfterDiscountPrice * item.Quantity;
                                 }
+                            }
+
+                            <ul class="voucher-list">
                                 @foreach (var item in voucher)
-                                {                                    
+                                {
                                     bool isVoucherValid = totalCartAmount >= item.Batch.MinOrderAmount;
-                                    if (isVoucherValid)
-                                    {
-                                        <option value="@item.Id" data-description="@item.Batch.Description">@item.Batch.Name</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@item.Id" data-description="@item.Batch.Description" disabled>
-                                            @item.Batch.Name (giỏ hàng chưa đạt giá trị tối thiểu)
-                                        </option>
-                                    }
+
+                                    <li class="voucher-item">
+                                        <label>
+                                            <input type="checkbox" name="VoucherId" value="@item.Id"
+                                                   data-min-order-amount="@item.Batch.MinOrderAmount"
+                                            @(isVoucherValid ? "" : "disabled")
+                                                   class="voucher-checkbox">
+                                            <div class="voucher-details">
+                                                <span class="voucher-name">@item.Batch.Name</span>                                               
+                                                <span class="voucher-code">@item.Code</span>
+                                                <span class="voucher-description">@item.Batch.Description</span>
+                                            </div>
+                                        </label>
+                                    </li>
                                 }
-                            </select>
-                        </div>
-                        <div id="voucherDescription" style="margin-top: 10px; font-style: italic;">
-                            Di chuột vào mã giảm giá để xem thông tin mô tả...
+                            </ul>
                         </div>
                     </div>
+
                     <div class="totalprice price-box">
                         <strong class="labeltotal">Tiền hàng: </strong>
                         <strong class="red-price pricetotal">Chưa xác nhận thông tin</strong>
@@ -250,18 +308,29 @@
     @{
         var user = ViewData["user"] as DATN.Client.Models.UserInfo;
     }
-    // Thêm sự kiện tăng giảm số lượng cho các nút
-    document.querySelectorAll('.decrease').forEach(button => {
-        button.addEventListener('click', function () {
-            const productId = this.dataset.id;
-            const inputQuantity = document.querySelector(`.quantitysp[data-id="${productId}"]`);
-            let currentQuantity = parseInt(inputQuantity.value);
-            if (currentQuantity > 0) {
-                inputQuantity.value = currentQuantity - 1;
+        // Thêm sự kiện tăng giảm số lượng cho các nút
+        document.querySelectorAll('.decrease').forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.dataset.id;
+                const inputQuantity = document.querySelector(`.quantitysp[data-id="${productId}"]`);
+                let currentQuantity = parseInt(inputQuantity.value);
+                if (currentQuantity > 0) {
+                    inputQuantity.value = currentQuantity - 1;
+                    updateCartAndVoucher();
+                }
+            });
+        });
+    document.querySelectorAll('.voucher-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                document.querySelectorAll('.voucher-checkbox').forEach(cb => {
+                    if (cb !== this) {
+                        cb.checked = false; 
+                    }
+                });
             }
         });
     });
-
     document.querySelectorAll('.increase').forEach(button => {
         button.addEventListener('click', function () {
             const productId = this.dataset.id;
@@ -269,6 +338,7 @@
             const currentQuantity = parseInt(inputQuantity.value);
             if (currentQuantity < parseInt(inputQuantity.getAttribute("max"))) {
                 inputQuantity.value = currentQuantity + 1;
+                updateCartAndVoucher();
             }
         });
     });
@@ -286,74 +356,89 @@
         }
     }
     // Lấy danh sách các phần tử 'option' trong dropdown
-    const voucherSelect = document.getElementById("voucherSelect");
-    const descriptionDiv = document.getElementById("voucherDescription");
+    function updateCartAndVoucher() {
+        let totalCartAmount = 0;
 
-    // Thêm sự kiện 'mouseover' và 'mouseout' cho từng option
-    voucherSelect.addEventListener('mouseover', function (e) {
-        if (e.target.tagName === 'OPTION') {
-            const description = e.target.getAttribute('data-description');
-            descriptionDiv.textContent = description || 'Không có thông tin mô tả';
-        }
-    });
+        // Tính tổng giá trị giỏ hàng dựa trên số lượng và giá sản phẩm
+        document.querySelectorAll('.quantitysp').forEach(input => {
+            const quantity = parseInt(input.value);
+            const price = parseFloat(input.dataset.price);
+            totalCartAmount += quantity * price;
+        });
 
-    // Đặt lại mô tả khi di chuột ra ngoài dropdown
-    voucherSelect.addEventListener('mouseout', function (e) {
-        if (e.target.tagName === 'OPTION') {
-            descriptionDiv.textContent = 'Di chuột vào mã giảm giá để xem thông tin mô tả...';
-        }
-    });
-    // Gắn sự kiện change vào phần tử select
-    voucherSelect.addEventListener('change', function () {
-    var vouchers = @Html.Raw(JsonSerializer.Serialize(voucher));  // Danh sách voucher được truyền từ Razor
-    let selectedOption = this.options[this.selectedIndex];
-    let voucherId = parseFloat(selectedOption.getAttribute('value'));
+        // Kiểm tra xem voucher nào còn hợp lệ dựa trên tổng giá trị giỏ hàng
+        let isVoucherValid = false;
+        let selectedVoucher = null;
 
-    // Tìm voucher tương ứng
-    let voucher = vouchers.find(v => v.Id === voucherId);
-    let discount = 0;
-    // Tính tổng giá trị sản phẩm
-    let totalPrice = 0;
-    for (var item of document.querySelectorAll(".quantitysp")) {
-        totalPrice += parseFloat(item.getAttribute("data-price")) * parseFloat(item.value);
-    }
-
-    // Tính tổng phí vận chuyển
-    let totalShipFee = parseFloat(document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, ''));
-
-    if (voucher) {
-        if (voucher.Batch.Type == 1) {
-            if (voucher.Batch.DiscountType == 1) {
-                // Giảm giá theo giá trị cố định
-                discount = voucher.Batch.DiscountAmount;
-                if(voucher.Batch.discountAmount > totalPrice){
-                    discount = totalPrice;
+        document.querySelectorAll('.voucher-checkbox').forEach(checkbox => {
+            const minOrderAmount = parseFloat(checkbox.dataset.minOrderAmount);
+            if (totalCartAmount >= minOrderAmount) {
+                checkbox.disabled = false;  // Voucher hợp lệ, không disable checkbox
+                if (checkbox.checked) {
+                    isVoucherValid = true;  // Xác định voucher hiện tại có hợp lệ
+                    selectedVoucher = checkbox.value;  // Lưu lại voucher đã chọn
                 }
             } else {
-                // Giảm giá theo phần trăm tổng giá trị đơn hàng
-                let totalPrice = parseFloat(document.getElementsByClassName("pricetotal")[0].textContent.replace(/[^\d.-]/g, ''));
-                discount = voucher.Batch.DiscountAmount * totalPrice / 100;
-
-                // Kiểm tra nếu có giới hạn giảm giá tối đa
-                if (voucher.Batch.MaxDiscountAmount != 0 && discount > voucher.Batch.MaxDiscountAmount) {
-                    discount = voucher.Batch.MaxDiscountAmount;
-                }
+                checkbox.disabled = true;  // Nếu không đạt giá trị tối thiểu, disable voucher
+                checkbox.checked = false;  // Hủy chọn voucher không hợp lệ
             }
-        } else {
-            // Giảm giá theo phí vận chuyển
-            let totalShipFee = parseFloat(document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, ''));
-            discount = voucher.Batch.DiscountAmount * totalShipFee / 100;
+        });
+
+        // Nếu voucher đã chọn không còn hợp lệ, thông báo và reset lại voucher
+        if (!isVoucherValid && selectedVoucher) {
+            alert('Voucher đã chọn không còn hợp lệ. Vui lòng chọn voucher khác.');
+            selectedVoucher = null;  // Reset lại giá trị voucher đã chọn
         }
+
+        // Cập nhật lại thông tin voucher và giỏ hàng
+        applyVoucher(selectedVoucher, totalCartAmount);
     }
 
-    
-    // Tính tổng giá cuối cùng sau khi áp dụng giảm giá
-    let finalPrice = totalPrice + totalShipFee - discount;
+    function applyVoucher(selectedVoucherId, totalCartAmount) {
+        // Tìm voucher được chọn từ danh sách voucher đã truyền vào từ Razor
+        var vouchers = @Html.Raw(JsonSerializer.Serialize(voucher));  // Danh sách voucher từ Razor
+        let voucher = vouchers.find(v => v.Id == selectedVoucherId);
 
-    // Cập nhật giá trị tổng và giá trị cuối cùng trên giao diện
-    document.getElementsByClassName("pricetotal")[0].innerHTML = `${totalPrice.toLocaleString()} VNĐ`
-    document.getElementsByClassName("pricelast")[0].innerHTML = `${finalPrice.toLocaleString()} VNĐ`
+        let discount = 0;
+        let totalShipFee = parseFloat(document.getElementsByClassName("feeShipping")[0].textContent.replace(/[^\d.-]/g, ''));
+
+        if (voucher) {
+            if (voucher.Batch.Type == 1) {  // Giảm giá theo tổng đơn hàng
+                if (voucher.Batch.DiscountType == 1) {
+                    discount = voucher.Batch.DiscountAmount;  // Giảm theo giá trị cố định
+                    if (discount > totalCartAmount) {
+                        discount = totalCartAmount;
+                    }
+                } else {
+                    discount = voucher.Batch.DiscountAmount * totalCartAmount / 100;  // Giảm giá theo phần trăm
+                    if (voucher.Batch.MaxDiscountAmount != 0 && discount > voucher.Batch.MaxDiscountAmount) {
+                        discount = voucher.Batch.MaxDiscountAmount;  // Giới hạn giảm giá tối đa
+                    }
+                }
+            } else {  // Giảm giá theo phí vận chuyển
+                discount = voucher.Batch.DiscountAmount * totalShipFee / 100;
+            }
+        }
+
+        // Tính tổng giá trị cuối cùng sau khi áp dụng voucher
+        let finalPrice = totalCartAmount + totalShipFee - discount;
+
+        // Cập nhật giao diện
+        document.getElementsByClassName("pricelast")[0].innerHTML = `${finalPrice.toLocaleString()} VNĐ`;
+    }
+
+    // Gắn sự kiện thay đổi cho các checkbox trong danh sách voucher
+    document.querySelectorAll('.voucher-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            if (confirmAddress) {
+                alert("Vui lòng xác nhận thông tin trước khi áp dụng voucher");
+                checkbox.checked = false;  // Reset lại checkbox nếu chưa xác nhận địa chỉ
+                return;
+            }
+            updateCartAndVoucher();  // Cập nhật giỏ hàng và voucher khi có sự thay đổi
+        });
     });
+
 
     async function CalculateShippingFee() {
         let isEmptyCart = true

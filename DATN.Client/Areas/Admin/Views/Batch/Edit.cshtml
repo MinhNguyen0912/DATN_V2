@@ -7,7 +7,8 @@
 @model Batch 
 
 @{
-    ViewData["Title"] = "Create Batch";
+    ViewData["Title"] = "Edit Batch";
+    bool hasAssignVouchers = Model.Vouchers.Where(v => v.Status == VoucherStatus.NotUsed || v.Status == VoucherStatus.Used).Any();
 }
 <style>
     .fixed-size {
@@ -19,9 +20,12 @@
         margin-bottom: 15px;
     }
 </style>
-<h2>Tạo Đợt Phát Hành</h2>
-
-<form asp-action="Edit" method="post">
+<h2>Sửa Đợt Phát Hành</h2>
+@if (hasAssignVouchers)
+{
+    <span>Đợt phát đã có voucher được phát hành hoặc sử dụng</span>
+}
+<form asp-action="Edit" method="post" id="batchForm">
     <!-- Thông tin Đợt Phát Hành -->
     <fieldset>
         <legend>Thông tin Đợt Phát Hành</legend>
@@ -40,7 +44,7 @@
 
         <div class="form-group">
             <label asp-for="Type">Loại Voucher:</label>
-            <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<VoucherType>()" id="VoucherType">
+            <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<VoucherType>()" id="VoucherType" >
                 <option value="">-- Chọn Loại Voucher --</option>
             </select>
             <span asp-validation-for="Type" class="text-danger"></span>
@@ -48,7 +52,8 @@
 
         <div class="form-group">
             <label asp-for="DiscountType">Loại Giảm Giá:</label>
-            <select asp-for="DiscountType" class="form-control" asp-items="Html.GetEnumSelectList<DiscountType>()" id="DiscountType">
+            <select asp-for="DiscountType" class="form-control" asp-items="Html.GetEnumSelectList<DiscountType>()" id="DiscountType" >
+                
                 <option value="">-- Chọn Loại Giảm Giá --</option>
             </select>
             <span asp-validation-for="DiscountType" class="text-danger"></span>
@@ -120,7 +125,24 @@
 
 @section Scripts {
     <script>
+        var hasAssignVouchers = @Html.Raw(Json.Serialize(hasAssignVouchers));
+
+        function disableFormFields() {
+            console.log(hasAssignVouchers); // Kiểm tra giá trị
+
+            // So sánh với giá trị boolean true
+            if (hasAssignVouchers === true) {
+                var form = document.getElementById('batchForm');
+                var elements = form.querySelectorAll('input, textarea, select');
+
+                elements.forEach(function (element) {
+                    element.disabled = true;
+                });
+            }
+        }
         document.addEventListener('DOMContentLoaded', function () {
+            
+
             const voucherType = document.getElementById('VoucherType');
             const discountType = document.getElementById('DiscountType');
             const discountAmount = document.getElementById('DiscountAmount');
@@ -137,16 +159,15 @@
                 }
             }
 
-            voucherType.addEventListener('change', updateFields);
-
-            // Kiểm tra ban đầu
+            // Kiểm tra giá trị khi tài liệu được tải
             updateFields();
 
+            voucherType.addEventListener('change', updateFields);
+            disableFormFields();
             // Hiển thị MaxDiscountAmount khi DiscountType là Percent (giá trị '0')
             discountType.addEventListener("change", function () {
                 var discountTypeValue = this.value;
 
-                // Kiểm tra giá trị của DiscountType (0 cho Percent)
                 if (discountTypeValue === '0') {
                     maxDiscountField.style.display = "block"; // Hiển thị trường MaxDiscountAmount
                 } else {
@@ -163,7 +184,6 @@
                 maxDiscountField.style.display = "none";
             }
 
-            // Kiểm tra Số Tiền Giảm Giá nếu Loại Giảm Giá là Percent
             function validateDiscountAmount() {
                 if (discountType.value === '0' && parseFloat(discountAmount.value) > 100) {
                     discountAmount.setCustomValidity('Giá trị giảm giá phải nhỏ hơn hoặc bằng 100 khi loại giảm giá là phần trăm.');
@@ -172,10 +192,8 @@
                 }
             }
 
-            // Thêm sự kiện vào input Số Tiền Giảm Giá
             discountAmount.addEventListener('input', validateDiscountAmount);
 
-            // Kiểm tra "Ngày Kết Thúc" phải sau "Ngày Bắt Đầu"
             function validateDates() {
                 if (startDate.value && endDate.value && new Date(endDate.value) <= new Date(startDate.value)) {
                     endDate.setCustomValidity('Ngày kết thúc phải sau ngày bắt đầu.');
@@ -184,24 +202,25 @@
                 }
             }
 
-            // Thêm sự kiện vào "Ngày Bắt Đầu" và "Ngày Kết Thúc"
             startDate.addEventListener('input', validateDates);
             endDate.addEventListener('input', validateDates);
 
-            // Xử lý hiển thị trường dựa trên radio button
             document.getElementById("validityPeriodRadio").addEventListener("change", function () {
                 if (this.checked) {
-                    document.getElementById("validityPeriodFields").style.display = "flex";  // Hiển thị "Thời gian áp dụng"
-                    document.getElementById("expirationPeriodField").style.display = "none";  // Ẩn "Thời hạn sử dụng"
+                    document.getElementById("validityPeriodFields").style.display = "flex";
+                    document.getElementById("expirationPeriodField").style.display = "none";
                 }
             });
 
             document.getElementById("expirationPeriodRadio").addEventListener("change", function () {
                 if (this.checked) {
-                    document.getElementById("validityPeriodFields").style.display = "none";  // Ẩn "Thời gian áp dụng"
-                    document.getElementById("expirationPeriodField").style.display = "block";  // Hiển thị "Thời hạn sử dụng"
+                    document.getElementById("validityPeriodFields").style.display = "none";
+                    document.getElementById("expirationPeriodField").style.display = "block";
                 }
             });
         });
+
+       
+
     </script>
 }

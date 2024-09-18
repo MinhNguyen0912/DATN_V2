@@ -7,10 +7,10 @@ namespace DATN.API.Helpers
     public class InvoiceContent
     {
 
-        public static SendMailVM GenerateContentMail(AppUser user, Invoice invoice)
+        public static SendMailVM GenerateContentMail(string email, Invoice invoice)
         {
             SendMailVM sendMail = new SendMailVM();
-            sendMail.Email = user.Email;
+            sendMail.Email = email;
             sendMail.Subject = "DATN - New Product";
 
             // Tạo chuỗi HTML cho danh sách chi tiết hóa đơn
@@ -58,7 +58,7 @@ namespace DATN.API.Helpers
                       <body>
                         <div class='container'>
                           <h3 class='text-center' style='color: #D82D8B;'>DATN - New Product</h3>
-                          <b class=''>Xin chào " + user.FullName + @"</b>
+                          <b class=''>Xin chào " + email + @"</b>
                           <br>
                             Rất cảm ơn bạn đã mua hàng tại shop.
                           </br>

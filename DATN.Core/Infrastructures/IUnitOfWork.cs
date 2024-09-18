@@ -51,6 +51,7 @@ namespace DATN.Core.Infrastructures
         public IVariantRepository VariantRepository { get; }
 
         public ISpecificationRepository SpecificationRepository { get; }
+        public IStatisticRepository StatisticRepository { get; }
 
         int SaveChanges();
 

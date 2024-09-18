@@ -40,7 +40,7 @@ namespace DATN.Core.Repositories.Repositories
             var voucherAdded = new Voucher
             {
                 Code = "UNEWAU" + GenerateVoucherCode(),
-                Status = VoucherStatus.NotUsed,
+                Status = VoucherStatus.Used,
                 ReleaseDate = DateTime.Now,
                 ExpiryDate = DateTime.Now,
                 ActivationTime = DateTime.Now,
