@@ -4,6 +4,7 @@ using DATN.Core.Infrastructures;
 using DATN.Core.Model;
 using DATN.Core.Model.Product_EAV;
 using DATN.Core.ViewModel.AttributeEAVVM;
+using DATN.Core.ViewModel.AttributeVM.Viet_Attribute_VM;
 using DATN.Core.ViewModel.BrandVM;
 using DATN.Core.ViewModel.Paging;
 using DATN.Core.ViewModel.Product_EAV;
@@ -61,7 +62,8 @@ namespace DATN.API.Controllers
             if (attribute != null)
             {
                 // Create a simplified response object containing the attribute's values
-                var result = attribute.AttributeValues.Select(av => new {
+                var result = attribute.AttributeValues.Select(av => new
+                {
                     ValueId = av.AttributeValueId,
                     ValueText = av.ValueText
                 }).ToList();
@@ -72,6 +74,35 @@ namespace DATN.API.Controllers
 
             // If no attribute is found for the given id, return a 404 Not Found status
             return NotFound(new { Message = "Attribute not found" });
+        }
+        [HttpGet("{id}")]
+        public IActionResult GetAttributesWithValuesByProductId(int id)
+        {
+            // Lấy tất cả các giá trị thuộc tính liên quan đến sản phẩm
+            var relatedAttributeValueIds = _context.Variants
+                .Where(v => v.ProductId == id)
+                .SelectMany(v => v.VariantAttributes)
+                .Select(va => va.AttributeValueId)
+                .Distinct()
+                .ToList();
+
+            // Lấy tất cả các thuộc tính có các giá trị thuộc tính liên quan
+            var attributes = _context.Attribute_EAVs
+                .Include(a => a.AttributeValues) // Bao gồm giá trị thuộc tính liên quan
+                .Where(a => a.AttributeValues.Any(av => relatedAttributeValueIds.Contains(av.AttributeValueId)))
+                .Select(a => new AttributeDTO
+                {
+                    AttributeId = a.AttributeId,
+                    AttributeName = a.AttributeName,
+                    AttributeValues = a.AttributeValues.Select(av => new AttributeValueDTO
+                    {
+                        AttributeValueId = av.AttributeValueId,
+                        ValueText = av.ValueText
+                    }).ToList()
+                })
+                .ToList();
+
+            return Ok(attributes);
         }
 
         [HttpPost]
