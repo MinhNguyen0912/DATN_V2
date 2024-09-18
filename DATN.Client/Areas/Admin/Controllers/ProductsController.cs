@@ -500,26 +500,38 @@ namespace DATN.Client.Areas.Admin.Controllers
                             _unitOfWork.SaveChanges();
 
 
-                            //var variantId = variant.VariantId;
-                            //// Tạo Specifications cho từng Variant
-                            //if (item.Specifications != null)
-                            //{
-                            //    foreach (var spec in item.Specifications)
-                            //    {
-                            //        Specification specification = new Specification
-                            //        {
-                            //            VariantId = variantId,
-                            //            Key = spec.Key,
-                            //            Value = spec.Value
-                            //        };
-                            //        var specResult = _unitOfWork.SpecificationRepository.Create(specification);
-                            //        _unitOfWork.SaveChanges();
-                            //        if (specResult == null)
-                            //        {
-                            //            throw new Exception("Failed to create specification.");
-                            //        }
-                            //    }
-                            //}
+                            var variantid = variant.VariantId;
+                            // tạo specifications cho từng variant
+                            if (item.Specifications != null)
+                            {
+                                foreach (var spec in item.Specifications)
+                                {
+                                    Specification specification;
+                                    if (spec.Id!=0)
+                                    {
+                                        specification =await _unitOfWork.SpecificationRepository.GetById(spec.Id);
+                                        specification.Key = spec.Key;
+                                        specification.Value = spec.Value;
+                                        _unitOfWork.SpecificationRepository.Update(specification);
+                                    }
+                                    else
+                                    {
+                                        specification = new Specification
+                                        {
+                                            VariantId = variantid,
+                                            Key = spec.Key,
+                                            Value = spec.Value
+                                        };
+                                        var specresult = _unitOfWork.SpecificationRepository.Create(specification);
+                                        _unitOfWork.SaveChanges();
+                                        if (specresult == null)
+                                        {
+                                            throw new Exception("failed to create specification.");
+                                        }
+                                    }
+                                }
+                                _unitOfWork.SaveChanges();
+                            }
                         }
                     }
 

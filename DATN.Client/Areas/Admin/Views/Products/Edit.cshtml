@@ -287,31 +287,37 @@
                                 <input type="number" class="form-control quantity" name="Variants[@item.index].Weight" value="@item.variant.Weight" min="1" oninput="validateInput(this, 1)" />
                             </td>
                             <td>
-                                <input type="radio" name="Variants[@item.index].IsDefault" class="default-variant" value="@item.variant.IsDefault" @(item.index == 0 ? "checked" : "")  onclick="setDefaultVariant(@item.index)" />
+                                <!-- Kiểm tra giá trị từ server để chọn radio button phù hợp -->
+                                <input type="radio" name="defaultVariant" value="@item.index" @(item.variant.IsDefault ? "checked" : "") />
+                                <input type="hidden" name="Variants[@item.index].IsDefault" value="@(item.variant.IsDefault ? "true" : "false")" />
                             </td>
                             <td>
-                                <input type="checkbox" name="Variants[@item.index].IsActive" class="active-variant" value="@item.variant.IsActive" @(item.index == 0 ? "checked" : "") >
+                                <input type="checkbox" name="Variants[@item.index].IsActive" class="active-variant" value="true" @(item.variant.IsActive ? "checked" : "") />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-primary" onclick="toggleSpecifications(this, @item.index)"> +</button>
                             </td>
                         </tr>
                         <tr class="specifications-row" style="display: none;">
-                            @foreach (var Spe in item.variant.Specifications)
-                            {
-                                <td>
-                                    <div class="input-group mb-2">
-                                        <input type="text" class="form-control" name="Variants[@item.index].Specifications[].Name" value="@Spe.Key" placeholder="Tên thông số" required />
-                                        <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[].Value" value="@Spe.Value" placeholder="Giá trị" required />
-                                </td>
-                            }
                             <td colspan="9">
                                 <div class="variant-specifications">
-                                    <div class="specification-list" id="specification-list-@item.index"></div>
+                                    <div id="specification-list-@item.index">
+                                        @for (var specIndex = 0; specIndex < item.variant.Specifications.Count; specIndex++)
+                                        {
+                                            var spec = item.variant.Specifications[specIndex];
+                                            <div class="input-group mb-2 specification-row">
+                                                <input type="hidden" name="Variants[@item.index].Specifications[@specIndex].Id" value="@spec.Id" />
+                                                <input type="text" class="form-control" name="Variants[@item.index].Specifications[@specIndex].Key" value="@spec.Key" placeholder="Tên thông số" required />
+                                                <input type="text" class="form-control" name="Variants[@item.index].Specifications[@specIndex].Value" value="@spec.Value" placeholder="Giá trị" required />
+                                            </div>
+                                        }
+                                    </div>
                                     <button type="button" class="btn btn-secondary" onclick="addSpecificationRow(@item.index)">+ Thêm thông số</button>
                                 </div>
                             </td>
                         </tr>
+
+
                     }
                 </tbody>
 
@@ -776,31 +782,37 @@
 
         // Hàm thêm dòng nhập thông số kỹ thuật
         function addSpecificationRow(variantIndex) {
+            // Lấy toàn bộ danh sách các thông số kỹ thuật cho biến thể
             const specificationList = document.getElementById(`specification-list-${variantIndex}`);
-            const currentCount = specificationList.querySelectorAll('.specification-row').length;
 
+            // Đếm số dòng thông số kỹ thuật hiện có
+            const currentCount = document.querySelectorAll(`#specification-list-${variantIndex} .specification-row`).length;
+
+            // Kiểm tra giới hạn số lượng thông số kỹ thuật
             if (currentCount >= 10) {
                 alert('Chỉ có thể thêm tối đa 10 thông số kỹ thuật.');
                 return;
             }
 
+            // Tạo chỉ số mới dựa trên số lượng hiện tại
+            const newSpecIndex = currentCount;
+
             const row = document.createElement('div');
-            row.classList.add('specification-row');
+            row.classList.add('input-group', 'mb-2', 'specification-row');
             row.innerHTML = `
-                                                        <div class="input-group mb-2">
-                                                            <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[${currentCount}].Name" placeholder="Tên thông số" required />
-                                                            <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[${currentCount}].Value" placeholder="Giá trị" required />
-                                                            <button class="btn btn-danger" type="button" onclick="removeSpecificationRow(this)">Xóa</button>
-                                                        </div>
-                                                    `;
+                <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[${newSpecIndex}].Key" placeholder="Tên thông số" required />
+                <input type="text" class="form-control" name="Variants[${variantIndex}].Specifications[${newSpecIndex}].Value" placeholder="Giá trị" required />
+                <button class="btn btn-danger" type="button" onclick="removeSpecificationRow(this)">Xóa</button>
+            `;
+
             specificationList.appendChild(row);
         }
 
-        // Hàm xóa dòng thông số kỹ thuật
-        function removeSpecificationRow(button) {
-            button.closest('.specification-row').remove();
-        }
 
+        function removeSpecificationRow(button) {
+            const row = button.closest('.specification-row');
+                row.remove();
+        }
         // Hàm kiểm tra và hiển thị lỗi nếu nhập giá trị không hợp lệ
         function validateInput(input, minValue) {
             const value = parseInt(input.value);
