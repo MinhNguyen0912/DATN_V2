@@ -69,7 +69,7 @@ namespace DATN.Core.Repositories.Repositories
             request.TotalPages = (int)Math.Ceiling(request.TotalRecord / (double)request.PageSize);
             var list = query.Skip((request.CurrentPage - 1) * request.PageSize).Take(request.PageSize).ToList();
             var listUserId = list.Select(c => c.Id).ToList();
-            var lstInvoiceByUserId = Context.Invoices.AsQueryable().Where(c => listUserId.Contains(c.UserId)).ToList();
+            var lstInvoiceByUserId = Context.Invoices.AsQueryable().Where(c => listUserId.Contains(c.UserId) && c.Status==InvoiceStatus.Success).ToList();
 
             var lstVoucher = Context.Vouchers.AsQueryable();
             var lstBatches = Context.Batches.AsQueryable();
